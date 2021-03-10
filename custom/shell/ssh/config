@@ -86,6 +86,15 @@ Host ws
      ForwardX11 yes
      Port 42022
 
+     AddressFamily inet
+     Compression yes
+
+     ControlMaster auto
+     ControlPath /lhome/franzef/.ssh/socket/%r@%h-%p
+     ControlPersist 3600
+
+     PreferredAuthentications=publickey
+
 Host lp
      Hostname CMTCLE7U103.rd.corpintra.net
      IdentityFile /lhome/franzef/.ssh/id_rsa
