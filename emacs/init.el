@@ -266,7 +266,8 @@
          (list (openwith-make-extension-regexp
                 '("pdf"))
                "okular"
-               '(file))))
+               '(file))
+         ))
   (openwith-mode 1))
 
 ;; -------------------------------------------------------------------
@@ -448,6 +449,15 @@
   (setq savehist-additional-variables '(extended-command-history kill-ring)))
 
 ;; -------------------------------------------------------------------
+;; Ripgrep integration
+;; -------------------------------------------------------------------
+(use-package rg
+  :ensure-system-package (rg . ripgrep)
+  :init
+  (rg-enable-menu)
+  )
+
+;; -------------------------------------------------------------------
 ;; Ivy project
 ;; -------------------------------------------------------------------
 (use-package setup-ivy
@@ -483,13 +493,11 @@
   )
 
 (use-package counsel-projectile
-  :ensure-system-package (rg . riprep)
   :config (counsel-projectile-mode)
   :bind* (
           ("C-c p s a" . counsel-ack)
           ("C-c p s g" . counsel-git-grep)
-          ("C-c p s c" . counsel-rg)
-          ("C-c p s r" . rgrep)
+          ("C-c p s r" . counsel-rg)
           )
   )
 
@@ -518,6 +526,10 @@
   (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
   (lsp-headerline-breadcrumb-mode)
   )
+
+;; Disables lsp linter as default for python-mode. It is crucial that
+;; this happens before loading lsp-mode.
+(setq lsp-diagnostic-package :none)
 
 (use-package lsp-mode
   :commands lsp
@@ -586,9 +598,7 @@
     (treemacs-filewatch-mode t)
     (treemacs-fringe-indicator-mode nil))
 
-  (treemacs-git-mode 'extended)
   ;; (add-to-list 'treemacs-pre-file-insert-predicates #'treemacs-is-file-git-ignored?)
-
   (defun treemacs-custom-filter (file _)
     (or (s-ends-with? ".aux" file)
         (s-ends-with? ".lint" file)
