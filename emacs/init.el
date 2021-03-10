@@ -152,9 +152,9 @@
 ;; Key bindings
 (global-set-key "\C-n" 'make-frame)
 
-;; F6 stores a position in a file F7 brings you back to this position
-(global-set-key [f6] '(lambda () (interactive) (point-to-register ?1)))
-(global-set-key [f7] '(lambda () (interactive) (register-to-point ?1)))
+;; Ctrl-1 stores a position in a file, Alt-1 brings you back to this position
+(global-set-key (kbd "C-1")  '(lambda () (interactive) (point-to-register ?1)))
+(global-set-key (kbd "M-1")  '(lambda () (interactive) (register-to-point ?1)))
 
 ;; higlight the marked region (C-SPC) and use commands (like
 ;; latex-environment) on current region.
@@ -266,7 +266,8 @@
          (list (openwith-make-extension-regexp
                 '("pdf"))
                "okular"
-               '(file))))
+               '(file))
+         ))
   (openwith-mode 1))
 
 ;; -------------------------------------------------------------------
@@ -448,6 +449,15 @@
   (setq savehist-additional-variables '(extended-command-history kill-ring)))
 
 ;; -------------------------------------------------------------------
+;; Ripgrep integration
+;; -------------------------------------------------------------------
+(use-package rg
+  :ensure-system-package (rg . ripgrep)
+  :init
+  (rg-enable-menu)
+  )
+
+;; -------------------------------------------------------------------
 ;; Ivy project
 ;; -------------------------------------------------------------------
 (use-package setup-ivy
@@ -483,13 +493,11 @@
   )
 
 (use-package counsel-projectile
-  :ensure-system-package (rg . riprep)
   :config (counsel-projectile-mode)
   :bind* (
           ("C-c p s a" . counsel-ack)
           ("C-c p s g" . counsel-git-grep)
-          ("C-c p s c" . counsel-rg)
-          ("C-c p s r" . rgrep)
+          ("C-c p s r" . counsel-rg)
           )
   )
 
@@ -505,10 +513,8 @@
 ;; -------------------------------------------------------------------
 (use-package highlight-symbol
   :bind* (
-          ("C-<f3>" . highlight-symbol)
-          ("<f3>" . highlight-symbol-next)
-          ("S-<f3>" . highlight-symbol-prev)
-          ("M-<f3>" . highlight-symbol-query-replace)
+          ("C-3" . highlight-symbol)
+          ("M-3" . highlight-symbol-query-replace)
           )
   )
 
@@ -520,6 +526,10 @@
   (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
   (lsp-headerline-breadcrumb-mode)
   )
+
+;; Disables lsp linter as default for python-mode. It is crucial that
+;; this happens before loading lsp-mode.
+(setq lsp-diagnostic-package :none)
 
 (use-package lsp-mode
   :commands lsp
@@ -588,9 +598,7 @@
     (treemacs-filewatch-mode t)
     (treemacs-fringe-indicator-mode nil))
 
-  (treemacs-git-mode 'extended)
-  (add-to-list 'treemacs-pre-file-insert-predicates #'treemacs-is-file-git-ignored?)
-
+  ;; (add-to-list 'treemacs-pre-file-insert-predicates #'treemacs-is-file-git-ignored?)
   (defun treemacs-custom-filter (file _)
     (or (s-ends-with? ".aux" file)
         (s-ends-with? ".lint" file)

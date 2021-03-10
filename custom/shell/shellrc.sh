@@ -56,7 +56,7 @@ alias "trash"="gvfs-trash"
 
 alias dfs="hdfs dfs"
 
-EMACS="emacsclient -c -a emacs %f"
+export EMACS="emacsclient -c -a emacs %f"
 
 #------------------------------------------------------------------------------#
 # ros setup
