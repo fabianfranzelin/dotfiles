@@ -764,7 +764,7 @@
 ;; -------------------------------------------------------------------
 (use-package ccls
   :hook ((c-mode c++-mode objc-mode cuda-mode) .
-         (lambda () (require 'ccls) (lsp))))
+         (lambda () (lsp))))
 
 (use-package cmake-mode
   :mode (("\\.cmake$" . cmake-mode)
