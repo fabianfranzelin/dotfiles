@@ -114,6 +114,7 @@ export SPARK_SUBMIT_COMMAND="$SPARK_HOME/bin/spark-submit"
 export YARN_CONF_DIR="$HADOOP_HOME/etc/hadoop"
 
 export SLUGIFY_USES_TEXT_UNIDECODE=yes
+export AIRFLOW__CORE__PARALLELISM=10
 
 export KUBERNETES_CONTEXT=kubernetes-dol-master@abstatt
 export KUBERNETES_CONTEXT_SUNNYVALE=dol_master@sunnyvale
