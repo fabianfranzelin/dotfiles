@@ -16,9 +16,8 @@
 (require 'package)
 (setq package-enable-at-startup nil)
 
-(setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ;; ("melpa-stable" . "https://stable.melpa.org/packages/")
-                         ("org" . "https://orgmode.org/elpa/")
+(setq package-archives '(("org" . "https://orgmode.org/elpa/")
+                         ("melpa" . "https://melpa.org/packages/")
                          ("elpa" . "https://elpa.gnu.org/packages/")))
 
 (defvar local-load-path (expand-file-name "~/.emacs.d/elisp-local"))
@@ -82,7 +81,7 @@
                      gcs-done)))
 
 ;; enables local variables per default
-(setq enable-local-variables :all)
+(setq enable-local-variables t)
 ;; dir-local variables will be applied to remote files.
 (setq enable-remote-dir-locals t)
 
@@ -203,6 +202,7 @@
 (setq shell-file-name "/bin/zsh")
 
 ;; Set default connection mode to SSH
+(setq tramp-terminal-type "dumb")
 (setq tramp-default-method "ssh")
 
 (use-package evil-nerd-commenter
@@ -216,25 +216,40 @@
 
 
 ;; -------------------------------------------------------------------
-;; Buffer move
+;; Buffer move & transpose frame
 ;; -------------------------------------------------------------------
 (use-package buffer-move
-  :config
-  (setq buffer-move-stay-after-swap t)
-  :bind (("C-S-<down>" . buffer-move-down)
-         ("C-S-<up>" . buffer-move-up)
-         ("C-S-<left>" . buffer-move-left)
-         ("C-S-<right>" . buffer-move-right))
+  :bind (("C-c b <down>" . buf-move-down)
+         ("C-c b <up>" . buf-move-up)
+         ("C-c b <left>" . buf-move-left)
+         ("C-c b <right>" . buf-move-right))
+  )
+
+(use-package transpose-frame
+  :bind (("C-c b t" . transpose-frame))
   )
 
 ;; -------------------------------------------------------------------
 ;; Set up dired
 ;; -------------------------------------------------------------------
+
+(defun ff-dired-init ()
+  "Bunch of stuff to run for dired, either immediately or when it's
+   loaded."
+  ;; <add other stuff here>
+  (define-key dired-mode-map [remap dired-find-file]
+    'dired-single-buffer)
+  (define-key dired-mode-map [remap dired-mouse-find-file-other-window]
+    'dired-single-buffer-mouse)
+  (define-key dired-mode-map [remap dired-up-directory]
+    'dired-single-up-directory))
+
 (use-package dired
   :ensure nil
   :defer 1
   :commands (dired dired-jump)
-  :hook (dired-mode . auto-revert-mode)
+  :hook ((dired-mode . auto-revert-mode)
+         (dired-mode . ff-dired-init))
   :bind (("C-x C-j" . dired-jump)
          :map dired-mode-map
          ("<backspace>" . dired-single-up-directory)
@@ -293,13 +308,8 @@
   (dired-rainbow-define-chmod executable-unix "#38c172" "-.*x.*"))
 
 (use-package dired-single
-  :defer t)
-
-(use-package dired-ranger
-  :defer t)
-
-(use-package dired-collapse
-  :defer t)
+  :defer t
+  :commands (dired dired-jump))
 
 (use-package all-the-icons-dired
   :hook (dired-mode . all-the-icons-dired-mode))
@@ -562,8 +572,7 @@
 ;; Projectile mode
 ;; -------------------------------------------------------------------
 (use-package projectile
-  :after counsel
-  :after ivy
+  :after counsel ivy
   :custom ((projectile-completion-system 'ivy))
   :init
   (setq projectile-file-exists-remote-cache-expire nil
@@ -573,9 +582,11 @@
          (".idea" ".eunit" ".git" ".hg" ".svn"
           ".fslckout" ".bzr" "_darcs" ".tox"
           "build" "target" "_build" ".history"
-          "tmp"))
+          "tmp", "*ccls-cache" ".ccls-root"
+          ".ccls-cache" "compile_commands.json"
+          ".clangd"))
         projectile-require-project-root nil
-        ;; projectile-indexing-method 'alien
+        projectile-indexing-method 'alien
         ;; projectile-enable-caching nil
         projectile-completion-system 'default
         projectile-svn-command "find . -type f -not -iwholename '*.svn/*' -print0")
@@ -587,16 +598,14 @@
   )
 
 (use-package counsel-projectile
-  :config (counsel-projectile-mode)
-  :bind* (
-          ("C-c p s a" . counsel-ack)
-          ("C-c p s g" . counsel-git-grep)
-          ("C-c p s r" . counsel-rg)
-          )
+  :config
+  (setq counsel-projectile-sort-files t)
+  (counsel-projectile-mode)
   )
 
 (use-package vterm
-  :ensure-system-package (libtool . libtool-bin)
+  :ensure-system-package ((cmake . cmake)
+                          (libtool . libtool-bin))
   :commands vterm
   :config
   (setq vterm-max-scrollback 10000))
@@ -607,8 +616,8 @@
 ;; -------------------------------------------------------------------
 (use-package highlight-symbol
   :bind* (
-          ("C-3" . highlight-symbol)
-          ("M-3" . highlight-symbol-query-replace)
+          ("C-c h" . highlight-symbol)
+          ("C-c r" . highlight-symbol-query-replace)
           )
   )
 
@@ -627,7 +636,6 @@
 
 (use-package lsp-mode
   :commands lsp
-  :ensure-system-package (clangd-10 . clangd)
   :hook ((lsp-mode . ff-lsp-mode-setup)
          (c++-mode . lsp-deferred)
          (c-mode . lsp-deferred)
@@ -636,18 +644,19 @@
          (typescript-mode . lsp-deferred)
          (json-mode . lsp-deferred)
          (yaml-mode . lsp-deferred)
+         (before-save-hook . lsp-format-buffer)
          )
   :config
   (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
   (setq ;; if set to true can cause a performance hit
-        lsp-log-io nil
-        lsp-pyls-plugins-flake8-enabled t
-        lsp-pyls-plugins-pycodestyle-enabled nil
-        lsp-enable-snippet nil
-        ;; lsp-prefer-flymake :none
-        ;; Ignore files and folders when watchin
-        ;; lsp-file-watch-ignored ("[/\\\\]\\.pyc$" "[/\\\\]_build")
-        )
+   lsp-log-io nil
+   lsp-pyls-plugins-flake8-enabled t
+   lsp-pyls-plugins-pycodestyle-enabled nil
+   lsp-enable-snippet nil
+   lsp-prefer-flymake nil
+   ;; increase watch threshold
+   lsp-file-watch-threshold 100000
+   )
   (lsp-enable-which-key-integration)
   :bind (:map lsp-mode-map
               ("TAB" . completion-at-point))
@@ -669,13 +678,22 @@
   (setq lsp-ui-doc-position 'top
         lsp-ui-doc-alignment 'window
         lsp-ui-sideline-enable t
-        lsp-ui-sideline-show-hover nil)
+        lsp-ui-sideline-show-hover nil
+        lsp-ui-doc-include-signature nil  ; don't include type signature in the child frame
+        lsp-ui-sideline-show-symbol nil)  ; don't show symbol on the right of info
+  (lsp-ui-peek-enable t)
   ;; (lsp-ui-doc-show) ; does not work for python currently
   )
 
 (with-eval-after-load 'lsp-mode
   ;; :global/:workspace/:file
-  (setq lsp-modeline-diagnostics-scope :workspace))
+  (setq lsp-modeline-diagnostics-scope :workspace)
+  )
+
+(with-eval-after-load 'lsp-ui-mode
+  (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
+  (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
+  )
 
 (use-package treemacs
   :commands (treemacs
@@ -698,12 +716,10 @@
         (s-ends-with? ".lint" file)
         ))
   (push #'treemacs-custom-filter treemacs-ignored-file-predicates)
-)
+  )
 
 (use-package lsp-treemacs
-  :after lsp
-  :after treemacs
-  :after company
+  :after lsp treemacs company
   :commands lsp-treemacs-errors-list
   :config
   (setq gc-cons-threshold (* 100 1024 1024)
@@ -715,14 +731,12 @@
   (lsp-treemacs-sync-mode t) ;; enables bidirectional sync
   )
 
-(global-set-key [f9] 'ff-lsp-treemacs-symbols-toggle)
+(global-set-key [f9] 'ff/lsp-treemacs-symbols-toggle)
 
 ;; -------------------------------------------------------------------
 ;; Enable dap
 ;; -------------------------------------------------------------------
 (use-package dap-mode
-  :after lsp-mode
-  :ensure-system-package ("~/.local/lib/python3.6/site-packages/ptvsd" . "pip3 install --user 'ptvsd>=4.2'") ; for dap-python
   :init
   ;; enables mouse hover support
   (dap-tooltip-mode 1)
@@ -777,24 +791,31 @@
 ;; Company
 ;; -------------------------------------------------------------------
 (use-package company
-  :after lsp-mode
-  :after yasnippet
+  :after lsp-mode yasnippet
   :hook (lsp-mode . company-mode)
   :config
   (setq company-backends (delete 'company-semantic company-backends)
         company-minimum-prefix-length 1
         company-idle-delay 0.0 ;; default is 0.2
+        company-echo-delay 0.0
         ;; aligns annotation to the right hand side
         company-tooltip-align-annotations t)
 
-  ;; enable yasnippets for company
-  (add-to-list 'company-backends 'company-yasnippet)
+  ;; The company-backends support list of lists. Lists are evaluated
+  ;; at once, which
+  (setq company-backends (append '((company-clang
+                                    company-tide
+                                    company-capf
+                                    company-yasnippet))
+                                 company-backends))
+
   ;; enable company globally
   (global-company-mode 1)
-  :bind (:map company-active-map
-              ("TAB" . company-complete-selection)
-              :map lsp-mode-map
-              ("TAB" . company-indent-or-complete-common))
+  :bind (("C-c C-y" . company-yasnippet)
+         :map company-active-map
+         ("TAB" . company-complete-selection)
+         :map lsp-mode-map
+         ("TAB" . company-indent-or-complete-common))
   )
 
 
@@ -807,8 +828,7 @@
   (add-hook mode (lambda () (company-mode 0))))
 
 (use-package company-prescient
-  :after company
-  :after counsel
+  :after company counsel
   :config
   (company-prescient-mode 1))
 
@@ -859,36 +879,9 @@
 ;; -------------------------------------------------------------------
 ;; C/C++
 ;; -------------------------------------------------------------------
-(use-package ccls
-  :hook ((c-mode c++-mode objc-mode cuda-mode) .
-         (lambda () (require 'ccls) (lsp))))
-
-(use-package cmake-mode
-  :mode (("\\.cmake$" . cmake-mode)
-         ("CMakeLists.txt" . cmake-mode)))
-
-;; switch between header and source
-(global-set-key [(control tab)] 'ff-find-other-file)
-
-(require 'dap-cpptools)
-
-(use-package company-c-headers
-  :after company
-  :config
-  (add-to-list 'company-backends 'company-c-headers)
-  (add-to-list 'company-c-headers-path-system "/usr/include/c++/9/")
+(use-package setup-cc
+  :load-path local-load-path
   )
-
-(use-package clang-format+
-  :hook (c++-mode . clang-format+-mode)
-  :config
-  (let ((athena_clang "/usr/bin/clang-format-athena-1"))
-    (when (file-exists-p athena_clang)
-      (setq clang-format-executable athena_clang)
-      )
-    )
-  )
-
 ;; -------------------------------------------------------------------
 ;; CRAN R
 ;; -------------------------------------------------------------------
@@ -935,7 +928,7 @@
   )
 
 (use-package company-auctex
-  :after company)
+  :after company auctex)
 
 (use-package reftex
   :init
@@ -1063,7 +1056,7 @@
         langtool-url (concat "https://languagetool.org/download/" langtool-name ".zip")
         langtool-extract-to (expand-file-name "~/opt/languageTool")
         langtool-expected-binary (concat langtool-extract-to "/" langtool-name "/languagetool-commandline.jar"))
-  (ff-download-and-extract-zip-archive langtool-url
+  (ff/download-and-extract-zip-archive langtool-url
                                        langtool-name
                                        langtool-extract-to
                                        langtool-expected-binary
@@ -1097,9 +1090,9 @@
     ))
 
 (use-package ispell
-  :ensure-system-package ("/usr/bin/ispell" . ispell)
-  :ensure-system-package ("/usr/lib/ispell/american-insane.hash" . iamerican-insane)
-  :ensure-system-package ("/usr/lib/ispell/ngerman.hash" . ingerman)
+  :ensure-system-package (("/usr/bin/ispell" . ispell)
+                          ("/usr/lib/ispell/american-insane.hash" . iamerican-insane)
+                          ("/usr/lib/ispell/ngerman.hash" . ingerman))
   :init
   (setq ispell-dictionary "en_US")
   (setq ispell-local-dictionary "en_US")
@@ -1157,62 +1150,44 @@
   (highlight-lines-matching-regexp "import pdb")
   (highlight-lines-matching-regexp "pdb.set_trace()"))
 
-(use-package python-mode
-  :ensure nil
+
+(use-package lsp-python-ms
+  :ensure-system-package ((pip3 . python3-pip)
+                          ("~/.local/lib/python3.6/site-packages/epc" . "pip3 install --user -U 'epc'")
+                          ("~/.local/lib/python3.6/site-packages/ptvsd" . "pip3 install --user -U 'ptvsd>=4.2'"))
   :mode (
          ("\\.py$" . python-mode)
          ("SConstruct" . python-mode)
          ("SConscript" . python-mode)
          )
-  :hook (python-mode . annotate-pdb)
+  :hook ((python-mode . annotate-pdb)
+         (python-mode . (lambda ()
+                          (require 'lsp-python-ms)
+                          ;; debugging package for python using ptvsd
+                          (require 'dap-python)
+                          (lsp))))  ; or lsp-deferred
+  :init
+  (setq python-indent-offset 4)
+  (setq python-shell-interpreter "python")
+  (setq lsp-python-ms-auto-install-server t)
   :config
   ;; delete output buffer on buffer execution
-  (setq py-shell-switch-buffers-on-execute nil
-        python-indent-offset 4)
-  :custom
-  (python-shell-interpreter "python3")
+  (setq py-shell-switch-buffers-on-execute nil)
   )
-
-(use-package lsp-python-ms
-  :init (setq lsp-python-ms-auto-install-server t)
-  :hook (python-mode . (lambda ()
-                         (require 'lsp-python-ms)
-                         (lsp))))  ; or lsp-deferred
-
-;; Enable autopep8
-(use-package py-autopep8
-  :ensure-system-package (autopep8 . "pip3 install --user -U autopep8")
-  ;; :hook ((python-mode . py-autopep8-enable-on-save)) ;; enables autoformat
-  :config
-  (setq py-autopep8-options '("--select=W504")))
 
 ;; install black and black-macchiato with pip3 install --user -U
 ;; black-macchiato black if black is not available as executable in
 ;; ~/.local/bin, provide a dummy one that runs black in library mode
 ;; python3 -m black "${@}"
 (use-package python-black
-  :after python
-  :ensure-system-package (black . "pip3 install --user -U black")
+  :ensure-system-package ((black . "pip3 install --user -U black"))
   :hook ((python-mode . python-black-on-save-mode))
   )
-
-(use-package blacken)
-
-;; install via pip install "ptvsd>=4.2"
-(require 'dap-python)
 
 ;; supports virtual environments. To be set with pyvenv-workon
 (use-package pyvenv
   :config
   (pyvenv-mode 1))
-
-;; add python auto completion for company
-(defun ff/python-mode-hook ()
-  (add-to-list 'company-backends 'company-jedi))
-
-(use-package company-jedi
-  :after company
-  :hook (company-mode . ff/python-mode-hook))
 
 ;; -------------------------------------------------------------------
 ;; Sphinx documentation
@@ -1231,6 +1206,7 @@
 (use-package flycheck
   :diminish flycheck-mode
   :config
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
   (global-flycheck-mode)
   )
 
@@ -1284,8 +1260,6 @@
   )
 
 (use-package git-timemachine)
-
-(use-package magit-todos)
 
 (use-package git-gutter-fringe)
 
@@ -1375,7 +1349,18 @@
 ;; -------------------------------------------------------------------
 ;; markdown mode
 ;; -------------------------------------------------------------------
-(use-package markdown-mode)
+(use-package markdown-mode
+  :commands markdown-mode
+  :ensure-system-package ((markdown . markdown)
+                          (pandoc . pandoc))
+  :init
+  (add-hook 'markdown-mode-hook #'visual-line-mode)
+  (add-hook 'markdown-mode-hook #'flyspell-mode)
+  :config
+  ;; The default command for markdown (~markdown~), doesn't support tables
+  ;; (e.g. GitHub flavored markdown). Pandoc does, so let's use that.
+  (setq markdown-command "pandoc --from markdown --to html")
+  (setq markdown-command-needs-filename t))
 
 ;; -------------------------------------------------------------------
 ;; RST mode
@@ -1388,7 +1373,6 @@
   :init
   (set-default 'truncate-lines t)
   )
-
 
 ;; C-c C-e r r (org-rst-export-to-rst)
 ;;    Export as a text file written in reStructured syntax.
@@ -1408,32 +1392,28 @@
 ;; -------------------------------------------------------------------
 ;; Typescript
 ;; -------------------------------------------------------------------
-(defun setup-tide-mode ()
-  (interactive)
-  (tide-setup)
-  (flycheck-mode +1)
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (eldoc-mode +1)
-  (tide-hl-identifier-mode +1))
-
 (use-package tide)
+
 (use-package nvm
   :defer t)
 
 (use-package typescript-mode
-  :after dap-node tide
+  :after dap-node tide company
   :mode (
          ("\\.ts$" . typescript-mode)
          ("\\.tsx$" . typescript-mode)
          )
   :config
   (setq typescript-indent-level 4)
-  (flycheck-mode 1)
-  (company-mode 1)
   (dap-node-setup) ;; automatically installs Node debug adapter if needed
+  (tide-setup) ;; provided by the tide package
+  ;; remove company-tide from company backends manually, since it is
+  ;; added by company setup explicitly
+  (setq company-backends (delete 'company-tide company-backends))
+  (eldoc-mode +1)
+  (tide-hl-identifier-mode +1)
   :hook (
          (before-save-hook . tide-format-before-save)
-         (typescript-mode . setup-tide-mode)
          )
   )
 
@@ -1464,7 +1444,7 @@
         plantuml-url (concat "https://sourceforge.net/projects/plantuml/files/" plantuml-version "/" plantuml-name ".zip/download")
         plantuml-extract-to (expand-file-name (concat "~/opt/plantuml/" plantuml-name))
         plantuml-expected-binary (concat plantuml-extract-to "/plantuml.jar"))
-  (ff-download-and-extract-zip-archive plantuml-url
+  (ff/download-and-extract-zip-archive plantuml-url
                                        plantuml-name
                                        plantuml-extract-to
                                        plantuml-expected-binary
@@ -1486,8 +1466,7 @@
   )
 
 (use-package flycheck-plantuml
-  :after plantuml-mode
-  :after flycheck
+  :after plantuml-mode flycheck
   :commands (flycheck-plantuml-setup))
 
 (use-package org
@@ -1540,7 +1519,89 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(company-jedi buffer-move dired-hide-dotfiles dired-open all-the-icons-dired dired-single yasnippet-snippets ccls git-gutter-fringe yaml-mode xterm-color whole-line-or-region which-key wgrep vterm volatile-highlights use-package-ensure-system-package tide super-save sphinx-doc smex smart-mode-line scala-mode rainbow-delimiters pyvenv python-black py-autopep8 protobuf-mode poly-rst ox-rst openwith multi-term material-theme magit-todos lsp-ui lsp-python-ms lsp-java lsp-ivy lsp-docker langtool json-mode ivy-rich ivy-prescient ivy-pass ivy-hydra highlight-symbol groovy-mode groovy-imports git-timemachine general flymake-yaml flymake-shellcheck flymake-shell flymake-json flycheck-pycheckers flycheck-plantuml flx fill-column-indicator exec-path-from-shell evil-nerd-commenter ess eshell-z emojify edwina drag-stuff dockerfile-mode dired-narrow diminish counsel-projectile company-prescient company-c-headers company-auctex command-log-mode cmake-mode clang-format+ blacken beacon autopair auto-package-update auto-complete ag ack)))
+   '(org-tempo transpose-frame with-editor buffer-move dired-hide-dotfiles dired-open all-the-icons-dired dired-single yasnippet-snippets ccls git-gutter-fringe yaml-mode xterm-color whole-line-or-region which-key wgrep vterm volatile-highlights use-package-ensure-system-package tide super-save sphinx-doc smex smart-mode-line scala-mode rainbow-delimiters pyvenv python-black py-autopep8 protobuf-mode poly-rst ox-rst openwith multi-term material-theme magit-todos lsp-ui lsp-python-ms lsp-java lsp-ivy lsp-docker langtool json-mode ivy-rich ivy-prescient ivy-pass ivy-hydra highlight-symbol groovy-mode groovy-imports git-timemachine general flymake-yaml flymake-shellcheck flymake-shell flymake-json flycheck-pycheckers flycheck-plantuml flx fill-column-indicator exec-path-from-shell evil-nerd-commenter ess eshell-z emojify edwina drag-stuff dockerfile-mode dired-narrow diminish counsel-projectile company-prescient company-c-headers company-auctex command-log-mode cmake-mode clang-format+ blacken beacon autopair auto-package-update auto-complete ag ack))
+ '(safe-local-variable-values
+   '((eval progn
+           (setq flycheck-python-mypy-config
+                 '(".mypy.ini"))
+           (setq flycheck-pylintrc ".pylintrc")
+           (setq flycheck-checker 'python-pylint)
+           (set
+            (make-local-variable 'main)
+            (concat
+             (projectile-project-root)))
+           (set
+            (make-local-variable 'sphinx-extensions)
+            (concat
+             (projectile-project-root)
+             "python"))
+           (set
+            (make-local-variable 'python-path)
+            (concat main ":" sphinx-extensions))
+           (setenv "PYTHONPATH" python-path))
+     (projectile-project-test-cmd . "python -m pytest ./tests -vv")
+     (projectile-project-compilation-cmd . "./build -b html -d architecture")
+     (eval progn
+           (setq flycheck-python-mypy-config
+                 '(".mypy.ini"))
+           (setq flycheck-pylintrc ".pylintrc")
+           (setq flycheck-checker 'python-pylint)
+           (set
+            (make-local-variable 'main)
+            (concat
+             (projectile-project-root)))
+           (set
+            (make-local-variable 'sphinx-extensions)
+            (concat
+             (projectile-project-root)
+             "src"))
+           (set
+            (make-local-variable 'python-path)
+            (concat main ":" sphinx-extensions))
+           (setenv "PYTHONPATH" python-path))
+     (projectile-project-test-cmd . "python -m pytest ./tests")
+     (projectile-project-compilation-cmd . "./build -d architecture -b html")
+     (eval progn
+           (set
+            (make-local-variable 'airflow-home-dags)
+            (concat
+             (projectile-project-root)
+             "airflow-home/dags"))
+           (set
+            (make-local-variable 'dol-launcher)
+            (concat
+             (projectile-project-root)
+             "micro_pipeline/dol_launcher/src"))
+           (set
+            (make-local-variable 'dol-launcher-compute)
+            (concat
+             (projectile-project-root)
+             "micro_pipeline/dol_launcher_compute/src"))
+           (set
+            (make-local-variable 'dol-launcher-athena)
+            (concat
+             (projectile-project-root)
+             "micro_pipeline/dol_launcher_athena/src"))
+           (set
+            (make-local-variable 'dol-launcher-hol)
+            (concat
+             (projectile-project-root)
+             "micro_pipeline/dol_launcher_hol/src"))
+           (set
+            (make-local-variable 'web-ui)
+            (concat
+             (projectile-project-root)
+             "web-ui/server"))
+           (set
+            (make-local-variable 'python-path)
+            (concat airflow-home-dags ":" dol-launcher ":" dol-launcher-compute ":" dol-launcher-athena ":" dol-launcher-hol ":" web-ui))
+           (setenv "PYTHONPATH" python-path))
+     (eval progn
+           (setq +ccls-initial-blacklist
+                 '("conan"
+                   (\, "ext")
+                   (\, "rosi")
+                   (\, "xcom")))))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
