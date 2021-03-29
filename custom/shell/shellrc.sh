@@ -15,7 +15,7 @@ export DOTFILES="$HOME/workspace/dotfiles/."
 
 . "${DOTFILES}/shell/shellrc.sh"
 
-# greet
+greet
 
 #------------------------------------------------------------------------------#
 
@@ -28,6 +28,31 @@ if [[ -n "${ZSH_NAME}" ]]; then
 
     autoload -U bashcompinit
     bashcompinit
+    AOS_BASH_COMPLETION="$HOME/.bash_aos_completion"
+    if [[ -f "${AOS_BASH_COMPLETION}" ]]; then
+        . "${AOS_BASH_COMPLETION}"
+    fi
+fi
+
+# Start gnome keyring
+if [ -n "$DESKTOP_SESSION" ];then
+    eval "$(gnome-keyring-daemon --start)"
+    export SSH_AUTH_SOCK
+else
+    # start ssh agent for remote sessions and add personal certificates to
+    # prevent repeated password input
+    . "${HOME}/.ssh-find-agent"
+    ssh_find_agent -a
+    if [ -z "$SSH_AUTH_SOCK" ]
+    then
+        eval $(ssh-agent) > /dev/null
+        ssh-add
+    fi
+fi
+
+# fixes fancy prompt issues when called from remote modules like emacs
+if [[ $TERM == "dumb" ]]; then
+    export PS1="# "
 fi
 
 alias la='ls -altrh'
