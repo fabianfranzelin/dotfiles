@@ -2,6 +2,7 @@
 
 ;;; Commentary:
 ;; inspired by https://github.com/daviwil/dotfiles/blob/master/Emacs.org
+;; and https://git.sr.ht/~sirn/dotfiles/tree/217c239cf19b668deaccc40ad76c60ffbcfdad20/item/etc/emacs/packages
 
 ;;; Code:
 
@@ -16,15 +17,13 @@
 (require 'package)
 (setq package-enable-at-startup nil)
 
-(setq package-archives '(("org" . "https://orgmode.org/elpa/")
+(setq package-archives '(("org" . "https://orgmode.org/elpa/") ;; will be deprecated soon
                          ("melpa" . "https://melpa.org/packages/")
                          ("elpa" . "https://elpa.gnu.org/packages/")))
 
-(defvar local-load-path (expand-file-name "~/.emacs.d/elisp-local"))
-(add-to-list 'load-path local-load-path)
-
 ;; Initialise packages
-(package-initialize)
+(when (< emacs-major-version 27)
+  (package-initialize))
 
 (when (not package-archive-contents)
   (package-refresh-contents))
@@ -50,6 +49,9 @@
 ;; declaration
 (use-package use-package-ensure-system-package)
 
+;; get latest signatures for elpa
+(use-package gnu-elpa-keyring-update)
+
 ;; make sure that the path environment from shell is available in
 ;; emacs
 (use-package exec-path-from-shell
@@ -57,6 +59,25 @@
   (when (or (memq window-system '(mac ns x)))
     (exec-path-from-shell-initialize))
   )
+
+(defun ff/emacs-config-home ()
+  "Provide the home of the emacs configuration folder."
+  (interactive)
+  (let* ((xdg-config-home (getenv "XDG_CONFIG_HOME"))
+         (emacs-d-folder (expand-file-name "~/.emacs.d")))
+    (if xdg-config-home
+	(let ((xdg-emacs-config-home (concat xdg-config-home "/emacs")))
+          (if (file-directory-p xdg-emacs-config-home) xdg-emacs-config-home emacs-d-folder))
+      emacs-d-folder
+      )
+    )
+  )
+
+(defvar emacs-config-home (ff/emacs-config-home)
+  "Location of the Emacs configuration.")
+(defvar local-load-path (concat emacs-config-home "/elisp-local")
+  "Load path for local Emacs configurations.")
+(add-to-list 'load-path local-load-path)
 
 (use-package helpers
   :load-path local-load-path
@@ -92,8 +113,8 @@
 ;; make ESC quit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
-;; disable auto save
-(setq auto-save-default nil)
+;; enable auto save
+(setq auto-save-default t)
 
 ;; dont warn for following symlinked files
 (setq vc-follow-symlinks t)
@@ -138,8 +159,11 @@
 ;; no splash screen
 (setq inhibit-splash-screen t)
 
-;; no backup files
-(setq make-backup-files nil)
+;; increase undo limit
+(setq undo-limit 8000000)
+
+;; Iterate through CamelCase
+(global-subword-mode t)
 
 ;; Color theme
 (use-package material-theme)
@@ -165,6 +189,10 @@
 ;; Indentation
 (setq-default indent-tabs-mode nil)    ; use only spaces and no tabs
 (setq-default tab-width 4)
+
+;; Always split the frame vertically and never horizontally
+(setq split-width-threshold 0)
+(setq split-height-threshold nil)
 
 ;; Delete trailing white spaces
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -198,12 +226,38 @@
 ;; winner mode for for redo/undo window configurations
 (winner-mode 1)
 
+;; setup all the icons with fix for fonts from
+;; https://github.com/domtronn/all-the-icons.el/issues/107
+(require 'font-lock)
+(use-package font-lock+
+  :load-path local-load-path
+  )
+
+;; NOTE: The first time you load your configuration on a new machine,
+;; you’ll need to run `M-x all-the-icons-install-fonts` so that mode
+;; line icons display correctly.
+(use-package all-the-icons
+  :after font-lock+)
+
 ;; set zsh as default shell name
 (setq shell-file-name "/bin/zsh")
 
-;; Set default connection mode to SSH
-(setq tramp-terminal-type "dumb")
-(setq tramp-default-method "ssh")
+;; -------------------------------------------------------------------
+;; Tramp
+;; -------------------------------------------------------------------
+(use-package tramp
+  :ensure nil
+  :config
+  (put 'temporary-file-directory 'standard-value '("/tmp"))
+  (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+  (setq tramp-use-ssh-controlmaster-options nil)
+  (setq tramp-auto-save-directory "~/.cache/emacs/backups")
+  (setq tramp-persistency-file-name "~/.emacs.d/data/tramp")
+  (setq tramp-terminal-type "dumb")
+  (setq tramp-default-method "ssh")
+  )
+
+(use-package docker-tramp)
 
 (use-package evil-nerd-commenter
   :bind ("M-;" . evilnc-comment-or-uncomment-lines))
@@ -214,6 +268,56 @@
   :config
   (setq which-key-idle-delay 0.5))
 
+;; -------------------------------------------------------------------
+;; Ivy project
+;; -------------------------------------------------------------------
+(use-package setup-ivy
+  :load-path local-load-path
+  )
+
+;; -------------------------------------------------------------------
+;; Company
+;; -------------------------------------------------------------------
+(use-package company
+  :after (lsp-mode yasnippet)
+  :hook (lsp-mode . company-mode)
+  :config
+  (setq company-backends (delete 'company-semantic company-backends)
+        company-minimum-prefix-length 1
+        company-idle-delay 0.0 ;; default is 0.2
+        company-echo-delay 0.0
+        ;; aligns annotation to the right hand side
+        company-tooltip-align-annotations t)
+
+  ;; The company-backends support list of lists. Lists are evaluated
+  ;; at once, which
+  (setq company-backends (append '((company-clang
+                                    company-tide
+                                    company-capf
+                                    company-yasnippet))
+                                 company-backends))
+
+  ;; enable company globally
+  (global-company-mode 1)
+  :bind (("C-c C-y" . company-yasnippet)
+         :map company-active-map
+         ("TAB" . company-complete-selection)
+         :map lsp-mode-map
+         ("TAB" . company-indent-or-complete-common))
+  )
+
+
+;; disable company mode for terminals
+(dolist (mode '(term-mode-hook
+                multi-term-mode-hook
+                ansi-term-mode-hook
+                eshell-mode-hook
+                dap-ui-repl-mode-hook))
+  (add-hook mode (lambda () (company-mode 0))))
+
+(use-package company-prescient
+  :config
+  (company-prescient-mode 1))
 
 ;; -------------------------------------------------------------------
 ;; Buffer move & transpose frame
@@ -232,24 +336,11 @@
 ;; -------------------------------------------------------------------
 ;; Set up dired
 ;; -------------------------------------------------------------------
-
-(defun ff-dired-init ()
-  "Bunch of stuff to run for dired, either immediately or when it's
-   loaded."
-  ;; <add other stuff here>
-  (define-key dired-mode-map [remap dired-find-file]
-    'dired-single-buffer)
-  (define-key dired-mode-map [remap dired-mouse-find-file-other-window]
-    'dired-single-buffer-mouse)
-  (define-key dired-mode-map [remap dired-up-directory]
-    'dired-single-up-directory))
-
 (use-package dired
   :ensure nil
   :defer 1
   :commands (dired dired-jump)
-  :hook ((dired-mode . auto-revert-mode)
-         (dired-mode . ff-dired-init))
+  :hook ((dired-mode . auto-revert-mode))
   :bind (("C-x C-j" . dired-jump)
          :map dired-mode-map
          ("<backspace>" . dired-single-up-directory)
@@ -307,15 +398,10 @@
   (dired-rainbow-define vc "#0074d9" ("git" "gitignore" "gitattributes" "gitmodules"))
   (dired-rainbow-define-chmod executable-unix "#38c172" "-.*x.*"))
 
-(use-package dired-single
-  :defer t
-  :commands (dired dired-jump))
-
 (use-package all-the-icons-dired
   :hook (dired-mode . all-the-icons-dired-mode))
 
 (use-package dired-hide-dotfiles
-  :hook (dired-mode . dired-hide-dotfiles-mode)
   :bind (:map dired-mode-map
               ("H" . dired-hide-dotfiles-mode))
   )
@@ -323,7 +409,9 @@
 ;; -------------------------------------------------------------------
 ;; Undo tree - make undos more powerful
 ;; -------------------------------------------------------------------
-(use-package undo-tree)
+(use-package undo-tree
+  :config
+  (global-undo-tree-mode))
 
 ;; -------------------------------------------------------------------
 ;; Credential management
@@ -332,7 +420,7 @@
 (use-package ivy-pass
   :commands ivy-pass
   :config
-  (setq password-store-password-length 12))
+  (setq password-store-password-length 20))
 
 (use-package auth-source-pass
   :config
@@ -555,13 +643,6 @@
   )
 
 ;; -------------------------------------------------------------------
-;; Ivy project
-;; -------------------------------------------------------------------
-(use-package setup-ivy
-  :load-path local-load-path
-  )
-
-;; -------------------------------------------------------------------
 ;; Org-mode
 ;; -------------------------------------------------------------------
 (use-package setup-org-mode
@@ -572,9 +653,16 @@
 ;; Projectile mode
 ;; -------------------------------------------------------------------
 (use-package projectile
-  :after counsel ivy
+  :diminish projectile-mode
   :custom ((projectile-completion-system 'ivy))
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
   :init
+  ;; NOTE: Set this to the folder where you keep your Git repos!
+  (when (file-directory-p "~/workspace")
+    (setq projectile-project-search-path '("~/workspace")))
+  (setq projectile-switch-project-action #'projectile-dired)
+  :config
   (setq projectile-file-exists-remote-cache-expire nil
         projectile-mode-line nil
         projectile-globally-ignored-directories
@@ -590,26 +678,16 @@
         ;; projectile-enable-caching nil
         projectile-completion-system 'default
         projectile-svn-command "find . -type f -not -iwholename '*.svn/*' -print0")
-  (when (file-directory-p "~/workspace")
-    (setq projectile-project-search-path '("~/workspace")))
-  :config
-  (projectile-mode 1)
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+  ;; enable projectile mode
+  (projectile-mode t)
   )
 
 (use-package counsel-projectile
+  :after projectile
   :config
   (setq counsel-projectile-sort-files t)
-  (counsel-projectile-mode)
+  (counsel-projectile-mode t)
   )
-
-(use-package vterm
-  :ensure-system-package ((cmake . cmake)
-                          (libtool . libtool-bin))
-  :commands vterm
-  :config
-  (setq vterm-max-scrollback 10000))
-
 
 ;; -------------------------------------------------------------------
 ;; highlight symbol and replace
@@ -648,15 +726,13 @@
          )
   :config
   (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
-  (setq ;; if set to true can cause a performance hit
-   lsp-log-io nil
-   lsp-pyls-plugins-flake8-enabled t
-   lsp-pyls-plugins-pycodestyle-enabled nil
-   lsp-enable-snippet nil
-   lsp-prefer-flymake nil
-   ;; increase watch threshold
-   lsp-file-watch-threshold 100000
-   )
+  (setq lsp-log-io nil ;; if set to true can cause a performance hit
+        lsp-pyls-plugins-flake8-enabled t
+        lsp-pyls-plugins-pycodestyle-enabled nil
+        lsp-enable-snippet nil
+        lsp-prefer-flymake nil
+        lsp-file-watch-threshold 100000 ;; increase watch threshold
+        )
   (lsp-enable-which-key-integration)
   :bind (:map lsp-mode-map
               ("TAB" . completion-at-point))
@@ -756,8 +832,15 @@
   )
 
 ;; -------------------------------------------------------------------
-;; Eshell
+;; Eshell & Vterm
 ;; -------------------------------------------------------------------
+(use-package vterm
+  :ensure-system-package ((cmake . cmake)
+                          (libtool . libtool-bin))
+  :commands vterm
+  :config
+  (setq vterm-max-scrollback 10000))
+
 (use-package setup-eshell
   :load-path local-load-path
   )
@@ -765,72 +848,17 @@
 ;; -------------------------------------------------------------------
 ;; Ansi term for zsh in emacs buffer
 ;; -------------------------------------------------------------------
-(defun oleh-term-exec-hook ()
-  "Delete the buffer once the terminal session is terminated."
-  (let* ((buff (current-buffer))
-         (proc (get-buffer-process buff)))
-    (set-process-sentinel
-     proc
-     `(lambda (process event)
-        (if (string= event "finished\n")
-            (kill-buffer ,buff))))))
-
-(add-hook 'term-exec-hook 'oleh-term-exec-hook)
-
 (use-package multi-term
   :ensure-system-package ("/bin/zsh" . zsh)
+  :hook ((term-exec . ff/term-exec-hook))
   :config
   (setq multi-term-program "/bin/zsh")
   (setq explicit-shell-file-name "/bin/zsh")
+  :bind (("C-x j" . ff/ansi-term))
   )
 
 (eval-after-load "term"
   '(define-key term-raw-map (kbd "C-y") 'term-paste))
-
-;; -------------------------------------------------------------------
-;; Company
-;; -------------------------------------------------------------------
-(use-package company
-  :after lsp-mode yasnippet
-  :hook (lsp-mode . company-mode)
-  :config
-  (setq company-backends (delete 'company-semantic company-backends)
-        company-minimum-prefix-length 1
-        company-idle-delay 0.0 ;; default is 0.2
-        company-echo-delay 0.0
-        ;; aligns annotation to the right hand side
-        company-tooltip-align-annotations t)
-
-  ;; The company-backends support list of lists. Lists are evaluated
-  ;; at once, which
-  (setq company-backends (append '((company-clang
-                                    company-tide
-                                    company-capf
-                                    company-yasnippet))
-                                 company-backends))
-
-  ;; enable company globally
-  (global-company-mode 1)
-  :bind (("C-c C-y" . company-yasnippet)
-         :map company-active-map
-         ("TAB" . company-complete-selection)
-         :map lsp-mode-map
-         ("TAB" . company-indent-or-complete-common))
-  )
-
-
-;; disable company mode for terminals
-(dolist (mode '(term-mode-hook
-                multi-term-mode-hook
-                ansi-term-mode-hook
-                eshell-mode-hook
-                dap-ui-repl-mode-hook))
-  (add-hook mode (lambda () (company-mode 0))))
-
-(use-package company-prescient
-  :after company counsel
-  :config
-  (company-prescient-mode 1))
 
 ;; -------------------------------------------------------------------
 ;; Show number of lines in the left side of the buffer
@@ -928,7 +956,7 @@
   )
 
 (use-package company-auctex
-  :after company auctex)
+  :after (company auctex))
 
 (use-package reftex
   :init
@@ -1033,8 +1061,8 @@
   ;; http://inthearmchair.wordpress.com/2010/09/02/latex-inverse-pdf-search-with-emacs/
   ;; (setq TeX-source-specials-mode 1)         ;; Inverse search
 
-  (setq TeX-auto-global "~/.emacs.d/auctex-auto-generated-info/")
-  (setq TeX-auto-local  "~/.emacs.d/auctex-auto-generated-info/")
+  (setq TeX-auto-global (concat emacs-config-home "/auctex-auto-generated-info/"))
+  (setq TeX-auto-local  (concat emacs-config-home "/auctex-auto-generated-info/"))
   )
 
 ;; -------------------------------------------------------------------
@@ -1253,11 +1281,18 @@
 ;; -------------------------------------------------------------------
 (use-package magit
   :commands (magit-status magit-get-current-branch)
+  :bind (("C-c m h" . magit-log-buffer-file))
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
   :config
   (setq magit-diff-refine-hunk 'all) ; Show word based diff
   )
+
+;; NOTE: Make sure to configure a GitHub token before using this package!
+;; - https://magit.vc/manual/forge/Token-Creation.html#Token-Creation
+;; - https://magit.vc/manual/ghub/Getting-Started.html#Getting-Started
+(use-package forge
+  :after magit)
 
 (use-package git-timemachine)
 
@@ -1346,6 +1381,9 @@
 
 (use-package lsp-docker)
 
+(use-package docker
+  :bind ("C-x d" . docker))
+
 ;; -------------------------------------------------------------------
 ;; markdown mode
 ;; -------------------------------------------------------------------
@@ -1398,7 +1436,7 @@
   :defer t)
 
 (use-package typescript-mode
-  :after dap-node tide company
+  :after (dap-node tide company)
   :mode (
          ("\\.ts$" . typescript-mode)
          ("\\.tsx$" . typescript-mode)
@@ -1454,30 +1492,17 @@
   (setq plantuml-jar-path plantuml-expected-binary
         plantuml-default-exec-mode 'jar
         plantuml-indent-level 4)
-  ;; Open in same window
-  (add-to-list 'display-buffer-alist
-               '(progn
-                  (get-buffer-create "*PLANTUML Preview*")
-                  '((display-buffer-below-selected display-buffer-at-bottom)
-                    (inhibit-same-window . t)
-                    (window-height . fit-window-to-buffer))))
+  ;; remap preview to personal function; for some reason, bind does
+  ;; not accept it
+  (define-key plantuml-mode-map [remap plantuml-preview] 'ff/plantum-preview)
   :bind (:map plantuml-mode-map
               ("C-M-i" . plantuml-complete-symbol))
   )
 
-(use-package flycheck-plantuml
-  :after plantuml-mode flycheck
-  :commands (flycheck-plantuml-setup))
 
-(use-package org
-  :mode (("\\.org$" . org-mode))
-  :after plantuml-mode
-  :config
-  ;; config stuff
-  (setq org-plantuml-jar-path plantuml-jar-path)
-  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
-  (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
-  )
+(use-package flycheck-plantuml
+  :after (plantuml-mode flycheck)
+  :commands (flycheck-plantuml-setup))
 
 ;; -------------------------------------------------------------------
 ;; Groovy mode for Jenkins
@@ -1501,12 +1526,40 @@
   :mode (("\\.json$" . json-mode))
   )
 
-;; make sure that you have jsonlint installed: sudo env "PATH=$PATH"
-;; npm install jsonlint -g
 (use-package flymake-json
-  :requires json-mode flymake-easy flymake-haml
+  :ensure-system-package (jsonlint . "sudo env \"PATH=$PATH\" npm install jsonlint -g")
+  :after json-mode
   :hook ((json-mode . flymake-json-load)
          (js-mode . flymake-json-maybe-load))
+  )
+
+;; -------------------------------------------------------------------
+;; TOML
+;; -------------------------------------------------------------------
+(use-package toml-mode
+  :mode ("\\.toml\\'" . toml-mode))
+
+;; -------------------------------------------------------------------
+;; Jinja2 mode for code generation
+;; -------------------------------------------------------------------
+(use-package jinja2-mode
+  :mode ("\\.j2\\'" "\\.jinja2\\'"))
+
+;; -------------------------------------------------------------------
+;; Placement of windows with shackle
+;; -------------------------------------------------------------------
+(use-package shackle
+  :commands shackle-mode
+  :config
+  (setq shackle-rules
+	'(("\\*TeX.*\\*" :regexp t :autoclose t :align below :size 0.5)
+	  ("\\*.*Help\\*" :regexp t :autoclose t :align below :size 0.5)
+      ("\\`\\*e?shell" :regexp t :popup t :size 0.5 :align right)
+      ("\\`\\*PLANTUML Preview.*?\\*\\'" :regexp t :popup t :size 0.5 :align right)
+      ))
+  (setq shackle-default-rule '(:select f :align right))
+  (setq shackle-default-alignment 'right)
+  (shackle-mode t)
   )
 
 ;; -------------------------------------------------------------------
@@ -1519,89 +1572,49 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(org-tempo transpose-frame with-editor buffer-move dired-hide-dotfiles dired-open all-the-icons-dired dired-single yasnippet-snippets ccls git-gutter-fringe yaml-mode xterm-color whole-line-or-region which-key wgrep vterm volatile-highlights use-package-ensure-system-package tide super-save sphinx-doc smex smart-mode-line scala-mode rainbow-delimiters pyvenv python-black py-autopep8 protobuf-mode poly-rst ox-rst openwith multi-term material-theme magit-todos lsp-ui lsp-python-ms lsp-java lsp-ivy lsp-docker langtool json-mode ivy-rich ivy-prescient ivy-pass ivy-hydra highlight-symbol groovy-mode groovy-imports git-timemachine general flymake-yaml flymake-shellcheck flymake-shell flymake-json flycheck-pycheckers flycheck-plantuml flx fill-column-indicator exec-path-from-shell evil-nerd-commenter ess eshell-z emojify edwina drag-stuff dockerfile-mode dired-narrow diminish counsel-projectile company-prescient company-c-headers company-auctex command-log-mode cmake-mode clang-format+ blacken beacon autopair auto-package-update auto-complete ag ack))
+   '(forge shackle toml-mode jinja2-mode all-the-icons-ivy-rich prescient projectile gnu-elpa-keyring-update docker org-tempo transpose-frame with-editor buffer-move dired-hide-dotfiles dired-open all-the-icons-dired dired-single yasnippet-snippets ccls git-gutter-fringe yaml-mode xterm-color whole-line-or-region which-key wgrep vterm volatile-highlights use-package-ensure-system-package tide super-save sphinx-doc smex smart-mode-line scala-mode rainbow-delimiters pyvenv python-black py-autopep8 protobuf-mode poly-rst ox-rst openwith multi-term material-theme magit-todos lsp-ui lsp-python-ms lsp-java lsp-ivy lsp-docker langtool json-mode ivy-rich ivy-prescient ivy-pass ivy-hydra highlight-symbol groovy-mode groovy-imports git-timemachine general flymake-yaml flymake-shellcheck flymake-shell flymake-json flycheck-pycheckers flycheck-plantuml flx fill-column-indicator exec-path-from-shell evil-nerd-commenter ess eshell-z emojify edwina drag-stuff dockerfile-mode dired-narrow diminish counsel-projectile company-prescient company-c-headers company-auctex command-log-mode cmake-mode clang-format+ blacken beacon autopair auto-package-update auto-complete ag ack))
  '(safe-local-variable-values
-   '((eval progn
+   '((projectile-project-test-cmd . "python -m pytest ./tests -vv")
+     (eval progn
            (setq flycheck-python-mypy-config
                  '(".mypy.ini"))
            (setq flycheck-pylintrc ".pylintrc")
            (setq flycheck-checker 'python-pylint)
            (set
-            (make-local-variable 'main)
-            (concat
-             (projectile-project-root)))
-           (set
-            (make-local-variable 'sphinx-extensions)
+            (make-local-variable 'sphinx-packages)
             (concat
              (projectile-project-root)
              "python"))
            (set
-            (make-local-variable 'python-path)
-            (concat main ":" sphinx-extensions))
-           (setenv "PYTHONPATH" python-path))
-     (projectile-project-test-cmd . "python -m pytest ./tests -vv")
-     (projectile-project-compilation-cmd . "./build -b html -d architecture")
-     (eval progn
-           (setq flycheck-python-mypy-config
-                 '(".mypy.ini"))
-           (setq flycheck-pylintrc ".pylintrc")
-           (setq flycheck-checker 'python-pylint)
-           (set
-            (make-local-variable 'main)
-            (concat
-             (projectile-project-root)))
-           (set
-            (make-local-variable 'sphinx-extensions)
+            (make-local-variable 'ext-recompute-flow)
             (concat
              (projectile-project-root)
-             "src"))
-           (set
-            (make-local-variable 'python-path)
-            (concat main ":" sphinx-extensions))
-           (setenv "PYTHONPATH" python-path))
-     (projectile-project-test-cmd . "python -m pytest ./tests")
-     (projectile-project-compilation-cmd . "./build -d architecture -b html")
-     (eval progn
+             "ext/recompute-flow/"))
            (set
             (make-local-variable 'airflow-home-dags)
-            (concat
-             (projectile-project-root)
-             "airflow-home/dags"))
+            (concat ext-recompute-flow "airflow-home/dags"))
            (set
             (make-local-variable 'dol-launcher)
-            (concat
-             (projectile-project-root)
-             "micro_pipeline/dol_launcher/src"))
+            (concat ext-recompute-flow "micro_pipeline/dol_launcher/src"))
            (set
             (make-local-variable 'dol-launcher-compute)
-            (concat
-             (projectile-project-root)
-             "micro_pipeline/dol_launcher_compute/src"))
+            (concat ext-recompute-flow "micro_pipeline/dol_launcher_compute/src"))
            (set
             (make-local-variable 'dol-launcher-athena)
-            (concat
-             (projectile-project-root)
-             "micro_pipeline/dol_launcher_athena/src"))
+            (concat ext-recompute-flow "micro_pipeline/dol_launcher_athena/src"))
            (set
             (make-local-variable 'dol-launcher-hol)
-            (concat
-             (projectile-project-root)
-             "micro_pipeline/dol_launcher_hol/src"))
+            (concat ext-recompute-flow "micro_pipeline/dol_launcher_hol/src"))
            (set
             (make-local-variable 'web-ui)
-            (concat
-             (projectile-project-root)
-             "web-ui/server"))
+            (concat ext-recompute-flow "web-ui/server"))
            (set
             (make-local-variable 'python-path)
-            (concat airflow-home-dags ":" dol-launcher ":" dol-launcher-compute ":" dol-launcher-athena ":" dol-launcher-hol ":" web-ui))
+            (concat main ":" sphinx-packages ":" airflow-home-dags ":" dol-launcher ":" dol-launcher-compute ":" dol-launcher-athena ":" dol-launcher-hol ":" web-ui))
            (setenv "PYTHONPATH" python-path))
-     (eval progn
-           (setq +ccls-initial-blacklist
-                 '("conan"
-                   (\, "ext")
-                   (\, "rosi")
-                   (\, "xcom")))))))
+     (projectile-project-test-cmd . "./scripts/run_unit_tests")
+     (projectile-project-compilation-cmd . "./build -b html -d architecture"))))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
