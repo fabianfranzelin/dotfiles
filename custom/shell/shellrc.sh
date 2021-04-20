@@ -13,7 +13,12 @@ esac
 
 export DOTFILES="$HOME/workspace/dotfiles/."
 
+# fixes fancy prompt issues when called from remote modules like emacs
+if [[ $TERM == "dumb" ]]; then
+    export PS1="$ "
+else
 . "${DOTFILES}/shell/shellrc.sh"
+fi
 
 greet
 
@@ -50,10 +55,8 @@ else
     fi
 fi
 
-# fixes fancy prompt issues when called from remote modules like emacs
-if [[ $TERM == "dumb" ]]; then
-    export PS1="# "
-fi
+# set as a default for configurations
+export XDG_CONFIG_HOME="$HOME/.config"
 
 alias la='ls -altrh'
 alias cnt='ls -F |grep -v / | wc -l'
