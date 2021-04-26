@@ -125,6 +125,11 @@
 (tool-bar-mode -1) ; disbale tool bar
 (set-fringe-mode 10)
 
+;; disable scroll lock mode permanently
+(defun do-nothing () (interactive))
+(global-set-key (kbd "<Scroll_Lock>") 'do-nothing)
+(setq scroll-lock-mode nil)
+
 ;; enable revert from disk
 (global-auto-revert-mode 1)
 
@@ -196,6 +201,9 @@
 
 ;; Delete trailing white spaces
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+;; enable auto pair mode globally
+(electric-pair-mode t)
 
 ;; Let kill operate on the whole line when no region is selected
 (use-package whole-line-or-region
@@ -301,9 +309,7 @@
   (global-company-mode 1)
   :bind (("C-c C-y" . company-yasnippet)
          :map company-active-map
-         ("TAB" . company-complete-selection)
-         :map lsp-mode-map
-         ("TAB" . company-indent-or-complete-common))
+         ("TAB" . company-complete-selection))
   )
 
 
@@ -584,36 +590,6 @@
 ;; -------------------------------------------------------------------
 ;; Insert Pairs of Matching Elements
 ;; -------------------------------------------------------------------
-(use-package autopair
-  :init
-  (autopair-global-mode t)
-  :config
-  (add-hook 'lisp-mode-hook #'(lambda () (setq autopair-dont-activate t)))
-
-  ;; Add single and triple quote to the autopair list
-  (add-hook 'python-mode-hook
-            #'(lambda ()
-                ;; (push '(?` . ?`)
-                ;;       (getf autopair-dont-pair :never))
-                (setq autopair-handle-action-fns
-                      (list #'autopair-default-handle-action
-                            #'autopair-python-triple-quote-action))))
-
-  ;; Some useful handler
-  (add-hook 'TeX-mode-hook
-            #'(lambda ()
-                (set (make-local-variable 'autopair-handle-action-fns)
-                     (list #'autopair-default-handle-action
-                           #'autopair-latex-mode-paired-delimiter-action))))
-
-  ;; Latex Math mode pairs
-  (add-hook 'TeX-mode-hook
-            #'(lambda ()
-                (modify-syntax-entry ?$ "\"")
-                (autopair-mode)))
-
-  )
-
 ;; Highlight parens
 (use-package paren
   :config
@@ -735,7 +711,7 @@
         )
   (lsp-enable-which-key-integration)
   :bind (:map lsp-mode-map
-              ("TAB" . completion-at-point))
+              ("TAB" . company-indent-or-complete-common))
   )
 
 ;; increase threshold for lsp to run smoothly
@@ -870,7 +846,8 @@
                 term-mode-hook
                 multi-term-mode-hook
                 eshell-mode-hook
-                treemacs-mode-hook))
+                treemacs-mode-hook
+                compilation-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 ;; enable rainbow delimiters for all programming-modes (prog-mode)
@@ -1271,9 +1248,6 @@
 (use-package swig-mode
   :load-path local-load-path
   :mode (("\\.i$" . swig-mode))
-  :init
-  ;; Deactivate autpair
-  (add-hook 'swig-mode-hook (lambda () (setq autopair-dont-activate t)))
   )
 
 ;; -------------------------------------------------------------------
@@ -1572,9 +1546,106 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(forge shackle toml-mode jinja2-mode all-the-icons-ivy-rich prescient projectile gnu-elpa-keyring-update docker org-tempo transpose-frame with-editor buffer-move dired-hide-dotfiles dired-open all-the-icons-dired dired-single yasnippet-snippets ccls git-gutter-fringe yaml-mode xterm-color whole-line-or-region which-key wgrep vterm volatile-highlights use-package-ensure-system-package tide super-save sphinx-doc smex smart-mode-line scala-mode rainbow-delimiters pyvenv python-black py-autopep8 protobuf-mode poly-rst ox-rst openwith multi-term material-theme magit-todos lsp-ui lsp-python-ms lsp-java lsp-ivy lsp-docker langtool json-mode ivy-rich ivy-prescient ivy-pass ivy-hydra highlight-symbol groovy-mode groovy-imports git-timemachine general flymake-yaml flymake-shellcheck flymake-shell flymake-json flycheck-pycheckers flycheck-plantuml flx fill-column-indicator exec-path-from-shell evil-nerd-commenter ess eshell-z emojify edwina drag-stuff dockerfile-mode dired-narrow diminish counsel-projectile company-prescient company-c-headers company-auctex command-log-mode cmake-mode clang-format+ blacken beacon autopair auto-package-update auto-complete ag ack))
+   '(forge shackle toml-mode jinja2-mode all-the-icons-ivy-rich prescient projectile gnu-elpa-keyring-update docker org-tempo transpose-frame with-editor buffer-move dired-hide-dotfiles dired-open all-the-icons-dired dired-single yasnippet-snippets ccls git-gutter-fringe yaml-mode xterm-color whole-line-or-region which-key wgrep vterm volatile-highlights use-package-ensure-system-package tide super-save sphinx-doc smex smart-mode-line scala-mode rainbow-delimiters pyvenv python-black py-autopep8 protobuf-mode poly-rst ox-rst openwith multi-term material-theme magit-todos lsp-ui lsp-python-ms lsp-java lsp-ivy lsp-docker langtool json-mode ivy-rich ivy-prescient ivy-pass ivy-hydra highlight-symbol groovy-mode groovy-imports git-timemachine general flymake-yaml flymake-shellcheck flymake-shell flymake-json flycheck-pycheckers flycheck-plantuml flx fill-column-indicator exec-path-from-shell evil-nerd-commenter ess eshell-z emojify edwina drag-stuff dockerfile-mode dired-narrow diminish counsel-projectile company-prescient company-c-headers company-auctex command-log-mode cmake-mode clang-format+ blacken beacon auto-package-update auto-complete ag ack))
  '(safe-local-variable-values
-   '((projectile-project-test-cmd . "python -m pytest ./tests -vv")
+   '((eval progn
+           (pyvenv-workon . "airflow-packages")
+           (set
+            (make-local-variable 'airflow-home-dags)
+            (concat
+             (projectile-project-root)
+             "airflow-home/dags"))
+           (set
+            (make-local-variable 'dol-launcher)
+            (concat
+             (projectile-project-root)
+             "micro_pipeline/dol_launcher/src"))
+           (set
+            (make-local-variable 'dol-launcher-compute)
+            (concat
+             (projectile-project-root)
+             "micro_pipeline/dol_launcher_compute/src"))
+           (set
+            (make-local-variable 'dol-launcher-athena)
+            (concat
+             (projectile-project-root)
+             "micro_pipeline/dol_launcher_athena/src"))
+           (set
+            (make-local-variable 'dol-launcher-hol)
+            (concat
+             (projectile-project-root)
+             "micro_pipeline/dol_launcher_hol/src"))
+           (set
+            (make-local-variable 'web-ui)
+            (concat
+             (projectile-project-root)
+             "web-ui/server"))
+           (set
+            (make-local-variable 'python-path)
+            (concat airflow-home-dags ":" dol-launcher ":" dol-launcher-compute ":" dol-launcher-athena ":" dol-launcher-hol ":" web-ui))
+           (setenv "PYTHONPATH" python-path))
+     (eval progn
+           (set
+            (make-local-variable 'build-path)
+            (concat
+             (projectile-project-root)
+             "_build/OSD5/DEBUG/ALL"))
+           (set
+            (make-local-variable 'dol-cli)
+            (concat
+             (projectile-project-root)
+             "recompute/dol/cli"))
+           (set
+            (make-local-variable 'dol-rest-api)
+            (concat
+             (projectile-project-root)
+             "recompute/dol/rest_api"))
+           (set
+            (make-local-variable 'python-path)
+            (concat build-path ":" dol-cli ":" dol-rest-api))
+           (setenv "PYTHONPATH" python-path))
+     (eval progn
+           (setq +ccls-initial-blacklist
+                 '("conan"
+                   (\, "ext")
+                   (\, "rosi")
+                   (\, "xcom"))))
+     (eval progn
+           (set
+            (make-local-variable 'airflow-home-dags)
+            (concat
+             (projectile-project-root)
+             "airflow-home/dags"))
+           (set
+            (make-local-variable 'dol-launcher)
+            (concat
+             (projectile-project-root)
+             "micro_pipeline/dol_launcher/src"))
+           (set
+            (make-local-variable 'dol-launcher-compute)
+            (concat
+             (projectile-project-root)
+             "micro_pipeline/dol_launcher_compute/src"))
+           (set
+            (make-local-variable 'dol-launcher-athena)
+            (concat
+             (projectile-project-root)
+             "micro_pipeline/dol_launcher_athena/src"))
+           (set
+            (make-local-variable 'dol-launcher-hol)
+            (concat
+             (projectile-project-root)
+             "micro_pipeline/dol_launcher_hol/src"))
+           (set
+            (make-local-variable 'web-ui)
+            (concat
+             (projectile-project-root)
+             "web-ui/server"))
+           (set
+            (make-local-variable 'python-path)
+            (concat airflow-home-dags ":" dol-launcher ":" dol-launcher-compute ":" dol-launcher-athena ":" dol-launcher-hol ":" web-ui))
+           (setenv "PYTHONPATH" python-path))
+     (projectile-project-test-cmd . "python -m pytest ./tests -vv")
      (eval progn
            (setq flycheck-python-mypy-config
                  '(".mypy.ini"))
