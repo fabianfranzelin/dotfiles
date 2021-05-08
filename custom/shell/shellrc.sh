@@ -72,6 +72,7 @@ untar() {
 # use vim as SVN editor
 export SVN_EDITOR=vim
 export GIT_EDITOR=vim
+export GIT_LFS_SKIP_SMUDGE=1
 
 # expand path to include local bin directory
 PATH=$HOME/opt/bin:$HOME/.local/bin:$PATH

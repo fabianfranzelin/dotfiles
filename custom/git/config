@@ -1,10 +1,10 @@
 [include]
     path = "~/.gitconfig.general"
 [core]
-    autocrlf = input
+    autocrlf = false
     editor = vim
 [user]
-    name = Fabian Franzelin (XC-AD/ESB4)
+    name = " Franzelin Fabian (XC-AD/ETV5)"
     email = fabian.franzelin@de.bosch.com
 [credential]
     helper = "cache --timeout=43200"  # cache credentials for 12 hours
