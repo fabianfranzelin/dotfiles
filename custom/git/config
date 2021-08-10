@@ -7,21 +7,25 @@
     name = " Franzelin Fabian (XC-AD/ETV5)"
     email = fabian.franzelin@de.bosch.com
 [credential]
-    helper = "cache --timeout=43200"  # cache credentials for 12 hours
+    # For installation, run:
+    # sudo apt-get install libsecret-1-0 libsecret-1-dev
+    # cd /usr/share/doc/git/contrib/credential/libsecret
+    # sudo make
+    helper = /usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret
 [http "https://athena.*.corpintra.net"]
     username = franzef
-    sslCert = /lhome/franzef/.local/share/certificates/cert-dap.crt
-    sslKey = /lhome/franzef/.local/share/certificates/cert-dap.key
+    sslCert = /home/frf2lr/.local/share/certificates/cert-dap.crt
+    sslKey = /home/frf2lr/.local/share/certificates/cert-dap.key
     sslCaInfo = /etc/ssl/certs/ca-certificates.crt
 [http "https://athena.daimler.com"]
     username = franzef
-    sslCert = /lhome/franzef/.local/share/certificates/cert-dap.crt
-    sslKey = /lhome/franzef/.local/share/certificates/cert-dap.key
+    sslCert = /home/frf2lr/.local/share/certificates/cert-dap.crt
+    sslKey = /home/frf2lr/.local/share/certificates/cert-dap.key
     sslCaInfo = /etc/ssl/certs/ca-certificates.crt
 [credential "https://scm-manager.rd.corpintra.net"]
     username = franzef
-    sslCert = /lhome/franzef/.local/share/certificates/cert-dap.crt
-    sslKey = /lhome/franzef/.local/share/certificates/cert-dap.key
+    sslCert = /home/frf2lr/.local/share/certificates/cert-dap.crt
+    sslKey = /home/frf2lr/.local/share/certificates/cert-dap.key
     sslCaInfo = /etc/ssl/certs/ca-certificates.crt
 [credential "https://github.com"]
     username = fabianfranzelin
@@ -33,8 +37,8 @@
     cmd = ${VISUAL} --wait --diff $LOCAL $REMOTE
 [filter "lfs"]
     clean = git-lfs clean -- %f
-    smudge = git-lfs smudge -- %f
-    process = git-lfs filter-process
+    smudge = git-lfs smudge --skip -- %f
+	process = git-lfs filter-process --skip
     required = true
 [lfs]
 	storage = /lhome/franzef/.athena/cache/lfs

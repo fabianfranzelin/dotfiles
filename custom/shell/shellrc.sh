@@ -17,13 +17,13 @@ export DOTFILES="$HOME/workspace/dotfiles/."
 if [[ $TERM == "dumb" ]]; then
     export PS1="$ "
 else
-. "${DOTFILES}/shell/shellrc.sh"
+    . "${DOTFILES}/shell/shellrc.sh"
 fi
 
-greet
+# greet
 
 #------------------------------------------------------------------------------#
-# EMACS setup
+# EMACS vterm setup
 if [[ -n "${ZSH_NAME}" ]] && [[ -f "${DOTFILES}/shell/vterm.sh" ]]; then
     . "${DOTFILES}/shell/vterm.sh"
 fi
@@ -31,25 +31,39 @@ fi
 # ----------------------------------------------------
 # personal
 
-# use emacs keybindings
 if [[ -n "${ZSH_NAME}" ]]; then
+    # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+    # Initialization code that may require console input (password prompts, [y/n]
+    # confirmations, etc.) must go above this block; everything else may go below.
+    if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+        source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+    fi
+
+    # use oh-my-zsh init
+    . "${DOTFILES}/shell/oh-my-zsh.sh"
+
+    # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+    [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+    # bash compinit in zsh
     bindkey -e
 
     autoload -U bashcompinit
     bashcompinit
-    AOS_BASH_COMPLETION="$HOME/.bash_aos_completion"
-    if [[ -f "${AOS_BASH_COMPLETION}" ]]; then
-        . "${AOS_BASH_COMPLETION}"
-    fi
+fi
+
+AOS_BASH_COMPLETION="$HOME/.bash_aos_completion"
+if [[ -f "${AOS_BASH_COMPLETION}" ]]; then
+    . "${AOS_BASH_COMPLETION}"
 fi
 
 # Start gnome keyring
-if [ -n "$DESKTOP_SESSION" ];then
-    eval "$(gnome-keyring-daemon --start)"
+if [[ -n "$DESKTOP_SESSION" ]]; then
+    eval "$(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)"
     export SSH_AUTH_SOCK
 else
-    # start ssh agent for remote sessions and add personal certificates to
-    # prevent repeated password input
+    # start ssh agent for remote sessions and add personal
+    # certificates to prevent repeated password input
     . "${HOME}/.ssh-find-agent"
     ssh_find_agent -a
     if [ -z "$SSH_AUTH_SOCK" ]
@@ -62,34 +76,8 @@ fi
 # set as a default for configurations
 export XDG_CONFIG_HOME="$HOME/.config"
 
-alias la='ls -altrh'
-alias cnt='ls -F |grep -v / | wc -l'
-
-grep_find() {
-  find . -type f -exec grep -i "$1" {} +
-}
-
-untar() {
-  tar -xvzf $1
-}
-
-# use vim as SVN editor
-export SVN_EDITOR=vim
-export GIT_EDITOR=vim
-export GIT_LFS_SKIP_SMUDGE=1
-
 # expand path to include local bin directory
 PATH=$HOME/opt/bin:$HOME/.local/bin:$PATH
-
-# expand path to include newest cmake version
-PATH=/usr/local/cmake/3.18.4/bin:$PATH
-
-# moving files to trash from command line
-alias "trash"="gvfs-trash"
-
-alias dfs="hdfs dfs"
-
-export EMACS="emacsclient -c -a emacs %f"
 
 #------------------------------------------------------------------------------#
 # ros setup
@@ -107,72 +95,19 @@ elif [[ -n "${BASH}" ]]; then
 fi
 
 #------------------------------------------------------------------------------#
-# setup hadoop, and gradle
-export HADOOP_HOME=$HOME/opt/hadoop-3.1.0
-export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 
-export PATH=$SPARK_HOME/bin:$HADOOP_HOME/bin:$HOME/opt/gradle/gradle-4.7/bin:$PATH
-
-# add kerberbos to LD_LIBRARY_PATH
-export KERBEROS_HOME=$HOME/opt/krb5-1.16
-export LIBHDFS3_ROOT=$HOME/opt/attic-c-hdfs-client-apache-rpc-9
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$KERBEROS_HOME/lib:$LIBHDFS3_ROOT/lib
-
-# athena certificates path
+# certificates path
 export CERT_PATH=$HOME/.local/share/certificates
-
-# athena -> with athena_dol
-export ATHENA_ROOT=$HOME/workspace/athena_sil
-# export WORKSPACE=$ATHENA_ROOT
-export HOST_ARTIFACTS_CACHE=$HOME/artifacts
-# export DOL_HOST="http://172.17.0.2:5000"
-
-# required by lidar
-export C2C_CAR_ID=lisa # lisa hks22
-# export C2C_HW_VERSION=3.1
-
-# # export cuda paths
-# export CUDA_ROOT=/usr/local/cuda
-# export CUDA_INC_DIR=$CUDA_ROOT/include
-# source /etc/profile.d/cuda-10-0.sh
 
 # Airflow
 export CLUSTER_DEPLOYMENTS_HOME="$HOME/workspace/cluster-deployments"
 export RECOMPUTE_FLOW_HOME="$HOME/workspace/recompute-flow"
-export INCUBATOR_AIRFLOW_HOME="$HOME/workspace/incubator-airflow"
-export AIRFLOW_HOME="$HOME/workspace/recompute-flow/airflow-home"
 export AIRFLOW_HOST="localhost"
 export AIRFLOW_PORT="8080"
-export SPARK_SUBMIT_COMMAND="$SPARK_HOME/bin/spark-submit"
-export YARN_CONF_DIR="$HADOOP_HOME/etc/hadoop"
 
 export SLUGIFY_USES_TEXT_UNIDECODE=yes
 export AIRFLOW__CORE__PARALLELISM=10
-
-export KUBERNETES_CONTEXT=kubernetes-dol-master@abstatt
-export KUBERNETES_CONTEXT_SUNNYVALE=dol_master@sunnyvale
-export KUBERNETES_NAMESPACE=development-$USER
-export KUBERNETES_NAMESPACE_SUNNYVALE=sunnyvale-mock
-export DOCKER_REGISTRY=cmtcdeu58434236.rd.corpintra.net:32455
-export DOCKER_REGISTRY_SUNNYVALE=cmtcdeu53965049.rd.corpintra.net:31753
-export HADOOP_NAME_NODE=http://cmtcdeu53965055.rd.corpintra.net:50070
-export HADOOP_HDFS_ENDPOINT=hdfs://nameservice1
-export HADOOP_USER_NAME=airflow
-
-export ADSTATS_HOST="http://s624duadwebapps.us624.corpintra.net:8080/"
-
-token() {
-    kubectl -n kube-system describe secret admin-user-token-d57m4 |\
-    awk '/token:/ {print $2;}' |\
-    xclip -selection c
-}
-
-token_sv() {
-    kubectl -n kube-system describe secret $(kubectl -n kube-system get secret --context dol_master@sunnyvale | grep admin-user | awk '{print $1}') --context dol_master@sunnyvale |\
-    awk '/token:/ {print $2;}' |\
-    xclip -selection c
-}
-
 
 # Recompute flow
 export PYTHONPATH=$PYTHONPATH:$RECOMPUTE_FLOW_HOME/airflow-home/dags:$RECOMPUTE_FLOW_HOME/micro_pipeline:$RECOMPUTE_FLOW_HOME/web-ui/server
@@ -191,36 +126,46 @@ then
     fi
 fi
 
-# Lidar semantic labelingcod
-export EXPORTER_BASE_OUTPATH=/tmp/lidar
-export VEHICLE_IDENTIFIER=WDD2221621Z003456
-
+#------------------------------------------------------------------------------#
 # npm
 NPM_VERSION='v13.14.0'
 NPM_DISTRO='linux-x64'
 export PATH="/usr/local/lib/nodejs/node-${NPM_VERSION}-${NPM_DISTRO}/bin:${PATH}"
 
-
+#------------------------------------------------------------------------------#
 # SGpp
 export SGPP_HOME=$HOME/workspace/SGpp_ff
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SGPP_HOME/lib/sgpp
 export PYTHONPATH=$PYTHONPATH:$SGPP_HOME/lib
 
-# Player 2.0
-export RECAPP_INT_HOME=$HOME/workspace/recapp_int
-export RECAPP_HOME=$RECAPP_INT_HOME/recompute
-export RECAPP_INT_RELEASE_DIR=$RECAPP_INT_HOME/install
-export RECAPP_RELEASE_DIR=$RECAPP_INT_HOME/install/recapp
+#------------------------------------------------------------------------------#
+# AOS
+export AOS_BASE_HOME=$HOME/workspace/aos_base
+export RECOMPUTE_HOME=$AOS_BASE_HOME/recompute
+export AOS_BUILD_DIR=$AOS_BASE_HOME/_build
+export AOS_INSTALL_DIR=$AOS_BASE_HOME/_install
+export RECOMPUTE_BUILD_DIR=$AOS_BASE_HOME/build_recapp
+export RECOMPUTE_INSTALL_DIR=$AOS_BASE_HOME/install_recapp/recompute
 
-export RECAPP_VERSION=0.12.0jtv1
-export RECAPP_RELEASE_DIR=/opt/recapp/${RECAPP_VERSION}/ubuntu1804
-export PATH=$PATH:$RECAPP_RELEASE_DIR/bin:$RECAPP_RELEASE_DIR/bin/dol
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$RECAPP_RELEASE_DIR/lib
-export PYTHONPATH=$PYTHONPATH:$RECAPP_RELEASE_DIR/lib/python2.7/dist-packages:$RECAPP_RELEASE_DIR/lib:$RECAPP_RELEASE_DIR/bin/bytesoup_inspector
+#------------------------------------------------------------------------------#
+## DoL player
+if [[ -d "${RECOMPUTE_INSTALL_DIR}" ]]; then
+    "${RECOMPUTE_INSTALL_DIR}/host/bin/test/dol_source_env.sh"
+    export DOL_MANIFEST_DIR="${RECOMPUTE_INSTALL_DIR}/target/share/manifests"
+    PATH=$PATH:${RECOMPUTE_BUILD_DIR}/recompute/source/host/tooling/sequenceprofiler
+fi
+
+# Azure DevOps
+# Run cat BOSCH-CA-DE_pem.cer /opt/az/lib/python3.6/site-packages/certifi/cacert.pem > azure-bosch-cert.pem
+export REQUESTS_CA_BUNDLE="${HOME}/.local/share/certificates/bosch/azure-bosch-cert.pem"
+
+# DoL Documentation
+export SPHINX_VIRTUALENV="${HOME}/workspace/dol_arc_doc/sphinx-packages"
 
 # Virtual environments for python
 export WORKON_HOME=$HOME/.virtualenvs
 export PIP_VIRTUALENV_BASE=$WORKON_HOME
+
 # Make sure that the debian package virtualenvwrapper is installed for
 # the following to work. If errors occur, install it via "pip3 install
 # virtualenvwrapper"
@@ -237,25 +182,6 @@ if [[ -f "/usr/share/virtualenvwrapper/virtualenvwrapper.sh" ]]; then
     complete -o default -F _pip_completion pip
     # pip bash completion end
 fi
-
-# >>> conda initialize >>>
-if [[ -f "$HOME/anaconda3/bin/conda" ]]; then
-    # !! Contents within this block are managed by 'conda init' !!
-    __conda_setup="$('$HOME/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-    if [ $? -eq 0 ]; then
-        eval "$__conda_setup"
-    else
-        if [ -f "$HOME/anaconda3/etc/profile.d/conda.sh" ]; then
-            . "$HOME/anaconda3/etc/profile.d/conda.sh"
-        else
-            export PATH="$HOME/anaconda3/bin:$PATH"
-        fi
-    fi
-    unset __conda_setup
-    conda deactivate
-fi
-# <<< conda initialize <<<
-
 
 # make aliases available in eshell
 alias | sed 's/^alias //' | sed -E "s/^([^=]+)='(.+?)'$/\1=\2/" | sed "s/'\\\\''/'/g" | sed "s/'\\\\$/'/;" | sed -E 's/^([^=]+)=(.+)$/alias \1 \2/' > ~/.emacs.d/eshell/alias
