@@ -58,9 +58,18 @@
      (propertize " " 'face `(:foreground "white")))))
 
 (defun ff/open-eshell-below ()
-  "Opens new eshell either below of the current window."
+  "Opens new eshell below of the current window."
   (interactive)
   (split-window-below)
+  (balance-windows)
+  (other-window 1)
+  (eshell (ff/random-string 5))
+  )
+
+(defun ff/open-eshell-right ()
+  "Opens new eshell right of the current window."
+  (interactive)
+  (split-window-right)
   (balance-windows)
   (other-window 1)
   (eshell (ff/random-string 5))
@@ -102,6 +111,7 @@
 
   ;; if an eshell buffer is split, open a new session
   (define-key eshell-mode-map (kbd "C-x 2") 'ff/open-eshell-below)
+  (define-key eshell-mode-map (kbd "C-x 3") 'ff/open-eshell-right)
 
   (setenv "PAGER" "cat")
 

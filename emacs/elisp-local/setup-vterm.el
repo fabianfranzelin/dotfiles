@@ -13,9 +13,18 @@
 
 
 (defun ff/open-vterm-below ()
-  "Opens new v-term either below of the current window."
+  "Opens new v-term below of the current window."
   (interactive)
   (split-window-below)
+  (balance-windows)
+  (other-window 1)
+  (vterm t)
+  )
+
+(defun ff/open-vterm-right ()
+  "Opens new v-term right of the current window."
+  (interactive)
+  (split-window-right)
   (balance-windows)
   (other-window 1)
   (vterm t)
@@ -63,6 +72,7 @@
          :map vterm-mode-map
          ("C-y" . vterm-yank)
          ("C-x 2" . ff/open-vterm-below)
+         ("C-x 3" . ff/open-vterm-right)
          ("C-c C-t" . vterm-copy-mode)
          ))
 
