@@ -25,8 +25,9 @@
          ("SConscript" . python-mode)
          )
   :hook ((python-mode . (lambda ()
-                          (setq company-backends +ff/company-default-backends)
-                          ))
+                          (setq company-backends '((company-capf
+                                                    company-files)
+                                                   (company-abbrev)))))
          (python-mode . annotate-pdb)
          (python-mode . (lambda ()
                           (require 'lsp-python-ms)

@@ -364,9 +364,7 @@
        '((company-abbrev
           company-dabbrev
           company-ispell
-          company-files
-          :with company-yasnippet)
-         )))
+          company-files))))
 
 (use-package text-mode
   :ensure nil
