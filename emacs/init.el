@@ -190,15 +190,12 @@
   :config
   (load-theme 'material t))
 
-;; show logs of executed commands
-(use-package command-log-mode)
-
 ;; Key bindings
 (global-set-key "\C-n" 'make-frame)
 
 ;; Ctrl-1 stores a position in a file, Alt-1 brings you back to this position
-(global-set-key (kbd "C-1") #'(lambda () (interactive) (point-to-register ?1)))
-(global-set-key (kbd "M-1") #'(lambda () (interactive) (register-to-point ?1)))
+;; (global-set-key (kbd "C-1") #'(lambda () (interactive) (point-to-register ?1)))
+;; (global-set-key (kbd "M-1") #'(lambda () (interactive) (register-to-point ?1)))
 
 ;; higlight the marked region (C-SPC) and use commands (like
 ;; latex-environment) on current region.
@@ -266,6 +263,41 @@
   :config
   (global-set-key (kbd "C-c g") 'google-this-mode-submap)
   )
+
+;; -------------------------------------------------------------------
+;; Gumshoe: jump back and forth through marked positions
+;; -------------------------------------------------------------------
+(use-package gumshoe
+  :config
+  ;; The minor mode must be enabled to begin tracking
+  (global-gumshoe-mode 1)
+  ;; Similarly for the perspective-local gumshoe:
+  ;; (global-gumshoe-persp-mode 1)
+  ;; Similarly for the buffer-local gumshoe:
+  (global-gumshoe-buf-mode 1)
+
+  ;; define a command for autocompletion of the gumshoe--global log if
+  ;; you’d like:
+  (defun consult-gumshoe-global ()
+    (interactive)
+    (consult-global-mark (ring-elements (oref gumshoe--global-backlog log))))
+
+  ;; Similarly, for the persp local gumshoe--persp log, assuming
+  ;; perspectives is installed:
+  (defun consult-gumshoe-persp ()
+    (interactive)
+    (consult-global-mark (ring-elements (oref gumshoe--persp-backlog log))))
+
+  ;; Similarly, for the buffer local gumshoe--persp log:
+  (defun consult-gumshoe-buf ()
+    (interactive)
+    (consult-global-mark (ring-elements (oref gumshoe--buf-backlog log))))
+
+  :bind (;; enable browser like key bindings to move forth and
+         ;; back in bookmarks
+         ("M-<left>" . gumshoe-backtrack-back)
+         ("M-<right>" . gumshoe-backtrack-forward)
+         ))
 
 ;; -------------------------------------------------------------------
 ;; Tramp
@@ -801,10 +833,8 @@
 ;; -------------------------------------------------------------------
 (use-package drag-stuff
   :config
-  (drag-stuff-global-mode)
+  (drag-stuff-global-mode t)
   :bind (
-         ("M-<right>" . drag-stuff-right)
-         ("M-<left>" . drag-stuff-left)
          ("M-<up>" . drag-stuff-up)
          ("M-<down>" . drag-stuff-down)
          ))
