@@ -749,7 +749,7 @@
              treemacs-follow-mode
              treemacs-filewatch-mode
              treemacs-fringe-indicator-mode)
-  :bind (("<f8>" . treemacs))
+  :bind (("C-x t" . treemacs))
   :init
   (when window-system
     (setq treemacs-width 35
@@ -1351,7 +1351,7 @@
          ("\\.uml" . plantuml-mode))
   :init
   ;; Consider using (plantuml-download-jar) as alternative
-  (setq plantuml-version "1.2021.8"
+  (setq plantuml-version "1.2021.10"
         plantuml-name (concat "plantuml-jar-asl-" plantuml-version)
         plantuml-url (concat "https://sourceforge.net/projects/plantuml/files/" plantuml-version "/" plantuml-name ".zip/download")
         plantuml-extract-to (expand-file-name (concat "~/opt/plantuml/" plantuml-name))
