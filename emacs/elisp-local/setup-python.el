@@ -63,6 +63,12 @@
   (setq pipenv-projectile-after-switch-function
         #'pipenv-projectile-after-switch-extended))
 
+;; enable py-isort to resort imports on save
+(use-package py-isort
+  :ensure-system-package ((isort . "python3 -m pip install --user -U isort"))
+  :hook ((python-mode . (lambda ()
+                                (add-hook 'before-save-hook 'py-isort-before-save)))))
+
 (provide 'setup-python)
 
 ;;; setup-python.el ends here
