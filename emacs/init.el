@@ -626,7 +626,7 @@
                   sml/pos-id-separator
                   (vc-mode vc-mode)
                   " "
-                                        ;mode-line-position
+                  ;; mode-line-position
                   sml/pre-modes-separator
                   mode-line-modes
                   " "
@@ -768,7 +768,6 @@
 
 (use-package lsp-treemacs
   :after lsp treemacs company
-  :commands lsp-treemacs-errors-list
   :config
   (setq gc-cons-threshold (* 100 1024 1024)
         read-process-output-max (* 1024 1024)
@@ -1332,7 +1331,7 @@
   (setq typescript-indent-level 4)
   (dap-node-setup))
 
-;; note, for some resion the mode directive does not work here, so I
+;; note, for some reason the mode directive does not work here, so I
 ;; added the typescript mode explicitly to tsx files.
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
 
