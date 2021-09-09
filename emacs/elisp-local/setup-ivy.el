@@ -116,7 +116,7 @@
   (prescient-persist-mode t))
 
 
-(use-package lsp-ivy)
+(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
 
 (provide 'setup-ivy)
 
