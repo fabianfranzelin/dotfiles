@@ -767,14 +767,16 @@
   (push #'treemacs-custom-filter treemacs-ignored-file-predicates))
 
 (use-package lsp-treemacs
-  :after lsp treemacs company
+  :after lsp-mode treemacs company
+  :commands lsp-treemacs-errors-list
   :config
   (setq gc-cons-threshold (* 100 1024 1024)
         read-process-output-max (* 1024 1024)
         treemacs-space-between-root-nodes nil
-        lsp-idle-delay 0.1 ;; clangd is fast
+        ;; clangd is fast
+        lsp-idle-delay 0.1
         ;; be more ide-ish
-        lsp-headerline-breadcrumb-enable)
+        lsp-headerline-breadcrumb-enable t)
   ;; enables bidirectional sync
   (lsp-treemacs-sync-mode t))
 
