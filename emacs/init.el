@@ -749,7 +749,8 @@
              treemacs-follow-mode
              treemacs-filewatch-mode
              treemacs-fringe-indicator-mode)
-  :bind (("C-x t" . treemacs))
+  :bind (("C-x t t" . treemacs)
+         ("C-x t s" . ff/lsp-treemacs-symbols-toggle))
   :init
   (when window-system
     (setq treemacs-width 35
