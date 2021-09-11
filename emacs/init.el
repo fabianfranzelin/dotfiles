@@ -37,7 +37,10 @@
 (setq use-package-always-ensure t)
 
 ;; auto update packages
+(use-package quelpa)
+
 (use-package auto-package-update
+  :after quelpa ; required since quelpa chache is checked for updates
   :config
   (setq auto-package-update-delete-old-versions t
         auto-package-update-hide-results t
@@ -86,7 +89,6 @@
 ;; ===================================================================
 ;; Basic Settings
 ;; ===================================================================
-
 (server-start)
 
 ;; The default is 800 kilobytes.  Measured in bytes.
@@ -268,14 +270,15 @@
 ;; Gumshoe: jump back and forth through marked positions
 ;; -------------------------------------------------------------------
 (use-package gumshoe
-  :config
+  :init
   ;; The minor mode must be enabled to begin tracking
-  (global-gumshoe-mode 1)
+  (global-gumshoe-mode t)
   ;; Similarly for the perspective-local gumshoe:
   ;; (global-gumshoe-persp-mode 1)
   ;; Similarly for the buffer-local gumshoe:
-  (global-gumshoe-buf-mode 1)
+  (global-gumshoe-buf-mode t)
 
+  :config
   ;; define a command for autocompletion of the gumshoe--global log if
   ;; you’d like:
   (defun consult-gumshoe-global ()
@@ -675,6 +678,25 @@
   (setq savehist-additional-variables '(extended-command-history kill-ring)))
 
 ;; -------------------------------------------------------------------
+;; Popper
+;; -------------------------------------------------------------------
+(use-package popper
+  :after projectile
+  :bind (("C-<dead-grave>"   . popper-toggle-latest)
+         ("M-<dead-grave>"   . popper-cycle)
+         ("C-M-<dead-grave>" . popper-toggle-type))
+  :init
+  (setq popper-reference-buffers
+        '("\\*Messages\\*"
+          "Output\\*$"
+          "\\*Async Shell Command\\*"
+          help-mode
+          compilation-mode))
+  ;; group poppers by projectile projects
+  (setq popper-group-function #'popper-group-by-projectile)
+  (popper-mode t))
+
+;; -------------------------------------------------------------------
 ;; Ripgrep integration
 ;; -------------------------------------------------------------------
 (use-package rg
@@ -913,7 +935,8 @@
   :after (company auctex))
 
 (use-package reftex
-  :init
+  :commands turn-on-reftex
+  :config
   (setq reftex-enable-partial-scans t)
   (setq reftex-use-multiple-selection-buffers t)
   (setq reftex-plug-into-AUCTeX t)
@@ -922,20 +945,16 @@
   (setq reftex-external-file-finders
         '(("tex" . "kpsewhich -format=.tex %f")
           ("bib" . "kpsewhich -format=.bib %f")))
-  (setq TeX-auto-save t)
-  (setq TeX-auto-parse t)
 
   (setq LaTeX-command "latex -synctex=1") ;; enable synctex
-  :config
-  ;; Set index on document
-  (add-hook 'reftex-load-hook 'imenu-add-menubar-index)
-  (add-hook 'reftex-mode-hook 'imenu-add-menubar-index)
   :hook ((reftex-mode . imenu-add-menubar-index)
          (LaTeX-mode . turn-on-reftex)
          (latex-mode . turn-on-reftex)
          (LaTeX-mode . reftex-mode)
          (LaTeX-mode . LaTeX-math-mode)
          (LaTeX-mode . TeX-PDF-mode)
+         ;; Set index on document
+         (with-eval-after-load . imenu-add-menubar-index)
          ))
 
 ;; emacs RefTeX
