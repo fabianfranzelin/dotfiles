@@ -682,9 +682,9 @@
 ;; -------------------------------------------------------------------
 (use-package popper
   :after projectile
-  :bind (("C-<dead-grave>"   . popper-toggle-latest)
-         ("M-<dead-grave>"   . popper-cycle)
-         ("C-M-<dead-grave>" . popper-toggle-type))
+  :bind (("C-*"   . popper-toggle-latest)
+         ("M-*"   . popper-cycle)
+         ("C-M-*" . popper-toggle-type))
   :init
   (setq popper-reference-buffers
         '("\\*Messages\\*"
