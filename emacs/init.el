@@ -214,7 +214,11 @@
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; enable auto pair mode globally
-(electric-pair-mode t)
+(use-package smartparens
+  :hook ((text-mode . smartparens-mode)
+         (prog-mode . smartparens-mode)))
+
+(require 'smartparens-config)
 
 ;; Let kill operate on the whole line when no region is selected
 (use-package whole-line-or-region
