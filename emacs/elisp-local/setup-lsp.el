@@ -28,9 +28,9 @@
   :config
   (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
   (setq lsp-log-io nil ;; if set to true can cause a performance hit
-        lsp-pyls-plugins-flake8-enabled t
-        lsp-pyls-plugins-pycodestyle-enabled nil
-        lsp-enable-snippet nil
+        lsp-pyls-plugins-flake8-enabled nil
+        lsp-pyls-plugins-pycodestyle-enabled t
+        lsp-enable-snippet t
         lsp-prefer-flymake nil
         lsp-file-watch-threshold 100000 ;; increase watch threshold
         lsp-python-ms-python-executable "/usr/bin/python3"
