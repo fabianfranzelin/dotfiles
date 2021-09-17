@@ -60,7 +60,7 @@
 (use-package exec-path-from-shell
   :unless (string-equal system-type "windows-nt")
   :demand t
-  :init
+  :config
   (exec-path-from-shell-initialize)
   (exec-path-from-shell-copy-env "SSH_AUTH_SOCK"))
 
@@ -1135,16 +1135,6 @@
 ;; -------------------------------------------------------------------
 (use-package setup-python
   :load-path local-load-path)
-
-;; -------------------------------------------------------------------
-;; Sphinx documentation
-;; -------------------------------------------------------------------
-;; docu https://github.com/naiquevin/sphinx-doc.el
-;; Use C-c M-d to include doc string in python
-(use-package sphinx-doc
-  :hook ((python-mode . sphinx-doc-mode))
-  :config
-  (sphinx-doc-mode t))
 
 ;; -------------------------------------------------------------------
 ;; code style checker
