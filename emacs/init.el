@@ -266,6 +266,15 @@
   (global-set-key (kbd "C-c g") 'google-this-mode-submap)
   )
 
+(use-package evil-nerd-commenter
+  :bind ("M-;" . evilnc-comment-or-uncomment-lines))
+
+(use-package which-key
+  :diminish which-key-mode
+  :init (which-key-mode 1)
+  :config
+  (setq which-key-idle-delay 0.5))
+
 ;; -------------------------------------------------------------------
 ;; Gumshoe: jump back and forth through marked positions
 ;; -------------------------------------------------------------------
@@ -299,8 +308,7 @@
   :bind (;; enable browser like key bindings to move forth and
          ;; back in bookmarks
          ("M-<left>" . gumshoe-backtrack-back)
-         ("M-<right>" . gumshoe-backtrack-forward)
-         ))
+         ("M-<right>" . gumshoe-backtrack-forward)))
 
 ;; -------------------------------------------------------------------
 ;; Tramp
@@ -309,23 +317,23 @@
   :ensure nil
   :config
   (put 'temporary-file-directory 'standard-value '("/tmp"))
+  ;; Use remote PATH on tramp (handy for eshell).
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
-  (setq tramp-use-ssh-controlmaster-options nil)
-  (setq tramp-auto-save-directory "~/.cache/emacs/backups")
-  (setq tramp-persistency-file-name "~/.emacs.d/data/tramp")
-  (setq tramp-terminal-type "dumb")
-  (setq tramp-default-method "ssh"))
+
+  (setq tramp-auto-save-directory "~/.cache/emacs/backups"
+        tramp-persistency-file-name "~/.emacs.d/data/tramp"
+        tramp-terminal-type "dumb"
+        tramp-default-method "ssh")
+
+  ;; make sure vc stuff is not making tramp slower
+  (setq vc-ignore-dir-regexp
+	(format "%s\\|%s"
+		vc-ignore-dir-regexp
+		tramp-file-name-regexp)))
+
+(customize-set-variable 'tramp-use-ssh-controlmaster-options nil)
 
 (use-package docker-tramp)
-
-(use-package evil-nerd-commenter
-  :bind ("M-;" . evilnc-comment-or-uncomment-lines))
-
-(use-package which-key
-  :diminish which-key-mode
-  :init (which-key-mode 1)
-  :config
-  (setq which-key-idle-delay 0.5))
 
 ;; -------------------------------------------------------------------
 ;; Tab bar
@@ -511,23 +519,18 @@
                 '("mpg" "mpeg" "mp3" "mp4"
                   "avi" "wmv" "wav" "mov" "flv"
                   "ogm" "ogg" "mkv"))
-               "vlc"
-               '(file))
+               "vlc" '(file))
          (list (openwith-make-extension-regexp
                 '("xbm" "pbm" "pgm" "ppm" "pnm"
                   "png" "gif" "bmp" "tif" "jpeg"
-                  "jpg")) ;; Removed jpg because Telega was
-               ;; causing feh to be opened...
-               "eog"
-               '(file))
+                  "jpg"))
+               "eog" '(file))
          (list (openwith-make-extension-regexp
                 '("pdf"))
-               "okular"
-               '(file))
+               "okular" '(file))
          (list (openwith-make-extension-regexp
                 '("html"))
-               "firefox"
-               '(file)))))
+               "firefox" '(file)))))
 
 ;; -------------------------------------------------------------------
 ;; Copy & Paste

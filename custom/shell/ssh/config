@@ -13,8 +13,15 @@
 
 # Bsp Athena-Exchange: sshfs -p 42022 cmtcde7u170.rd.corpintra.net:/storage1/athena_exchange/ <my_local_mount_point>
 
-# 3-node cluster
+# tramp multihop setting
+# see https://www.gnu.org/software/emacs/manual/html_node/tramp/Frequently-Asked-Questions.html
+Host *
+     ControlMaster	auto
+     ControlPath	tramp.%C
+     ControlPersist	no
+     ServerAliveInterval 5
 
+# others
 Host ws_jens
      Hostname ST39-C-0005P.fe.de.bosch.com
      Port 22
@@ -34,8 +41,7 @@ Host ws_michael
      ForwardX11 yes
 
 Host ws
-     # Hostname ST39-C-00066.fe.de.bosch.com
-     Hostname 10.61.3.111
+     Hostname ST39-C-00066.fe.de.bosch.com
      Port 22
      IdentityFile /home/frf2lr/.ssh/id_rsa
      ForwardX11 yes
