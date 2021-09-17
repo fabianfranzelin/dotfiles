@@ -66,6 +66,12 @@
   :hook ((python-mode . (lambda ()
                                 (add-hook 'before-save-hook 'py-isort-before-save)))))
 
+;; enable sphinx doc strings support
+(use-package sphinx-doc
+  :hook ((python-mode . sphinx-doc-mode))
+  :bind (:map python-mode-map
+         ("C-c C-d" . sphinx-doc)))
+
 (provide 'setup-python)
 
 ;;; setup-python.el ends here
