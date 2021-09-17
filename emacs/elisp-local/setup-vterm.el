@@ -1,6 +1,6 @@
 ;;; package --- Set up vterm
 ;;; Commentary:
-;;; Sets up vterm config for Emacs. Note that the features listed
+;;; Sets up vterm config for Emacs.  Note that the features listed
 ;;; here, require a shell integration that is done in vterm.sh in the
 ;;; same repository.
 
@@ -73,8 +73,7 @@
          ("C-y" . vterm-yank)
          ("C-x 2" . ff/open-vterm-below)
          ("C-x 3" . ff/open-vterm-right)
-         ("C-c C-t" . vterm-copy-mode)
-         ))
+         ("C-c C-t" . vterm-copy-mode)))
 
 (provide 'setup-vterm)
 
