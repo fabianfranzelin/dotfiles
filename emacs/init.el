@@ -195,16 +195,12 @@
 ;; Key bindings
 (global-set-key "\C-n" 'make-frame)
 
-;; Ctrl-1 stores a position in a file, Alt-1 brings you back to this position
-;; (global-set-key (kbd "C-1") #'(lambda () (interactive) (point-to-register ?1)))
-;; (global-set-key (kbd "M-1") #'(lambda () (interactive) (register-to-point ?1)))
-
 ;; higlight the marked region (C-SPC) and use commands (like
-;; latex-environment) on current region.
-(transient-mark-mode t)
-
-;; enable cua mode to mark text vertically
-(cua-mode)
+;; latex-environment) on current region. Rectangle mark mode is
+;; enabled via C-x SPC.
+(transient-mark-mode t) ;; C-SPC - for selection
+(rectangle-mark-mode t) ;; C-x SPC - for selection; C-x SPC C-t for
+                        ;; inserting stuff
 
 ;; Indentation
 (setq-default indent-tabs-mode nil)    ; use only spaces and no tabs
