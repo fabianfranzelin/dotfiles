@@ -1055,11 +1055,11 @@
         languagetool-java-arguments '("-Dfile.encoding=UTF-8")
         languagetool-default-language "en-US")
 
-  :bind (("C-c l c" . languagetool-check)
-         ("C-c l d" . languagetool-clear-buffer)
-         ("C-c l p" . languagetool-correct-at-point)
-         ("C-c l b" . languagetool-correct-buffer)
-         ("C-c l l" . languagetool-set-language)))
+  :bind (("C-c 4 c" . languagetool-check)
+         ("C-c 4 d" . languagetool-clear-buffer)
+         ("C-c 4 p" . languagetool-correct-at-point)
+         ("C-c 4 b" . languagetool-correct-buffer)
+         ("C-c 4 l" . languagetool-set-language)))
 
 ;; -------------------------------------------------------------------
 ;; On the fly spell checker using ispell
@@ -1322,14 +1322,12 @@
 ;; Typescript
 ;; -------------------------------------------------------------------
 (use-package tide
-  :ensure t
   :after (typescript-mode company flycheck)
   :hook ((typescript-mode . tide-setup)
          (typescript-mode . tide-hl-identifier-mode)
          (before-save . tide-format-before-save)))
 
-(use-package nvm
-  :defer t)
+(use-package nvm)
 
 (use-package typescript-mode
   :after (dap-node company)
