@@ -1038,16 +1038,7 @@
 ;; -------------------------------------------------------------------
 ;; Language tool
 ;; -------------------------------------------------------------------
-(defun langtool-autoshow-detail-popup (overlays)
-  (when (require 'popup nil t)
-    ;; Do not interrupt current popup
-    (unless (or popup-instances
-                ;; suppress popup after type `C-g' .
-                (memq last-command '(keyboard-quit)))
-      (let ((msg (langtool-details-error-message overlays)))
-        (popup-tip msg)))))
-
-(use-package langtool
+(use-package languagetool
   :init
   (setq langtool-version "5.4"
         langtool-name (concat "LanguageTool-" langtool-version)
@@ -1060,13 +1051,15 @@
                                        langtool-expected-binary
                                        "langtool")
   :config
-  (setq langtool-autoshow-message-function 'langtool-autoshow-detail-popup)
-  (setq langtool-language-tool-jar langtool-expected-binary)
-  :bind (("C-x 4 w" . langtool-check-buffer)
-         ("C-x 4 W" . langtool-check-done)
-         ("C-x 4 n" . langtool-goto-next-error)
-         ("C-x 4 p" . langtool-goto-previous-error)
-         ("C-x 4 4" . langtool-show-message-at-point)))
+  (setq languagetool-language-tool-jar langtool-expected-binary
+        languagetool-java-arguments '("-Dfile.encoding=UTF-8")
+        languagetool-default-language "en-US")
+
+  :bind (("C-c l c" . languagetool-check)
+         ("C-c l d" . languagetool-clear-buffer)
+         ("C-c l p" . languagetool-correct-at-point)
+         ("C-c l b" . languagetool-correct-buffer)
+         ("C-c l l" . languagetool-set-language)))
 
 ;; -------------------------------------------------------------------
 ;; On the fly spell checker using ispell
