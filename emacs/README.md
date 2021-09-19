@@ -13,12 +13,12 @@
 
 - `export CC=/usr/bin/gcc-10 CXX=/usr/bin/gcc-10`
 - `./autogen.sh`
-- `./configure --with-modules --with-gnutls --with-rsvg --with-x --with-json --prefix $HOME/opt/emacs-27.2 --bindir $HOME/opt/emacs-27.2/bin CFLAGS="-O3 -mtune=native -march=native -fomit-frame-pointer" --with-mailutils --with-native-compilation`
+- `./configure --with-modules --with-gnutls --with-rsvg --with-x --with-json --prefix $HOME/opt/emacs --bindir $HOME/opt/emacs/bin CFLAGS="-O3 -mtune=native -march=native -fomit-frame-pointer" --with-mailutils --with-native-compilation`
 - `make -j${nproc} && make install`
 
 # Install with update-alternatives
 
 Make sure to update the path correctly.
 
-- `sudo update-alternatives --install /usr/bin/emacsclient emacsclient $HOME/opt/emacs-27.2/bin/emacsclient 4`
-- `sudo update-alternatives --install /usr/bin/emacs emacs $HOME/opt/emacs-27.2/bin/emacs 3`
+- `sudo update-alternatives --install /usr/bin/emacsclient emacsclient $HOME/opt/emacs/bin/emacsclient 4`
+- `sudo update-alternatives --install /usr/bin/emacs emacs $HOME/opt/emacs/bin/emacs 3`
