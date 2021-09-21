@@ -280,30 +280,12 @@
 ;; -------------------------------------------------------------------
 (use-package gumshoe
   :init
-  ;; The minor mode must be enabled to begin tracking
   (global-gumshoe-mode t)
-  ;; Similarly for the perspective-local gumshoe:
-  ;; (global-gumshoe-persp-mode 1)
-  ;; Similarly for the buffer-local gumshoe:
-  (global-gumshoe-buf-mode t)
 
   :config
-  ;; define a command for autocompletion of the gumshoe--global log if
-  ;; you’d like:
-  (defun consult-gumshoe-global ()
-    (interactive)
-    (consult-global-mark (ring-elements (oref gumshoe--global-backlog log))))
-
-  ;; Similarly, for the persp local gumshoe--persp log, assuming
-  ;; perspectives is installed:
-  (defun consult-gumshoe-persp ()
-    (interactive)
-    (consult-global-mark (ring-elements (oref gumshoe--persp-backlog log))))
-
-  ;; Similarly, for the buffer local gumshoe--persp log:
-  (defun consult-gumshoe-buf ()
-    (interactive)
-    (consult-global-mark (ring-elements (oref gumshoe--buf-backlog log))))
+  ;; The minor mode must be enabled to begin tracking
+  (setf gumshoe-entry-type ’gumshoe--persp-entry)
+  (setf gumshoe-slot-schema '(perspective buffer position line))
 
   :bind (;; enable browser like key bindings to move forth and
          ;; back in bookmarks
@@ -1055,11 +1037,11 @@
         languagetool-java-arguments '("-Dfile.encoding=UTF-8")
         languagetool-default-language "en-US")
 
-  :bind (("C-c 4 c" . languagetool-check)
-         ("C-c 4 d" . languagetool-clear-buffer)
-         ("C-c 4 p" . languagetool-correct-at-point)
-         ("C-c 4 b" . languagetool-correct-buffer)
-         ("C-c 4 l" . languagetool-set-language)))
+  :bind (("C-x 4 c" . languagetool-check)
+         ("C-x 4 d" . languagetool-clear-buffer)
+         ("C-x 4 p" . languagetool-correct-at-point)
+         ("C-x 4 b" . languagetool-correct-buffer)
+         ("C-x 4 l" . languagetool-set-language)))
 
 ;; -------------------------------------------------------------------
 ;; On the fly spell checker using ispell
