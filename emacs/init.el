@@ -318,6 +318,7 @@
 
 (customize-set-variable 'tramp-use-ssh-controlmaster-options nil)
 
+;; multihop example: /ssh:frf2lr@ws|docker:vscode@c8416d9f4da6:/
 (use-package docker-tramp)
 
 ;; -------------------------------------------------------------------
