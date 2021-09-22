@@ -1,7 +1,6 @@
 doe() {
       docker exec -it \
              -e "DEBIAN_FRONTEND=noninteractive" \
-             -e "TERM=xterm-color" \
              -e "DISPLAY=$DISPLAY" \
              "$@" \
              "/bin/zsh"
