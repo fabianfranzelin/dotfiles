@@ -280,12 +280,15 @@
 ;; -------------------------------------------------------------------
 (use-package gumshoe
   :init
+  ;; The minor mode must be enabled to begin tracking
   (global-gumshoe-mode t)
 
   :config
-  ;; The minor mode must be enabled to begin tracking
-  (setf gumshoe-entry-type ’gumshoe--persp-entry)
-  (setf gumshoe-slot-schema '(perspective buffer position line))
+  (setf gumshoe-slot-schema '(time buffer position line))
+
+  ;; store the last minute of coding
+  (setq gumshoe-idle-time 0.5
+        gumshoe-log-len 120)
 
   :bind (;; enable browser like key bindings to move forth and
          ;; back in bookmarks
