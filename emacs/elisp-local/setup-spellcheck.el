@@ -36,29 +36,30 @@
   (let* ((dic ispell-current-dictionary)
          (change (if (string= dic "de_DE") "en_US" "de_DE")))
     (ispell-change-dictionary change)
-    (message "[ispell] Dictionary switched from %s to %s" dic change))
-  (let* ((dic ispell-current-dictionary)
-         (change (if (string= dic "de_DE") "de-DE" "en-US")))
     (languagetool-set-language change)
-    (message "[languagetool] Dictionary switched to %s" change)))
+    (message "[languagetool, ispell] Dictionary switched from %s to %s" dic change)))
 
 ;; --------------------------------------------------------
 ;; On the fly spell check with aspell and flyspell
 ;; --------------------------------------------------------
+(defun flyspell-buffer-after-pdict-save (&rest _)
+  (flyspell-buffer))
+
 (use-package ispell
   :ensure-system-package (("/usr/bin/aspell" . aspell)
                           ("/usr/lib/aspell/en_US.multi" . aspell-en)
-                          ("/usr/lib/aspell/de_DE.multi" . apsell-de)
-                          ("/usr/bin/ispell" . ispell)
-                          ("/usr/lib/ispell/american-insane.hash" . iamerican-insane)
-                          ("/usr/lib/ispell/ngerman.hash" . ingerman))
+                          ("/usr/lib/aspell/de_DE.multi" . apsell-de))
   :init
   (setq ispell-dictionary "en_US"
         ispell-local-dictionary "en_US"
         ispell-program-name "/usr/bin/aspell"
         ispell-extra-args '("--dont-tex-check-comments")
         ispell-current-dictionary "en_US"
-        ispell-silently-savep t)
+        ispell-silently-savep t
+        ispell-list-command "--list")
+
+  ;; Run flyspell-buffer after change to dictionary
+  (advice-add 'ispell-pdict-save :after #'flyspell-buffer-after-pdict-save)
 
   ;; alist leeren und für aspell /de_DE.UTF-8 richtig einstellen:
   (setq ispell-local-dictionary-alist nil)
@@ -67,13 +68,17 @@
  	             "[[:alpha:]]" "[^[:alpha:]]"
 	             "[']" t
 	             ("-C" "-d" "de_DE")
- 	             "~latin1" iso-8859-1)
- 	           )
+ 	             "~latin1" iso-8859-1))
+
+  ;; skip code blocks in org
+  (add-to-list 'ispell-skip-region-alist '("^#+BEGIN_SRC" . "^#+END_SRC"))
+
   :bind (("<f4>" . fd-switch-dictionary))
   :hook ((text-mode . flyspell-mode)
          (rst-mode . flyspell-mode)
          (htm-mode . flyspell-mode)
-         (html-mode . flyspell-mode)))
+         (html-mode . flyspell-mode)
+         (org-mode . flyspell-mode)))
 
 ;; flyspell mode
 (require 'flyspell)
