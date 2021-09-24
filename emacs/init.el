@@ -36,11 +36,7 @@
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
 
-;; auto update packages
-(use-package quelpa)
-
 (use-package auto-package-update
-  :after quelpa ; required since quelpa chache is checked for updates
   :config
   (setq auto-package-update-delete-old-versions t
         auto-package-update-hide-results t
