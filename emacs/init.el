@@ -121,7 +121,8 @@
 (setq create-lockfiles nil)
 
 ;; setup a new custom file
-(setq emacs-d-custom (concat (ff/emacs-config-home) "/custom.el"))
+(defvar emacs-d-custom (concat (ff/emacs-config-home) "/custom.el")
+  "Path to custom file in emacs.d directory.")
 (unless (file-exists-p emacs-d-custom)
   (with-temp-buffer (write-file emacs-d-custom)))
 
@@ -135,21 +136,17 @@
 (set-fringe-mode 10)
 
 ;; disable scroll lock mode permanently
-(defun do-nothing () (interactive))
+(defun do-nothing () "Does simply nothing." (interactive))
 (global-set-key (kbd "<Scroll_Lock>") 'do-nothing)
-(setq scroll-lock-mode nil)
+(defvar scroll-lock-mode nil)
 
 ;; enable revert from disk
-(global-auto-revert-mode 1)
+(global-auto-revert-mode t)
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; let me confirm emacs before killing it
 (setq confirm-kill-emacs 'yes-or-no-p)
-
-;; Enable ahead-of-time compliation when installing packages
-;; https://www.emacswiki.org/emacs/GccEmacs
-(setq package-native-compile t)
 
 ;; Support wheel mouse scrolling
 (mouse-wheel-mode t)
@@ -245,8 +242,7 @@
 ;; https://github.com/domtronn/all-the-icons.el/issues/107
 (require 'font-lock)
 (use-package font-lock+
-  :load-path local-load-path
-  )
+  :load-path local-load-path)
 
 ;; NOTE: The first time you load your configuration on a new machine,
 ;; you’ll need to run `M-x all-the-icons-install-fonts` so that mode
@@ -256,11 +252,8 @@
 
 ;; Google search integration
 (use-package google-this
-  :init
-  (google-this-mode t)
-  :config
-  (global-set-key (kbd "C-c g") 'google-this-mode-submap)
-  )
+  :init (google-this-mode t)
+  :config (global-set-key (kbd "C-c g") 'google-this-mode-submap))
 
 (use-package evil-nerd-commenter
   :bind ("M-;" . evilnc-comment-or-uncomment-lines))
@@ -268,8 +261,7 @@
 (use-package which-key
   :diminish which-key-mode
   :init (which-key-mode 1)
-  :config
-  (setq which-key-idle-delay 0.5))
+  :config (setq which-key-idle-delay 0.5))
 
 ;; -------------------------------------------------------------------
 ;; Gumshoe: jump back and forth through marked positions
@@ -323,9 +315,9 @@
 (use-package tab-bar
   :config
   ;; Don't turn on tab-bar-mode when tabs are created
-  (setq tab-bar-show nil)
-  (setq tab-bar-new-tab-choice "*scratch*")
-  (setq tab-bar-close-button-show nil
+  (setq tab-bar-show nil
+        tab-bar-new-tab-choice "*scratch*"
+        tab-bar-close-button-show nil
         tab-bar-new-button-show nil))
 
 ;; -------------------------------------------------------------------
@@ -469,8 +461,7 @@
 ;; Undo tree - make undos more powerful
 ;; -------------------------------------------------------------------
 (use-package undo-tree
-  :config
-  (global-undo-tree-mode))
+  :config (global-undo-tree-mode))
 
 ;; -------------------------------------------------------------------
 ;; Credential management
@@ -492,8 +483,7 @@
                           (okular . okular)
                           (eog . eog)
                           (firefox . firefox))
-  :init
-  (openwith-mode t)
+  :init (openwith-mode t)
   :config
   (setq openwith-associations
         (list
@@ -515,49 +505,6 @@
                "firefox" '(file)))))
 
 ;; -------------------------------------------------------------------
-;; Copy & Paste
-;; -------------------------------------------------------------------
-
-;; ;; quite like the text "highlight" in many apps.
-;; (setq shift-select-mode t); Now on by default: allows shifted
-;; ;; cursor-keys to control the region.
-;; (setq mouse-drag-copy-region nil)
-
-;; ;; stops selection with a mouse being immediately injected to the kill
-;; ;; ring
-;; (setq select-enable-primary nil)  ;; stops killing/yanking
-;; ;; interacting with primary X11
-;; ;; selection
-;; (setq select-enable-clipboard t)  ;; makes killing/yanking interact with clipboard X11 selection
-
-;; ;; when pasting with middle click in Linux X11, paste at cursor position, not at click position
-;; (setq mouse-yank-at-point t)
-
-;; ;; these will probably be already set to these values, leave them that
-;; ;; way if so!  (setf interprogram-cut-function 'x-select-text) (setf
-;; ;; interprogram-paste-function 'x-cut-buffer-or-selection-value)
-
-;; ;; You need an emacs with bug #902 fixed for this to work properly. It
-;; ;; has now been fixed in CVS HEAD.  it makes "highlight/middlebutton"
-;; ;; style (X11 primary selection based) copy-paste work as expected if
-;; ;; you're used to other modern apps (that is to say, the mere act of
-;; ;; highlighting doesn't overwrite the clipboard or alter the kill
-;; ;; ring, but you can paste in merely highlighted text with the mouse
-;; ;; if you want to)
-;; (setq select-active-regions t) ;  active region sets primary X11 selection
-;; (global-set-key [mouse-2] 'mouse-yank-primary)  ; make mouse
-;;                                         ; middle-click only
-;;                                         ; paste from primary
-;;                                         ; X11 selection, not
-;;                                         ; clipboard and kill
-;;                                         ; ring.
-
-;; with this, doing an M-y will also affect the X11 clipboard, making
-;; emacs act as a sort of clipboard history, at least of text you've
-;; pasted into it in the first place.  (setq yank-pop-change-selection
-;; t) ; makes rotating the kill ring change the X11 clipboard.
-
-;; -------------------------------------------------------------------
 ;; Copy filename of buffer into clipboard
 ;; -------------------------------------------------------------------
 (defun my-put-file-name-on-clipboard ()
@@ -573,20 +520,6 @@
       (message filename))))
 
 (global-set-key [f12] 'my-put-file-name-on-clipboard)
-
-;; -------------------------------------------------------------------
-;; Auto Completion
-;; -------------------------------------------------------------------
-(use-package auto-complete)
-
-;; -------------------------------------------------------------------
-;; Fill Column Indicator
-;; -------------------------------------------------------------------
-(use-package fill-column-indicator
-  :init
-  (setq fci-rule-color "#f8f8f8") ;;#cccccc
-  (define-globalized-minor-mode
-    global-fci-mode fci-mode (lambda () (fci-mode 1))))
 
 ;; -------------------------------------------------------------------
 ;; Beautify modline
@@ -637,7 +570,7 @@
   :defer 1
   :diminish super-save-mode
   :config
-  (super-save-mode +1)
+  (super-save-mode t)
   (setq super-save-auto-save-when-idle t))
 
 ;; -------------------------------------------------------------------
@@ -686,8 +619,7 @@
 ;; -------------------------------------------------------------------
 (use-package rg
   :ensure-system-package (rg . ripgrep)
-  :init
-  (rg-enable-menu))
+  :init (rg-enable-menu))
 
 ;; -------------------------------------------------------------------
 ;; Org-mode
@@ -701,16 +633,16 @@
 (use-package projectile
   :diminish projectile-mode
   :custom ((projectile-completion-system 'ivy))
-  :bind-keymap
-  ("C-c p" . projectile-command-map)
+  :bind-keymap ("C-c p" . projectile-command-map)
   :init
   ;; NOTE: Set this to the folder where you keep your Git repos!
   (when (file-directory-p "~/workspace")
     (setq projectile-project-search-path '("~/workspace")))
   (setq projectile-switch-project-action #'projectile-dired)
+  ;; enable projectile mode
+  (projectile-mode t)
   :config
   (setq projectile-file-exists-remote-cache-expire nil
-        projectile-mode-line nil
         projectile-globally-ignored-directories
         (quote
          (".idea" ".eunit" ".git" ".hg" ".svn"
@@ -723,9 +655,7 @@
         projectile-indexing-method 'alien
         ;; projectile-enable-caching nil
         projectile-completion-system 'default
-        projectile-svn-command "find . -type f -not -iwholename '*.svn/*' -print0")
-  ;; enable projectile mode
-  (projectile-mode t))
+        projectile-svn-command "find . -type f -not -iwholename '*.svn/*' -print0"))
 
 (use-package counsel-projectile
   :after projectile
@@ -743,14 +673,19 @@
 ;; highlight symbol and replace
 ;; -------------------------------------------------------------------
 (use-package highlight-symbol
-  :bind* (
-          ("C-c h" . highlight-symbol)
-          ("C-c r" . highlight-symbol-query-replace)
-          ))
+  :bind* (("C-c h" . highlight-symbol)
+          ("C-c r" . highlight-symbol-query-replace)))
 
 ;; -------------------------------------------------------------------
 ;; Treemacs
 ;; -------------------------------------------------------------------
+(defun treemacs-custom-filter (file _)
+  "Custom filter function for files in treemacs.
+
+FILE: filename"
+  (or (s-ends-with? ".aux" file)
+      (s-ends-with? ".lint" file)))
+
 (use-package treemacs
   :commands (treemacs
              treemacs-follow-mode
@@ -760,7 +695,7 @@
          ("C-x t s" . ff/lsp-treemacs-symbols-toggle))
   :init
   (when window-system
-    (setq treemacs-width 35
+    (setq treemacs-width 40
           treemacs-indentation 1
           treemacs-space-between-root-nodes nil)
     (treemacs-follow-mode t)
@@ -768,10 +703,6 @@
     (treemacs-fringe-indicator-mode nil))
   :config
   ;; (add-to-list 'treemacs-pre-file-insert-predicates #'treemacs-is-file-git-ignored?)
-  (defun treemacs-custom-filter (file _)
-    (or (s-ends-with? ".aux" file)
-        (s-ends-with? ".lint" file)
-        ))
   (push #'treemacs-custom-filter treemacs-ignored-file-predicates))
 
 (use-package lsp-treemacs
@@ -787,8 +718,6 @@
         lsp-headerline-breadcrumb-enable t)
   ;; enables bidirectional sync
   (lsp-treemacs-sync-mode t))
-
-(global-set-key [f9] 'ff/lsp-treemacs-symbols-toggle)
 
 ;; -------------------------------------------------------------------
 ;; Enable dap
@@ -806,13 +735,11 @@
   :bind(("C-c d d" . dap-debug)
         ("C-c d h" . dap-hydra)
         ("C-c d t" . dap-breakpoint-toggle)
-        ("C-c d r" . dap-ui-repl)
-        ))
+        ("C-c d r" . dap-ui-repl)))
 
 ;; -------------------------------------------------------------------
 ;; Eshell & Vterm
 ;; -------------------------------------------------------------------
-
 (use-package setup-eshell
   :load-path local-load-path)
 
@@ -833,20 +760,13 @@
                 compilation-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
-;; enable rainbow delimiters for all programming-modes (prog-mode)
-(use-package rainbow-delimiters
-  :hook (emacs-lisp-mode . rainbow-delimiters-mode))
-
 ;; -------------------------------------------------------------------
 ;; Drag stuff around with M-up/down
 ;; -------------------------------------------------------------------
 (use-package drag-stuff
-  :config
-  (drag-stuff-global-mode t)
-  :bind (
-         ("M-<up>" . drag-stuff-up)
-         ("M-<down>" . drag-stuff-down)
-         ))
+  :config (drag-stuff-global-mode t)
+  :bind (("M-<up>" . drag-stuff-up)
+         ("M-<down>" . drag-stuff-down)))
 
 ;; -------------------------------------------------------------------
 ;; Yasnippet
@@ -856,19 +776,30 @@
   (setq yas-verbosity 1
 	    yas-wrap-around-region t)
 
-  ;; enable once you use personal snippets
-  ;; (with-eval-after-load 'yasnippet
-  ;;   (setq yas-snippet-dirs (list (concat emacs-d-custom "/personal-snippets"))))
-
+  ;; enable yas everywhere
   (yas-reload-all)
   (yas-global-mode 1))
 
 (use-package yasnippet-snippets
   :after yasnippet)
 
+;; -------------------------------------------------------------------
+;; Code style checker
+;; -------------------------------------------------------------------
+(use-package flycheck
+  :init (global-flycheck-mode))
+
 ;; ===================================================================
 ;; Adjusting modes for programming
 ;; ===================================================================
+;; -------------------------------------------------------------------
+;; Emacs lisp
+;; -------------------------------------------------------------------
+
+;; enable rainbow delimiters for emacs lisp
+(use-package rainbow-delimiters
+  :hook (emacs-lisp-mode . rainbow-delimiters-mode))
+
 ;; -------------------------------------------------------------------
 ;; C/C++
 ;; -------------------------------------------------------------------
@@ -881,243 +812,33 @@
 (use-package ess
   :init
   (setq ess-use-eldoc nil)
-  ;; ESS will not print the evaluated commands, also speeds up the evaluation
+  ;; ESS will not print the evaluated commands, also speeds up the
+  ;; evaluation
   (setq ess-eval-visibly nil)
-  ;; if you don't want to be prompted each time you start an interactive R session
-  (setq ess-ask-for-ess-directory nil))
-
- ;;; ESS
-(add-hook 'ess-mode-hook
-          (lambda ()
-            (ess-set-style 'C++ 'quiet)
-            ;; Because
-            ;;                                 DEF GNU BSD K&R  C++
-            ;; ess-indent-level                  2   2   8   5  4
-            ;; ess-continued-statement-offset    2   2   8   5  4
-            ;; ess-brace-offset                  0   0  -8  -5 -4
-            ;; ess-arg-function-offset           2   4   0   0  0
-            ;; ess-expression-offset             4   2   8   5  4
-            ;; ess-else-offset                   0   0   0   0  0
-            ;; ess-close-brace-offset            0   0   0   0  0
-            (add-hook 'local-write-file-hooks
-                      (lambda ()
-                        (ess-nuke-trailing-whitespace)))))
-;; (setq ess-nuke-trailing-whitespace-p 'ask)
-;; or even
-(setq ess-nuke-trailing-whitespace-p t)
-
-(setq tab-always-indent t)
-
-;; -------------------------------------------------------------------
-;; AUCTeX
-;; -------------------------------------------------------------------
-(use-package auctex
-  :defer t
-  :hook ((LaTeX-mode . TeX-fold-mode)
-         (LaTeX-mode . outline-minor-mode)))
-
-(use-package company-auctex
-  :after (company auctex))
-
-(use-package reftex
-  :commands turn-on-reftex
+  ;; if you don't want to be prompted each time you start an
+  ;; interactive R session
+  (setq ess-ask-for-ess-directory nil)
   :config
-  (setq reftex-enable-partial-scans t)
-  (setq reftex-use-multiple-selection-buffers t)
-  (setq reftex-plug-into-AUCTeX t)
-  (setq reftex-save-parse-info t)
-  (setq reftex-use-external-file-finders t)
-  (setq reftex-external-file-finders
-        '(("tex" . "kpsewhich -format=.tex %f")
-          ("bib" . "kpsewhich -format=.bib %f")))
-
-  (setq LaTeX-command "latex -synctex=1") ;; enable synctex
-  :hook ((reftex-mode . imenu-add-menubar-index)
-         (LaTeX-mode . turn-on-reftex)
-         (latex-mode . turn-on-reftex)
-         (LaTeX-mode . reftex-mode)
-         (LaTeX-mode . LaTeX-math-mode)
-         (LaTeX-mode . TeX-PDF-mode)
-         ;; Set index on document
-         (with-eval-after-load . imenu-add-menubar-index)
-         ))
-
-;; emacs RefTeX
-;; (setq reftex-ref-macro-prompt nil) ; skips picking the reference style
-
-(eval-after-load 'reftex-vars
-  '(progn
-     ;; (also some other reftex-related customizations)
-     (setq reftex-cite-format
-           '((?\C-m . "\\cite[]{%l}")
-             (?a . "\\citeauthor[]{%l}") ;; Franzelin
-             (?f . "\\footcite[][]{%l}") ;; \footnote{[FR05]}
-             (?t . "\\textcite[]{%l}")   ;; Franzelin [FR05] (without link)
-             (?o . "\\citet[]{%l}")      ;; Franzelin [FR05] (with link)
-             (?p . "\\parencite[]{%l}")  ;; [Franzelin, 2015] (without link)
-             (?o . "\\citep[]{%l}")      ;; [Franzelin, 2015] (with link)
-             (?n . "\\nocite{%l}")))))
-
-(eval-after-load
-    "latex"
-  '(TeX-add-style-hook
-    "cleveref"
-    (lambda ()
-      (if (boundp 'reftex-ref-style-alist)
-          (add-to-list
-           'reftex-ref-style-alist
-           '("Cleveref" "cleveref"
-             (("\\cref" ?c) ("\\Cref" ?C) ("\\cpageref" ?d) ("\\Cpageref" ?D)))))
-      (reftex-ref-style-activate "Cleveref")
-      (TeX-add-symbols
-       '("cref" TeX-arg-ref)
-       '("Cref" TeX-arg-ref)
-       '("cpageref" TeX-arg-ref)
-       '("Cpageref" TeX-arg-ref)))))
-
-;; Do not ask to save before compile
-(setq compilation-ask-about-save nil)
-
-;; Always scroll the compilation output buffer until the first error
-;; appears
-(setq compilation-scroll-output 'firsterror)
-
-;; add make, scons and latexmk commands as tex build commands
-(add-hook 'LaTeX-mode-hook
-          (lambda ()
-            (add-to-list 'TeX-command-list
-                         '("Make" "make" TeX-run-TeX nil t :help "Runs make") t)
-            (add-to-list 'TeX-command-list
-                         '("Scons" "scons" TeX-run-TeX nil t :help "Runs scons") t)
-            (add-to-list 'TeX-command-list
-                         '("latexmk" "latexmk -pdf" TeX-run-TeX nil t :help "Runs latexmk") t)))
-;; -------------------------------------------------------------------
-;; add new environment types to auctex
-;; http://www.gnu.org/software/auctex/manual/auctex/Adding-Environments.html
-;; -------------------------------------------------------------------
+  (setq ess-nuke-trailing-whitespace-p t
+        tab-always-indent t))
 
 ;; -------------------------------------------------------------------
-;; Forward and inverse search with okular
+;; Latex
 ;; -------------------------------------------------------------------
-(use-package okular-search
-  :load-path local-load-path
-  :ensure-system-package (okular . okular)
-  :bind (:map LaTeX-mode-map
-              ("C-c C-a" . okular-jump-to-line)
-              :map tex-mode-map
-              ("C-c C-a" . okular-jump-to-line))
-  :init
-  (setq TeX-view-program-list '(("Okular" "okular --unique %o")))
-  (setq TeX-view-program-selection '((output-pdf "Okular") (output-dvi "Okular")))
-
-  ;; Inverse search
-  ;; http://inthearmchair.wordpress.com/2010/09/02/latex-inverse-pdf-search-with-emacs/
-  ;; (setq TeX-source-specials-mode 1)         ;; Inverse search
-
-  (setq TeX-auto-global (concat emacs-config-home "/auctex-auto-generated-info/"))
-  (setq TeX-auto-local  (concat emacs-config-home "/auctex-auto-generated-info/")))
+(use-package setup-latex
+  :load-path local-load-path)
 
 ;; -------------------------------------------------------------------
-;; Language tool
+;; Spell checker: Language tool and ispell/aspell
 ;; -------------------------------------------------------------------
-(use-package languagetool
-  :init
-  (setq langtool-version "5.4"
-        langtool-name (concat "LanguageTool-" langtool-version)
-        langtool-url (concat "https://languagetool.org/download/" langtool-name ".zip")
-        langtool-extract-to (expand-file-name "~/opt/languageTool")
-        langtool-expected-binary (concat langtool-extract-to "/" langtool-name "/languagetool-commandline.jar"))
-  (ff/download-and-extract-zip-archive langtool-url
-                                       langtool-name
-                                       langtool-extract-to
-                                       langtool-expected-binary
-                                       "langtool")
-  :config
-  (setq languagetool-language-tool-jar langtool-expected-binary
-        languagetool-java-arguments '("-Dfile.encoding=UTF-8")
-        languagetool-default-language "en-US")
-
-  :bind (("C-x 4 c" . languagetool-check)
-         ("C-x 4 d" . languagetool-clear-buffer)
-         ("C-x 4 p" . languagetool-correct-at-point)
-         ("C-x 4 b" . languagetool-correct-buffer)
-         ("C-x 4 l" . languagetool-set-language)))
-
-;; -------------------------------------------------------------------
-;; On the fly spell checker using ispell
-;; -------------------------------------------------------------------
-(defun fd-switch-dictionary()
-  "Switch dictionary from American English to German an vice versa."
-  (interactive)
-  (let* ((dic ispell-current-dictionary)
-         (change (if (string= dic "de_DE") "en_US" "de_DE")))
-    (ispell-change-dictionary change)
-    (message "[ispell] Dictionary switched from %s to %s" dic change))
-  (let* ((dic ispell-current-dictionary)
-         (change (if (string= dic "de_DE") "de-DE" "en-US")))
-    (setq langtool-default-language change)
-    (message "[langtool] Dictionary switched to %s" change)))
-
-(use-package ispell
-  :ensure-system-package (("/usr/bin/ispell" . ispell)
-                          ("/usr/lib/ispell/american-insane.hash" . iamerican-insane)
-                          ("/usr/lib/ispell/ngerman.hash" . ingerman))
-  :init
-  (setq ispell-dictionary "en_US")
-  (setq ispell-local-dictionary "en_US")
-  (setq ispell-default-dictionary "en_US")
-  (setq flyspell-default-dictionary "en_US")
-
-  (setq ispell-program-name "/usr/bin/aspell")
-  (setq ispell-list-command "list")
-  (setq ispell-extra-args '("--dont-tex-check-comments"))
-  (setq ispell-current-dictionary "en_US")
-  :bind (("<f4>" . fd-switch-dictionary)))
-
-;; alist leeren und für aspell /de_DE.UTF-8 richtig einstellen:
-(setq ispell-local-dictionary-alist nil)
-(add-to-list 'ispell-local-dictionary-alist
-	         '("de_DE"
- 	           "[[:alpha:]]" "[^[:alpha:]]"
-	           "[']" t
-	           ("-C" "-d" "de_DE")
- 	           "~latin1" iso-8859-1)
- 	         )
-
-;; flyspell mode
-(put 'LaTeX-mode 'flyspell-mode-predicate 'auctex-mode-flyspell-verify)
-(defun auctex-mode-flyspell-verify ()
-  "Function used for `flyspell-generic-check-word-predicate' in auctex mode."
-  (save-excursion
-    (forward-word -2)
-    (not (looking-at "bibliographystyle{"))))
-
-(add-hook 'LaTeX-mode-hook
-          (lambda () (setq flyspell-generic-check-word-predicate
-                           'auctex-mode-flyspell-verify)))
-
-(autoload 'flyspell-mode "flyspell"
-  "On-the-fly spelling checking" t)
-(autoload 'global-flyspell-mode "flyspell"
-  "On-the-fly spelling" t)
-(add-hook 'html-mode-hook 'flyspell-mode)
-(add-hook 'htm-mode-hook 'flyspell-mode)
-(add-hook 'text-mode-hook 'flyspell-mode)
+(use-package setup-spellcheck
+  :load-path local-load-path)
 
 ;; -------------------------------------------------------------------
 ;; Python
 ;; -------------------------------------------------------------------
 (use-package setup-python
   :load-path local-load-path)
-
-;; -------------------------------------------------------------------
-;; code style checker
-;; -------------------------------------------------------------------
-(use-package flycheck
-  :diminish flycheck-mode
-  :config
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (global-flycheck-mode))
 
 ;; -------------------------------------------------------------------
 ;; Shell
@@ -1135,6 +856,7 @@
 ;; Swig-Mode
 ;; -------------------------------------------------------------------
 (defun swig-switch-compile-command-auto ()
+  "Switch compile command if a setup.py file is present in the current folder."
   (if (file-exists-p "setup.py")
       (setq compile-command "python setup.py install --install-lib=.")
     (setq compile-command "make -k"))
@@ -1142,6 +864,7 @@
 
 ;; compile command taking several compilation modes into account
 (defun swig-compile()
+  "Run compilation of swig interface."
   (interactive)
   (swig-switch-compile-command-auto)
   (compile compile-command))
@@ -1240,7 +963,7 @@
 ;; -------------------------------------------------------------------
 (use-package yaml-mode
   :ensure-system-package ((pip3 . python3-pip)
-                          ("~/.local/lib/python3.6/site-packages/yamllint" . "python3 -m pip install -U 'yamllint'"))
+                          (yamllint . "python3 -m pip install -U 'yamllint'"))
   :mode (("\\.yml$" . yaml-mode)
          ("\\.yaml$" . yaml-mode)))
 
@@ -1304,7 +1027,7 @@
 ;; Typescript
 ;; -------------------------------------------------------------------
 (use-package tide
-  :after (typescript-mode company flycheck)
+  :after (typescript-mode company)
   :hook ((typescript-mode . tide-setup)
          (typescript-mode . tide-hl-identifier-mode)
          (before-save . tide-format-before-save)))
@@ -1329,7 +1052,7 @@
   :bind (("C-C C-g" . jsons-print-path)))
 
 ;; -------------------------------------------------------------------
-;; Org + Plantuml mode
+;; Plantuml mode
 ;; -------------------------------------------------------------------
 (use-package plantuml-mode
   :ensure-system-package (dot . graphviz)
@@ -1338,11 +1061,15 @@
          ("\\.uml" . plantuml-mode))
   :init
   ;; Consider using (plantuml-download-jar) as alternative
-  (setq plantuml-version "1.2021.10"
-        plantuml-name (concat "plantuml-jar-asl-" plantuml-version)
-        plantuml-url (concat "https://sourceforge.net/projects/plantuml/files/" plantuml-version "/" plantuml-name ".zip/download")
-        plantuml-extract-to (expand-file-name (concat "~/opt/plantuml/" plantuml-name))
-        plantuml-expected-binary (concat plantuml-extract-to "/plantuml.jar"))
+  (defvar plantuml-version "1.2021.10" "Version number of plantuml binary")
+  (defvar plantuml-name (concat "plantuml-jar-asl-" plantuml-version) "Name of plantuml executable")
+  (defvar plantuml-url
+    (concat "https://sourceforge.net/projects/plantuml/files/" plantuml-version "/" plantuml-name ".zip/download")
+    "URL to download plantuml from sourceforge.")
+  (defvar plantuml-extract-to (expand-file-name (concat "~/opt/plantuml/" plantuml-name))
+    "DEstination of plantuml binaries")
+  (defvar plantuml-expected-binary (concat plantuml-extract-to "/plantuml.jar")
+    "Path to java archive of plantuml.")
   (ff/download-and-extract-zip-archive plantuml-url
                                        plantuml-name
                                        plantuml-extract-to
@@ -1390,12 +1117,6 @@
   :after json-mode
   :hook ((json-mode . flymake-json-load)
          (js-mode . flymake-json-maybe-load)))
-
-;; -------------------------------------------------------------------
-;; TOML
-;; -------------------------------------------------------------------
-(use-package toml-mode
-  :mode ("\\.toml\\'" . toml-mode))
 
 ;; -------------------------------------------------------------------
 ;; Jinja2 mode for code generation
