@@ -10,11 +10,11 @@
 ;; --------------------------------------------------------
 (use-package languagetool
   :init
-  (setq langtool-version "5.4"
-        langtool-name (concat "LanguageTool-" langtool-version)
-        langtool-url (concat "https://languagetool.org/download/" langtool-name ".zip")
-        langtool-extract-to (expand-file-name "~/opt/languageTool")
-        langtool-expected-binary (concat langtool-extract-to "/" langtool-name "/languagetool-commandline.jar"))
+  (defvar langtool-version "5.4")
+  (defvar langtool-name (concat "LanguageTool-" langtool-version))
+  (defvar langtool-url (concat "https://languagetool.org/download/" langtool-name ".zip"))
+  (defvar langtool-extract-to (expand-file-name "~/opt/languageTool"))
+  (defvar langtool-expected-binary (concat langtool-extract-to "/" langtool-name "/languagetool-commandline.jar"))
   (ff/download-and-extract-zip-archive langtool-url
                                        langtool-name
                                        langtool-extract-to
