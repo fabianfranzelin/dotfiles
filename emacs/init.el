@@ -37,6 +37,10 @@
 (setq use-package-always-ensure t)
 
 (use-package auto-package-update
+  :init
+  ;; for emacs 28, quelpa is required as a dependency
+  (when (> emacs-major-version 27)
+    (use-package quelpa))
   :config
   (setq auto-package-update-delete-old-versions t
         auto-package-update-hide-results t
@@ -885,12 +889,6 @@ FILE: filename"
   ; Show word based diff
   (setq magit-diff-refine-hunk 'all))
 
-;; NOTE: Make sure to configure a GitHub token before using this package!
-;; - https://magit.vc/manual/forge/Token-Creation.html#Token-Creation
-;; - https://magit.vc/manual/ghub/Getting-Started.html#Getting-Started
-(use-package forge
-  :after magit)
-
 (use-package git-timemachine)
 
 (use-package git-gutter-fringe)
@@ -1113,7 +1111,8 @@ FILE: filename"
   :mode (("\\.json$" . json-mode)))
 
 (use-package flymake-json
-  :ensure-system-package (jsonlint . "sudo env \"PATH=$PATH\" npm install jsonlint -g")
+  :ensure-system-package ((npm . npm)
+                          (jsonlint . "sudo env \"PATH=$PATH\" npm install jsonlint -g"))
   :after json-mode
   :hook ((json-mode . flymake-json-load)
          (js-mode . flymake-json-maybe-load)))
