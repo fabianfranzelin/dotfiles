@@ -4,7 +4,7 @@
 # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 # --
 
-.. figure:: $1
-   :scale: $2 %
+.. figure:: ${1:Relative path to your image}
+   :scale: ${1:Scaling} %
 
-   $4
+   ${1:Caption}
