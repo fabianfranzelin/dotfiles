@@ -980,6 +980,19 @@ FILE: filename"
 ;; -------------------------------------------------------------------
 ;; Plantuml mode
 ;; -------------------------------------------------------------------
+
+(defun ff/plantuml-create-svg (source_filename)
+  "Create SVG from current puml file.
+SOURCE_FILENAME: filename to the puml file."
+  (interactive)
+  (message (concat "Converting " source_filename))
+  (call-process-shell-command (concat
+                               "java -jar "
+                               plantuml-jar-path
+                               source_filename
+                               " -tsvg -charset utf-8"))
+  (message "Conversion succeeded."))
+
 (use-package plantuml-mode
   :ensure-system-package (dot . graphviz)
   :mode (("\\.puml" . plantuml-mode)
@@ -1010,8 +1023,8 @@ FILE: filename"
   ;; not accept it
   (define-key plantuml-mode-map [remap plantuml-preview] 'ff/plantum-preview)
   :bind (:map plantuml-mode-map
-              ("C-M-i" . plantuml-complete-symbol)))
-
+              ("C-M-i" . plantuml-complete-symbol)
+              ("C-c C-e" . (lambda() (interactive) (ff/plantuml-create-svg (buffer-file-name))))))
 
 (use-package flycheck-plantuml
   :after (plantuml-mode flycheck)
