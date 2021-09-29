@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: List Table
+# key: table
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# --
+
+.. list-table:: ${1:Caption}
+   :align: left
+   :widths: ${1:Width of table columns}
+   :header-rows: 1
