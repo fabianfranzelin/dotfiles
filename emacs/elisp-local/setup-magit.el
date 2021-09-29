@@ -86,6 +86,8 @@
   (set-face-foreground 'git-gutter:modified "LightGoldenrod")
   (set-face-foreground 'git-gutter:deleted "LightCoral"))
 
+(use-package magit-lfs)
+
 (provide 'setup-magit)
 
 ;;; setup-magit.el ends here
