@@ -207,9 +207,7 @@
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; enable auto pair mode globally
-(use-package smartparens
-  :hook ((text-mode . smartparens-mode)
-         (prog-mode . smartparens-mode)))
+(electric-pair-mode t)
 
 (require 'smartparens-config)
 

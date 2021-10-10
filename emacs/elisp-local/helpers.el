@@ -14,8 +14,7 @@
   (let ((ans ""))
     (while (<= 0 n)
       (setq ans (concat ans (ff/random-alnum)))
-      (setq n (- n 1))
-      )
+      (setq n (- n 1)))
     (eval ans)))
 
 ;;; -------------------------------------------------------------
@@ -30,8 +29,7 @@
         (url-copy-file url temporary-file))
       (message (concat "[" package-name "] Decompress " name " to " extract-to))
       (call-process-shell-command (concat "unzip " temporary-file " -d " extract-to) nil 0)
-      )
-    ))
+      )))
 
 (defun ff/lsp-treemacs-symbols-toggle ()
   "Toggle the lsp-treemacs-symbols buffer."
@@ -86,9 +84,7 @@
     ;; run actual plantuml preview with 4=new frame setting
     (plantuml-preview 4)
     ;; go back to the cursor position in the previous window
-    (ff/switch-to-last-window)
-    )
-  )
+    (ff/switch-to-last-window)))
 
 (provide 'helpers)
 
