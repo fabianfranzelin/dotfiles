@@ -63,8 +63,7 @@
   (split-window-below)
   (balance-windows)
   (other-window 1)
-  (eshell (ff/random-string 5))
-  )
+  (eshell (ff/random-string 5)))
 
 (defun ff/open-eshell-right ()
   "Opens new eshell right of the current window."
@@ -72,8 +71,7 @@
   (split-window-right)
   (balance-windows)
   (other-window 1)
-  (eshell (ff/random-string 5))
-  )
+  (eshell (ff/random-string 5)))
 
 (defun dw/eshell-configure ()
   (use-package xterm-color)
@@ -122,8 +120,7 @@
         eshell-hist-ignoredups t
         eshell-highlight-prompt t
         eshell-scroll-to-bottom-on-input t
-        eshell-prefer-lisp-functions nil)
-)
+        eshell-prefer-lisp-functions nil))
 
 (defun ff/start-eshell ()
   "Start Vterm terminal emulator."

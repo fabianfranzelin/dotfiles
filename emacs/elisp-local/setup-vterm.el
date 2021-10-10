@@ -18,8 +18,7 @@
   (split-window-below)
   (balance-windows)
   (other-window 1)
-  (vterm t)
-  )
+  (vterm t))
 
 (defun ff/open-vterm-right ()
   "Opens new v-term right of the current window."
@@ -27,8 +26,7 @@
   (split-window-right)
   (balance-windows)
   (other-window 1)
-  (vterm t)
-  )
+  (vterm t))
 
 (defun ff/term-exec-hook ()
   "Delete the buffer once the terminal session is terminated."
