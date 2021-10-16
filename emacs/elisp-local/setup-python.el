@@ -19,14 +19,13 @@
   :ensure-system-package ((pip3 . python3-pip)
                           ("~/.local/lib/python3.6/site-packages/epc" . "python3 -m pip install -U 'epc'")
                           ("~/.local/lib/python3.6/site-packages/ptvsd" . "python3 -m pip install -U 'ptvsd>=4.2'"))
-  :mode (
-         ("\\.py$" . python-mode)
+  :mode (("\\.py$" . python-mode)
          ("SConstruct" . python-mode)
-         ("SConscript" . python-mode)
-         )
+         ("SConscript" . python-mode))
   :hook ((python-mode . (lambda ()
-                          (setq company-backends +ff/company-default-backends)
-                          ))
+                          (setq company-backends '((company-capf
+                                                    company-files)
+                                                   (company-abbrev)))))
          (python-mode . annotate-pdb)
          (python-mode . (lambda ()
                           (require 'lsp-python-ms)
@@ -34,13 +33,13 @@
                           (require 'dap-python)
                           (lsp))))  ; or lsp-deferred
   :init
+  (setq python-shell-interpreter "ipython3")
+  (setq python-shell-interpreter-args "--simple-prompt -i")
   (setq python-indent-offset 4)
-  (setq python-shell-interpreter "/usr/bin/python3")
   (setq lsp-python-ms-auto-install-server t)
   :config
   ;; delete output buffer on buffer execution
-  (setq py-shell-switch-buffers-on-execute nil)
-  )
+  (setq py-shell-switch-buffers-on-execute nil))
 
 ;; install black and black-macchiato with pip3 install --user -U
 ;; black-macchiato black if black is not available as executable in
@@ -48,8 +47,7 @@
 ;; python3 -m black "${@}"
 (use-package python-black
   :ensure-system-package ((black . "python3 -m pip install --user -U black"))
-  :hook ((python-mode . python-black-on-save-mode))
-  )
+  :hook ((python-mode . python-black-on-save-mode)))
 
 ;; supports virtual environments. To be set with pyvenv-workon
 (use-package pyvenv
@@ -61,6 +59,18 @@
   :init
   (setq pipenv-projectile-after-switch-function
         #'pipenv-projectile-after-switch-extended))
+
+;; enable py-isort to resort imports on save
+(use-package py-isort
+  :ensure-system-package ((isort . "python3 -m pip install --user -U isort"))
+  :hook ((python-mode . (lambda ()
+                                (add-hook 'before-save-hook 'py-isort-before-save)))))
+
+;; enable sphinx doc strings support
+(use-package sphinx-doc
+  :hook ((python-mode . sphinx-doc-mode))
+  :bind (:map python-mode-map
+         ("C-c C-d" . sphinx-doc)))
 
 (provide 'setup-python)
 

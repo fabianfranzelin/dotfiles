@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: Figure
+# key: fig
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# --
+
+.. figure:: ${1:Relative path to your image}
+   :scale: ${2:Scaling} %
+
+   ${3:Caption}

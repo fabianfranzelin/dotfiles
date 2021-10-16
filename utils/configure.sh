@@ -140,6 +140,17 @@ POWERLEVEL10K_HOME=${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 if [[ ! -d "${POWERLEVEL10K_HOME}" ]]; then
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${POWERLEVEL10K_HOME}"
 fi
+
+ZSH_AUTOSUGGESTION_HOME=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+if [[ ! -d "${ZSH_AUTOSUGGESTION_HOME}" ]]; then
+    git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_AUTOSUGGESTION_HOME}"
+fi
+
+ZSH_SYNTAX_HIGHLIGHTING=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+if [[ ! -d "${ZSH_SYNTAX_HIGHLIGHTING}" ]]; then
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting "${ZSH_SYNTAX_HIGHLIGHTING}"
+fi
+
 ln -i -v -s "${__CUSTOM_DIR}/shell/p10k.zsh" "${HOME}/.p10k.zsh"
 echo -e "${__COLOR_SUCC}SUCCESS: p10k.zsh configured${__COLOR_RESET}"
 
@@ -300,4 +311,5 @@ ln -i -v -s "${__DOTFILES_EMACS_DIR}/init.el" "${__DOT_EMACS}"
 echo -e "${__COLOR_INFO}INFO: ${__EMACS_HOME}/.emacs.d@ -> ${__DOTFILES_EMACS_DIR}${__COLOR_RESET}"
 mkdir -p "${__DOT_EMACS_D}"
 ln -i -v -s "${__DOTFILES_EMACS_DIR}/elisp-local" "${__DOT_EMACS_D}"
+ln -i -v -s "${__DOTFILES_EMACS_DIR}/snippets" "${__DOT_EMACS_D}"
 echo -e "${__COLOR_SUCC}SUCCESS: emacs-setup configured${__COLOR_RESET}"
