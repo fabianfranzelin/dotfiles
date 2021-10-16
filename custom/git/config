@@ -12,6 +12,23 @@
     # cd /usr/share/doc/git/contrib/credential/libsecret
     # sudo make
     helper = /usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret
+[http "https://athena.*.corpintra.net"]
+    username = franzef
+    sslCert = /home/frf2lr/.local/share/certificates/cert-dap.crt
+    sslKey = /home/frf2lr/.local/share/certificates/cert-dap.key
+    sslCaInfo = /etc/ssl/certs/ca-certificates.crt
+[http "https://athena.daimler.com"]
+    username = franzef
+    sslCert = /home/frf2lr/.local/share/certificates/cert-dap.crt
+    sslKey = /home/frf2lr/.local/share/certificates/cert-dap.key
+    sslCaInfo = /etc/ssl/certs/ca-certificates.crt
+[credential "https://scm-manager.rd.corpintra.net"]
+    username = franzef
+    sslCert = /home/frf2lr/.local/share/certificates/cert-dap.crt
+    sslKey = /home/frf2lr/.local/share/certificates/cert-dap.key
+    sslCaInfo = /etc/ssl/certs/ca-certificates.crt
+[credential "https://github.com"]
+    username = fabianfranzelin
 [merge]
     tool = meld
 [diff]
@@ -25,3 +42,5 @@
     required = true
 [push]
     default = simple
+[lfs]
+    storage = /home/frf2lr/.cache/git/lfs
