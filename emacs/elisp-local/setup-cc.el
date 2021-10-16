@@ -145,8 +145,8 @@
   :config
   (defun my-cc-common-mode-hook()
     (set (make-local-variable 'company-backends)
-         '((company-clang company-lsp company-capf company-files :with company-yasnippet)
-           (company-dabbrev-code company-dabbrev company-ispell)))
+         '((company-clang company-lsp company-capf company-files)
+           (company-dabbrev-code company-dabbrev)))
     (setq company-transformers nil company-lsp-async t company-lsp-cache-candidates nil)
     )
   (add-hook 'c++-mode-hook #'my-cc-common-mode-hook)

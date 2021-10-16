@@ -58,13 +58,20 @@
      (propertize " " 'face `(:foreground "white")))))
 
 (defun ff/open-eshell-below ()
-  "Opens new eshell either below of the current window."
+  "Opens new eshell below of the current window."
   (interactive)
   (split-window-below)
   (balance-windows)
   (other-window 1)
-  (eshell (ff/random-string 5))
-  )
+  (eshell (ff/random-string 5)))
+
+(defun ff/open-eshell-right ()
+  "Opens new eshell right of the current window."
+  (interactive)
+  (split-window-right)
+  (balance-windows)
+  (other-window 1)
+  (eshell (ff/random-string 5)))
 
 (defun dw/eshell-configure ()
   (use-package xterm-color)
@@ -87,9 +94,9 @@
   ;; in eshell but not during other times when we might be launching
   ;; a shell command to gather its output.
   (add-hook 'eshell-pre-command-hook
-            '(lambda () (setenv "TERM" "xterm-256color")))
+            #'(lambda () (setenv "TERM" "xterm-256color")))
   (add-hook 'eshell-post-command-hook
-            '(lambda () (setenv "TERM" "dumb")))
+            #'(lambda () (setenv "TERM" "dumb")))
 
   ;; Use Ivy to provide completions in eshell
   (define-key eshell-mode-map (kbd "<tab>") 'completion-at-point)
@@ -98,10 +105,11 @@
   (define-key eshell-mode-map (kbd "<home>") 'eshell-bol)
 
   ;; close eshell
-  (define-key eshell-mode-map (kbd "C-d") '(lambda () (interactive) (kill-buffer-and-window) (balance-windows)))
+  (define-key eshell-mode-map (kbd "C-d") #'(lambda () (interactive) (kill-buffer-and-window) (balance-windows)))
 
   ;; if an eshell buffer is split, open a new session
   (define-key eshell-mode-map (kbd "C-x 2") 'ff/open-eshell-below)
+  (define-key eshell-mode-map (kbd "C-x 3") 'ff/open-eshell-right)
 
   (setenv "PAGER" "cat")
 
@@ -112,13 +120,12 @@
         eshell-hist-ignoredups t
         eshell-highlight-prompt t
         eshell-scroll-to-bottom-on-input t
-        eshell-prefer-lisp-functions nil)
-)
+        eshell-prefer-lisp-functions nil))
 
 (defun ff/start-eshell ()
   "Start Vterm terminal emulator."
   (interactive)
-  (ff/toggle-windows-with-prefix "*eshell" '(eshell t)))
+  (ff/toggle-windows-with-prefix "*eshell" #'(eshell t)))
 
 (use-package eshell
   :hook (eshell-first-time-mode . dw/eshell-configure)

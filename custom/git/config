@@ -32,7 +32,7 @@
 [merge]
     tool = meld
 [diff]
-    tool = visual
+    tool = meld
 [difftool "visual"]
     cmd = ${VISUAL} --wait --diff $LOCAL $REMOTE
 [filter "lfs"]
@@ -40,5 +40,7 @@
     smudge = git-lfs smudge --skip -- %f
 	process = git-lfs filter-process --skip
     required = true
+[push]
+    default = simple
 [lfs]
-	storage = /lhome/franzef/.athena/cache/lfs
+    storage = /home/frf2lr/.cache/git/lfs
