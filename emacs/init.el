@@ -209,8 +209,6 @@
 ;; enable auto pair mode globally
 (electric-pair-mode t)
 
-(require 'smartparens-config)
-
 ;; Let kill operate on the whole line when no region is selected
 (use-package whole-line-or-region
   :config (whole-line-or-region-global-mode))
@@ -270,16 +268,13 @@
 ;; -------------------------------------------------------------------
 (use-package gumshoe
   :init
-  ;; The minor mode must be enabled to begin tracking
+  ;; Enabing global-gumshoe-mode will initiate tracking
   (global-gumshoe-mode t)
-
-  :config
+  ;; customize peruse slot display if you like
   (setf gumshoe-slot-schema '(time buffer position line))
-
-  ;; store the last minute of coding
-  (setq gumshoe-idle-time 0.5
-        gumshoe-log-len 120)
-
+  :custom
+  (gumshoe-idle-time 1)
+  (gusmhoe-log-len 20)
   :bind (;; enable browser like key bindings to move forth and
          ;; back in bookmarks
          ("M-<left>" . gumshoe-backtrack-back)
