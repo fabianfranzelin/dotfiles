@@ -269,11 +269,12 @@
 (use-package gumshoe
   :init
   ;; Enabing global-gumshoe-mode will initiate tracking
-  (global-gumshoe-mode t)
+  ;; TODO(frf2lr): This does currently not work. Wait for an update.
+  ;; (global-gumshoe-mode +1)
   ;; customize peruse slot display if you like
   (setf gumshoe-slot-schema '(time buffer position line))
   :custom
-  (gumshoe-idle-time 1)
+  (gumshoe-idle-time 5)
   (gusmhoe-log-len 20)
   :bind (;; enable browser like key bindings to move forth and
          ;; back in bookmarks
