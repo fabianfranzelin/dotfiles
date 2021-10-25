@@ -269,8 +269,7 @@
 (use-package gumshoe
   :init
   ;; Enabing global-gumshoe-mode will initiate tracking
-  ;; TODO(frf2lr): This does currently not work. Wait for an update.
-  ;; (global-gumshoe-mode +1)
+  (global-gumshoe-mode +1)
   ;; customize peruse slot display if you like
   (setf gumshoe-slot-schema '(time buffer position line))
   :custom
