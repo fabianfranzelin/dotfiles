@@ -263,6 +263,12 @@
   :init (which-key-mode 1)
   :config (setq which-key-idle-delay 0.5))
 
+;; center the text for the corresponding modes; writing documentation
+;; is easier with this setting.
+(use-package visual-fill-column
+  :hook ((org-mode . ff/visual-fill-center-text)
+         (rst-mode . ff/visual-fill-center-text)))
+
 ;; -------------------------------------------------------------------
 ;; Gumshoe: jump back and forth through marked positions
 ;; -------------------------------------------------------------------
@@ -751,6 +757,7 @@ FILE: filename"
 (global-display-line-numbers-mode 1)
 
 (dolist (mode '(org-mode-hook
+                rst-mode-hook
                 term-mode-hook
                 eshell-mode-hook
                 vterm-mode-hook
