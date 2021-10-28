@@ -47,7 +47,7 @@
 ;; python3 -m black "${@}"
 (use-package python-black
   :ensure-system-package ((black . "python3 -m pip install --user -U black"))
-  :hook ((python-mode . python-black-on-save-mode)))
+  :hook ((python-mode . python-black-on-save-mode-enable-dwim)))
 
 ;; supports virtual environments. To be set with pyvenv-workon
 (use-package pyvenv
