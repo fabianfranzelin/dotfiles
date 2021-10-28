@@ -215,9 +215,6 @@
   :custom
   (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 
-(use-package visual-fill-column
-  :hook (org-mode . efs/org-mode-visual-fill))
-
 (with-eval-after-load 'org
   (org-babel-do-load-languages
       'org-babel-load-languages

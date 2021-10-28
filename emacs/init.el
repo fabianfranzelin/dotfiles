@@ -486,7 +486,7 @@
                           (okular . okular)
                           (eog . eog)
                           (firefox . firefox))
-  :init (openwith-mode t)
+  :init (openwith-mode nil)
   :config
   (setq openwith-associations
         (list
