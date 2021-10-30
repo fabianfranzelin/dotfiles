@@ -215,6 +215,9 @@
   :custom
   (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 
+;; For details, see enables https://github.com/abo-abo/org-download
+(use-package org-download)
+
 (with-eval-after-load 'org
   (org-babel-do-load-languages
       'org-babel-load-languages

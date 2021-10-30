@@ -409,10 +409,13 @@
 (use-package dired
   :ensure nil
   :defer 1
+  :after org-download
   :commands (dired dired-jump)
   :hook ((dired-mode . auto-revert-mode)
          (dired-mode . dired-hide-details-mode)
-         (dired-mode . hl-line-mode))
+         (dired-mode . hl-line-mode)
+         ;; enables drag-and-drop in dired
+         (dired-mode . org-download-enable))
   :bind (("C-x C-j" . dired-jump)
          :map dired-mode-map
          ("<backspace>" . dired-up-directory)
