@@ -60,10 +60,15 @@ done
 # install required packages
 
 echo -e "${__COLOR_INFO}INFO: Installing minimal required packages for setup..${__COLOR_RESET}"
-sudo apt-get update && \
-    sudo apt-get install -y \
-         xclip \
-         apt-transport-https
+sudo apt-get update && sudo apt-get install python3-pip
+# Remove PyQt5 if installed via pip. This package is buggy. It is
+# installed afterwards again via Ubuntu package sources.
+python3 -m pip uninstall PyQt5
+
+sudo apt-get install -y \
+     xclip \
+     apt-transport-https \
+     python3-pyqt5
 
 #------------------------------------------------------------------------------#
 # create folders
@@ -297,7 +302,7 @@ echo -e "${__COLOR_SUCC}SUCCESS: R-files configured${__COLOR_RESET}"
 #------------------------------------------------------------------------------#
 # setup custom/emacs
 
-echo -e "${__COLOR_INFO}INFO: Creating and linking emacs-setup..${__COLOR_RESET}"
+echo -e "${__COLOR_INFO}INFO: Creating and linking emacs-setup ...${__COLOR_RESET}"
 
 __EMACS_HOME="${HOME}"
 __DOT_EMACS="${HOME}/.emacs"
@@ -313,3 +318,20 @@ mkdir -p "${__DOT_EMACS_D}"
 ln -i -v -s "${__DOTFILES_EMACS_DIR}/elisp-local" "${__DOT_EMACS_D}"
 ln -i -v -s "${__DOTFILES_EMACS_DIR}/snippets" "${__DOT_EMACS_D}"
 echo -e "${__COLOR_SUCC}SUCCESS: emacs-setup configured${__COLOR_RESET}"
+
+# install emacs application framework
+echo -e "${__COLOR_INFO}INFO: Install Emacs Application Framework${__COLOR_RESET}"
+__DOT_EMACS_EAF="${__DOT_EMACS_D}/site-lisp/emacs-application-framework"
+if [[ ! -d "${__DOT_EMACS_EAF}" ]]; then
+    mkdir -p "${__DOT_EMACS_EAF}"
+    git clone --depth=1 \
+        -b master https://github.com/emacs-eaf/emacs-application-framework.git \
+        "${__DOT_EMACS_EAF}"
+fi
+(
+    cd "${__DOT_EMACS_EAF}"
+    git pull
+    chmod +x ./install-eaf.py
+    ./install-eaf.py --install browser pdf-viewer
+)
+echo -e "${__COLOR_SUCC}SUCCESS: Emacs Application Framework setup configured${__COLOR_RESET}"
