@@ -84,7 +84,8 @@
   :load-path local-load-path)
 
 (use-package shell-loader
-  :load-path local-load-path)
+  :load-path local-load-path
+  :custom (ff/shell-vertical-alignment t))
 
 ;; ===================================================================
 ;; Basic Settings
@@ -748,10 +749,12 @@ FILE: filename"
 ;; Eshell & Vterm
 ;; -------------------------------------------------------------------
 (use-package setup-eshell
-  :load-path local-load-path)
+  :load-path local-load-path
+  :after shell-loader)
 
 (use-package setup-vterm
-  :load-path local-load-path)
+  :load-path local-load-path
+  :after shell-loader)
 
 ;; -------------------------------------------------------------------
 ;; Show number of lines in the left side of the buffer

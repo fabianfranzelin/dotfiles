@@ -7,6 +7,10 @@
 
 ;;; Code:
 
+(defcustom ff/shell-vertical-alignment t
+  "When non-nil, the terminals are aligned in a vertical manner on the right."
+  :type 'boolean)
+
 (defun ff/load-buffers (prefix)
   "Filter all buffers that begin with the given prefix.
 PREFIX: start string of buffer name"
@@ -31,29 +35,27 @@ BUFFER-LIST: string list of buffer names"
            (setq is-visible t))))
   (eval is-visible))
 
-(defun ff/split-main-window (direction)
-  "Split the main window in the DIRECTION.
-DIRECTION: is a symbol with possible values of right, left, above or below."
-  (let* ((new-window (split-window (frame-root-window) nil direction))
-         (horizontal (member direction '(right left)))
+(defun ff/split-main-window ()
+  "Split the main window in the direction indicated by ff/shell-vertical-alignment."
+  (let* ((new-window (split-window (frame-root-window) nil (eval ff/shell-vertical-alignment)))
          ;; take up one half of the frame size
-         (size (/ (if horizontal (window-width) (window-height)) 2)))
+         (size (/ (if ff/shell-vertical-alignment (window-width) (window-height)) 2)))
     (save-excursion
       (select-window new-window)
-      (enlarge-window size horizontal))
+      (enlarge-window size ff/shell-vertical-alignment))
     new-window))
 
 (defun ff/open-windows (buffer-list)
   "Open windows of the given buffer list on the very right of the frame.
 BUFFER-LIST: string list of buffer names"
-  (ff/split-main-window "right")
+  (ff/split-main-window)
   (while (> (length buffer-list) 1)
     ;; load the next buffer
     (setq next-buffer (pop buffer-list))
     (switch-to-buffer next-buffer)
     ;; and open a new window below the current one for the next buffer
     ;; in the list
-    (split-window-below)
+    (if ff/shell-vertical-alignment (split-window-below) (split-window-right))
     (other-window 1))
   ;; there is one buffer remaining and one last window to be filled
   (switch-to-buffer (pop buffer-list))
@@ -71,12 +73,13 @@ BUFFER-LIST: string list of buffer names"
 (defun ff/toggle-windows-with-prefix (prefix start-cmd)
   "Toggle the visibility of buffers with the given prefix.
 If none is available, START-CMD is executed in a new window.
-PREFIX: start string of buffer name START-CMD: list that is to be
-executed if no buffer with given prefix exists."
+PREFIX: start string of buffer name
+START-CMD: list that is to be executed if no buffer with given prefix exists.
+"
   (setq buffer-names (ff/load-buffers prefix))
   (cond ((= (length buffer-names) 0)
          ;; no buffers available -> create a new one
-         (ff/split-main-window "right")
+         (ff/split-main-window)
          ;; initiate whatever is given by the user
          (eval start-cmd)
          (balance-windows))

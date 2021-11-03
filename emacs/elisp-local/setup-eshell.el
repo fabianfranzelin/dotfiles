@@ -3,6 +3,7 @@
 ;;; Sets up eshell config for Emacs
 
 ;;; Code:
+
 (defun read-file (file-path)
   (with-temp-buffer
     (insert-file-contents file-path)
