@@ -14,19 +14,18 @@
 (defun ff/load-buffers (prefix)
   "Filter all buffers that begin with the given prefix.
 PREFIX: start string of buffer name"
-  (setq filtered-buffers '())
-  (dolist (name (mapcar #'buffer-name (buffer-list)))
-    (if (string-match prefix name)
-        (add-to-list 'filtered-buffers name)))
-  ;; sort the buffers
-  (cl-sort filtered-buffers 'string-lessp :key 'downcase))
+  (let (filtered-buffers '())
+    (dolist (name (mapcar #'buffer-name (buffer-list)))
+      (if (string-match prefix name)
+          (add-to-list 'filtered-buffers name)))
+    ;; sort the buffers
+    (cl-sort filtered-buffers 'string-lessp :key 'downcase)))
 
 (defun ff/is-any-buffer-visible (buffer-list)
   "Check whether any of the listed buffers is currently visible.
 BUFFER-LIST: string list of buffer names"
   (setq is-visible nil)
-  (while (> (length buffer-list) 0)
-    (setq next-buffer (pop buffer-list))
+  (dolist (next-buffer buffer-list)
     (cond ((eq next-buffer (window-buffer (selected-window)))
            ;; Visible and focused
            (setq is-visible t))
@@ -51,8 +50,7 @@ BUFFER-LIST: string list of buffer names"
   (ff/split-main-window)
   (while (> (length buffer-list) 1)
     ;; load the next buffer
-    (setq next-buffer (pop buffer-list))
-    (switch-to-buffer next-buffer)
+    (switch-to-buffer (pop buffer-list))
     ;; and open a new window below the current one for the next buffer
     ;; in the list
     (if ff/shell-vertical-alignment (split-window-below) (split-window-right))
@@ -66,8 +64,7 @@ BUFFER-LIST: string list of buffer names"
 BUFFER-LIST: string list of buffer names"
   (while (> (length buffer-list) 0)
     ;; switch to the next window and close it
-    (setq next-window (get-buffer-window (pop buffer-list)))
-    (delete-window next-window))
+    (delete-window (get-buffer-window (pop buffer-list))))
   (balance-windows))
 
 (defun ff/toggle-windows-with-prefix (prefix start-cmd)
