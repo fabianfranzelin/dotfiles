@@ -65,3 +65,6 @@ Host hdc
      Port 22
      IdentityFile /home/frf2lr/.ssh/id_rsa
      LocalForward 6443 localhost:6443
+
+Host docserver
+     Hostname si0vm05421.de.bosch.com

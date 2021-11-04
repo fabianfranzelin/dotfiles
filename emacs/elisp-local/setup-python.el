@@ -19,6 +19,8 @@
   :ensure-system-package ((pip3 . python3-pip)
                           ("~/.local/lib/python3.6/site-packages/epc" . "python3 -m pip install -U 'epc'")
                           ("~/.local/lib/python3.6/site-packages/ptvsd" . "python3 -m pip install -U 'ptvsd>=4.2'"))
+                          ;; both packages are required for debugging
+                          ;; with dap
   :mode (("\\.py$" . python-mode)
          ("SConstruct" . python-mode)
          ("SConscript" . python-mode))
@@ -33,6 +35,7 @@
                           (require 'dap-python)
                           (lsp))))  ; or lsp-deferred
   :init
+  ;; use ipython as default interpreter
   (setq python-shell-interpreter "ipython3")
   (setq python-shell-interpreter-args "--simple-prompt -i")
   (setq python-indent-offset 4)
@@ -51,8 +54,7 @@
 
 ;; supports virtual environments. To be set with pyvenv-workon
 (use-package pyvenv
-  :init
-  (pyvenv-mode 1))
+  :init (pyvenv-mode 1))
 
 (use-package pipenv
   :hook (python-mode . pipenv-mode)
