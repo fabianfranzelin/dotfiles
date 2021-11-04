@@ -7,7 +7,7 @@
 
 ## Dependencies
 
-- `sudo apt install libxpm-dev libgif-dev libjpeg-dev libpng-dev libtiff-dev libx11-dev libncurses5-dev automake autoconf texinfo libgtk2.0-dev libgtk-3-dev gcc-10 g++-10 libgccjit0 libgccjit-10-dev libjansson4 libjansson-dev`
+- `sudo apt install libxpm-dev libgif-dev libjpeg-dev libpng-dev libtiff-dev libx11-dev libncurses5-dev automake autoconf texinfo libgtk2.0-dev libgtk-3-dev gcc-10 g++-10 libgccjit0 libgccjit-10-dev libjansson4 libjansson-dev libgnutls28-dev libacl1-dev`
 
 ## Build
 
