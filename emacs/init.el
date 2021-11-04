@@ -84,7 +84,8 @@
   :load-path local-load-path)
 
 (use-package shell-loader
-  :load-path local-load-path)
+  :load-path local-load-path
+  :custom (ff/shell-vertical-alignment t))
 
 ;; ===================================================================
 ;; Basic Settings
@@ -209,8 +210,6 @@
 ;; enable auto pair mode globally
 (electric-pair-mode t)
 
-(require 'smartparens-config)
-
 ;; Let kill operate on the whole line when no region is selected
 (use-package whole-line-or-region
   :config (whole-line-or-region-global-mode))
@@ -265,21 +264,24 @@
   :init (which-key-mode 1)
   :config (setq which-key-idle-delay 0.5))
 
+;; center the text for the corresponding modes; writing documentation
+;; is easier with this setting.
+(use-package visual-fill-column
+  :hook ((org-mode . ff/visual-fill-center-text)
+         (rst-mode . ff/visual-fill-center-text)))
+
 ;; -------------------------------------------------------------------
 ;; Gumshoe: jump back and forth through marked positions
 ;; -------------------------------------------------------------------
 (use-package gumshoe
   :init
-  ;; The minor mode must be enabled to begin tracking
-  (global-gumshoe-mode t)
-
-  :config
+  ;; Enabing global-gumshoe-mode will initiate tracking
+  (global-gumshoe-mode +1)
+  ;; customize peruse slot display if you like
   (setf gumshoe-slot-schema '(time buffer position line))
-
-  ;; store the last minute of coding
-  (setq gumshoe-idle-time 0.5
-        gumshoe-log-len 120)
-
+  :custom
+  (gumshoe-idle-time 5)
+  (gusmhoe-log-len 20)
   :bind (;; enable browser like key bindings to move forth and
          ;; back in bookmarks
          ("M-<left>" . gumshoe-backtrack-back)
@@ -408,10 +410,13 @@
 (use-package dired
   :ensure nil
   :defer 1
+  :after org-download
   :commands (dired dired-jump)
   :hook ((dired-mode . auto-revert-mode)
          (dired-mode . dired-hide-details-mode)
-         (dired-mode . hl-line-mode))
+         (dired-mode . hl-line-mode)
+         ;; enables drag-and-drop in dired
+         (dired-mode . org-download-enable))
   :bind (("C-x C-j" . dired-jump)
          :map dired-mode-map
          ("<backspace>" . dired-up-directory)
@@ -485,7 +490,7 @@
                           (okular . okular)
                           (eog . eog)
                           (firefox . firefox))
-  :init (openwith-mode t)
+  :init (openwith-mode nil)
   :config
   (setq openwith-associations
         (list
@@ -744,10 +749,12 @@ FILE: filename"
 ;; Eshell & Vterm
 ;; -------------------------------------------------------------------
 (use-package setup-eshell
-  :load-path local-load-path)
+  :load-path local-load-path
+  :after shell-loader)
 
 (use-package setup-vterm
-  :load-path local-load-path)
+  :load-path local-load-path
+  :after shell-loader)
 
 ;; -------------------------------------------------------------------
 ;; Show number of lines in the left side of the buffer
@@ -756,6 +763,7 @@ FILE: filename"
 (global-display-line-numbers-mode 1)
 
 (dolist (mode '(org-mode-hook
+                rst-mode-hook
                 term-mode-hook
                 eshell-mode-hook
                 vterm-mode-hook
@@ -791,6 +799,32 @@ FILE: filename"
 ;; -------------------------------------------------------------------
 (use-package flycheck
   :init (global-flycheck-mode))
+
+;; -------------------------------------------------------------------
+;; Emacs application framework: it does not seem to be stable
+;; -------------------------------------------------------------------
+;; (defvar eaf-load-path (concat emacs-config-home "/site-lisp/emacs-application-framework")
+;;   "Load path for EAF.")
+;; (add-to-list 'load-path eaf-load-path)
+
+;; (use-package eaf
+;;   :load-path eaf-load-path)
+
+;; (use-package eaf-browser
+;;   :ensure nil
+;;   :after eaf
+;;   :custom
+;;   (eaf-browser-continue-where-left-off t)
+;;   (eaf-browser-enable-adblocker t)
+;;   (browse-url-browser-function 'eaf-open-browser)
+;;   (defalias 'browse-web #'eaf-open-browser))
+
+;; (use-package eaf-pdf-viewer
+;;   :ensure nil
+;;   :after eaf
+;;   :custom
+;;   (eaf-bind-key scroll_up "C-n" eaf-pdf-viewer-keybinding)
+;;   (eaf-bind-key scroll_down "C-p" eaf-pdf-viewer-keybinding))
 
 ;; ===================================================================
 ;; Adjusting modes for programming

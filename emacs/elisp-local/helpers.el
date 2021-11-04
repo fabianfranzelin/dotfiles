@@ -86,6 +86,14 @@
     ;; go back to the cursor position in the previous window
     (ff/switch-to-last-window)))
 
+;;; -------------------------------------------------------------
+
+(defun ff/visual-fill-center-text ()
+  (setq visual-fill-column-width 100
+        visual-fill-column-center-text t)
+  (visual-fill-column-mode 1))
+
+
 (provide 'helpers)
 
 ;;; helpers.el ends here

@@ -205,8 +205,7 @@
   ;; -------------------------------------------------------------------
   ;; Clocking
   ;; -------------------------------------------------------------------
-  (add-hook 'org-timer-set-hook #'org-clock-in)
-  )
+  (add-hook 'org-timer-set-hook #'org-clock-in))
 
 ;; -------------------------------------------------------------------
 ;; Fonts and Design
@@ -216,14 +215,8 @@
   :custom
   (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 
-
-(defun efs/org-mode-visual-fill ()
-  (setq visual-fill-column-width 100
-        visual-fill-column-center-text t)
-  (visual-fill-column-mode 1))
-
-(use-package visual-fill-column
-  :hook (org-mode . efs/org-mode-visual-fill))
+;; For details, see enables https://github.com/abo-abo/org-download
+(use-package org-download)
 
 (with-eval-after-load 'org
   (org-babel-do-load-languages
