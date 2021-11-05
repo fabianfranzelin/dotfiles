@@ -71,7 +71,12 @@
          ("C-y" . vterm-yank)
          ("C-x 2" . ff/open-vterm-below)
          ("C-x 3" . ff/open-vterm-right)
-         ("C-c C-t" . vterm-copy-mode)))
+         ("C-c C-t" . vterm-copy-mode)
+         ("C-c t" . (lambda()
+                      (interactive)
+                      (ff/start-vterm)
+                      (ff/toggle-shell-vertical-alignment)
+                      (ff/start-vterm)))))
 
 (provide 'setup-vterm)
 
