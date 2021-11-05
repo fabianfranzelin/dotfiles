@@ -48,7 +48,12 @@
             (apply orig-fun args)))
     (apply orig-fun args)))
 
-;; (use-package vterm-toggle)
+;; Account for https://github.com/akermu/emacs-libvterm/issues/518
+(defun vterm-send-password ()
+  (interactive)
+  (comint-send-invisible "Enter password: ")
+  (vterm-send-string "\n")
+  (clear-this-command-keys))
 
 (use-package vterm
   :ensure-system-package ((cmake . cmake)
