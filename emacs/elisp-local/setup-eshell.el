@@ -130,7 +130,12 @@
 
 (use-package eshell
   :hook (eshell-first-time-mode . dw/eshell-configure)
-  :bind (("C-x e" . ff/start-eshell))
+  :bind (("C-x e" . ff/start-eshell)
+         ("C-c t" . (lambda()
+                      (interactive)
+                      (ff/start-eshell)
+                      (ff/toggle-shell-vertical-alignment)
+                      (ff/start-eshell))))
   :init
   (setq eshell-directory-name "~/.emacs.d/eshell/"))
 
