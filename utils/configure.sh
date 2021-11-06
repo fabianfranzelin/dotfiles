@@ -70,7 +70,8 @@ sudo apt-get install -y \
      apt-transport-https \
      python3-pyqt5 \
      zsh \
-     npm
+     npm \
+     python3-virtualenvwrapper
 
 #------------------------------------------------------------------------------#
 # create folders
