@@ -54,6 +54,14 @@ fi
 # ----------------------------------------------------
 # personal
 
+# We're in Emacs, yo
+export VISUAL=emacsclient
+export EDITOR="$VISUAL"
+
+# Make sure `ls` collates dotfiles first (for dired)
+export LC_COLLATE="C"
+
+# AOS
 AOS_BASH_COMPLETION="$HOME/.bash_aos_completion"
 if [[ -f "${AOS_BASH_COMPLETION}" ]]; then
     . "${AOS_BASH_COMPLETION}"
@@ -94,10 +102,11 @@ elif [[ -n "${BASH}" ]]; then
 fi
 
 #------------------------------------------------------------------------------#
-export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+# Export the path to Java so that tools pick it up correctly
+export JAVA_HOME="$(dirname $(dirname $(readlink $(readlink $(which java)))))"
 
 # certificates path
-export CERT_PATH=$HOME/.local/share/certificates
+export CERT_PATH="$HOME/.local/share/certificates"
 
 # Postgres debug port
 export POSTGRES_PORT=2345
