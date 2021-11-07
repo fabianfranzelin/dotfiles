@@ -48,7 +48,12 @@
             (apply orig-fun args)))
     (apply orig-fun args)))
 
-;; (use-package vterm-toggle)
+;; Account for https://github.com/akermu/emacs-libvterm/issues/518
+(defun vterm-send-password ()
+  (interactive)
+  (comint-send-invisible "Enter password: ")
+  (vterm-send-string "\n")
+  (clear-this-command-keys))
 
 (use-package vterm
   :ensure-system-package ((cmake . cmake)
@@ -71,7 +76,12 @@
          ("C-y" . vterm-yank)
          ("C-x 2" . ff/open-vterm-below)
          ("C-x 3" . ff/open-vterm-right)
-         ("C-c C-t" . vterm-copy-mode)))
+         ("C-c C-t" . vterm-copy-mode)
+         ("C-c t" . (lambda()
+                      (interactive)
+                      (ff/start-vterm)
+                      (ff/toggle-shell-vertical-alignment)
+                      (ff/start-vterm)))))
 
 (provide 'setup-vterm)
 

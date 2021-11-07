@@ -11,6 +11,13 @@
   "When non-nil, the terminals are aligned in a vertical manner on the right."
   :type 'boolean)
 
+(defun ff/toggle-shell-vertical-alignment ()
+  "Toggle whether the alignment of shells is vertical or horizontal."
+  (interactive)
+  (if ff/shell-vertical-alignment
+      (customize-set-variable 'ff/shell-vertical-alignment nil)
+    (customize-set-variable 'ff/shell-vertical-alignment t)))
+
 (defun ff/load-buffers (prefix)
   "Filter all buffers that begin with the given prefix.
 PREFIX: start string of buffer name"
