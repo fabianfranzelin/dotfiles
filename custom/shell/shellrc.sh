@@ -13,6 +13,10 @@ esac
 
 export DOTFILES="$HOME/workspace/dotfiles/."
 
+# set as a default for configurations
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+
 # fixes fancy prompt issues when called from remote modules like emacs
 if [[ $TERM == "dumb" ]]; then
     export PS1="$ "
@@ -20,16 +24,8 @@ else
     . "${DOTFILES}/shell/shellrc.sh"
 fi
 
-# greet
-
-#------------------------------------------------------------------------------#
-# EMACS vterm setup
-if [[ -n "${ZSH_NAME}" ]] && [[ -f "${DOTFILES}/shell/vterm.sh" ]]; then
-    . "${DOTFILES}/shell/vterm.sh"
-fi
-
 # ----------------------------------------------------
-# personal
+# ZSH settings
 
 if [[ -n "${ZSH_NAME}" ]]; then
     # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
@@ -43,15 +39,29 @@ if [[ -n "${ZSH_NAME}" ]]; then
     . "${DOTFILES}/shell/oh-my-zsh.sh"
 
     # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-    [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+    [[ ! -f "$HOME/.p10k.zsh" ]] || source "$HOME/.p10k.zsh"
 
     # bash compinit in zsh
     bindkey -e
 
     autoload -U bashcompinit
     bashcompinit
+
+    # EMACS vterm setup
+    [[ ! -f "${DOTFILES}/shell/vterm.sh" ]] || source "${DOTFILES}/shell/vterm.sh"
 fi
 
+# ----------------------------------------------------
+# personal
+
+# We're in Emacs, yo
+export VISUAL=emacsclient
+export EDITOR="$VISUAL"
+
+# Make sure `ls` collates dotfiles first (for dired)
+export LC_COLLATE="C"
+
+# AOS
 AOS_BASH_COMPLETION="$HOME/.bash_aos_completion"
 if [[ -f "${AOS_BASH_COMPLETION}" ]]; then
     . "${AOS_BASH_COMPLETION}"
@@ -73,9 +83,6 @@ else
     fi
 fi
 
-# set as a default for configurations
-export XDG_CONFIG_HOME="$HOME/.config"
-
 # expand path to include local bin directory
 PATH=$HOME/opt/bin:$HOME/.local/bin:$PATH
 
@@ -95,22 +102,11 @@ elif [[ -n "${BASH}" ]]; then
 fi
 
 #------------------------------------------------------------------------------#
-export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+# Export the path to Java so that tools pick it up correctly
+export JAVA_HOME="$(dirname $(dirname $(readlink $(readlink $(which java)))))"
 
 # certificates path
-export CERT_PATH=$HOME/.local/share/certificates
-
-# Airflow
-export CLUSTER_DEPLOYMENTS_HOME="$HOME/workspace/cluster-deployments"
-export RECOMPUTE_FLOW_HOME="$HOME/workspace/recompute-flow"
-export AIRFLOW_HOST="localhost"
-export AIRFLOW_PORT="8080"
-
-export SLUGIFY_USES_TEXT_UNIDECODE=yes
-export AIRFLOW__CORE__PARALLELISM=10
-
-# Recompute flow
-export PYTHONPATH=$PYTHONPATH:$RECOMPUTE_FLOW_HOME/airflow-home/dags:$RECOMPUTE_FLOW_HOME/micro_pipeline:$RECOMPUTE_FLOW_HOME/web-ui/server
+export CERT_PATH="$HOME/.local/share/certificates"
 
 # Postgres debug port
 export POSTGRES_PORT=2345
@@ -158,9 +154,6 @@ fi
 # Azure DevOps
 # Run cat BOSCH-CA-DE_pem.cer /opt/az/lib/python3.6/site-packages/certifi/cacert.pem > azure-bosch-cert.pem
 export REQUESTS_CA_BUNDLE="${HOME}/.local/share/certificates/bosch/azure-bosch-cert.pem"
-
-# DoL Documentation
-export SPHINX_VIRTUALENV="${HOME}/workspace/dol_arc_doc/sphinx-packages"
 
 # Virtual environments for python
 export WORKON_HOME=$HOME/.virtualenvs
