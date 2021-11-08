@@ -18,8 +18,7 @@
 (setq package-enable-at-startup nil)
 
 (setq package-archives '(("org" . "https://orgmode.org/elpa/") ;; will be deprecated soon
-                         ("melpa" . "https://melpa.org/packages/")
-                         ("elpa" . "https://elpa.gnu.org/packages/")))
+                         ("melpa" . "https://melpa.org/packages/")))
 
 ;; Initialise packages
 (when (< emacs-major-version 27)
