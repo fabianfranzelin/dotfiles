@@ -61,12 +61,6 @@ export EDITOR="$VISUAL"
 # Make sure `ls` collates dotfiles first (for dired)
 export LC_COLLATE="C"
 
-# AOS
-AOS_BASH_COMPLETION="$HOME/.bash_aos_completion"
-if [[ -f "${AOS_BASH_COMPLETION}" ]]; then
-    . "${AOS_BASH_COMPLETION}"
-fi
-
 # Start gnome keyring
 if [[ -n "$DESKTOP_SESSION" ]]; then
     eval "$(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)"
