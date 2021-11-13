@@ -280,7 +280,7 @@
   (setf gumshoe-slot-schema '(time buffer position line))
   :custom
   (gumshoe-idle-time 5)
-  (gusmhoe-log-len 20)
+  (gumshoe-log-len 20)
   :bind (;; enable browser like key bindings to move forth and
          ;; back in bookmarks
          ("M-<left>" . gumshoe-backtrack-back)
