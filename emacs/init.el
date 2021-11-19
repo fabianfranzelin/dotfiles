@@ -18,7 +18,8 @@
 (setq package-enable-at-startup nil)
 
 (setq package-archives '(("org" . "https://orgmode.org/elpa/") ;; will be deprecated soon
-                         ("melpa" . "https://melpa.org/packages/")))
+                         ("melpa" . "https://melpa.org/packages/")
+                         ("elpa" . "https://elpa.gnu.org/packages/")))
 
 ;; Initialise packages
 (when (< emacs-major-version 27)
@@ -52,6 +53,7 @@
 (use-package use-package-ensure-system-package)
 
 ;; get latest signatures for elpa
+(setq package-check-signature nil)
 (use-package gnu-elpa-keyring-update)
 
 ;; make sure that the path environment from shell is available in
