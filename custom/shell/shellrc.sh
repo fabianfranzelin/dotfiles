@@ -10,24 +10,17 @@ esac
 
 #------------------------------------------------------------------------------#
 # setup
-
 export DOTFILES="$HOME/workspace/dotfiles/."
+. "${DOTFILES}/utils/faq.sh"
 
 # set as a default for configurations
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
 
-# fixes fancy prompt issues when called from remote modules like emacs
-if [[ $TERM == "dumb" ]]; then
-    export PS1="$ "
-else
-    . "${DOTFILES}/shell/shellrc.sh"
-fi
-
 # ----------------------------------------------------
 # ZSH settings
 
-if [[ -n "${ZSH_NAME}" ]]; then
+if (__is_zsh); then
     # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
     # Initialization code that may require console input (password prompts, [y/n]
     # confirmations, etc.) must go above this block; everything else may go below.
@@ -47,8 +40,33 @@ if [[ -n "${ZSH_NAME}" ]]; then
     autoload -U bashcompinit
     bashcompinit
 
-    # EMACS vterm setup
-    [[ ! -f "${DOTFILES}/shell/vterm.sh" ]] || source "${DOTFILES}/shell/vterm.sh"
+    # ----------------------------------------------------
+    # vterm setup
+    source "${DOTFILES}/shell/vterm.zsh"
+
+    # ----------------------------------------------------
+    # Dotfiles setup
+    source "${DOTFILES}/shell/shellrc.sh"
+fi
+
+#------------------------------------------------------------------------------#
+# Bash setup
+
+if (__is_bash); then
+    # ----------------------------------------------------
+    # Dotfiles setup
+    source "${DOTFILES}/shell/shellrc.sh"
+
+    # ----------------------------------------------------
+    # Prompt setup
+    source "${DOTFILES}/shell/prompts/left/default.sh"
+    source "${DOTFILES}/shell/prompts/right/git_info.sh"
+fi
+
+# ----------------------------------------------------
+# fixes fancy prompt issues when called from remote modules like emacs
+if [[ $TERM == "dumb" ]]; then
+    export PS1="$ "
 fi
 
 # ----------------------------------------------------
@@ -83,15 +101,15 @@ PATH=$HOME/opt/bin:$HOME/.local/bin:$PATH
 #------------------------------------------------------------------------------#
 # ros setup
 
-if [[ -n "${ZSH_NAME}" ]]; then
+if (__is_zsh); then
     # melodic is only for Ubuntu 18.04
-    if [[ -f /opt/ros/melodic/setup.zsh ]]; then
-        . /opt/ros/melodic/setup.zsh
+    if [[ -f "/opt/ros/melodic/setup.zsh" ]]; then
+        source "/opt/ros/melodic/setup.zsh"
     fi
-elif [[ -n "${BASH}" ]]; then
+elif (__is_bash); then
     # melodic is only for Ubuntu 18.04
-    if [[ -f /opt/ros/melodic/setup.bash ]]; then
-        . /opt/ros/melodic/setup.bash
+    if [[ -f "/opt/ros/melodic/setup.bash" ]]; then
+        source "/opt/ros/melodic/setup.bash"
     fi
 fi
 
@@ -109,9 +127,9 @@ export POSTGRES_PORT=2345
 # Kubernetes setup
 if command -v kubectl &> /dev/null
 then
-    if [[ -n "${ZSH_NAME}" ]]; then
+    if (__is_zsh); then
         source <(kubectl completion zsh)
-    elif [[ -n "${BASH}" ]]; then
+    elif (__is_bash); then
         source <(kubectl completion bash)
     fi
 fi
@@ -147,7 +165,7 @@ fi
 
 # Azure DevOps
 # Run cat BOSCH-CA-DE_pem.cer /opt/az/lib/python3.6/site-packages/certifi/cacert.pem > azure-bosch-cert.pem
-export REQUESTS_CA_BUNDLE="${HOME}/.local/share/certificates/bosch/azure-bosch-cert.pem"
+# export REQUESTS_CA_BUNDLE="${HOME}/.local/share/certificates/bosch/azure-bosch-cert.pem"
 
 # Virtual environments for python
 export WORKON_HOME=$HOME/.virtualenvs
