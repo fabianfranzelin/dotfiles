@@ -281,7 +281,7 @@
   ;; customize peruse slot display if you like
   (setf gumshoe-slot-schema '(time buffer position line))
   :custom
-  (gumshoe-idle-time 5)
+  (gumshoe-idle-time 2)
   (gumshoe-log-len 20)
   :bind (;; enable browser like key bindings to move forth and
          ;; back in bookmarks
