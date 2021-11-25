@@ -28,17 +28,36 @@ PREFIX: start string of buffer name"
     ;; sort the buffers
     (cl-sort filtered-buffers 'string-lessp :key 'downcase)))
 
+(defun ff/is-buffer-visible (buffer-name)
+  "Check whether a buffer is visible or not.
+BUFFER-NAME: string name of the buffer"
+    (cond ((eq buffer-name (window-buffer (selected-window)))
+           ;; Visible and focused
+           t)
+          ((get-buffer-window buffer-name)
+           ;; Visible and unfocused
+           t)
+          (t
+           nil)))
+
+(defun ff/load-visible-buffers (buffer-list)
+  "Filter all buffers that begin with the given prefix.
+BUFFER-LIST: string list of buffer names"
+  (let (filtered-buffers '())
+    (dolist (next-buffer buffer-list)
+      (if (ff/is-buffer-visible next-buffer)
+          (add-to-list 'filtered-buffers next-buffer)))
+    ;; sort the buffers
+    (cl-sort filtered-buffers 'string-lessp :key 'downcase)))
+
+
 (defun ff/is-any-buffer-visible (buffer-list)
   "Check whether any of the listed buffers is currently visible.
 BUFFER-LIST: string list of buffer names"
   (setq is-visible nil)
   (dolist (next-buffer buffer-list)
-    (cond ((eq next-buffer (window-buffer (selected-window)))
-           ;; Visible and focused
-           (setq is-visible t))
-          ((get-buffer-window next-buffer)
-           ;; Visible and unfocused
-           (setq is-visible t))))
+    (if (ff/is-buffer-visible next-buffer)
+        (setq is-visible t))
   (eval is-visible))
 
 (defun ff/split-main-window ()
@@ -88,8 +107,9 @@ START-CMD: list that is to be executed if no buffer with given prefix exists.
          (eval start-cmd)
          (balance-windows))
         (t
-         (if (ff/is-any-buffer-visible buffer-names)
-             (ff/close-windows buffer-names)
+         (setq visible-buffers (ff/load-visible-buffers buffer-names))
+         (if (> (length visible-buffers) 0)
+             (ff/close-windows visible-buffers)
            (ff/open-windows buffer-names)))))
 
 (provide 'shell-loader)
