@@ -89,7 +89,7 @@
 ;;; -------------------------------------------------------------
 
 (defun ff/visual-fill-center-text ()
-  (setq visual-fill-column-width 100
+  (setq visual-fill-column-width 120
         visual-fill-column-center-text t)
   (visual-fill-column-mode 1))
 
