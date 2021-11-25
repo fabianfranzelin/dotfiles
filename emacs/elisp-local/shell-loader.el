@@ -31,14 +31,14 @@ PREFIX: start string of buffer name"
 (defun ff/is-buffer-visible (buffer-name)
   "Check whether a buffer is visible or not.
 BUFFER-NAME: string name of the buffer"
-    (cond ((eq buffer-name (window-buffer (selected-window)))
-           ;; Visible and focused
-           t)
-          ((get-buffer-window buffer-name)
-           ;; Visible and unfocused
-           t)
-          (t
-           nil)))
+  (cond ((eq buffer-name (window-buffer (selected-window)))
+         ;; Visible and focused
+         t)
+        ((get-buffer-window buffer-name)
+         ;; Visible and unfocused
+         t)
+        (t
+         nil)))
 
 (defun ff/load-visible-buffers (buffer-list)
   "Filter all buffers that begin with the given prefix.
@@ -57,7 +57,7 @@ BUFFER-LIST: string list of buffer names"
   (setq is-visible nil)
   (dolist (next-buffer buffer-list)
     (if (ff/is-buffer-visible next-buffer)
-        (setq is-visible t))
+        (setq is-visible t)))
   (eval is-visible))
 
 (defun ff/split-main-window ()
