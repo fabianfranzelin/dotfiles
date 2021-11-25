@@ -40,6 +40,8 @@
   (setq python-shell-interpreter-args "--simple-prompt -i")
   (setq python-indent-offset 4)
   (setq lsp-python-ms-auto-install-server t)
+  ;; default python interpreter for dap
+  (setq dap-python-executable "python3")
   :config
   ;; delete output buffer on buffer execution
   (setq py-shell-switch-buffers-on-execute nil))
