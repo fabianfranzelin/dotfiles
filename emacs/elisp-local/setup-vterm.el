@@ -69,10 +69,7 @@ shell exits, the buffer is killed."
          (proc (get-buffer-process buff)))
     (set-process-sentinel
      proc
-     `(lambda (process event)
-        (if (string= event "finished\n")
-            (kill-buffer-and-window)
-          )))))
+     #'run-in-vterm-kill)))
 
 (defun vterm-counsel-yank-pop-action (orig-fun &rest args)
   (if (equal major-mode 'vterm-mode)
