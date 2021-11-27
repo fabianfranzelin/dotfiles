@@ -10,7 +10,7 @@
   "A process sentinel. Kills PROCESS's buffer if it is live."
   (let ((b (process-buffer process)))
     (and (buffer-live-p b)
-         (kill-buffer b))))
+         (kill-buffer-and-window))))
 
 (defun run-in-vterm (command)
   "Execute string COMMAND in a new vterm.
