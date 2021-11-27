@@ -937,7 +937,15 @@ FILE: filename"
   (put 'dockerfile-image-name 'safe-local-variable #'stringp))
 
 (use-package docker
-  :bind ("C-x d" . docker))
+  :bind ("C-x d" . docker)
+  :config
+  :custom (docker-run-default-args '("-i"
+                                     "-t"
+                                     "-e DEBIAN_FRONTEND=noninteractive"
+                                     "-v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY"
+                                     "--shm-size=16g"
+                                     "--entrypoint /bin/bash"
+                                     )))
 
 ;; -------------------------------------------------------------------
 ;; Kubernetes
