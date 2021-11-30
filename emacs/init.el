@@ -639,7 +639,9 @@
 ;; -------------------------------------------------------------------
 ;; Projectile mode
 ;; -------------------------------------------------------------------
+
 (use-package projectile
+  :ensure-system-package ((fd . fd-find))
   :diminish projectile-mode
   :custom ((projectile-completion-system 'ivy))
   :bind-keymap ("C-c p" . projectile-command-map)
@@ -657,14 +659,12 @@
          (".idea" ".eunit" ".git" ".hg" ".svn"
           ".fslckout" ".bzr" "_darcs" ".tox"
           "build" "target" "_build" ".history"
-          "tmp", "*ccls-cache" ".ccls-root"
-          ".ccls-cache" "compile_commands.json"
-          ".clangd"))
-        projectile-require-project-root nil
+          "tmp" ".ccls-root" ".ccls-cache"
+          "compile_commands.json" ".clangd"))
+        projectile-require-project-root t
         projectile-indexing-method 'alien
-        ;; projectile-enable-caching nil
-        projectile-completion-system 'default
-        projectile-svn-command "find . -type f -not -iwholename '*.svn/*' -print0"))
+        projectile-sort-order 'recentf
+        projectile-enable-caching t))
 
 (use-package counsel-projectile
   :after projectile
