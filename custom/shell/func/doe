@@ -3,5 +3,5 @@ doe() {
              -e "DEBIAN_FRONTEND=noninteractive" \
              -e "DISPLAY=$DISPLAY" \
              "$@" \
-             "/bin/zsh"
+             "/bin/bash"
 }
