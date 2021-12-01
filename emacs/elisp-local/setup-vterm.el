@@ -7,7 +7,9 @@
 ;;; Code:
 
 (defun run-in-vterm-kill (process event)
-  "A process sentinel. Kills PROCESS's buffer if it is live."
+  "A process sentinel.  Kill PROCESS's buffer if it is live.
+PROCESS:
+EVENT:"
   (let ((b (process-buffer process)))
     (and (buffer-live-p b)
          (kill-buffer-and-window))))
@@ -25,7 +27,8 @@ The new vterm buffer is named in the form `*foo bar.baz*`, the
 command and its arguments in earmuffs.
 
 When the command terminates, the shell remains open, but when the
-shell exits, the buffer is killed."
+shell exits, the buffer is killed.
+COMMAND:"
   (interactive
    (list
     (let* ((f (cond (buffer-file-name)
@@ -76,12 +79,13 @@ shell exits, the buffer is killed."
       (let ((inhibit-read-only t)
             (yank-undo-function (lambda (_start _end) (vterm-undo))))
         (cl-letf (((symbol-function 'insert-for-yank)
-               (lambda (str) (vterm-send-string str t))))
-            (apply orig-fun args)))
+                   (lambda (str) (vterm-send-string str t))))
+          (apply orig-fun args)))
     (apply orig-fun args)))
 
 ;; Account for https://github.com/akermu/emacs-libvterm/issues/518
 (defun vterm-send-password ()
+  "Send password to vterm safely."
   (interactive)
   (comint-send-invisible "Enter password: ")
   (vterm-send-string "\n")

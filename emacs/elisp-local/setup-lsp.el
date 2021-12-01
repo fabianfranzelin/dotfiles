@@ -57,8 +57,8 @@
   :config
   (setq imenu-auto-rescan t
         imenu-auto-rescan-maxout (* 1024 1024)
-        imenu--rescan-item '("" . -99))
-  (setq lsp-ui-doc-position 'top
+        imenu--rescan-item '("" . -99)
+        lsp-ui-doc-position 'top
         lsp-ui-doc-alignment 'window
         lsp-ui-sideline-enable t
         lsp-ui-sideline-show-hover nil

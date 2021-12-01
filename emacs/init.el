@@ -93,7 +93,7 @@
 ;; ===================================================================
 (server-start)
 
-;; The default is 800 kilobytes.  Measured in bytes.
+;; The default is 800 kilobytes. Measured in bytes.
 (setq gc-cons-threshold (* 100 1000 1000))
 
 ;; Profile emacs startup
@@ -110,15 +110,8 @@
 ;; dir-local variables will be applied to remote files.
 (setq enable-remote-dir-locals t)
 
-;; disable backup
-(setq backup-inhibited t)
-(setq make-backup-files nil)
-
 ;; make ESC quit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-
-;; enable auto save
-(setq auto-save-default t)
 
 ;; dont warn for following symlinked files
 (setq vc-follow-symlinks t)
@@ -141,6 +134,13 @@
 (tool-bar-mode -1) ; disbale tool bar
 (set-fringe-mode 10)
 
+;; disable backup
+(setq backup-inhibited t)
+(setq make-backup-files nil)
+
+;; no splash screen
+(setq inhibit-splash-screen t)
+
 ;; disable scroll lock mode permanently
 (defun do-nothing () "Does simply nothing." (interactive))
 (global-set-key (kbd "<Scroll_Lock>") 'do-nothing)
@@ -149,6 +149,7 @@
 ;; enable revert from disk
 (global-auto-revert-mode t)
 
+;; define alias for yes-or-no decision
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; let me confirm emacs before killing it
@@ -175,12 +176,6 @@
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'latin-1)
 (setq buffer-file-coding-system 'utf-8)
-
-;; no splash screen
-(setq inhibit-splash-screen t)
-
-;; increase undo limit
-(setq undo-limit 8000000)
 
 ;; Iterate through CamelCase
 (global-subword-mode t)
@@ -215,20 +210,17 @@
 (use-package whole-line-or-region
   :config (whole-line-or-region-global-mode))
 
-;; Remove indicators from the mode line
-(use-package diminish)
-
 ;; Helps to keep track of your cursor
 (use-package beacon
-  :config
+  :init
   (beacon-mode t)
+  :config
   (setq beacon-color "#ff0000"))
 
 ;; volatile highlights - temporarily highlight changes from pasting
 ;; etc
 (use-package volatile-highlights
-  :diminish volatile-highlights-mode
-  :config
+  :init
   (volatile-highlights-mode t))
 
 ;; convenient setting to move between open buffers
@@ -251,14 +243,6 @@
 ;; line icons display correctly.
 (use-package all-the-icons
   :after font-lock+)
-
-;; Google search integration
-(use-package google-this
-  :init (google-this-mode t)
-  :config (global-set-key (kbd "C-c g") 'google-this-mode-submap))
-
-(use-package evil-nerd-commenter
-  :bind ("M-;" . evilnc-comment-or-uncomment-lines))
 
 (use-package which-key
   :diminish which-key-mode
@@ -369,11 +353,8 @@
   (add-hook mode (lambda () (company-mode 0))))
 
 (use-package company-prescient
-  :config
+  :init
   (company-prescient-mode 1))
-
-(use-package company-quickhelp
-  :after company)
 
 ;; -------------------------------------------------------------------
 ;; Simple text
@@ -469,7 +450,10 @@
 ;; Undo tree - make undos more powerful
 ;; -------------------------------------------------------------------
 (use-package undo-tree
-  :config (global-undo-tree-mode))
+  :config
+  (global-undo-tree-mode)
+  ;; increase undo limit
+  (setq undo-limit 8000000))
 
 ;; -------------------------------------------------------------------
 ;; Credential management
@@ -491,7 +475,6 @@
                           (okular . okular)
                           (eog . eog)
                           (firefox . firefox))
-  :init (openwith-mode nil)
   :config
   (setq openwith-associations
         (list
@@ -557,11 +540,13 @@
 ;; -------------------------------------------------------------------
 ;; Auto-saving changed files
 ;; -------------------------------------------------------------------
+(setq auto-save-default t)
+
 (use-package super-save
-  :defer 1
-  :diminish super-save-mode
-  :config
+  :init
   (super-save-mode t)
+  :config
+  ;; enable auto save
   (setq super-save-auto-save-when-idle t))
 
 ;; -------------------------------------------------------------------
@@ -592,8 +577,8 @@
 ;; -------------------------------------------------------------------
 (use-package popper
   :after projectile
-  :bind (("C-*"   . popper-toggle-latest)
-         ("M-*"   . popper-cycle)
+  :bind (("C-*" . popper-toggle-latest)
+         ("M-*" . popper-cycle)
          ("C-M-*" . popper-toggle-type))
   :init
   (setq popper-reference-buffers
@@ -622,7 +607,6 @@
 ;; -------------------------------------------------------------------
 ;; Projectile mode
 ;; -------------------------------------------------------------------
-
 (use-package projectile
   :ensure-system-package ((fd . fd-find))
   :diminish projectile-mode
@@ -651,9 +635,10 @@
 
 (use-package counsel-projectile
   :after projectile
+  :init
+  (counsel-projectile-mode t)
   :config
-  (setq counsel-projectile-sort-files t)
-  (counsel-projectile-mode t))
+  (setq counsel-projectile-sort-files t))
 
 ;; -------------------------------------------------------------------
 ;; Lsp-mode
@@ -785,6 +770,18 @@ FILE: filename"
   :init (global-flycheck-mode))
 
 ;; -------------------------------------------------------------------
+;; Spell checker: Language tool and ispell/aspell
+;; -------------------------------------------------------------------
+(use-package setup-spellcheck
+  :load-path local-load-path)
+
+;; -------------------------------------------------------------------
+;; Git - magit
+;; -------------------------------------------------------------------
+(use-package setup-magit
+  :load-path local-load-path)
+
+;; -------------------------------------------------------------------
 ;; Emacs application framework: it does not seem to be stable
 ;; -------------------------------------------------------------------
 ;; (defvar eaf-load-path (concat emacs-config-home "/site-lisp/emacs-application-framework")
@@ -850,12 +847,6 @@ FILE: filename"
   :load-path local-load-path)
 
 ;; -------------------------------------------------------------------
-;; Spell checker: Language tool and ispell/aspell
-;; -------------------------------------------------------------------
-(use-package setup-spellcheck
-  :load-path local-load-path)
-
-;; -------------------------------------------------------------------
 ;; Python
 ;; -------------------------------------------------------------------
 (use-package setup-python
@@ -895,12 +886,6 @@ FILE: filename"
   :mode (("\\.i$" . swig-mode)))
 
 ;; -------------------------------------------------------------------
-;; Git - magit
-;; -------------------------------------------------------------------
-(use-package setup-magit
-  :load-path local-load-path)
-
-;; -------------------------------------------------------------------
 ;; yaml mode
 ;; -------------------------------------------------------------------
 (use-package yaml-mode
@@ -929,11 +914,6 @@ FILE: filename"
                                      "--shm-size=16g"
                                      "--entrypoint /bin/bash"
                                      )))
-
-;; -------------------------------------------------------------------
-;; Kubernetes
-;; -------------------------------------------------------------------
-(use-package kubernetes)
 
 ;; -------------------------------------------------------------------
 ;; markdown mode
@@ -1024,7 +1004,7 @@ SOURCE_FILENAME: filename to the puml file."
          ("\\.uml" . plantuml-mode))
   :init
   ;; Consider using (plantuml-download-jar) as alternative
-  (defvar plantuml-version "1.2021.10" "Version number of plantuml binary")
+  (defvar plantuml-version "1.2021.15" "Version number of plantuml binary")
   (defvar plantuml-name (concat "plantuml-jar-asl-" plantuml-version) "Name of plantuml executable")
   (defvar plantuml-url
     (concat "https://sourceforge.net/projects/plantuml/files/" plantuml-version "/" plantuml-name ".zip/download")
@@ -1087,10 +1067,5 @@ SOURCE_FILENAME: filename to the puml file."
 ;; -------------------------------------------------------------------
 (use-package jinja2-mode
   :mode ("\\.j2\\'" "\\.jinja2\\'"))
-
-;; -------------------------------------------------------------------
-;; Restclient
-;; -------------------------------------------------------------------
-(use-package restclient)
 
 ;;; init.el ends here
