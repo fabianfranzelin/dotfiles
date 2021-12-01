@@ -536,18 +536,23 @@
   :hook (minions-mode . doom-modeline-mode))
 
 (use-package doom-modeline
-  :custom (doom-modeline-height 15
-           doom-modeline-bar-width 6
-           doom-modeline-lsp t
-           doom-modeline-github nil
-           doom-modeline-mu4e nil
-           doom-modeline-irc t
-           doom-modeline-minor-modes t
-           doom-modeline-persp-name nil
-           doom-modeline-buffer-file-name-style 'truncate-except-project
-           doom-modeline-major-mode-icon nil)
   :init
-  (doom-modeline-mode +1))
+  (doom-modeline-mode +1)
+  :config
+  (setq doom-modeline-height 15
+        doom-modeline-bar-width 6
+        doom-modeline-modal-icon t
+        doom-modeline-lsp t
+        doom-modeline-github nil
+        doom-modeline-mu4e nil
+        doom-modeline-irc nil
+        doom-modeline-minor-modes nil
+        doom-modeline-persp-name nil
+        doom-modeline-buffer-file-name-style 'truncate-except-project
+        doom-modeline-buffer-modification-icon t
+        doom-modeline-major-mode-icon t
+        doom-modeline-buffer-encoding nil
+        doom-modeline-vcs-max-length 48))
 
 ;; -------------------------------------------------------------------
 ;; Auto-saving changed files
