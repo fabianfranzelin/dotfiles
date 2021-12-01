@@ -97,8 +97,7 @@ BUFFER-LIST: string list of buffer names"
   "Toggle the visibility of buffers with the given prefix.
 If none is available, START-CMD is executed in a new window.
 PREFIX: start string of buffer name
-START-CMD: list that is to be executed if no buffer with given prefix exists.
-"
+START-CMD: list that is to be executed if no buffer with given prefix exists."
   (setq buffer-names (ff/load-buffers prefix))
   (cond ((= (length buffer-names) 0)
          ;; no buffers available -> create a new one

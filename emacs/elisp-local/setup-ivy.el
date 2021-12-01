@@ -39,8 +39,7 @@
   (setf (alist-get 'counsel-projectile-ag ivy-height-alist) 15)
   (setf (alist-get 'counsel-projectile-rg ivy-height-alist) 15)
   (setf (alist-get 'swiper ivy-height-alist) 15)
-  (setf (alist-get 'counsel-switch-buffer ivy-height-alist) 7)
-)
+  (setf (alist-get 'counsel-switch-buffer ivy-height-alist) 15))
 
 (use-package ivy-hydra)
 
@@ -67,8 +66,8 @@
   :custom
   (counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only)
   :config
-  (setq ivy-initial-inputs-alist nil) ;; Don't start searches with ^
-  )
+  ;; Don't start searches with ^
+  (setq ivy-initial-inputs-alist nil))
 
 ;; To display icons correctly, you should run M-x
 ;; all-the-icons-install-fonts to install the necessary fonts.
