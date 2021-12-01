@@ -530,46 +530,24 @@
 (global-set-key [f12] 'my-put-file-name-on-clipboard)
 
 ;; -------------------------------------------------------------------
-;; Beautify modline
+;; Use doom modeline
 ;; -------------------------------------------------------------------
-(use-package diminish)
+(use-package minions
+  :hook (minions-mode . doom-modeline-mode))
 
-(use-package smart-mode-line
-  :config
-  (setq sml/no-confirm-load-theme t)
-  (sml/setup)
-  (sml/apply-theme 'respectful)  ; Respect the theme colors
-  (setq sml/mode-width 'right
-        sml/name-width 60)
-
-  (setq-default mode-line-format
-                `("%e"
-                  mode-line-front-space
-                  evil-mode-line-tag
-                  mode-line-mule-info
-                  mode-line-client
-                  mode-line-modified
-                  mode-line-remote
-                  mode-line-frame-identification
-                  mode-line-buffer-identification
-                  sml/pos-id-separator
-                  (vc-mode vc-mode)
-                  " "
-                  ;; mode-line-position
-                  sml/pre-modes-separator
-                  mode-line-modes
-                  " "
-                  mode-line-misc-info))
-
-  (setq rm-blacklist
-        (mapconcat
-         'identity
-         ;; These names must start with a space!
-         '(" GitGutter" " MRev" " company"
-           " Undo-Tree" " Projectile.*" " Z" " Ind"
-           " Org-Agenda.*" " ElDoc" " SP/s" " cider.*")
-         "\\|")))
-
+(use-package doom-modeline
+  :custom (doom-modeline-height 15
+           doom-modeline-bar-width 6
+           doom-modeline-lsp t
+           doom-modeline-github nil
+           doom-modeline-mu4e nil
+           doom-modeline-irc t
+           doom-modeline-minor-modes t
+           doom-modeline-persp-name nil
+           doom-modeline-buffer-file-name-style 'truncate-except-project
+           doom-modeline-major-mode-icon nil)
+  :init
+  (doom-modeline-mode +1))
 
 ;; -------------------------------------------------------------------
 ;; Auto-saving changed files
