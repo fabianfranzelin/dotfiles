@@ -26,7 +26,6 @@
 ;; -------------------------------------------------------------------
 ;; Emacs lisp
 ;; -------------------------------------------------------------------
-
 ;; enable rainbow delimiters for emacs lisp
 (use-package rainbow-delimiters
   :hook (emacs-lisp-mode . rainbow-delimiters-mode))
