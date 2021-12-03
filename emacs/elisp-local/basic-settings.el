@@ -24,9 +24,6 @@
 ;; dir-local variables will be applied to remote files.
 (setq enable-remote-dir-locals t)
 
-;; make ESC quit prompts
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-
 ;; dont warn for following symlinked files
 (setq vc-follow-symlinks t)
 
@@ -46,7 +43,6 @@
 (scroll-bar-mode -1) ; disbale scrollbar
 (menu-bar-mode -1) ; disable menu bar
 (tool-bar-mode -1) ; disbale tool bar
-(set-fringe-mode 10)
 
 ;; disable backup
 (setq backup-inhibited t)
@@ -54,11 +50,6 @@
 
 ;; no splash screen
 (setq inhibit-splash-screen t)
-
-;; disable scroll lock mode permanently
-(defun do-nothing () "Does simply nothing." (interactive))
-(global-set-key (kbd "<Scroll_Lock>") 'do-nothing)
-(defvar scroll-lock-mode nil)
 
 ;; enable revert from disk
 (global-auto-revert-mode t)
@@ -72,8 +63,6 @@
 ;; Support wheel mouse scrolling
 (mouse-wheel-mode t)
 
-;; Kill this buffer, instead of prompting for which one to kill
-(global-set-key (kbd "C-x k") 'kill-this-buffer)
 
 ;; Turn on syntax colouring in all modes supporting it
 (global-font-lock-mode t)
@@ -100,15 +89,36 @@
   :config
   (load-theme 'material t))
 
-;; Key bindings
+;; -------------------------------------------------------------------
+;; Global key bindings
+;; -------------------------------------------------------------------
+;; Create a new frame
 (global-set-key "\C-n" 'make-frame)
+
+;; Kill this buffer, instead of prompting for which one to kill
+(global-set-key (kbd "C-x k") 'kill-this-buffer)
+
+;; make ESC quit prompts
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
+;; disable scroll lock mode permanently
+(defun do-nothing () "Does simply nothing." (interactive))
+(global-set-key (kbd "<Scroll_Lock>") 'do-nothing)
+(defvar scroll-lock-mode nil)
+
+;; convenient setting to move between open buffers
+(global-set-key (kbd "C-x <left>")  'windmove-left)
+(global-set-key (kbd "C-x <right>") 'windmove-right)
+(global-set-key (kbd "C-x <up>")    'windmove-up)
+(global-set-key (kbd "C-x <down>")  'windmove-down)
+
 
 ;; higlight the marked region (C-SPC) and use commands (like
 ;; latex-environment) on current region. Rectangle mark mode is
 ;; enabled via C-x SPC.
 (transient-mark-mode t) ;; C-SPC - for selection
 (rectangle-mark-mode t) ;; C-x SPC - for selection; C-x SPC C-t for
-                        ;; inserting stuff
+;; inserting stuff
 
 ;; Indentation
 (setq-default indent-tabs-mode nil)    ; use only spaces and no tabs
@@ -129,19 +139,13 @@
   :init
   (beacon-mode t)
   :config
-  (setq beacon-color "#ff0000"))
+  (setq beacon-color "#666600"))
 
 ;; volatile highlights - temporarily highlight changes from pasting
 ;; etc
 (use-package volatile-highlights
   :init
   (volatile-highlights-mode t))
-
-;; convenient setting to move between open buffers
-(global-set-key (kbd "C-x <left>")  'windmove-left)
-(global-set-key (kbd "C-x <right>") 'windmove-right)
-(global-set-key (kbd "C-x <up>")    'windmove-up)
-(global-set-key (kbd "C-x <down>")  'windmove-down)
 
 ;; winner mode for for redo/undo window configurations
 (winner-mode 1)
@@ -199,15 +203,19 @@
   (setq tramp-auto-save-directory "~/.cache/emacs/backups"
         tramp-persistency-file-name "~/.emacs.d/data/tramp"
         tramp-terminal-type "dumb"
-        tramp-default-method "ssh")
+        tramp-default-method "ssh"
+        tramp-verbose 1)
 
   ;; make sure vc stuff is not making tramp slower
   (setq vc-ignore-dir-regexp
-	(format "%s\\|%s"
-		vc-ignore-dir-regexp
-		tramp-file-name-regexp)))
+	    (format "%s\\|%s"
+		        vc-ignore-dir-regexp
+		        tramp-file-name-regexp))
+
+  (setq vc-handled-backends '(Git)))
 
 (customize-set-variable 'tramp-use-ssh-controlmaster-options nil)
+
 
 ;; multihop example: /ssh:frf2lr@ws|docker:vscode@c8416d9f4da6:/
 (use-package docker-tramp)
@@ -450,14 +458,15 @@
 ;; -------------------------------------------------------------------
 ;; Highlight parens
 (use-package paren
+  :init
+  (show-paren-mode 1)
   :config
   (set-face-background 'show-paren-match (face-background 'default))
   (set-face-foreground 'show-paren-match "#def")
   (set-face-attribute 'show-paren-match nil :weight 'extra-bold)
   ;; (set-face-attribute 'show-paren-match-expression nil :background "#363e4a")
   (setq show-paren-style 'mixed)	;; The entire expression
-  (setq blink-matching-paren t)
-  (show-paren-mode 1))
+  (setq blink-matching-paren t))
 
 ;; -------------------------------------------------------------------
 ;; Save history during sessions
