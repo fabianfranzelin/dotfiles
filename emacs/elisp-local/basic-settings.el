@@ -173,6 +173,17 @@
   :hook ((org-mode . ff/visual-fill-center-text)
          (rst-mode . ff/visual-fill-center-text)))
 
+
+;; -------------------------------------------------------------------
+;; Perspectives and workspaces
+;; -------------------------------------------------------------------
+(use-package perspective
+  :init
+  (unless (equal persp-mode t)
+    (persp-mode))
+  :config
+  (setq persp-initial-frame-name "Main"))
+
 ;; -------------------------------------------------------------------
 ;; Gumshoe: jump back and forth through marked positions
 ;; -------------------------------------------------------------------
