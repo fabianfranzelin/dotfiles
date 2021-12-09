@@ -18,6 +18,10 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
 
 # ----------------------------------------------------
+# Dotfiles setup
+source "${DOTFILES}/shell/shellrc.sh"
+
+# ----------------------------------------------------
 # ZSH settings
 
 if (__is_zsh); then
@@ -43,10 +47,6 @@ if (__is_zsh); then
     # ----------------------------------------------------
     # vterm setup
     source "${DOTFILES}/shell/vterm.zsh"
-
-    # ----------------------------------------------------
-    # Dotfiles setup
-    source "${DOTFILES}/shell/shellrc.sh"
 fi
 
 #------------------------------------------------------------------------------#

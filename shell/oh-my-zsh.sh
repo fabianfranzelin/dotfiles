@@ -77,9 +77,10 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(cp # rsync with cpv
-         zsh-navigation-tools
+         ripgrep
          zsh-autosuggestions
          zsh-syntax-highlighting
+         zsh-navigation-tools
         )
 
 source $ZSH/oh-my-zsh.sh
