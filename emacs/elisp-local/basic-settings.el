@@ -63,6 +63,8 @@
 ;; Support wheel mouse scrolling
 (mouse-wheel-mode t)
 
+;; enable recentf-mode
+(recentf-mode)
 
 ;; Turn on syntax colouring in all modes supporting it
 (global-font-lock-mode t)
@@ -563,13 +565,6 @@
   :load-path local-load-path)
 
 ;; -------------------------------------------------------------------
-;; highlight symbol and replace
-;; -------------------------------------------------------------------
-(use-package highlight-symbol
-  :bind* (("C-c h" . highlight-symbol)
-          ("C-c r" . highlight-symbol-query-replace)))
-
-;; -------------------------------------------------------------------
 ;; Treemacs
 ;; -------------------------------------------------------------------
 (defun treemacs-custom-filter (file _)
@@ -703,6 +698,53 @@ FILE: filename"
 ;; (use-package setup-eaf
 ;;   :load-path local-load-path)
 
+;; -------------------------------------------------------------------
+;; Embark: https://github.com/oantolin/embark
+;; -------------------------------------------------------------------
+(use-package marginalia
+  :after projectile
+  :config
+  (marginalia-mode)
+  (setq marginalia-command-categories
+        (append '((projectile-find-file . project-file)
+                  (projectile-find-dir . project-file)
+                  (projectile-switch-project . file))
+                marginalia-command-categories)))
+
+(defun sudo-find-file (file)
+  "Open FILE as root."
+  (interactive "FOpen file as root: ")
+  (when (file-writable-p file)
+    (user-error "File is user writeable, aborting sudo"))
+  (find-file (if (file-remote-p file)
+                 (concat "/" (file-remote-p file 'method) ":"
+                         (file-remote-p file 'user) "@" (file-remote-p file 'host)
+                         "|sudo:root@"
+                         (file-remote-p file 'host) ":" (file-remote-p file 'localname))
+               (concat "/sudo:root@localhost:" file))))
+
+;; highlight symbol and replace
+(use-package highlight-symbol)
+
+(use-package embark
+  :after (erefactor highlight-symbol)
+  :init
+  ;; Optionally replace the key help with a completing-read interface
+  (setq prefix-help-command #'embark-prefix-help-command)
+  :config
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none))))
+  :bind (("C-." . embark-act)
+          :map embark-file-map
+          ("S" . sudo-find-file)
+          :map embark-symbol-map
+          ("r" . hightlight-symbol-query-replace)
+          ("h" . highlight-symbol)
+          :map embark-variable-map
+          ("l" . edit-list)))
 (provide 'basic-settings)
 
 ;;; basic-settings.el ends here
