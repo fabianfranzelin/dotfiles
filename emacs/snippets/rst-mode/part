@@ -3,6 +3,8 @@
 # key: part
 # --
 
+.. _sec_${1:$(downcase (replace-regexp-in-string " " "_" yas-text))}:
+
 ${1:$(make-string (string-width yas-text) ?\#)}
 ${1:Part}
 ${1:$(make-string (string-width yas-text) ?\#)}
