@@ -526,7 +526,7 @@
 ;; Projectile mode
 ;; -------------------------------------------------------------------
 (use-package projectile
-  :ensure-system-package ((fd . fd-find))
+  :ensure-system-package ((fdfind . fd-find))
   :diminish projectile-mode
   :custom ((projectile-completion-system 'ivy))
   :bind-keymap ("C-c p" . projectile-command-map)
