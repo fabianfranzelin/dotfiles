@@ -22,3 +22,5 @@ Make sure to update the path correctly.
 
 - `sudo update-alternatives --install /usr/bin/emacsclient emacsclient $HOME/opt/emacs/bin/emacsclient 4`
 - `sudo update-alternatives --install /usr/bin/emacs emacs $HOME/opt/emacs/bin/emacs 3`
+- `sudo update-alternatives --config emacs`
+- `sudo update-alternatives --config emacsclient`
