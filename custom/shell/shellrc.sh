@@ -102,14 +102,14 @@ PATH=$HOME/opt/bin:$HOME/.local/bin:$PATH
 # ros setup
 
 if (__is_zsh); then
-    # melodic is only for Ubuntu 18.04
-    if [[ -f "/opt/ros/melodic/setup.zsh" ]]; then
-        source "/opt/ros/melodic/setup.zsh"
+    # melodic is only for Ubuntu 20.04
+    if [[ -f "/opt/ros/noetic/setup.zsh" ]]; then
+        source "/opt/ros/noetic/setup.zsh" > /dev/null
     fi
 elif (__is_bash); then
-    # melodic is only for Ubuntu 18.04
-    if [[ -f "/opt/ros/melodic/setup.bash" ]]; then
-        source "/opt/ros/melodic/setup.bash"
+    # melodic is only for Ubuntu 20.04
+    if [[ -f "/opt/ros/noetic/setup.bash" ]]; then
+        source "/opt/ros/noetic/setup.bash" > /dev/null
     fi
 fi
 
