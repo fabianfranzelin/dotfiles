@@ -745,6 +745,7 @@ FILE: filename"
           ("h" . highlight-symbol)
           :map embark-variable-map
           ("l" . edit-list)))
+
 (provide 'basic-settings)
 
 ;;; basic-settings.el ends here
