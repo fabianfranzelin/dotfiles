@@ -704,8 +704,9 @@ FILE: filename"
 ;; -------------------------------------------------------------------
 (use-package marginalia
   :after projectile
-  :config
+  :init
   (marginalia-mode)
+  :config
   (setq marginalia-command-categories
         (append '((projectile-find-file . project-file)
                   (projectile-find-dir . project-file)
@@ -726,9 +727,11 @@ FILE: filename"
 
 ;; highlight symbol and replace
 (use-package highlight-symbol)
+;; dev/null for online pages
+(use-package 0x0)
 
 (use-package embark
-  :after (erefactor highlight-symbol)
+  :after highlight-symbol
   :init
   ;; Optionally replace the key help with a completing-read interface
   (setq prefix-help-command #'embark-prefix-help-command)
@@ -738,14 +741,29 @@ FILE: filename"
                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                  nil
                  (window-parameters (mode-line-format . none))))
+  ;; Show Embark actions via which-key
+  (setq embark-action-indicator
+        (lambda (map)
+          (which-key--show-keymap "Embark" map nil nil 'no-paging)
+          #'which-key--hide-popup-ignore-command)
+        embark-become-indicator embark-action-indicator)
+
   :bind (("C-." . embark-act)
-          :map embark-file-map
-          ("S" . sudo-find-file)
-          :map embark-symbol-map
-          ("r" . hightlight-symbol-query-replace)
-          ("h" . highlight-symbol)
-          :map embark-variable-map
-          ("l" . edit-list)))
+         ("C-h B" . embark-bindings)
+         :map minibuffer-local-map
+         ("C-." . embark-act)
+         :map embark-region-map
+         ("U" . 0x0-dwim)
+         :map embark-file-map
+         ("S" . sudo-find-file)
+         :map embark-symbol-map
+         ("h" . highlight-symbol)))
+
+;; -------------------------------------------------------------------
+;; Ace window: select windows based on numbers
+;; -------------------------------------------------------------------
+(use-package ace-window
+  :bind (("M-o" . ace-window)))
 
 (provide 'basic-settings)
 

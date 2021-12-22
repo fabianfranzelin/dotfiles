@@ -17,7 +17,7 @@
       (setq n (- n 1)))
     (eval ans)))
 
-;;; -------------------------------------------------------------
+;; -------------------------------------------------------------
 
 (defun ff/download-and-extract-zip-archive (url name extract-to expected-binary-file package-name)
   "Download and install zip archives."
@@ -28,8 +28,7 @@
         (message (concat "[" package-name "] Downloading " name " to " temporary-file))
         (url-copy-file url temporary-file))
       (message (concat "[" package-name "] Decompress " name " to " extract-to))
-      (call-process-shell-command (concat "unzip " temporary-file " -d " extract-to) nil 0)
-      )))
+      (call-process-shell-command (concat "unzip " temporary-file " -d " extract-to) nil 0))))
 
 (defun ff/lsp-treemacs-symbols-toggle ()
   "Toggle the lsp-treemacs-symbols buffer."
@@ -52,8 +51,7 @@
                                         " --version"))
                                " "))) "\\.")))
     (cond ((equal (eval type) "major") (elt python-interpreter-versions 0))
-          ((equal (eval type) "minor") (elt python-interpreter-versions 1)))
-    ))
+          ((equal (eval type) "minor") (elt python-interpreter-versions 1)))))
 
 (defun ff/python-local-site-packages-path (package-name)
   "Provide the path to the local site packages."
@@ -61,8 +59,7 @@
           (ff/python-interpreter-version "major")
           "."
           (ff/python-interpreter-version "minor")
-          "/site-packages/" (eval package-name))
-  )
+          "/site-packages/" (eval package-name)))
 
 (defun ff/switch-to-last-window ()
   "Switch to last visible window."
@@ -86,13 +83,12 @@
     ;; go back to the cursor position in the previous window
     (ff/switch-to-last-window)))
 
-;;; -------------------------------------------------------------
+;; -------------------------------------------------------------
 
 (defun ff/visual-fill-center-text ()
   (setq visual-fill-column-width 120
         visual-fill-column-center-text t)
   (visual-fill-column-mode 1))
-
 
 (provide 'helpers)
 
