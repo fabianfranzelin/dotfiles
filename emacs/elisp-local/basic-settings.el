@@ -198,6 +198,7 @@
   :custom
   (gumshoe-idle-time 2)
   (gumshoe-log-len 20)
+  (gumshoe-show-footprints-p nil)
   :bind (;; enable browser like key bindings to move forth and
          ;; back in bookmarks
          ("M-<left>" . gumshoe-backtrack-back)
