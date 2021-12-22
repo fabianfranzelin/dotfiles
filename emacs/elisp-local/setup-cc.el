@@ -8,6 +8,7 @@
 ;; cmake-mode: major mode for cmake files
 ;; https://gitlab.kitware.com/cmake/cmake/blob/master/Auxiliary/cmake-mode.el
 (use-package cmake-mode
+  :ensure-system-package (("~/.local/lib/python3.8/site-packages/cmake_language_server" . "python3 -m pip install -U 'cmake_language_server'"))
   :mode (("\\.cmake$" . cmake-mode)
          ("CMakeLists.txt" . cmake-mode)))
 

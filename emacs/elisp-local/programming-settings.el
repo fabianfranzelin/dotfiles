@@ -67,18 +67,7 @@
 ;; -------------------------------------------------------------------
 ;; Shell
 ;; -------------------------------------------------------------------
-(use-package flymake-shell
-  :commands flymake-shell-load
-  :hook ((sh-set-shell . flymake-shell-load)))
-
-(use-package flymake-shellcheck
-  :ensure-system-package (shellcheck . shellcheck)
-  :commands flymake-shellcheck-load
-  :hook ((sh-mode . flymake-shellcheck-load)))
-
-
-(add-hook 'after-save-hook
-          'executable-make-buffer-file-executable-if-script-p)
+;; part of the lsp-mode configuration
 
 ;; -------------------------------------------------------------------
 ;; Swig-Mode
@@ -110,8 +99,6 @@
   :mode (("\\.yml$" . yaml-mode)
          ("\\.yaml$" . yaml-mode)))
 
-(use-package flymake-yaml)
-
 ;; -------------------------------------------------------------------
 ;; dockerfile mode
 ;; -------------------------------------------------------------------
@@ -128,8 +115,7 @@
                                      "-e DEBIAN_FRONTEND=noninteractive"
                                      "-v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY"
                                      "--shm-size=16g"
-                                     "--entrypoint /bin/bash"
-                                     )))
+                                     "--entrypoint /bin/bash")))
 
 ;; -------------------------------------------------------------------
 ;; markdown mode
@@ -269,14 +255,9 @@ SOURCE_FILENAME: filename to the puml file."
 ;; Json
 ;; -------------------------------------------------------------------
 (use-package json-mode
-  :mode (("\\.json$" . json-mode)))
-
-(use-package flymake-json
   :ensure-system-package ((npm . npm)
                           (jsonlint . "sudo env \"PATH=$PATH\" npm install jsonlint -g"))
-  :after json-mode
-  :hook ((json-mode . flymake-json-load)
-         (js-mode . flymake-json-maybe-load)))
+  :mode (("\\.json$" . json-mode)))
 
 ;; -------------------------------------------------------------------
 ;; Jinja2 mode for code generation

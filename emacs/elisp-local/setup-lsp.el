@@ -7,11 +7,21 @@
 (defun ff-lsp-mode-setup ()
   "Setup-hook for lsp-mode."
   (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-  (lsp-headerline-breadcrumb-mode))
+  (lsp-headerline-breadcrumb-mode)
 
-;; Disables lsp linter as default for python-mode. It is crucial that
-;; this happens before loading lsp-mode.
-(setq lsp-diagnostic-package :none)
+  ;; Disables lsp linter as default for python-mode. It is crucial that
+  ;; this happens before loading lsp-mode.
+  (setq lsp-diagnostic-package :none)
+
+  ;; increase threshold for lsp to run smoothly
+  ;; https://emacs-lsp.github.io/lsp-mode/page/performance/
+  (setq read-process-output-max (* 1024 1024)) ;; 1mb
+
+  ;; lsp mode adds automatically capf as first element in the list of
+  ;; company-backends. This disables implicitly the other backends that
+  ;; I define in the specific modes. Hence, each mode takes over
+  ;; responsibility for loading the required completion providers.
+  (setq lsp-completion-provider :none))
 
 (use-package lsp-mode
   :commands lsp
@@ -23,32 +33,23 @@
          (typescript-mode . lsp-deferred)
          (json-mode . lsp-deferred)
          (yaml-mode . lsp-deferred)
-         (before-save-hook . lsp-format-buffer)
-         )
+         (sh-mode . lsp-deferred)
+         (cmake-mode . lsp-deferred)
+         (before-save-hook . lsp-format-buffer))
   :config
   (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
   (setq lsp-log-io nil ;; if set to true can cause a performance hit
         lsp-pyls-plugins-flake8-enabled nil
         lsp-pyls-plugins-pycodestyle-enabled t
         lsp-enable-snippet t
+        ;; disable flymake
         lsp-prefer-flymake nil
-        lsp-file-watch-threshold 100000 ;; increase watch threshold
-        lsp-python-ms-python-executable "/usr/bin/python3"
-        )
+        ;; increase watch threshold
+        lsp-file-watch-threshold 100000)
   (lsp-enable-which-key-integration)
 
   :bind (:map lsp-mode-map
               ("TAB" . company-indent-or-complete-common)))
-
-;; increase threshold for lsp to run smoothly
-;; https://emacs-lsp.github.io/lsp-mode/page/performance/
-(setq read-process-output-max (* 1024 1024)) ;; 1mb
-
-;; lsp mode adds automatically capf as first element in the list of
-;; company-backends. This disables implicitly the other backends that
-;; I define in the specific modes. Hence, each mode takes over
-;; responsibility for loading the required completion providers.
-(setq lsp-completion-provider :none)
 
 (use-package lsp-ui
   :after lsp-mode
