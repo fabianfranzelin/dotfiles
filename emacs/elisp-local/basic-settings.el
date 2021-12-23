@@ -307,6 +307,7 @@
 ;; -------------------------------------------------------------------
 ;; Set up dired
 ;; -------------------------------------------------------------------
+;; rename buffer content: C-x C-q, C-c C-c to apply and C-c ESC to cancel
 (use-package dired
   :ensure nil
   :defer 1
