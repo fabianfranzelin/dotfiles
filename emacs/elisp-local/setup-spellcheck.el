@@ -10,7 +10,7 @@
 ;; --------------------------------------------------------
 (use-package languagetool
   :init
-  (defvar langtool-version "5.5")
+  (defvar langtool-version "5.6")
   (defvar langtool-name (concat "LanguageTool-" langtool-version))
   (defvar langtool-url (concat "https://languagetool.org/download/" langtool-name ".zip"))
   (defvar langtool-extract-to (expand-file-name "~/opt/languageTool"))
