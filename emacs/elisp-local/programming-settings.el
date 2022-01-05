@@ -168,8 +168,6 @@
 
 (use-package typescript-mode
   :after (dap-node company)
-  :mode (("\\.ts$" . typescript-mode)
-         ("\\.tsx$" . typescript-mode))
   :config
   (setq typescript-indent-level 4)
   (dap-node-setup))
@@ -177,6 +175,8 @@
 ;; note, for some reason the mode directive does not work here, so I
 ;; added the typescript mode explicitly to tsx files.
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
+(add-to-list 'auto-mode-alist '("\\.js\\'" . typescript-mode))
 
 (use-package json-snatcher
   :hook ((js-mode-hook . js-mode-bindings)
