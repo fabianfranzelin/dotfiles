@@ -42,12 +42,12 @@
                           (require 'dap-python)
                           (lsp))))  ; or lsp-deferred
   :init
+  (setq lsp-python-ms-auto-install-server t)
   ;; use ipython as default interpreter
   (setq python-shell-interpreter "ipython3"
         python-shell-interpreter-args "--simple-prompt -i")
   (setq python-indent-offset 4
         python-indent-guess-indent-offset nil)
-  (setq lsp-python-ms-auto-install-server t)
   ;; default python interpreter for dap
   (setq dap-python-executable "python3")
   :config
