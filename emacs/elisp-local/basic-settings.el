@@ -664,6 +664,9 @@ FILE: filename"
 ;; -------------------------------------------------------------------
 ;; Yasnippet
 ;; -------------------------------------------------------------------
+(defun yas-rst-mode-labels (text)
+  (downcase (replace-regexp-in-string " \\|:\\|-" "_" text)))
+
 (use-package yasnippet
   :config
   (setq yas-verbosity 1

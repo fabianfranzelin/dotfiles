@@ -3,9 +3,7 @@
 # key: section
 # --
 
-.. _sec_${1:$(downcase (replace-regexp-in-string " " "_" yas-text))}:
+.. _sec_${1:$(yas-rst-mode-labels yas-text)}:
 
 ${1:Section}
 ${1:$(make-string (string-width yas-text) ?\=)}
-
-$0
