@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: Development requirement
+# key: req-dev
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# --
+
+
+.. req-dev:: ${1:Title}
+   :id: ${2:ID}
+   :status: draft
+   :derives: ${3:Derived from product ID}
+
+   ${4:Content}

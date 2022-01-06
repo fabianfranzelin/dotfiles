@@ -35,6 +35,7 @@
          (yaml-mode . lsp-deferred)
          (sh-mode . lsp-deferred)
          (cmake-mode . lsp-deferred)
+         (dockerfile-mode . lsp-deferred)
          (before-save-hook . lsp-format-buffer))
   :config
   (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
