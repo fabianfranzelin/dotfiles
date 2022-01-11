@@ -44,7 +44,7 @@
   :init
   (setq lsp-python-ms-auto-install-server t)
   ;; use ipython as default interpreter
-  (setq python-shell-interpreter "ipython3"
+  (setq python-shell-interpreter "ipython"
         python-shell-interpreter-args "--simple-prompt -i")
   (setq python-indent-offset 4
         python-indent-guess-indent-offset nil)
@@ -67,6 +67,7 @@
   :init (pyvenv-mode 1))
 
 (use-package pipenv
+  :ensure-system-package ((pipenv . "python3 -m pip install --user -U pipenv"))
   :hook (python-mode . pipenv-mode)
   :init
   (setq pipenv-projectile-after-switch-function

@@ -11,7 +11,6 @@
 (defun ff/configure-text-mode ()
   "Configure text mode."
   (interactive)
-  (define-key text-mode-map (kbd "<tab>") 'company-indent-or-complete-common)
   (set (make-local-variable 'company-backends)
        '((company-abbrev
           company-dabbrev
