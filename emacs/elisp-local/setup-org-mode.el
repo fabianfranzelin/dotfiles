@@ -86,8 +86,7 @@
   :commands (org-capture org-agenda)
   :hook ((org-mode . efs/org-mode-setup)
          (org-mode . (lambda ()
-                       (setq company-backends +ff/company-default-backends)
-                       )))
+                       (setq company-backends +ff/company-default-backends))))
   :config
   (setq org-ellipsis " ▾")
 
