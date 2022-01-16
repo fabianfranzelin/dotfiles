@@ -547,7 +547,8 @@
           ".fslckout" ".bzr" "_darcs" ".tox"
           "build" "target" "_build" ".history"
           "tmp" ".ccls-root" ".ccls-cache"
-          "compile_commands.json" ".clangd"))
+          "compile_commands.json" ".clangd"
+          ".ccls-cache" ".ccls-root"))
         projectile-require-project-root t
         projectile-indexing-method 'alien
         projectile-sort-order 'recentf
