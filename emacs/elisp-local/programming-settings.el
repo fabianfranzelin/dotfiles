@@ -250,6 +250,9 @@ SOURCE_FILENAME: filename to the puml file."
   :after lsp-mode
   :hook ((java-mode . lsp)))
 
+(use-package dap-java
+  :ensure nil)
+
 ;; -------------------------------------------------------------------
 ;; Json
 ;; -------------------------------------------------------------------
