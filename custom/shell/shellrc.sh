@@ -80,23 +80,11 @@ export EDITOR="$VISUAL"
 export LC_COLLATE="C"
 
 # Start gnome keyring
-if [[ -n "$DESKTOP_SESSION" ]]; then
-    eval "$(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)"
-    export SSH_AUTH_SOCK
-else
-    # start ssh agent for remote sessions and add personal
-    # certificates to prevent repeated password input
-    . "${HOME}/.ssh-find-agent"
-    ssh_find_agent -a
-    if [ -z "$SSH_AUTH_SOCK" ]
-    then
-        eval $(ssh-agent) > /dev/null
-        ssh-add
-    fi
-fi
+eval "$(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)"
+export SSH_AUTH_SOCK
 
 # expand path to include local bin directory
-PATH=$HOME/opt/bin:$HOME/.local/bin:$PATH
+PATH=$HOME/opt/bin:$HOME/.local/bin:/usr/lib/ccache:$PATH
 
 #------------------------------------------------------------------------------#
 # ros setup
@@ -135,12 +123,6 @@ then
 fi
 
 #------------------------------------------------------------------------------#
-# npm
-NPM_VERSION='v13.14.0'
-NPM_DISTRO='linux-x64'
-export PATH="/usr/local/lib/nodejs/node-${NPM_VERSION}-${NPM_DISTRO}/bin:${PATH}"
-
-#------------------------------------------------------------------------------#
 # SGpp
 export SGPP_HOME=$HOME/workspace/SGpp_ff
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SGPP_HOME/lib/sgpp
@@ -148,21 +130,11 @@ export PYTHONPATH=$PYTHONPATH:$SGPP_HOME/lib
 
 #------------------------------------------------------------------------------#
 # AOS
-export AOS_BASE_HOME=$HOME/workspace/aos_base
-export RECOMPUTE_HOME=$AOS_BASE_HOME/recompute
-export AOS_BUILD_DIR=$AOS_BASE_HOME/_build
-export AOS_INSTALL_DIR=$AOS_BASE_HOME/_install
-export RECOMPUTE_BUILD_DIR=$AOS_BASE_HOME/build_recapp
-export RECOMPUTE_INSTALL_DIR=$AOS_BASE_HOME/install_recapp/recompute
+export AOS_BASE_HOME="${HOME}/workspace/aos_base"
+export AOS_BUILD_DIR="${AOS_BASE_HOME}/build"
+export AOS_INSTALL_DIR="${AOS_BASE_HOME}/install"
 
 #------------------------------------------------------------------------------#
-## DoL player
-if [[ -d "${RECOMPUTE_INSTALL_DIR}" ]]; then
-    "${RECOMPUTE_INSTALL_DIR}/host/bin/test/dol_source_env.sh"
-    export DOL_MANIFEST_DIR="${RECOMPUTE_INSTALL_DIR}/target/share/manifests"
-    PATH=$PATH:${RECOMPUTE_BUILD_DIR}/recompute/source/host/tooling/sequenceprofiler
-fi
-
 # Azure DevOps
 # Run cat BOSCH-CA-DE_pem.cer /opt/az/lib/python3.6/site-packages/certifi/cacert.pem > azure-bosch-cert.pem
 # export REQUESTS_CA_BUNDLE="${HOME}/.local/share/certificates/bosch/azure-bosch-cert.pem"
@@ -188,6 +160,12 @@ if [[ -f "/usr/share/virtualenvwrapper/virtualenvwrapper.sh" ]]; then
     # pip bash completion end
 fi
 
+#------------------------------------------------------------------------------#
 # make aliases available in eshell
 mkdir -p "$HOME/.emacs.d/eshell"
 alias | sed 's/^alias //' | sed -E "s/^([^=]+)='(.+?)'$/\1=\2/" | sed "s/'\\\\''/'/g" | sed "s/'\\\\$/'/;" | sed -E 's/^([^=]+)=(.+)$/alias \1 \2/' > "$HOME/.emacs.d/eshell/alias"
+
+#------------------------------------------------------------------------------#
+# enable direnv for bash or zsh
+eval "$(direnv hook $(echo $0 | cut -d'/' -f3))" > /dev/null
+

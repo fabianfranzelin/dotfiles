@@ -770,6 +770,15 @@ FILE: filename"
 (use-package ace-window
   :bind (("M-o" . ace-window)))
 
+;; -------------------------------------------------------------------
+;; Vdiff: Vim like diff
+;; -------------------------------------------------------------------
+(use-package vdiff
+  :bind (("C-c v f" . vdiff-files)
+         ("C-c v b" . vdiff-buffers)
+         ("C-c v q" . vdiff-quit)
+         ("C-c v h" . vdiff-hydra/body)))
+
 (provide 'basic-settings)
 
 ;;; basic-settings.el ends here
