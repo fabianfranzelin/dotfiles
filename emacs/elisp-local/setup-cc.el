@@ -124,8 +124,7 @@
                                 (ccls//enable)
                                 (setq-local ccls-code-lens-mode t)
                                 (+cc-fontify-constants-h)
-                                (company-mode)
-                                ))
+                                (company-mode)))
          ((c-mode c++-mode) . (lambda ()
                                 (add-hook 'before-save-hook
                                           (lambda ()
@@ -149,8 +148,7 @@
     (set (make-local-variable 'company-backends)
          '((company-clang company-lsp company-capf company-files)
            (company-dabbrev-code company-dabbrev)))
-    (setq company-transformers nil company-lsp-async t company-lsp-cache-candidates nil)
-    )
+    (setq company-transformers nil company-lsp-async t company-lsp-cache-candidates nil))
   (add-hook 'c++-mode-hook #'my-cc-common-mode-hook)
   (add-hook 'c-mode-hook #'my-cc-common-mode-hook)
 
@@ -161,8 +159,7 @@
       (font-lock-add-keywords
        nil '(("\\<[A-Z]*_[0-9A-Z_]+\\>" . font-lock-constant-face)
              ("\\<[A-Z]\\{3,\\}\\>"  . font-lock-constant-face))
-       t)))
-)
+       t))))
 
 ;; highlight doxygen comments in Emacs, including code blocks
 ;; https://github.com/Lindydancer/highlight-doxygen/tree/master

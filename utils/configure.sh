@@ -71,6 +71,7 @@ sudo apt-get install -y \
      python3-pyqt5 \
      zsh \
      npm \
+     direnv \
      python3-virtualenvwrapper
 
 #------------------------------------------------------------------------------#
