@@ -6,19 +6,130 @@
 
 ;;; Code:
 
-;; cmake-mode: major mode for cmake files
-;; https://gitlab.kitware.com/cmake/cmake/blob/master/Auxiliary/cmake-mode.el
-(use-package cmake-mode
-  :ensure-system-package (("~/.local/lib/python3.8/site-packages/cmake_language_server" . "python3 -m pip install -U 'cmake_language_server'"))
-  :mode (("\\.cmake$" . cmake-mode)
-         ("CMakeLists.txt" . cmake-mode)))
+;; -----------------------------------------------------------------------------------
+;; C/C++
 
-;; cmake-font-lock: emacs font lock rules for CMake
-;; https://github.com/Lindydancer/cmake-font-lock
-(use-package cmake-font-lock
-  :hook ((cmake-mode . cmake-font-lock-activate))
+;; -----------------------------------------------------------------------------------
+;; Formatting and linting
+
+(defun ff/clang-format-buffer-smart ()
+  "Reformat buffer if .clang-format exists in the projectile root."
+  (interactive)
+  (when (f-exists? (expand-file-name ".clang-format" (projectile-project-root)))
+    (clang-format-buffer)))
+
+(use-package clang-format+
+  :ensure-system-package (clang-format-10 . clang-format-10)
+  :hook (((c-mode c++-mode) . clang-format+-mode))
+         ((c-mode c++-mode) . (lambda ()
+                                (add-hook 'before-save-hook 'ff/clang-format-buffer-smart nil t)))
   :config
-  (autoload 'cmake-font-lock-activate "cmake-font-lock" nil t))
+  (setq clang-format-executable "/usr/bin/clang-format-10"))
+
+
+(use-package flycheck-clang-tidy
+  :ensure-system-package ((clang-tidy . clang-tidy))
+  :after flycheck
+  :hook (flycheck-mode . flycheck-clang-tidy-setup))
+
+;; ----------------------------------------------------------------------------------
+;; Autloads for CCLS and cc-mode
+
+;;;###autoload
+(defvar +ccls-path-mappings [])
+
+;;;###autoload
+(defvar +ccls-initial-blacklist [])
+
+;;;###autoload
+(defvar +ccls-cache-dir (concat (getenv "HOME") "/.cache/ccls"))
+
+;;;###autoload
+(defvar +lsp-blacklist nil)
+
+
+(defun ccls/callee ()
+  (interactive)
+  (lsp-ui-peek-find-custom "$ccls/call" '(:callee t)))
+(defun ccls/caller ()
+  (interactive)
+  (lsp-ui-peek-find-custom "$ccls/call"))
+(defun ccls/vars (kind)
+  (lsp-ui-peek-find-custom "$ccls/vars" `(:kind ,kind)))
+(defun ccls/base (levels)
+  (lsp-ui-peek-find-custom "$ccls/inheritance" `(:levels ,levels)))
+(defun ccls/derived (levels)
+  (lsp-ui-peek-find-custom "$ccls/inheritance" `(:levels ,levels :derived t)))
+(defun ccls/member (kind)
+  (lsp-ui-peek-find-custom "$ccls/member" `(:kind ,kind)))
+
+;; The meaning of :role corresponds to https://github.com/maskray/ccls/blob/master/src/symbol.h
+
+;; References w/ Role::Address bit (e.g. variables explicitly being taken addresses)
+(defun ccls/references-address ()
+  (interactive)
+  (lsp-ui-peek-find-custom "textDocument/references"
+                           (plist-put (lsp--text-document-position-params) :role 128)))
+
+;; References w/ Role::Dynamic bit (macro expansions)
+(defun ccls/references-macro ()
+  (interactive)
+  (lsp-ui-peek-find-custom "textDocument/references"
+                           (plist-put (lsp--text-document-position-params) :role 64)))
+
+;; References w/o Role::Call bit (e.g. where functions are taken addresses)
+(defun ccls/references-not-call ()
+  (interactive)
+  (lsp-ui-peek-find-custom "textDocument/references"
+                           (plist-put (lsp--text-document-position-params) :excludeRole 32)))
+
+;; References w/ Role::Read
+(defun ccls/references-read ()
+  (interactive)
+  (lsp-ui-peek-find-custom "textDocument/references"
+                           (plist-put (lsp--text-document-position-params) :role 8)))
+
+;; References w/ Role::Write
+(defun ccls/references-write ()
+  (interactive)
+  (lsp-ui-peek-find-custom "textDocument/references"
+                           (plist-put (lsp--text-document-position-params) :role 16)))
+
+;; xref-find-apropos (workspace/symbol)
+
+(defun my/highlight-pattern-in-text (pattern line)
+  (when (> (length pattern) 0)
+    (let ((i 0))
+      (while (string-match pattern line i)
+        (setq i (match-end 0))
+        (add-face-text-property (match-beginning 0) (match-end 0) 'isearch t line))
+      line)))
+
+(with-eval-after-load 'lsp-methods
+  ;;; Override
+  ;; This deviated from the original in that it highlights pattern appeared in symbol
+  (defun lsp--symbol-information-to-xref (pattern symbol)
+    "Return a `xref-item' from SYMBOL information."
+    (let* ((location (gethash "location" symbol))
+           (uri (gethash "uri" location))
+           (range (gethash "range" location))
+           (start (gethash "start" range))
+           (name (gethash "name" symbol)))
+      (xref-make (format "[%s] %s"
+                         (alist-get (gethash "kind" symbol) lsp--symbol-kind)
+                         (my/highlight-pattern-in-text (regexp-quote pattern) name))
+                 (xref-make-file-location (string-remove-prefix "file://" uri)
+                                          (1+ (gethash "line" start))
+                                          (gethash "character" start)))))
+
+  (cl-defmethod xref-backend-apropos ((_backend (eql xref-lsp)) pattern)
+    (let ((symbols (lsp--send-request (lsp--make-request
+                                       "workspace/symbol"
+                                       `(:query ,pattern)))))
+      (mapcar (lambda (x) (lsp--symbol-information-to-xref pattern x)) symbols))))
+
+;; ----------------------------------------------------------------------------------
+;; Use package for CCLS and cc-mode
 
 ;; adds font-lock highlighting for modern C++ upto C++17
 ;; https://github.com/ludwigpacifici/modern-cpp-font-lock
@@ -35,18 +146,14 @@
   :config
   ;; enable ccls semantic highlighting
   (setq ccls-sem-highlight-method 'font-lock)
+  (ccls-use-default-rainbow-sem-highlight)
 
-  ;;;###autoload
-  (defvar +ccls-path-mappings [])
+  ;; https://github.com/maskray/ccls/blob/master/src/config.h
+  ;; make sure that the cache directory exists
+  (make-directory (eval +ccls-cache-dir) :parents)
 
-  ;;;###autoload
-  (defvar +ccls-initial-blacklist [])
-
-  ;;;###autoload
-  (defvar +ccls-compilation-database-directory ".")
-
-  (setq
-   ccls-initialization-options
+  ;; set initialization ooptions for ccls (equal to .ccls)
+  (setq ccls-initialization-options
    `(:clang
      (:excludeArgs
       ;; Linux's gcc options. See ccls/wiki
@@ -62,85 +169,41 @@
         "^/usr/(local/)?include/c\\+\\+/v1/"
         ]))
      :index (:initialBlacklist ,+ccls-initial-blacklist :parametersInDeclarations :json-false :trackDependency 1)
-     :compilationDatabaseDirectory ,+ccls-compilation-database-directory
-     ))
+     :cache (:directory ,+ccls-cache-dir)
+     :compilationDatabaseDirectory "")))
 
-  ;; https://github.com/MaskRay/Config/blob/master/home/.config/doom/modules/private/my-cc/autoload.el#L10
-  (defun ccls/callee ()
-    (interactive)
-    (lsp-ui-peek-find-custom "$ccls/call" '(:callee t)))
-  (defun ccls/caller ()
-    (interactive)
-    (lsp-ui-peek-find-custom "$ccls/call"))
-  (defun ccls/vars (kind)
-    (lsp-ui-peek-find-custom "$ccls/vars" `(:kind ,kind)))
-  (defun ccls/base (levels)
-    (lsp-ui-peek-find-custom "$ccls/inheritance" `(:levels ,levels)))
-  (defun ccls/derived (levels)
-    (lsp-ui-peek-find-custom "$ccls/inheritance" `(:levels ,levels :derived t)))
-  (defun ccls/member (kind)
-    (lsp-ui-peek-find-custom "$ccls/member" `(:kind ,kind)))
-
-  ;; The meaning of :role corresponds to https://github.com/maskray/ccls/blob/master/src/symbol.h
-  ;; References w/ Role::Address bit (e.g. variables explicitly being taken addresses)
-  (defun ccls/references-address ()
-    (interactive)
-    (lsp-ui-peek-find-custom "textDocument/references"
-                             (plist-put (lsp--text-document-position-params) :role 128)))
-
-  ;; References w/ Role::Dynamic bit (macro expansions)
-  (defun ccls/references-macro ()
-    (interactive)
-    (lsp-ui-peek-find-custom "textDocument/references"
-                             (plist-put (lsp--text-document-position-params) :role 64)))
-
-  ;; References w/o Role::Call bit (e.g. where functions are taken addresses)
-  (defun ccls/references-not-call ()
-    (interactive)
-    (lsp-ui-peek-find-custom "textDocument/references"
-                             (plist-put (lsp--text-document-position-params) :excludeRole 32)))
-
-  ;; References w/ Role::Read
-  (defun ccls/references-read ()
-    (interactive)
-    (lsp-ui-peek-find-custom "textDocument/references"
-                             (plist-put (lsp--text-document-position-params) :role 8)))
-
-  ;; References w/ Role::Write
-  (defun ccls/references-write ()
-    (interactive)
-    (lsp-ui-peek-find-custom "textDocument/references"
-                             (plist-put (lsp--text-document-position-params) :role 16))))
-
-(defun ccls//enable ()
+(defun +ccls|enable ()
   "Enable lsp-ccls."
-  (require 'ccls)
-  (lsp-deferred))
+  (when (and buffer-file-name (--all? (not (string-match-p it buffer-file-name)) +lsp-blacklist))
+    (require 'ccls)
+    (require 'lsp-completion)
+    (require 'lsp-headerline)
+    (require 'lsp-modeline)
+    (setq-local lsp-ui-sideline-show-symbol nil)
+    (when (string-match-p "/llvm" buffer-file-name)
+      (setq-local lsp-enable-file-watchers nil))))
 
 (use-package cc-mode
+  :after clang-format+
   :ensure-system-package ((clangd-10 . clangd-10)
                           (clang-10 . clang-10))
   :hook (((c++-mode c-mode) . (lambda ()
-                                (ccls//enable)
-                                (setq-local ccls-code-lens-mode t)
+                                (+ccls|enable)
                                 (+cc-fontify-constants-h)
-                                (company-mode)))
-         ((c-mode c++-mode) . (lambda ()
-                                (add-hook 'before-save-hook
-                                          (lambda ()
-                                            (time-stamp)
-                                            (lsp-format-buffer)) nil t))))
+                                (company-mode))))
+  :custom (lsp-clients-clangd-args '("--header-insertion-decorators=0" "--clang-tidy"))
   :init
-  (c-add-style "llvm"
-               '("gnu"
-                 (fill-column . 80)
-                 (c++-indent-level . 2)
-                 (c-basic-offset . 2)
+  (c-add-style "my-cc"
+               '("user"
+                 (c-basic-offset . 4)
                  (indent-tabs-mode . nil)
-                 (c-offsets-alist . ((arglist-intro . ++)
-                                     (innamespace . 0)
-                                     (member-init-intro . ++)))))
-  (setq c-default-style "llvm")
+                 (c-offsets-alist . ((innamespace . 0)
+                                     (access-label . -)
+                                     (case-label . 0)
+                                     (member-init-intro . +)
+                                     (topmost-intro . 0)
+                                     (arglist-cont-nonempty . +)))))
+  (setq c-default-style "my-cc")
   (setq company-clang-executable "/usr/bin/clang-10")
 
   :config
@@ -171,19 +234,26 @@
 (use-package qml-mode
   :mode ("\\.qml$" . qml-mode))
 
-(use-package clang-format+
-  :ensure-system-package (clang-format-10 . clang-format-10)
-  :hook (c++-mode . clang-format+-mode)
-  :config
-  (let ((athena_clang "/usr/bin/clang-format-athena-1")
-        (generic_clang "/usr/bin/clang-format-10"))
-    (when (file-exists-p athena_clang)
-      (setq clang-format-executable athena_clang))
-    (when (file-exists-p generic_clang)
-      (setq clang-format-executable generic_clang))))
-
 ;; dap debugging for c++
 (require 'dap-cpptools)
+(dap-cpptools-setup)
+
+;; -----------------------------------------------------------------------------------
+;; Cmake
+
+;; cmake-mode: major mode for cmake files
+;; https://gitlab.kitware.com/cmake/cmake/blob/master/Auxiliary/cmake-mode.el
+(use-package cmake-mode
+  :ensure-system-package (("~/.local/lib/python3.8/site-packages/cmake_language_server" . "python3 -m pip install -U 'cmake_language_server'"))
+  :mode (("\\.cmake$" . cmake-mode)
+         ("CMakeLists.txt" . cmake-mode)))
+
+;; cmake-font-lock: emacs font lock rules for CMake
+;; https://github.com/Lindydancer/cmake-font-lock
+(use-package cmake-font-lock
+  :hook ((cmake-mode . cmake-font-lock-activate))
+  :config
+  (autoload 'cmake-font-lock-activate "cmake-font-lock" nil t))
 
 (provide 'setup-cc)
 
