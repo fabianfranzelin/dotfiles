@@ -548,7 +548,7 @@
           "build" "target" "_build" ".history"
           "tmp" ".ccls-root" ".ccls-cache"
           "compile_commands.json" ".clangd"
-          ".ccls-cache" ".ccls-root"))
+          ".ccls"))
         projectile-require-project-root t
         projectile-indexing-method 'alien
         projectile-sort-order 'recentf
@@ -614,6 +614,7 @@ FILE: filename"
 ;; Enable dap
 ;; -------------------------------------------------------------------
 (use-package dap-mode
+  :hook (dap-stopped . (lambda (arg) (call-interactively #'dap-hydra)))
   :init
   ;; use tooltips for mouse hover
   ;; if it is not enabled `dap-mode' will use the minibuffer.
@@ -778,6 +779,12 @@ FILE: filename"
          ("C-c v b" . vdiff-buffers)
          ("C-c v q" . vdiff-quit)
          ("C-c v h" . vdiff-hydra/body)))
+
+;; -------------------------------------------------------------------
+;; Vdiff: Vim like diff
+;; -------------------------------------------------------------------
+(use-package direnv
+ :init (direnv-mode))
 
 (provide 'basic-settings)
 
