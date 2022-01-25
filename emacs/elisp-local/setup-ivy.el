@@ -114,8 +114,10 @@
   (ivy-prescient-mode t)
   (prescient-persist-mode t))
 
-
-(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+(use-package ivy-xref
+  :ensure t
+  :init
+  (setq xref-show-definitions-function #'ivy-xref-show-defs))
 
 (provide 'setup-ivy)
 
