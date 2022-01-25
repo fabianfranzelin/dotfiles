@@ -6,7 +6,7 @@
 
 (defun ff-lsp-mode-setup ()
   "Setup-hook for lsp-mode."
-  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+  (setq lsp-headerline-breadcrumb-segments '(project file symbols))
   (lsp-headerline-breadcrumb-mode)
 
   ;; Disables lsp linter as default for python-mode. It is crucial that
@@ -67,6 +67,13 @@
         lsp-ui-doc-include-signature nil  ; don't include type signature in the child frame
         lsp-ui-sideline-show-symbol nil)  ; don't show symbol on the right of info
   (lsp-ui-peek-enable t))
+
+(use-package lsp-ivy
+  :commands lsp-ivy-workspace-symbol
+  :bind (:map lsp-mode-map
+              ("C-c l s" . (lambda()
+                             (interactive)
+                             (lsp-ivy-workspace-symbol (ivy-thing-at-point))))))
 
 (with-eval-after-load 'lsp-mode
   ;; :global/:workspace/:file

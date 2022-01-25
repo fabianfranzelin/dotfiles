@@ -96,7 +96,6 @@
                            (plist-put (lsp--text-document-position-params) :role 16)))
 
 ;; xref-find-apropos (workspace/symbol)
-
 (defun my/highlight-pattern-in-text (pattern line)
   (when (> (length pattern) 0)
     (let ((i 0))
