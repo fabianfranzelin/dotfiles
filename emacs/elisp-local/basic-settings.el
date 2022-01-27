@@ -667,6 +667,8 @@ FILE: filename"
 ;; Yasnippet
 ;; -------------------------------------------------------------------
 (defun yas-rst-mode-labels (text)
+  "Create labels for sections in rst.
+TEXT: title"
   (downcase (replace-regexp-in-string " \\|:\\|-" "_" text)))
 
 (use-package yasnippet
