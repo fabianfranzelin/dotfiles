@@ -5,5 +5,6 @@ dt_run_container() {
         -v "$HOME/.bash_history:/home/frf2lr/.bash_history" \
         -e "DEBIAN_FRONTEND=noninteractive" \
         -e "DISPLAY=$DISPLAY" \
+        "$@" \
         /bin/bash
 }
