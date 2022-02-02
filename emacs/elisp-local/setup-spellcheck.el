@@ -19,7 +19,7 @@
              languagetool-server-start
              languagetool-server-stop)
   :init
-  (defvar langtool-version "5.6")
+  (defvar langtool-version "5.5")
   (defvar langtool-name (concat "LanguageTool-" langtool-version))
   (defvar langtool-url (concat "https://languagetool.org/download/" langtool-name ".zip"))
   (defvar langtool-extract-to (expand-file-name "~/opt/languageTool"))
@@ -38,7 +38,7 @@
         languagetool-server-command langtool-server)
 
   :bind (("C-x 4 c" . languagetool-check)
-         ("C-x 4 d" . languagetool-clear-buffer)
+         ("C-x 4 d" . languagetool-clear-suggestions)
          ("C-x 4 p" . languagetool-correct-at-point)
          ("C-x 4 b" . languagetool-correct-buffer)))
 
