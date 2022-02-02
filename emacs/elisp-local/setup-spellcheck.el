@@ -8,22 +8,34 @@
 ;; --------------------------------------------------------
 ;; Static spell check with languagetool
 ;; --------------------------------------------------------
+
 (use-package languagetool
+  :commands (languagetool-check
+             languagetool-clear-suggestions
+             languagetool-correct-at-point
+             languagetool-correct-buffer
+             languagetool-set-language
+             languagetool-server-mode
+             languagetool-server-start
+             languagetool-server-stop)
   :init
   (defvar langtool-version "5.6")
   (defvar langtool-name (concat "LanguageTool-" langtool-version))
   (defvar langtool-url (concat "https://languagetool.org/download/" langtool-name ".zip"))
   (defvar langtool-extract-to (expand-file-name "~/opt/languageTool"))
-  (defvar langtool-expected-binary (concat langtool-extract-to "/" langtool-name "/languagetool-commandline.jar"))
+  (defvar langtool-path (concat langtool-extract-to "/" langtool-name))
+  (defvar langtool-server (concat langtool-path "/languagetool-server.jar"))
+  (defvar langtool-commandline (concat langtool-path "/languagetool-commandline.jar"))
   (ff/download-and-extract-zip-archive langtool-url
                                        langtool-name
                                        langtool-extract-to
-                                       langtool-expected-binary
+                                       langtool-commandline
                                        "langtool")
   :config
-  (setq languagetool-language-tool-jar langtool-expected-binary
-        languagetool-java-arguments '("-Dfile.encoding=UTF-8")
-        languagetool-default-language "en-US")
+  (setq languagetool-java-arguments '("-Dfile.encoding=UTF-8")
+        languagetool-default-language "en-US"
+        languagetool-console-command langtool-commandline
+        languagetool-server-command langtool-server)
 
   :bind (("C-x 4 c" . languagetool-check)
          ("C-x 4 d" . languagetool-clear-buffer)
