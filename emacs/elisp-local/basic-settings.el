@@ -191,7 +191,7 @@
   (setf gumshoe-slot-schema '(time buffer position line))
   :custom
   (gumshoe-idle-time 0.2)
-  (gumshoe-log-len 20)
+  (gumshoe-log-len 50)
   (gumshoe-show-footprints-p nil)
   :bind (;; enable browser like key bindings to move forth and
          ;; back in bookmarks
@@ -224,7 +224,6 @@
 
 (customize-set-variable 'tramp-use-ssh-controlmaster-options nil)
 
-
 ;; multihop example: /ssh:frf2lr@ws|docker:vscode@c8416d9f4da6:/
 (use-package docker-tramp)
 
@@ -234,10 +233,14 @@
 (use-package tab-bar
   :config
   ;; Don't turn on tab-bar-mode when tabs are created
-  (setq tab-bar-show nil
+  (setq tab-bar-show 1
         tab-bar-new-tab-choice "*scratch*"
         tab-bar-close-button-show nil
-        tab-bar-new-button-show nil))
+        tab-bar-new-button-show nil)
+  :bind (("C-x t n" . tab-new)
+         ("C-x t w" . tab-close)
+         ("C-<prior>" . tab-previous)
+         ("C-<next>" . tab-next)))
 
 ;; -------------------------------------------------------------------
 ;; Ivy project
@@ -465,7 +468,6 @@
 ;; -------------------------------------------------------------------
 ;; Insert Pairs of Matching Elements
 ;; -------------------------------------------------------------------
-;; Highlight parens
 (use-package paren
   :init
   (show-paren-mode 1)
@@ -637,7 +639,6 @@ FILE: filename"
 ;; -------------------------------------------------------------------
 ;; Show number of lines in the left side of the buffer
 ;; -------------------------------------------------------------------
-(column-number-mode 1)
 (global-display-line-numbers-mode 1)
 
 (dolist (mode '(org-mode-hook
@@ -768,16 +769,7 @@ TEXT: title"
   :bind (("M-o" . ace-window)))
 
 ;; -------------------------------------------------------------------
-;; Vdiff: Vim like diff
-;; -------------------------------------------------------------------
-(use-package vdiff
-  :bind (("C-c v f" . vdiff-files)
-         ("C-c v b" . vdiff-buffers)
-         ("C-c v q" . vdiff-quit)
-         ("C-c v h" . vdiff-hydra/body)))
-
-;; -------------------------------------------------------------------
-;; Vdiff: Vim like diff
+;; Direnv integration
 ;; -------------------------------------------------------------------
 (use-package direnv
  :init (direnv-mode))
