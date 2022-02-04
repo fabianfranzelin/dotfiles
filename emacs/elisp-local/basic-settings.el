@@ -137,13 +137,6 @@
 (use-package whole-line-or-region
   :config (whole-line-or-region-global-mode))
 
-;; Helps to keep track of your cursor
-(use-package beacon
-  :init
-  (beacon-mode t)
-  :config
-  (setq beacon-color "#666600"))
-
 ;; volatile highlights - temporarily highlight changes from pasting
 ;; etc
 (use-package volatile-highlights
