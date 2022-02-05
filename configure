@@ -30,7 +30,6 @@ __SHELL_LIB="${DOTFILES}/.local/bin/shell"
 
 . "${__SHELL_LIB}/formatting.sh"
 
-
 #------------------------------------------------------------------------------#
 # cmdline-parser
 
@@ -87,7 +86,7 @@ echo -e "${__COLOR_INFO}INFO: Setup symlinks with GNU stow.${__COLOR_RESET}"
 
 (
     cd "${DOTFILES}"
-    stow . -t "${HOME}" -R
+    stow . -t "${HOME}"
 )
 
 #------------------------------------------------------------------------------#
