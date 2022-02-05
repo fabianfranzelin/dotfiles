@@ -1,0 +1,137 @@
+#!/usr/bin/env bash
+
+#------------------------------------------------------------------------------#
+# description of cmdline-parser
+
+usage="
+USAGE
+    ${0} [OPTION]...
+
+DESCRIPTION
+       Creates the custom folder and uses drafts for non-existing files.
+       The whole script is interactive and no file will be removed without permission.
+
+       -h --help
+              Print this help message
+       -i --install
+              Install third-party dependencies
+"
+
+#------------------------------------------------------------------------------#
+# check prerequisites
+
+# exit as soon as error occurs
+set -e
+
+export DOTFILES
+DOTFILES=$(git rev-parse --show-toplevel)
+export __SHELL_LIB
+__SHELL_LIB="${DOTFILES}/.local/bin/shell"
+
+. "${__SHELL_LIB}/formatting.sh"
+
+
+#------------------------------------------------------------------------------#
+# cmdline-parser
+
+while [ "${#}" -gt 0 ]; do
+    case "${1}" in
+    '-h'|'--help')
+        __ERRCODE=0
+        ;;
+    '-i'|'--install')
+        echo -e "${__COLOR_INFO}Install third-party dependencies${__COLOR_RESET}"
+        INSTALL_DEPENDENCIES=1
+        shift # past argument
+        ;;
+    *)
+        echo -e "${__COLOR_ERR}Unknown value ${1}${__COLOR_RESET}"
+        __ERRCODE=1
+        ;;
+    esac
+
+    if [ -n "${__ERRCODE}" ]; then
+        echo -e "${__COLOR_INFO}${usage}${__COLOR_RESET}"
+        exit ${__ERRCODE}
+    fi
+done
+
+#------------------------------------------------------------------------------#
+# install required packages
+
+if [ -n "${INSTALL_DEPENDENCIES}" ]; then
+    echo -e "${__COLOR_INFO}INFO: Installing minimal required packages for setup...${__COLOR_RESET}"
+    sudo apt-get update && sudo apt-get install python3-pip
+
+    # Remove PyQt5 if installed via pip. This package is buggy. It is
+    # installed afterwards again via Ubuntu package sources.
+    # python3 -m pip uninstall PyQt5
+
+    # Update python setuptools to latest release from pypi
+    python3 -m pip install --upgrade setuptools pip wheel
+    python3 -m pip install virtualenvwrapper
+
+    sudo apt-get install -y \
+         xclip \
+         apt-transport-https \
+         python3-pyqt5 \
+         zsh \
+         npm \
+         direnv
+fi
+
+#------------------------------------------------------------------------------#
+# install oh-my-zsh if required
+OH_MY_ZSH_HOME="$HOME/.oh-my-zsh"
+if [[ ! -d "${OH_MY_ZSH_HOME}" ]]; then
+    sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+fi
+
+POWERLEVEL10K_HOME=${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+if [[ ! -d "${POWERLEVEL10K_HOME}" ]]; then
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${POWERLEVEL10K_HOME}"
+fi
+
+ZSH_AUTOSUGGESTION_HOME=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+if [[ ! -d "${ZSH_AUTOSUGGESTION_HOME}" ]]; then
+    git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_AUTOSUGGESTION_HOME}"
+fi
+
+ZSH_SYNTAX_HIGHLIGHTING=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+if [[ ! -d "${ZSH_SYNTAX_HIGHLIGHTING}" ]]; then
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting "${ZSH_SYNTAX_HIGHLIGHTING}"
+fi
+
+#------------------------------------------------------------------------------#
+# setup custom/emacs
+
+echo -e "${__COLOR_INFO}INFO: Creating and linking emacs-setup ...${__COLOR_RESET}"
+
+__DOT_EMACS_D="${HOME}/.emacs.d"
+
+# install emacs application framework
+echo -e "${__COLOR_INFO}INFO: Install Emacs Application Framework${__COLOR_RESET}"
+__DOT_EMACS_EAF="${__DOT_EMACS_D}/site-lisp/emacs-application-framework"
+if [[ ! -d "${__DOT_EMACS_EAF}" ]]; then
+    mkdir -p "${__DOT_EMACS_EAF}"
+    git clone --depth=1 \
+        -b master https://github.com/emacs-eaf/emacs-application-framework.git \
+        "${__DOT_EMACS_EAF}"
+fi
+
+(
+    cd "${__DOT_EMACS_EAF}"
+    git pull
+    chmod +x ./install-eaf.py
+    ./install-eaf.py --install browser pdf-viewer
+)
+echo -e "${__COLOR_SUCC}SUCCESS: Emacs Application Framework setup configured${__COLOR_RESET}"
+
+#------------------------------------------------------------------------------#
+# Setup all symlinks with GNU stow
+echo -e "${__COLOR_INFO}INFO: Setup symlinks with GNU stow.${__COLOR_RESET}"
+
+(
+    cd "${DOTFILES}"
+    stow . -t "${HOME}" -R
+)
