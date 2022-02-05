@@ -77,8 +77,18 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          python3-pyqt5 \
          zsh \
          npm \
-         direnv
+         direnv \
+         stow
 fi
+
+#------------------------------------------------------------------------------#
+# Setup all symlinks with GNU stow
+echo -e "${__COLOR_INFO}INFO: Setup symlinks with GNU stow.${__COLOR_RESET}"
+
+(
+    cd "${DOTFILES}"
+    stow . -t "${HOME}" -R
+)
 
 #------------------------------------------------------------------------------#
 # install oh-my-zsh if required
@@ -126,12 +136,3 @@ fi
     ./install-eaf.py --install browser pdf-viewer
 )
 echo -e "${__COLOR_SUCC}SUCCESS: Emacs Application Framework setup configured${__COLOR_RESET}"
-
-#------------------------------------------------------------------------------#
-# Setup all symlinks with GNU stow
-echo -e "${__COLOR_INFO}INFO: Setup symlinks with GNU stow.${__COLOR_RESET}"
-
-(
-    cd "${DOTFILES}"
-    stow . -t "${HOME}" -R
-)
