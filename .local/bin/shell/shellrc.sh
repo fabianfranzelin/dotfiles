@@ -9,7 +9,7 @@ esac
 #------------------------------------------------------------------------------#
 # initialization
 export __SHELL_LIB="${HOME}/.local/bin/shell"
-. "${__SHELL_LIB}/utils/faq.sh"
+. "${__SHELL_LIB}/faq.sh"
 
 #------------------------------------------------------------------------------#
 # load gear for used shell
@@ -53,8 +53,6 @@ elif ( __is_bash ); then
     # Prompt setup
     # shellcheck source=prompts/left/default.sh
     . "${__SHELL_LIB}/prompts/left/default.sh"
-    # shellcheck source=prompts/left/git_info.sh
-    . "${__SHELL_LIB}/prompts/right/git_info.sh"
 elif [ "$TERM" = "dumb" ]; then
     # fixes fancy prompt issues when called from remote modules like emacs
     export PS1="$ "
@@ -99,8 +97,6 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
 alias ......='cd ../../../../..'
-
-alias cddot="cd ${DOTFILES}"
 
 # 'A' for ANSI line graphics
 # 'C' for colorization

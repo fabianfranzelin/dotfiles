@@ -3,16 +3,12 @@
 #------------------------------------------------------------------------------#
 # helpers
 
-. "${DOTFILES}/utils/faq.sh"
+. "${__SHELL_LIB}/faq.sh"
 
 #------------------------------------------------------------------------------#
 # prepare colors and details
 
-if ( __is_zsh ); then
-    . "${DOTFILES}/utils/formatting.zsh"
-elif ( __is_bash ); then
-    . "${DOTFILES}/utils/formatting.bash"
-fi
+. "${__SHELL_LIB}/formatting.bash"
 
 #---------------------------------------------------------------------------
 # stick everything together
