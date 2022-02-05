@@ -55,8 +55,11 @@
 ;; no splash screen
 (setq inhibit-splash-screen t)
 
-;; enable revert from disk
-(global-auto-revert-mode t)
+;; revert Dired and other buffers
+(setq global-auto-revert-non-file-buffers t)
+
+;; revert buffers when the underlying file has changed
+(global-auto-revert-mode 1)
 
 ;; define alias for yes-or-no decision
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -478,7 +481,7 @@
   (set-face-background 'show-paren-match (face-background 'default))
   (set-face-foreground 'show-paren-match "#def")
   (set-face-attribute 'show-paren-match nil :weight 'extra-bold)
-  ;; (set-face-attribute 'show-paren-match-expression nil :background "#363e4a")
+  (set-face-attribute 'show-paren-match-expression nil :background "#363e4a")
   (setq show-paren-style 'mixed)	;; The entire expression
   (setq blink-matching-paren t))
 
