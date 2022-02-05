@@ -5,7 +5,10 @@
 
 ;;; Code:
 
-;; maximize frame at startup
+;; set frame transparency and maximize frame by default
+(set-frame-parameter (selected-frame) 'alpha '(100 . 100))
+(add-to-list 'default-frame-alist '(alpha . (100 . 100)))
+(set-frame-parameter (selected-frame) 'fullscreen 'maximized)
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 ;; The default is 800 kilobytes. Measured in bytes.
@@ -38,7 +41,7 @@
   (with-temp-buffer (write-file emacs-d-custom)))
 
 (setq custom-file emacs-d-custom)
-(load custom-file)
+(load custom-file t)
 
 ;; disable scrollbar
 (scroll-bar-mode -1) ; disbale scrollbar
@@ -387,10 +390,10 @@
 ;; Open files externally
 ;; -------------------------------------------------------------------
 (use-package openwith
-  :ensure-system-package ((vlc . vlc)
-                          (okular . okular)
-                          (eog . eog)
-                          (firefox . firefox))
+  :ensure-system-package ((vlc . "sudo apt install vlc -y")
+                          (okular . "sudo apt install okular -y")
+                          (eog . "sudo apt install eog -y")
+                          (firefox . "sudo apt install firefox -y"))
   :config
   (setq openwith-associations
         (list
@@ -511,7 +514,7 @@
 ;; Ripgrep integration
 ;; -------------------------------------------------------------------
 (use-package rg
-  :ensure-system-package (rg . ripgrep)
+  :ensure-system-package (rg . "sudo apt install ripgrep -y")
   :init (rg-enable-menu))
 
 ;; -------------------------------------------------------------------
@@ -524,7 +527,7 @@
 ;; Projectile mode
 ;; -------------------------------------------------------------------
 (use-package projectile
-  :ensure-system-package ((fdfind . fd-find))
+  :ensure-system-package ((fdfind . "sudo apt install fd-find -y"))
   :diminish projectile-mode
   :custom ((projectile-completion-system 'ivy))
   :bind-keymap ("C-c p" . projectile-command-map)

@@ -93,8 +93,7 @@
 ;; yaml mode
 ;; -------------------------------------------------------------------
 (use-package yaml-mode
-  :ensure-system-package ((pip3 . python3-pip)
-                          (yamllint . "python3 -m pip install -U 'yamllint'"))
+  :ensure-system-package ((yamllint . "python3 -m pip install -U 'yamllint'"))
   :mode (("\\.yml$" . yaml-mode)
          ("\\.yaml$" . yaml-mode)))
 
@@ -121,8 +120,8 @@
 ;; -------------------------------------------------------------------
 (use-package markdown-mode
   :commands markdown-mode
-  :ensure-system-package ((markdown . markdown)
-                          (pandoc . pandoc))
+  :ensure-system-package ((markdown . "sudo apt install markdown -y")
+                          (pandoc . "sudo apt install pandoc -y"))
   :init
   (add-hook 'markdown-mode-hook #'visual-line-mode)
   (add-hook 'markdown-mode-hook #'flyspell-mode)
@@ -199,7 +198,7 @@ SOURCE_FILENAME: filename to the puml file."
   (message "Conversion succeeded."))
 
 (use-package plantuml-mode
-  :ensure-system-package (dot . graphviz)
+  :ensure-system-package (dot . "sudo apt install graphviz -y")
   :mode (("\\.puml" . plantuml-mode)
          ("\\.iuml" . plantuml-mode)
          ("\\.uml" . plantuml-mode))
@@ -257,7 +256,7 @@ SOURCE_FILENAME: filename to the puml file."
 ;; Json
 ;; -------------------------------------------------------------------
 (use-package json-mode
-  :ensure-system-package ((npm . npm)
+  :ensure-system-package ((npm . "sudo apt install npm -y")
                           (jsonlint . "sudo env \"PATH=$PATH\" npm install jsonlint -g"))
   :mode (("\\.json$" . json-mode)))
 

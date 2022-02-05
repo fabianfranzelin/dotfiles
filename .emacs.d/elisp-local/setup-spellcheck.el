@@ -58,9 +58,9 @@
   (flyspell-buffer))
 
 (use-package ispell
-  :ensure-system-package (("/usr/bin/aspell" . aspell)
-                          ("/usr/lib/aspell/en_US.multi" . aspell-en)
-                          ("/usr/lib/aspell/de_DE.multi" . aspell-de))
+  :ensure-system-package (("/usr/bin/aspell" . "sudo apt install aspell -y")
+                          ("/usr/lib/aspell/en_US.multi" . "sudo apt install aspell-en -y")
+                          ("/usr/lib/aspell/de_DE.multi" . "sudo apt install aspell-de -y"))
   :init
   (setq ispell-dictionary "en_US"
         ispell-local-dictionary "en_US"

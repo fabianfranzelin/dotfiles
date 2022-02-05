@@ -82,7 +82,7 @@
 (use-package org
   :after plantuml-mode
   :pin org
-  :ensure-system-package ("/usr/share/fonts/opentype/cantarell" . fonts-cantarell)
+  :ensure-system-package ("/usr/share/fonts/opentype/cantarell" . "sudo apt install fonts-cantarell -y")
   :commands (org-capture org-agenda)
   :hook ((org-mode . efs/org-mode-setup)
          (org-mode . (lambda ()
