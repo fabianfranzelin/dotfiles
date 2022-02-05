@@ -23,7 +23,7 @@
 
 
 (use-package lsp-python-ms
-  :ensure-system-package ((pip3 . python3-pip)
+  :ensure-system-package ((pip3 . "sudo apt install python3-pip -y")
                           ;; both packages are required for debugging
                           ;; with dap
                           ("~/.local/lib/python3.8/site-packages/epc" . "python3 -m pip install -U 'epc'")

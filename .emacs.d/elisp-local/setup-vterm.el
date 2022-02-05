@@ -92,9 +92,9 @@ COMMAND:"
   (clear-this-command-keys))
 
 (use-package vterm
-  :ensure-system-package ((cmake . cmake)
-                          (libtool . libtool-bin)
-                          ("/bin/zsh" . zsh))
+  :ensure-system-package ((cmake . "sudo apt install cmake -y")
+                          (libtool . "sudo apt install libtool-bin -y")
+                          ("/bin/zsh" . "sudo apt install zsh -y"))
   :commands vterm
   :hook ((vterm-mode . ff/term-exec-hook))
   :config

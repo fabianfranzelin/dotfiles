@@ -60,17 +60,16 @@ done
 
 if [ -n "${INSTALL_DEPENDENCIES}" ]; then
     echo -e "${__COLOR_INFO}INFO: Installing minimal required packages for setup...${__COLOR_RESET}"
-    sudo apt-get update && sudo apt-get install python3-pip
+    sudo apt update && sudo apt-get install python3-pip
 
     # Remove PyQt5 if installed via pip. This package is buggy. It is
     # installed afterwards again via Ubuntu package sources.
     # python3 -m pip uninstall PyQt5
 
     # Update python setuptools to latest release from pypi
-    python3 -m pip install --upgrade setuptools pip wheel
-    python3 -m pip install virtualenvwrapper
+    python3 -m pip install --upgrade setuptools pip wheel virtualenvwrapper
 
-    sudo apt-get install -y \
+    sudo apt install -y \
          xclip \
          apt-transport-https \
          python3-pyqt5 \
@@ -78,6 +77,29 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          npm \
          direnv \
          stow
+
+    # install dependencies for emacs
+    sudo apt install -y \
+         okular \
+         markdown \
+         pandoc \
+         graphviz \
+         npm \
+         fonts-cantarell \
+         cmake \
+         libtool-bin \
+         aspell aspell-de aspell-en \
+         clang-format-10 \
+         clang-tidy \
+         clangd-10 \
+         clang-10 \
+         vlc \
+         firefox \
+         eog \
+         ripgrep \
+         fd-find
+
+    sudo snap install ccls --classic
 fi
 
 #------------------------------------------------------------------------------#
@@ -130,8 +152,10 @@ fi
 
 (
     cd "${__DOT_EMACS_EAF}"
-    git pull
-    chmod +x ./install-eaf.py
-    ./install-eaf.py --install browser pdf-viewer
+    if [ -n "${INSTALL_DEPENDENCIES}" ]; then
+        git pull
+        chmod +x ./install-eaf.py
+        ./install-eaf.py --install browser pdf-viewer
+    fi
 )
 echo -e "${__COLOR_SUCC}SUCCESS: Emacs Application Framework setup configured${__COLOR_RESET}"

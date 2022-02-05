@@ -19,7 +19,7 @@
     (clang-format-buffer)))
 
 (use-package clang-format+
-  :ensure-system-package (clang-format-10 . clang-format-10)
+  :ensure-system-package (clang-format-10 . "sudo apt install clang-format-10 -y")
   :hook (((c-mode c++-mode) . clang-format+-mode))
          ((c-mode c++-mode) . (lambda ()
                                 (add-hook 'before-save-hook 'ff/clang-format-buffer-smart nil t)))
@@ -28,7 +28,7 @@
 
 
 (use-package flycheck-clang-tidy
-  :ensure-system-package ((clang-tidy . clang-tidy))
+  :ensure-system-package ((clang-tidy . "sudo apt install clang-tidy -y"))
   :after flycheck
   :hook (flycheck-mode . flycheck-clang-tidy-setup))
 
@@ -184,8 +184,8 @@
 
 (use-package cc-mode
   :after clang-format+
-  :ensure-system-package ((clangd-10 . clangd-10)
-                          (clang-10 . clang-10))
+  :ensure-system-package ((clangd-10 . "sudo apt install clangd-10 -y")
+                          (clang-10 . "sudo apt install clang-10 -y"))
   :hook (((c++-mode c-mode) . (lambda ()
                                 (+ccls|enable)
                                 (+cc-fontify-constants-h)
