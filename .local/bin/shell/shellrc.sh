@@ -84,7 +84,7 @@ alias c='clear'
 # macOS: --color=auto needed for coreutils
 alias l='ls -1F --color=auto'
 alias la='ls -1F --color=auto -a'
-alias ll='ls -1F --color=auto -lh'
+alias ll='ls -1F --color=auto -altrh'
 alias lla='ls -1F --color=auto -lha'
 
 alias .2='cd ../..'
