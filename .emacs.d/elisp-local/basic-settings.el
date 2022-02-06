@@ -249,9 +249,9 @@
          ("C-<next>" . tab-next)))
 
 ;; -------------------------------------------------------------------
-;; Ivy project
+;; Completion system
 ;; ------------------------------------------------------------------
-(use-package setup-ivy
+(use-package setup-completion
   :load-path local-load-path)
 
 ;; -------------------------------------------------------------------
@@ -380,11 +380,6 @@
 ;; -------------------------------------------------------------------
 ;; Credential management
 ;; -------------------------------------------------------------------
-(use-package ivy-pass
-  :commands ivy-pass
-  :config
-  (setq password-store-password-length 20))
-
 (use-package auth-source-pass
   :config
   (auth-source-pass-enable))
@@ -529,16 +524,20 @@
 ;; -------------------------------------------------------------------
 ;; Projectile mode
 ;; -------------------------------------------------------------------
+(defun ff/switch-project-action ()
+  "Switch to a workspace with the project name and start `magit-status'."
+  (persp-switch (projectile-project-name))
+  (projectile-find-file))
+
 (use-package projectile
   :ensure-system-package ((fdfind . "sudo apt install fd-find -y"))
   :diminish projectile-mode
-  :custom ((projectile-completion-system 'ivy))
   :bind-keymap ("C-c p" . projectile-command-map)
   :init
   ;; NOTE: Set this to the folder where you keep your Git repos!
   (when (file-directory-p "~/workspace")
     (setq projectile-project-search-path '("~/workspace")))
-  (setq projectile-switch-project-action #'projectile-dired)
+  (setq projectile-switch-project-action #'ff/switch-project-action)
   ;; enable projectile mode
   (projectile-mode t)
   :config
@@ -707,66 +706,6 @@ TEXT: title"
 ;; -------------------------------------------------------------------
 ;; (use-package setup-eaf
 ;;   :load-path local-load-path)
-
-;; -------------------------------------------------------------------
-;; Embark: https://github.com/oantolin/embark
-;; -------------------------------------------------------------------
-(use-package marginalia
-  :after projectile
-  :init
-  (marginalia-mode)
-  :config
-  (setq marginalia-command-categories
-        (append '((projectile-find-file . project-file)
-                  (projectile-find-dir . project-file)
-                  (projectile-switch-project . file))
-                marginalia-command-categories)))
-
-(defun sudo-find-file (file)
-  "Open FILE as root."
-  (interactive "FOpen file as root: ")
-  (when (file-writable-p file)
-    (user-error "File is user writeable, aborting sudo"))
-  (find-file (if (file-remote-p file)
-                 (concat "/" (file-remote-p file 'method) ":"
-                         (file-remote-p file 'user) "@" (file-remote-p file 'host)
-                         "|sudo:root@"
-                         (file-remote-p file 'host) ":" (file-remote-p file 'localname))
-               (concat "/sudo:root@localhost:" file))))
-
-;; highlight symbol and replace
-(use-package highlight-symbol)
-;; dev/null for online pages
-(use-package 0x0)
-
-(use-package embark
-  :after highlight-symbol
-  :init
-  ;; Optionally replace the key help with a completing-read interface
-  (setq prefix-help-command #'embark-prefix-help-command)
-  :config
-  ;; Hide the mode line of the Embark live/completions buffers
-  (add-to-list 'display-buffer-alist
-               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-                 nil
-                 (window-parameters (mode-line-format . none))))
-  ;; Show Embark actions via which-key
-  (setq embark-action-indicator
-        (lambda (map)
-          (which-key--show-keymap "Embark" map nil nil 'no-paging)
-          #'which-key--hide-popup-ignore-command)
-        embark-become-indicator embark-action-indicator)
-
-  :bind (("C-." . embark-act)
-         ("C-h B" . embark-bindings)
-         :map minibuffer-local-map
-         ("C-." . embark-act)
-         :map embark-region-map
-         ("U" . 0x0-dwim)
-         :map embark-file-map
-         ("S" . sudo-find-file)
-         :map embark-symbol-map
-         ("h" . highlight-symbol)))
 
 ;; -------------------------------------------------------------------
 ;; Ace window: select windows based on numbers

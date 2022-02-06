@@ -68,13 +68,6 @@
         lsp-ui-sideline-show-symbol nil)  ; don't show symbol on the right of info
   (lsp-ui-peek-enable t))
 
-(use-package lsp-ivy
-  :commands lsp-ivy-workspace-symbol
-  :bind (:map lsp-mode-map
-              ("C-c l s" . (lambda()
-                             (interactive)
-                             (lsp-ivy-workspace-symbol (ivy-thing-at-point))))))
-
 (with-eval-after-load 'lsp-mode
   ;; :global/:workspace/:file
   (setq lsp-modeline-diagnostics-scope :workspace))
