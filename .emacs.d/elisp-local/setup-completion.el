@@ -1,0 +1,149 @@
+;;; package --- Set up completion system with Vertico, etc.
+;;; Commentary:
+;;; Sets up completion system for Emacs
+;;; https://github.com/daviwil/dotfiles/blob/master/Emacs.org#completion-system
+
+;;; Code:
+
+;; -------------------------------------------------------------------
+;; Vertico
+;; -------------------------------------------------------------------
+
+(defun dw/minibuffer-backward-kill (arg)
+  "When minibuffer is completing a file name delete up to parent
+folder, otherwise delete a word"
+  (interactive "p")
+  (if minibuffer-completing-file-name
+      ;; Borrowed from
+      ;; https://github.com/raxod502/selectrum/issues/498#issuecomment-803283608
+      (if (string-match-p "/." (minibuffer-contents))
+          (zap-up-to-char (- arg) ?/)
+        (delete-minibuffer-contents))
+      (delete-word (- arg))))
+
+(use-package vertico
+  :custom (vertico-cycle t)
+  :init
+  (vertico-mode)
+  :config
+  (custom-set-faces '(vertico-current ((t (:background "#3a3f5a")))))
+  :bind (:map vertico-map
+              ("C-j" . vertico-next)
+              ("C-k" . vertico-previous)
+              ("TAB" . vertico-exit)
+              :map minibuffer-local-map
+              ("M-h" . dw/minibuffer-backward-kill)))
+
+;; -------------------------------------------------------------------
+;; Corfu
+;; -------------------------------------------------------------------
+(use-package corfu
+  :custom (corfu-cycle t)
+  :init
+  (corfu-global-mode)
+  :bind(:map corfu-map
+             ("C-j" . corfu-next)
+             ("C-k" . corfu-previous)
+             ("TAB" . corfu-insert)
+             ("C-f" . corfu-insert)))
+
+;; -------------------------------------------------------------------
+;; Improved filtering
+;; -------------------------------------------------------------------
+(use-package orderless
+  :config
+  (setq completion-styles '(orderless)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles . (partial-completion))))))
+
+;; -------------------------------------------------------------------
+;; Consult
+;; -------------------------------------------------------------------
+(defun dw/get-project-root ()
+  (when (fboundp 'projectile-project-root)
+    (projectile-project-root)))
+
+(use-package consult
+  :config
+  (setq consult-project-root-function #'dw/get-project-root
+        completion-in-region-function #'consult-completion-in-region)
+  :bind (("C-s" . consult-line)
+         ("C-M-l" . consult-imenu)
+         ("C-M-j" . persp-switch-to-buffer*)
+         ("C-y" . consult-yank-from-kill-ring)
+         :map minibuffer-local-map
+         ("C-r" . consult-history)))
+
+(use-package consult-dir
+  :custom (consult-dir-project-list-function nil)
+  :bind (("C-x C-d" . consult-dir)
+         :map vertico-map
+         ("C-x C-d" . consult-dir)
+         ("C-x C-j" . consult-dir-jump-file)))
+
+;; -------------------------------------------------------------------
+;; Embark: https://github.com/oantolin/embark
+;; -------------------------------------------------------------------
+(use-package marginalia
+  :after projectile
+  :init
+  (marginalia-mode)
+  :config
+  (setq marginalia-annotators '(marginalia-annotators-heavy
+                                marginalia-annotators-light
+                                nil))
+  (setq marginalia-command-categories
+        (append '((projectile-find-file . project-file)
+                  (projectile-find-dir . project-file)
+                  (projectile-switch-project . file))
+                marginalia-command-categories)))
+
+(defun sudo-find-file (file)
+  "Open FILE as root."
+  (interactive "FOpen file as root: ")
+  (when (file-writable-p file)
+    (user-error "File is user writeable, aborting sudo"))
+  (find-file (if (file-remote-p file)
+                 (concat "/" (file-remote-p file 'method) ":"
+                         (file-remote-p file 'user) "@" (file-remote-p file 'host)
+                         "|sudo:root@"
+                         (file-remote-p file 'host) ":" (file-remote-p file 'localname))
+               (concat "/sudo:root@localhost:" file))))
+
+;; highlight symbol and replace
+(use-package highlight-symbol)
+;; dev/null for online pages
+(use-package 0x0)
+
+(use-package embark
+  :after highlight-symbol
+  :init
+  ;; Optionally replace the key help with a completing-read interface
+  (setq prefix-help-command #'embark-prefix-help-command)
+  :config
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none))))
+  ;; Show Embark actions via which-key
+  (setq embark-action-indicator
+        (lambda (map)
+          (which-key--show-keymap "Embark" map nil nil 'no-paging)
+          #'which-key--hide-popup-ignore-command)
+        embark-become-indicator embark-action-indicator)
+
+  :bind (("C-." . embark-act)
+         ("C-h B" . embark-bindings)
+         :map minibuffer-local-map
+         ("C-." . embark-act)
+         :map embark-region-map
+         ("U" . 0x0-dwim)
+         :map embark-file-map
+         ("S" . sudo-find-file)
+         :map embark-symbol-map
+         ("h" . highlight-symbol)))
+
+(provide 'setup-completion)
+
+;;; setup-completion.el ends here
