@@ -143,10 +143,6 @@
   (setq ccls-executable (executable-find "ccls"))
 
   :config
-  ;; enable ccls semantic highlighting
-  (setq ccls-sem-highlight-method 'font-lock)
-  (ccls-use-default-rainbow-sem-highlight)
-
   ;; https://github.com/maskray/ccls/blob/master/src/config.h
   ;; make sure that the cache directory exists
   (make-directory (eval +ccls-cache-dir) :parents)
@@ -188,8 +184,7 @@
                           (clang-10 . "sudo apt install clang-10 -y"))
   :hook (((c++-mode c-mode) . (lambda ()
                                 (+ccls|enable)
-                                (+cc-fontify-constants-h)
-                                (company-mode))))
+                                (+cc-fontify-constants-h))))
   :custom (lsp-clients-clangd-args '("--header-insertion-decorators=0" "--clang-tidy"))
   :init
   (c-add-style "my-cc"
@@ -202,13 +197,14 @@
                                      (member-init-intro . +)
                                      (topmost-intro . 0)
                                      (arglist-cont-nonempty . +)))))
-  (setq c-default-style "my-cc")
+  (push '(c++-mode . "my-cc") c-default-style)
+  (push '(c-mode . "my-cc") c-default-style)
   (setq company-clang-executable "/usr/bin/clang-10")
 
   :config
   (defun my-cc-common-mode-hook()
     (set (make-local-variable 'company-backends)
-         '((company-clang company-lsp company-capf company-files)
+         '((company-clang company-capf company-files)
            (company-dabbrev-code company-dabbrev)))
     (setq company-transformers nil company-lsp-async t company-lsp-cache-candidates nil))
   (add-hook 'c++-mode-hook #'my-cc-common-mode-hook)
@@ -222,11 +218,6 @@
        nil '(("\\<[A-Z]*_[0-9A-Z_]+\\>" . font-lock-constant-face)
              ("\\<[A-Z]\\{3,\\}\\>"  . font-lock-constant-face))
        t))))
-
-;; highlight doxygen comments in Emacs, including code blocks
-;; https://github.com/Lindydancer/highlight-doxygen/tree/master
-(use-package highlight-doxygen
-  :hook ((c-mode c++-mode) . highlight-doxygen-mode))
 
 ;; Major mode for editing QT Declarative (QML) code.
 ;; https://github.com/coldnew/qml-mode

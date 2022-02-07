@@ -10,8 +10,8 @@
 ;; -------------------------------------------------------------------
 
 (defun ff/minibuffer-backward-kill (arg)
-  "When minibuffer is completing a file name delete to parent
-folder, otherwise delete a word"
+  "Delete parent folder completely when hitting it with the cursor.
+ARG: position"
   (interactive "p")
   (if minibuffer-completing-file-name
       ;; Borrowed from
@@ -114,7 +114,7 @@ folder, otherwise delete a word"
 ;; Embark: https://github.com/oantolin/embark
 ;; -------------------------------------------------------------------
 (use-package marginalia
-  :after projectile
+  :after projectile vertico
   :init
   (marginalia-mode)
   :config

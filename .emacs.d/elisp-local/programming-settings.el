@@ -157,7 +157,7 @@
 ;; Typescript
 ;; -------------------------------------------------------------------
 (use-package tide
-  :after (typescript-mode company)
+  :after typescript-mode
   :hook ((typescript-mode . tide-setup)
          (typescript-mode . tide-hl-identifier-mode)
          (before-save . tide-format-before-save)))
@@ -165,7 +165,7 @@
 (use-package nvm)
 
 (use-package typescript-mode
-  :after (dap-node company)
+  :after dap-node
   :config
   (setq typescript-indent-level 4)
   (dap-node-setup))

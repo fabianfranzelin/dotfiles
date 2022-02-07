@@ -133,8 +133,9 @@
                              (lsp-ivy-workspace-symbol (ivy-thing-at-point))))))
 
 
+;; -------------------------------------------------------------------
 ;; Counsel
-
+;; -------------------------------------------------------------------
 
 (use-package counsel-projectile
   :after projectile
