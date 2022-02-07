@@ -94,7 +94,6 @@
 
 ;; Color theme
 (use-package material-theme
-  :demand t
   :config
   (load-theme 'material t))
 
