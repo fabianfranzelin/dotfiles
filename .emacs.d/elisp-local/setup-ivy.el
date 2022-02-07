@@ -132,6 +132,18 @@
                              (interactive)
                              (lsp-ivy-workspace-symbol (ivy-thing-at-point))))))
 
+
+;; Counsel
+
+
+(use-package counsel-projectile
+  :after projectile
+  :init
+  (counsel-projectile-mode t)
+  :config
+  (setq counsel-projectile-sort-files t))
+
+
 (provide 'setup-ivy)
 
 ;;; setup-ivy.el ends here
