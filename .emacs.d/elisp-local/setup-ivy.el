@@ -119,6 +119,19 @@
   :init
   (setq xref-show-definitions-function #'ivy-xref-show-defs))
 
+(use-package ivy-pass
+  :commands ivy-pass
+  :config
+  (setq password-store-password-length 20))
+
+(use-package lsp-ivy
+  :after lsp-mode
+  :commands lsp-ivy-workspace-symbol
+  :bind (:map lsp-mode-map
+              ("C-c l s" . (lambda()
+                             (interactive)
+                             (lsp-ivy-workspace-symbol (ivy-thing-at-point))))))
+
 (provide 'setup-ivy)
 
 ;;; setup-ivy.el ends here
