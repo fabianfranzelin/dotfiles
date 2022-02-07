@@ -30,7 +30,7 @@ folder, otherwise delete a word"
   :bind (:map vertico-map
               ("C-j" . vertico-next)
               ("C-k" . vertico-previous)
-              ("TAB" . vertico-exit)
+              ("C-f" . vertico-exit)
               :map minibuffer-local-map
               ("M-h" . dw/minibuffer-backward-kill)))
 
@@ -67,10 +67,16 @@ folder, otherwise delete a word"
   :config
   (setq consult-project-root-function #'dw/get-project-root
         completion-in-region-function #'consult-completion-in-region)
+
+  ;; Use Consult to select xref locations with preview
+  (setq xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref)
+
   :bind (("C-s" . consult-line)
          ("C-M-l" . consult-imenu)
          ("C-M-j" . persp-switch-to-buffer*)
-         ("C-y" . consult-yank-from-kill-ring)
+         ("M-y" . consult-yank-from-kill-ring)
+         ("M-g g" . consult-goto-line)
          :map minibuffer-local-map
          ("C-r" . consult-history)))
 
@@ -137,12 +143,20 @@ folder, otherwise delete a word"
          ("C-h B" . embark-bindings)
          :map minibuffer-local-map
          ("C-." . embark-act)
+         ("C-c C-o" . embark-export)
          :map embark-region-map
          ("U" . 0x0-dwim)
          :map embark-file-map
          ("S" . sudo-find-file)
          :map embark-symbol-map
          ("h" . highlight-symbol)))
+
+(use-package embark-consult
+  :after (embark consult)
+  ;; if you want to have consult previews as you move around an
+  ;; auto-updating embark collect buffer
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
 
 (provide 'setup-completion)
 
