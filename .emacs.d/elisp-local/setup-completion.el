@@ -18,7 +18,8 @@ folder, otherwise delete a word"
       ;; https://github.com/raxod502/selectrum/issues/498#issuecomment-803283608
       (if (string-match-p ".*/$" (minibuffer-contents))
           (zap-up-to-char (- arg) ?/)
-        (delete-char (- arg)))))
+        (delete-char -1))
+    (delete-char -1)))
 
 (use-package vertico
   :custom (vertico-cycle t)

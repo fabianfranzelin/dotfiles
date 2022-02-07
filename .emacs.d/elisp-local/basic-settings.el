@@ -251,11 +251,11 @@
 ;; -------------------------------------------------------------------
 ;; Completion system
 ;; ------------------------------------------------------------------
-;; (use-package setup-completion
-;;   :load-path local-load-path)
-
-(use-package setup-ivy
+(use-package setup-completion
   :load-path local-load-path)
+
+;; (use-package setup-ivy
+;;   :load-path local-load-path)
 
 ;; -------------------------------------------------------------------
 ;; Company
@@ -535,7 +535,7 @@
 (use-package projectile
   :ensure-system-package ((fdfind . "sudo apt install fd-find -y"))
   :diminish projectile-mode
-  :custom (projectile-completion-system 'ivy)
+  :custom (projectile-completion-system 'default)
   :bind-keymap ("C-c p" . projectile-command-map)
   :init
   ;; NOTE: Set this to the folder where you keep your Git repos!
@@ -558,13 +558,6 @@
         projectile-indexing-method 'alien
         projectile-sort-order 'recentf
         projectile-enable-caching t))
-
-(use-package counsel-projectile
-  :after projectile
-  :init
-  (counsel-projectile-mode t)
-  :config
-  (setq counsel-projectile-sort-files t))
 
 ;; -------------------------------------------------------------------
 ;; Lsp-mode
