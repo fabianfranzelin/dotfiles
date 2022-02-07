@@ -251,7 +251,10 @@
 ;; -------------------------------------------------------------------
 ;; Completion system
 ;; ------------------------------------------------------------------
-(use-package setup-completion
+;; (use-package setup-completion
+;;   :load-path local-load-path)
+
+(use-package setup-ivy
   :load-path local-load-path)
 
 ;; -------------------------------------------------------------------
@@ -532,6 +535,7 @@
 (use-package projectile
   :ensure-system-package ((fdfind . "sudo apt install fd-find -y"))
   :diminish projectile-mode
+  :custom (projectile-completion-system 'ivy)
   :bind-keymap ("C-c p" . projectile-command-map)
   :init
   ;; NOTE: Set this to the folder where you keep your Git repos!

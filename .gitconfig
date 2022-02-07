@@ -29,6 +29,13 @@
     sslCaInfo = /etc/ssl/certs/ca-certificates.crt
 [credential "https://github.com"]
     username = fabianfranzelin
+    password = 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
+[credential "https://github.boschdevcloud.com"]
+    username=frf2lr
+    password = 0539d0cca657b1105918563812e229b1b604a4f2
+[credential "https://sourcecode01.de.bosch.com"]
+    username = frf2lr
+    password = Njk5Mzk2NzYyMzc0OoGHV0y7DvNUyAjzMwL0/pFrSHl9
 [merge]
     tool = meld
 [diff]
