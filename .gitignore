@@ -115,3 +115,5 @@ flycheck_*
 .emacs.d/transient
 .emacs.d/var
 .emacs.d/workspace
+.emacs.d/eaf
+.emacs.d/request
