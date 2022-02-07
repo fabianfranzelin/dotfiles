@@ -9,17 +9,16 @@
 ;; Vertico
 ;; -------------------------------------------------------------------
 
-(defun dw/minibuffer-backward-kill (arg)
-  "When minibuffer is completing a file name delete up to parent
+(defun ff/minibuffer-backward-kill (arg)
+  "When minibuffer is completing a file name delete to parent
 folder, otherwise delete a word"
   (interactive "p")
   (if minibuffer-completing-file-name
       ;; Borrowed from
       ;; https://github.com/raxod502/selectrum/issues/498#issuecomment-803283608
-      (if (string-match-p "/." (minibuffer-contents))
+      (if (string-match-p ".*/$" (minibuffer-contents))
           (zap-up-to-char (- arg) ?/)
-        (delete-minibuffer-contents))
-      (delete-word (- arg))))
+        (delete-char (- arg)))))
 
 (use-package vertico
   :custom (vertico-cycle t)
@@ -32,7 +31,8 @@ folder, otherwise delete a word"
               ("C-k" . vertico-previous)
               ("C-f" . vertico-exit)
               :map minibuffer-local-map
-              ("M-h" . dw/minibuffer-backward-kill)))
+              ("DEL" . ff/minibuffer-backward-kill)
+              ("C-<backspace>" . (lambda(arg) (interactive "p") (backward-word) (kill-word 1)))))
 
 ;; -------------------------------------------------------------------
 ;; Corfu
@@ -64,6 +64,8 @@ folder, otherwise delete a word"
     (projectile-project-root)))
 
 (use-package consult
+  :after projectile
+  :defines consult-buffer-sources
   :config
   (setq consult-project-root-function #'dw/get-project-root
         completion-in-region-function #'consult-completion-in-region)
@@ -71,6 +73,16 @@ folder, otherwise delete a word"
   ;; Use Consult to select xref locations with preview
   (setq xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
+
+  ;; add projectile projects to consult
+  (projectile-load-known-projects)
+  (setq my-consult-source-projectile-projects
+        `(:name "Projectile projects"
+                :narrow   ?P
+                :category project
+                :action   ,#'projectile-switch-project-by-name
+                :items    ,projectile-known-projects))
+  (add-to-list 'consult-buffer-sources my-consult-source-projectile-projects 'append)
 
   :bind (("C-s" . consult-line)
          ("C-M-l" . consult-imenu)
