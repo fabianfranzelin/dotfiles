@@ -1,0 +1,10 @@
+dt_run_container() {
+    ./.devcontainer/run_container.py \
+        -v "/tmp/.X11-unix:/tmp/.X11-unix" \
+        -v "${XAUTHORITY}:/home/frf2lr/.Xauthority" \
+        -v "$HOME/.bash_history:/home/frf2lr/.bash_history" \
+        -e "DEBIAN_FRONTEND=noninteractive" \
+        -e "DISPLAY=$DISPLAY" \
+        "$@" \
+        /bin/bash
+}

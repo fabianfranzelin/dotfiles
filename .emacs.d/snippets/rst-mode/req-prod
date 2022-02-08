@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: Product requirement
+# key: req-prod
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# --
+
+
+.. req-prod:: ${1:Title}
+   :id: ${2:ID}
+   :use_cases: ${3:Use case}
+   :status: draft
+   :priority: low
+
+   ${4:Content}

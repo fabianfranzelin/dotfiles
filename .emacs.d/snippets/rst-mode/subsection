@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: Subsection title
+# key: sub
+# --
+
+.. _sec_${1:$(yas-rst-mode-labels yas-text)}:
+
+${1:Subsection}
+${1:$(make-string (string-width yas-text) ?\-)}
+
+$0
