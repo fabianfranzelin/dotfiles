@@ -1,0 +1,8 @@
+start_proxy() {
+    # Kill all services registered to port 3128
+    sudo kill -9 $(sudo lsof -t -i:3128)
+
+    # Enable and start the experimental proxy service
+    sudo osd-proxy2-enable
+    sudo osd-proxy2-start
+}

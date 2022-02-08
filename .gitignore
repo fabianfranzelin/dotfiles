@@ -92,8 +92,28 @@ $RECYCLE.BIN/
 # custom
 
 build/
-
 .vscode/
 
 ### Emacs ###
 flycheck_*
+
+.emacs.d/.cache
+.emacs.d/.dap-breakpoints
+.emacs.d/.extension
+.emacs.d/.last-package-update-day
+.emacs.d/.lsp-session-v1
+.emacs.d/custom.el
+.emacs.d/eln-cache
+.emacs.d/elpa
+.emacs.d/eshell
+.emacs.d/history
+.emacs.d/projectile-bookmarks.eld
+.emacs.d/projectile.cache
+.emacs.d/recentf
+.emacs.d/site-lisp
+.emacs.d/smex-items
+.emacs.d/transient
+.emacs.d/var
+.emacs.d/workspace
+.emacs.d/eaf
+.emacs.d/request

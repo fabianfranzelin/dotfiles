@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: Section
+# key: section
+# --
+
+.. _sec_${1:$(yas-rst-mode-labels yas-text)}:
+
+${1:Section}
+${1:$(make-string (string-width yas-text) ?\=)}
