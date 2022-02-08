@@ -265,8 +265,8 @@
   :config
   (setq company-backends (delete 'company-semantic company-backends)
         company-minimum-prefix-length 1
-        company-idle-delay 0.0 ;; default is 0.2
-        company-echo-delay 0.0
+        company-idle-delay 0.2 ;; default is 0.2
+        company-echo-delay 0.2
         ;; aligns annotation to the right hand side
         company-tooltip-align-annotations t)
 
@@ -595,39 +595,6 @@ FILE: filename"
   :config
   ;; (add-to-list 'treemacs-pre-file-insert-predicates #'treemacs-is-file-git-ignored?)
   (push #'treemacs-custom-filter treemacs-ignored-file-predicates))
-
-(use-package lsp-treemacs
-  :after lsp-mode treemacs
-  :commands lsp-treemacs-errors-list
-  :config
-  (setq gc-cons-threshold (* 100 1024 1024)
-        read-process-output-max (* 1024 1024)
-        treemacs-space-between-root-nodes nil
-        ;; clangd is fast
-        lsp-idle-delay 0.1
-        ;; be more ide-ish
-        lsp-headerline-breadcrumb-enable t)
-  ;; enables bidirectional sync
-  (lsp-treemacs-sync-mode t))
-
-;; -------------------------------------------------------------------
-;; Enable dap
-;; -------------------------------------------------------------------
-(use-package dap-mode
-  :hook (dap-stopped . (lambda (arg) (call-interactively #'dap-hydra)))
-  :init
-  ;; use tooltips for mouse hover
-  ;; if it is not enabled `dap-mode' will use the minibuffer.
-  (tooltip-mode 1)
-  ;; displays floating panel with debug buttons
-  ;; requies emacs 26+
-  (dap-ui-controls-mode 1)
-  :config (dap-auto-configure-mode)
-  :hook ((dap-stopped . (lambda (arg) (call-interactively #'dap-hydra))))
-  :bind(("C-c d d" . dap-debug)
-        ("C-c d h" . dap-hydra)
-        ("C-c d t" . dap-breakpoint-toggle)
-        ("C-c d r" . dap-ui-repl)))
 
 ;; -------------------------------------------------------------------
 ;; Eshell & Vterm
