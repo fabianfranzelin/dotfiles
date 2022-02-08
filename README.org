@@ -1,0 +1,20 @@
+#+TITLE: =My dotfiles=
+
+* Welcome
+
+In this repository, I gather my system configurations that allow me to have
+a consistent computing experience over multiple Linux machines.
+
+It configures two main tools: [[https://www.gnu.org/software/emacs/][GNU Emacs]] and [[https://zsh.sourceforge.io/][ZSH]].
+
+I use [[https://www.gnu.org/software/stow/][GNU Stow]] to install my configuration files on my Linux
+distributions. Everything can be rolled out by calling the main
+configure script of the repository
+
+#+BEGIN_SRC shell
+  ./configure
+#+END_SRC
+
+* License
+
+Released under the [[./LICENSE][MIT License]] unless otherwise specified by license files in subfolders.
