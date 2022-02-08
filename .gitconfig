@@ -1,0 +1,35 @@
+[include]
+    path = "~/.gitconfig.general"
+[core]
+    autocrlf = false
+    editor = vim
+[user]
+    name = " Franzelin Fabian (XC-AD/ETV5)"
+    email = fabian.franzelin@de.bosch.com
+[credential]
+    # For installation, run:
+    # sudo apt-get install libsecret-1-0 libsecret-1-dev
+    # cd /usr/share/doc/git/contrib/credential/libsecret
+    # sudo make
+    helper = /usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret
+[credential "https://github.com"]
+    username = fabianfranzelin
+[credential "https://github.boschdevcloud.com"]
+    username=frf2lr
+[credential "https://sourcecode01.de.bosch.com"]
+    username = frf2lr
+[merge]
+    tool = meld
+[diff]
+    tool = meld
+[difftool "visual"]
+    cmd = ${VISUAL} --wait --diff $LOCAL $REMOTE
+[filter "lfs"]
+    clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+    required = true
+[push]
+    default = simple
+[lfs]
+    storage = /home/frf2lr/.cache/git/lfs
