@@ -17,6 +17,21 @@
   ;; https://emacs-lsp.github.io/lsp-mode/page/performance/
   (setq read-process-output-max (* 1024 1024)) ;; 1mb
 
+  ;; bigger number required for client-server communication
+  (setq gc-cons-threshold (* 100 1024 1024))
+
+  ;; disable plists parsing and use hasmaps
+  (setq lsp-use-plists nil)
+
+  ;; switch off logging
+  (setq lsp-log-io nil) ; if set to true can cause a performance hit
+
+  ;; clangd is fast
+  (setq lsp-idle-delay 0.1)
+
+  ;; be more ide-ish
+  (setq lsp-headerline-breadcrumb-enable t)
+
   ;; lsp mode adds automatically capf as first element in the list of
   ;; company-backends. This disables implicitly the other backends that
   ;; I define in the specific modes. Hence, each mode takes over
@@ -75,6 +90,37 @@
 (with-eval-after-load 'lsp-ui-mode
   (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
   (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references))
+
+;; -------------------------------------------------------------------
+;; LSP integration with treemacs
+;; -------------------------------------------------------------------
+(use-package lsp-treemacs
+  :after lsp-mode treemacs
+  :commands lsp-treemacs-errors-list
+  :config
+  (setq treemacs-space-between-root-nodes nil)
+  ;; enables bidirectional sync
+  (lsp-treemacs-sync-mode t))
+
+;; -------------------------------------------------------------------
+;; Enable dap
+;; -------------------------------------------------------------------
+(use-package dap-mode
+  :after lsp-mode
+  :hook (dap-stopped . (lambda (arg) (call-interactively #'dap-hydra)))
+  :init
+  ;; use tooltips for mouse hover
+  ;; if it is not enabled `dap-mode' will use the minibuffer.
+  (tooltip-mode 1)
+  ;; displays floating panel with debug buttons
+  ;; requies emacs 26+
+  (dap-ui-controls-mode 1)
+  :config (dap-auto-configure-mode)
+  :hook ((dap-stopped . (lambda (arg) (call-interactively #'dap-hydra))))
+  :bind(("C-c d d" . dap-debug)
+        ("C-c d h" . dap-hydra)
+        ("C-c d t" . dap-breakpoint-toggle)
+        ("C-c d r" . dap-ui-repl)))
 
 (provide 'setup-lsp)
 
