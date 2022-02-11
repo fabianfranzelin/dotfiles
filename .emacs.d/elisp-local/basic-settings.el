@@ -531,7 +531,8 @@
 ;; -------------------------------------------------------------------
 (defun ff/switch-project-action ()
   "Switch to a workspace with the project name and start `magit-status'."
-  (persp-switch (projectile-project-name))
+  (if (not (member (projectile-project-name) (persp-all-names)))
+      (persp-switch (projectile-project-name)))
   (projectile-find-file))
 
 (use-package projectile
