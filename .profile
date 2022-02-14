@@ -115,8 +115,8 @@ fi
 
 #------------------------------------------------------------------------------#
 # make aliases available in eshell
-mkdir -p "$HOME/.emacs.d/eshell"
-alias | sed 's/^alias //' | sed -E "s/^([^=]+)='(.+?)'$/\1=\2/" | sed "s/'\\\\''/'/g" | sed "s/'\\\\$/'/;" | sed -E 's/^([^=]+)=(.+)$/alias \1 \2/' > "$HOME/.emacs.d/eshell/alias"
+# mkdir -p "$HOME/.emacs.d/eshell"
+# alias | sed 's/^alias //' | sed -E "s/^([^=]+)='(.+?)'$/\1=\2/" | sed "s/'\\\\''/'/g" | sed "s/'\\\\$/'/;" | sed -E 's/^([^=]+)=(.+)$/alias \1 \2/' > "$HOME/.emacs.d/eshell/alias"
 
 #------------------------------------------------------------------------------#
 # enable direnv for bash or zsh
