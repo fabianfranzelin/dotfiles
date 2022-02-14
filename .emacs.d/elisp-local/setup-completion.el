@@ -60,7 +60,7 @@ ARG: position"
   :config
   (setq completion-styles '(orderless)
         completion-category-defaults nil
-        completion-category-overrides '((file (styles . (partial-completion))))))
+        completion-category-overrides '((file (styles basic partial-completion)))))
 
 ;; -------------------------------------------------------------------
 ;; Consult
