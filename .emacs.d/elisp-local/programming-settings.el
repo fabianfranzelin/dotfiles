@@ -106,8 +106,31 @@
   (put 'dockerfile-image-name 'safe-local-variable #'stringp))
 
 (use-package docker
+  :after setup-vterm
   :bind ("C-x d" . docker)
   :config
+  (defun ff/docker-container-vterm-selection (prefix)
+    "Run `docker-container-vterm' on the containers selection."
+    (interactive "P")
+    (docker-utils-ensure-items)
+    (--each (docker-utils-get-marked-items-ids)
+      (ff/docker-container-vterm it)))
+
+  (defun ff/docker-container-vterm (container)
+    "Open `vterm' in CONTAINER."
+    (interactive "P")
+    (ff/make-windows-visible-with-prefix "*vterm")
+    (let* ((command (concat "docker exec -it -e \"DEBIAN_FRONTEND=noninteractive\" -e \"DISPLAY=$DISPLAY\" "
+                            container " "
+                            "\"/bin/bash\"")))
+      (with-current-buffer (vterm (concat "*vterm " command "*"))
+        (set-process-sentinel vterm--process #'ff/run-in-vterm-kill)
+        (vterm-send-string command)
+        (vterm-send-return))))
+
+  ;; add new entry to transient of docker package
+  (transient-append-suffix 'docker-container-shells "b" '("v" "vterm" ff/docker-container-vterm-selection))
+
   :custom (docker-run-default-args '("-i"
                                      "-t"
                                      "-e DEBIAN_FRONTEND=noninteractive"

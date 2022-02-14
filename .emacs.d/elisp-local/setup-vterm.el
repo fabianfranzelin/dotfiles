@@ -6,7 +6,7 @@
 
 ;;; Code:
 
-(defun run-in-vterm-kill (process event)
+(defun ff/run-in-vterm-kill (process event)
   "A process sentinel.  Kill PROCESS's buffer if it is live.
 PROCESS:
 EVENT:"
@@ -14,7 +14,7 @@ EVENT:"
     (and (buffer-live-p b)
          (kill-buffer-and-window))))
 
-(defun run-in-vterm (command)
+(defun ff/run-in-vterm (command)
   "Execute string COMMAND in a new vterm.
 
 Interactively, prompt for COMMAND with the current buffer's file
@@ -40,7 +40,7 @@ COMMAND:"
                           (cons 'shell-command-history 1)
                           (list filename)))))
   (with-current-buffer (vterm (concat "*vterm " command "*"))
-    (set-process-sentinel vterm--process #'run-in-vterm-kill)
+    (set-process-sentinel vterm--process #'ff/run-in-vterm-kill)
     (vterm-send-string command)
     (vterm-send-return)))
 
@@ -72,7 +72,7 @@ COMMAND:"
          (proc (get-buffer-process buff)))
     (set-process-sentinel
      proc
-     #'run-in-vterm-kill)))
+     #'ff/run-in-vterm-kill)))
 
 ;; Account for https://github.com/akermu/emacs-libvterm/issues/518
 (defun vterm-send-password ()
