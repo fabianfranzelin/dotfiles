@@ -14,11 +14,16 @@
 ARG: position"
   (interactive "p")
   (if minibuffer-completing-file-name
-      ;; Borrowed from
-      ;; https://github.com/raxod502/selectrum/issues/498#issuecomment-803283608
-      (if (string-match-p ".*/$" (minibuffer-contents))
-          (zap-up-to-char (- arg) ?/)
-        (delete-char -1))
+      (progn
+        (when (string-match-p "~/$" (minibuffer-contents))
+          (delete-minibuffer-contents)
+          (insert (substitute-in-file-name "$HOME/")))
+
+        ;; Borrowed from
+        ;; https://github.com/raxod502/selectrum/issues/498#issuecomment-803283608
+        (if (string-match-p ".*/$" (minibuffer-contents))
+              (zap-up-to-char (- arg) ?/)
+          (delete-char -1)))
     (delete-char -1)))
 
 (use-package vertico
@@ -101,6 +106,7 @@ ARG: position"
          ("M-y" . consult-yank-from-kill-ring)
          ("M-g g" . consult-goto-line)
          :map minibuffer-local-map
+         ("M-y" . yank-pop)
          ("C-r" . consult-history)))
 
 (use-package consult-dir
