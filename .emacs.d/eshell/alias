@@ -1,0 +1,67 @@
+alias - cd -
+alias .. cd ..
+alias ... cd ../..
+alias .... cd ../../..
+alias ..... cd ../../../..
+alias ...... cd ../../../../..
+alias .2 cd ../..
+alias .3 cd ../../..
+alias .4 cd ../../../..
+alias .5 cd ../../../../..
+alias .6 cd ../../../../../..
+alias 1 cd -1
+alias 2 cd -2
+alias 3 cd -3
+alias 4 cd -4
+alias 5 cd -5
+alias 6 cd -6
+alias 7 cd -7
+alias 8 cd -8
+alias 9 cd -9
+alias _ sudo
+alias afind ack -il
+alias c clear
+alias clear vterm_printf "51;Evterm-clear-scrollback";tput clear
+alias cp cp -i -P
+alias diff diff --color
+alias doc docker container list
+alias doi docker images
+alias doir docker image rm
+alias dormi docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
+alias dosp docker system prune -f
+alias egrep egrep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox}
+alias ff find_file
+alias fgrep fgrep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox}
+alias g git
+alias grep grep --color=auto
+alias history omz_history
+alias k kubectl --namespace=development-${USER}
+alias kp kubectl --namespace=production
+alias l ls -1F --color=auto
+alias la ls -1F --color=auto -a
+alias ll ls -1F --color=auto -altrh
+alias lla ls -1F --color=auto -lha
+alias ls ls --color=tty
+alias lsa ls -lah
+alias md mkdir -p
+alias mv mv -i
+alias naliases n-aliases
+alias ncd n-cd
+alias nenv n-env
+alias nfunctions n-functions
+alias nhelp n-help
+alias nhistory n-history
+alias nkill n-kill
+alias noptions n-options
+alias npanelize n-panelize
+alias py python
+alias py2 python2
+alias py3 python3
+alias rd rmdir
+alias reboot shutdown now --reboot
+alias shopt :
+alias tree tree -A -C -F
+alias which-command whence
+
+# eshell specific ones
+alias ff for i in ${eshell-flatten-list $*} {find-file $i}
