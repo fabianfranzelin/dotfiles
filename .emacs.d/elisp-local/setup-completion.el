@@ -43,15 +43,15 @@ ARG: position"
 ;; -------------------------------------------------------------------
 ;; Corfu
 ;; -------------------------------------------------------------------
-(use-package corfu
-  :custom (corfu-cycle t)
-  :init
-  (corfu-global-mode)
-  :bind(:map corfu-map
-             ("C-j" . corfu-next)
-             ("C-k" . corfu-previous)
-             ("TAB" . corfu-insert)
-             ("C-f" . corfu-insert)))
+;; (use-package corfu
+;;   :custom (corfu-cycle t)
+;;   :init
+;;   (corfu-global-mode)
+;;   :bind(:map corfu-map
+;;              ("C-j" . corfu-next)
+;;              ("C-k" . corfu-previous)
+;;              ("TAB" . corfu-insert)
+;;              ("C-f" . corfu-insert)))
 
 ;; -------------------------------------------------------------------
 ;; Improved filtering
