@@ -5,6 +5,6 @@
 # --
 
 .. figure:: ${1:Relative path to your image}
-   :scale: ${2:Scaling} %
+   :scale: ${2:Scaling}%
 
    ${3:Caption}

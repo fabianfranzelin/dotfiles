@@ -169,12 +169,24 @@
 ;;    Export as a temporary buffer. Do not create a file.
 (use-package ox-rst)
 
+(defun ff/configure-rst-mode ()
+  "Configure rst mode."
+  (interactive)
+  (set (make-local-variable 'company-backends)
+       '(company-abbrev
+         company-dabbrev
+         company-files
+         company-ispell
+          :with company-yasnippet)))
+
 (use-package rst
+  :after company
   :mode (("\\.txtt$" . rst-mode)
          ("\\.rst$" . rst-mode)
          ("\\.rest$" . rst-mode))
   ;; enable support of virtualenvironments
-  :hook ((rst-mode . pyvenv-mode)))
+  :hook ((rst-mode . pyvenv-mode)
+         (rst-mode . ff/configure-rst-mode)))
 
 ;; -------------------------------------------------------------------
 ;; Typescript
