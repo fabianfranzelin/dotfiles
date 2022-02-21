@@ -4,7 +4,7 @@
 
 ;;; Code:
 
-(setq-default org-directory "~/workspace/org_files"
+(setq-default org-directory "~/workspace/org"
 		      org-default-notes-file (concat org-directory "/notes.org")
 		      org-agenda-files (directory-files-recursively
 				                org-directory ".org")
