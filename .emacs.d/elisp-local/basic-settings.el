@@ -174,7 +174,6 @@
   :hook ((org-mode . ff/visual-fill-center-text)
          (rst-mode . ff/visual-fill-center-text)))
 
-
 ;; -------------------------------------------------------------------
 ;; Perspectives and workspaces
 ;; -------------------------------------------------------------------
@@ -274,10 +273,13 @@
   ;; at once, which
   (defvar +ff/company-default-backends '((company-capf
                                           company-files
-                                          :with company-yasnippet)
+                                          company-dabbrev)
                                          (company-abbrev
                                           company-ispell)))
   (setq company-backends +ff/company-default-backends)
+
+  ;; Let dabbrev backend be case sensitive
+  (setq company-dabbrev-downcase nil)
 
   ;; enable company globally
   (global-company-mode 1)
