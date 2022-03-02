@@ -48,7 +48,7 @@
   (let* ((dic ispell-current-dictionary)
          (change (if (string= dic "de_DE") "en_US" "de_DE")))
     (ispell-change-dictionary change)
-    (languagetool-set-language change)
+    (languagetool-set-language (replace-regexp-in-string "_" "-" change))
     (message "[languagetool, ispell] Dictionary switched from %s to %s" dic change)))
 
 ;; --------------------------------------------------------
