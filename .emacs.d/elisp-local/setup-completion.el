@@ -103,7 +103,7 @@ ARG: position"
          ("C-x b" . consult-buffer)
          ("C-c i" . consult-imenu)
          ("C-M-j" . persp-switch-to-buffer*)
-         ("M-y" . consult-yank-from-kill-ring)
+         ("M-y" . consult-yank-replace)
          ("M-g g" . consult-goto-line)
          :map minibuffer-local-map
          ("M-y" . yank-pop)
