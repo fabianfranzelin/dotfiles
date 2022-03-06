@@ -81,6 +81,9 @@
   "Load path for local Emacs configurations.")
 (add-to-list 'load-path local-load-path)
 
+;; Silence compiler warnings as they can be pretty disruptive
+(setq comp-async-report-warnings-errors nil)
+
 (use-package helpers
   :load-path local-load-path)
 
