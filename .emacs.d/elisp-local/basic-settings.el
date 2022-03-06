@@ -653,6 +653,7 @@ TEXT: title"
 ;; Code style checker
 ;; -------------------------------------------------------------------
 (use-package flycheck
+  :hook (lsp-mode . flycheck-mode)
   :init (global-flycheck-mode))
 
 ;; -------------------------------------------------------------------
