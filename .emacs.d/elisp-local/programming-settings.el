@@ -228,7 +228,7 @@ SOURCE_FILENAME: filename to the puml file."
          ("\\.uml" . plantuml-mode))
   :init
   ;; Consider using (plantuml-download-jar) as alternative
-  (defvar plantuml-version "1.2021.16" "Version number of plantuml binary")
+  (defvar plantuml-version "1.2022.2" "Version number of plantuml binary")
   (defvar plantuml-name (concat "plantuml-jar-asl-" plantuml-version) "Name of plantuml executable")
   (defvar plantuml-url
     (concat "https://sourceforge.net/projects/plantuml/files/" plantuml-version "/" plantuml-name ".zip/download")
