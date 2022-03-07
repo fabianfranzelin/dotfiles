@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: UML
+# key: puml
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# --
+
+.. uml:: ${1:Relative path to your image}
+   :caption: ${2:Caption}%
