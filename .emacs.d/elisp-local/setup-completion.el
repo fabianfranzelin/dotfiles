@@ -72,6 +72,9 @@ ARG: position"
 (use-package consult
   :after (projectile vertico)
   :defines consult-buffer-sources
+  ;; Enable automatic preview at point in the *Completions* buffer. This is
+  ;; relevant when you use the default completion UI.
+  :hook (completion-list-mode . consult-preview-at-point-mode)
   :config
   (setq consult-project-root-function #'dw/get-project-root
         completion-in-region-function #'consult-completion-in-region)
@@ -107,7 +110,7 @@ ARG: position"
          ("M-g g" . consult-goto-line)
          :map minibuffer-local-map
          ("M-y" . yank-pop)
-         ("C-r" . consult-history)))
+         ("C-s" . consult-history)))
 
 (use-package consult-dir
   :custom (consult-dir-project-list-function nil)
