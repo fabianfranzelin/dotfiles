@@ -2,7 +2,7 @@
     path = "~/.gitconfig.general"
 [core]
     autocrlf = false
-    editor = vim
+    editor = emacsclient -nw -c -a "emacs"
 [user]
     name = " Franzelin Fabian (XC-AD/ETV5)"
     email = fabian.franzelin@de.bosch.com
@@ -22,8 +22,6 @@
     tool = meld
 [diff]
     tool = meld
-[difftool "visual"]
-    cmd = ${VISUAL} --wait --diff $LOCAL $REMOTE
 [push]
     default = simple
 [lfs]
