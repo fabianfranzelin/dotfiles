@@ -193,7 +193,8 @@
 ;; is easier with this setting.
 (use-package visual-fill-column
   :hook ((org-mode . ff/visual-fill-center-text)
-         (rst-mode . ff/visual-fill-center-text)))
+         (rst-mode . ff/visual-fill-center-text)
+         (LaTeX-mode . ff/visual-fill-center-text)))
 
 ;; -------------------------------------------------------------------
 ;; Perspectives and workspaces
@@ -399,10 +400,13 @@
 ;; Undo tree - make undos more powerful
 ;; -------------------------------------------------------------------
 (use-package undo-tree
-  :config
+  :init
   (global-undo-tree-mode)
+  :config
   ;; increase undo limit
-  (setq undo-limit 8000000))
+  (setq undo-limit 8000000)
+   ;; do not save the undo history
+  (setq undo-tree-auto-save-history nil))
 
 ;; -------------------------------------------------------------------
 ;; Credential management
