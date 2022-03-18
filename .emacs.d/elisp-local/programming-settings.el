@@ -215,9 +215,12 @@ SOURCE_FILENAME: filename to the puml file."
   (interactive)
   (message (concat "Converting " source_filename))
   (call-process-shell-command (concat
-                               "java -jar "
-                               plantuml-jar-path
-                               source_filename
+                               "java"
+                               " -jar"
+                               " " plantuml-jar-path
+                               " " source_filename
+                               " -DRELATIVE_INCLUDE=\".\""
+                               " -Djava.awt.headless=true"
                                " -tsvg -charset utf-8"))
   (message "Conversion succeeded."))
 
@@ -245,6 +248,7 @@ SOURCE_FILENAME: filename to the puml file."
   :config
   ;; Sample jar configuration
   (setq plantuml-jar-path plantuml-expected-binary
+        plantuml-jar-args (list "-charset" "UTF-8" "-DRELATIVE_INCLUDE=." "-Djava.awt.headless=true")
         plantuml-default-exec-mode 'jar
         plantuml-indent-level 4)
   ;; remap preview to personal function; for some reason, bind does
