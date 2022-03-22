@@ -171,7 +171,6 @@
   "Enable lsp-ccls."
   (when (and buffer-file-name (--all? (not (string-match-p it buffer-file-name)) +lsp-blacklist))
     (require 'ccls)
-    (require 'lsp-completion)
     (require 'lsp-headerline)
     (require 'lsp-modeline)
     (setq-local lsp-ui-sideline-show-symbol nil)
@@ -199,17 +198,8 @@
                                      (arglist-cont-nonempty . +)))))
   (push '(c++-mode . "my-cc") c-default-style)
   (push '(c-mode . "my-cc") c-default-style)
-  (setq company-clang-executable "/usr/bin/clang-10")
 
   :config
-  (defun my-cc-common-mode-hook()
-    (set (make-local-variable 'company-backends)
-         '((company-clang company-capf company-files)
-           (company-dabbrev-code company-dabbrev)))
-    (setq company-transformers nil company-lsp-async t company-lsp-cache-candidates nil))
-  (add-hook 'c++-mode-hook #'my-cc-common-mode-hook)
-  (add-hook 'c-mode-hook #'my-cc-common-mode-hook)
-
   ;;;###autoload
   (defun +cc-fontify-constants-h ()
     "Better fontification for preprocessor constants"

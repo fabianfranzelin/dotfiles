@@ -4,43 +4,60 @@
 
 ;;; Code:
 
-(defun ff-lsp-mode-setup ()
+(defun ff/lsp-mode-setup ()
   "Setup-hook for lsp-mode."
-  (setq lsp-headerline-breadcrumb-segments '(project file symbols))
-  (lsp-headerline-breadcrumb-mode)
-
-  ;; Disables lsp linter as default for python-mode. It is crucial that
-  ;; this happens before loading lsp-mode.
-  (setq lsp-diagnostic-package :none)
-
-  ;; increase threshold for lsp to run smoothly
-  ;; https://emacs-lsp.github.io/lsp-mode/page/performance/
-  (setq read-process-output-max (* 1024 1024)) ;; 1mb
-
-  ;; bigger number required for client-server communication
-  (setq gc-cons-threshold (* 100 1024 1024))
-
-  ;; disable plists parsing and use hasmaps
-  (setq lsp-use-plists nil)
-
-  ;; switch off logging
-  (setq lsp-log-io nil) ; if set to true can cause a performance hit
-
-  ;; clangd is fast
-  (setq lsp-idle-delay 0.1)
-
-  ;; be more ide-ish
-  (setq lsp-headerline-breadcrumb-enable t)
-
-  ;; lsp mode adds automatically capf as first element in the list of
-  ;; company-backends. This disables implicitly the other backends that
-  ;; I define in the specific modes. Hence, each mode takes over
-  ;; responsibility for loading the required completion providers.
-  (setq lsp-completion-provider :none))
 
 (use-package lsp-mode
   :commands lsp
-  :hook ((lsp-mode . ff-lsp-mode-setup)
+  :init
+  (defun my/orderless-dispatch-flex-first (_pattern index _total)
+    (and (eq index 0) 'orderless-flex))
+
+  (defun my/lsp-mode-setup-completion ()
+    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+          '(orderless)))
+
+  ;; Optionally configure the first word as flex filtered.
+  (add-hook 'orderless-style-dispatchers #'my/orderless-dispatch-flex-first nil 'local)
+
+  ;; Optionally configure the cape-capf-buster.
+  (setq-local completion-at-point-functions (list (cape-capf-buster #'lsp-completion-at-point)))
+  :config
+  (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
+  (setq lsp-log-io nil ;; if set to true can cause a performance hit
+        lsp-pyls-plugins-flake8-enabled nil
+        lsp-pyls-plugins-pycodestyle-enabled t
+        lsp-enable-snippet t
+        ;; disable flymake
+        lsp-prefer-flymake nil
+        ;; increase watch threshold
+        lsp-file-watch-threshold 100000
+        lsp-headerline-breadcrumb-segments '(project file symbols)
+        ;; Disables lsp linter as default for python-mode. It is
+        ;; crucial that this happens before loading lsp-mode.
+        lsp-diagnostic-package :none
+
+        ;; increase threshold for lsp to run smoothly
+        ;; https://emacs-lsp.github.io/lsp-mode/page/performance/
+        read-process-output-max (* 1024 1024) ;; 1mb
+        ;; bigger number required for client-server communication
+        gc-cons-threshold (* 100 1024 1024)
+        ;; disable plists parsing and use hasmaps
+        lsp-use-plists nil
+        ;; switch off logging
+        lsp-log-io nil ; if set to true can cause a performance hit
+        ;; clangd is fast
+        lsp-idle-delay 0.1
+        ;; be more ide-ish
+        lsp-headerline-breadcrumb-enable t
+        ;; we use Corfu!
+        lsp-completion-provider :none)
+
+  (lsp-enable-which-key-integration)
+  (lsp-headerline-breadcrumb-mode)
+
+  :hook ((lsp-mode . ff/lsp-mode-setup)
+         (lsp-completion-mode . my/lsp-mode-setup-completion)
          (c++-mode . lsp-deferred)
          (c-mode . lsp-deferred)
          (java-mode . lsp-deferred)
@@ -51,21 +68,7 @@
          (sh-mode . lsp-deferred)
          (cmake-mode . lsp-deferred)
          (dockerfile-mode . lsp-deferred)
-         (before-save-hook . lsp-format-buffer))
-  :config
-  (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
-  (setq lsp-log-io nil ;; if set to true can cause a performance hit
-        lsp-pyls-plugins-flake8-enabled nil
-        lsp-pyls-plugins-pycodestyle-enabled t
-        lsp-enable-snippet t
-        ;; disable flymake
-        lsp-prefer-flymake nil
-        ;; increase watch threshold
-        lsp-file-watch-threshold 100000)
-  (lsp-enable-which-key-integration)
-
-  :bind (:map lsp-mode-map
-              ("TAB" . company-indent-or-complete-common)))
+         (before-save-hook . lsp-format-buffer)))
 
 (use-package lsp-ui
   :after lsp-mode

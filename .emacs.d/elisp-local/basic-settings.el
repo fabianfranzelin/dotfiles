@@ -280,50 +280,6 @@
 ;;   :load-path local-load-path)
 
 ;; -------------------------------------------------------------------
-;; Company
-;; -------------------------------------------------------------------
-(use-package company
-  :after (lsp-mode yasnippet)
-  :hook (lsp-mode . company-mode)
-  :config
-  (setq company-backends (delete 'company-semantic company-backends)
-        company-minimum-prefix-length 1
-        company-idle-delay 0.2 ;; default is 0.2
-        company-echo-delay 0.2
-        ;; aligns annotation to the right hand side
-        company-tooltip-align-annotations t)
-
-  ;; The company-backends support list of lists. Lists are evaluated
-  ;; at once, which
-  (defvar +ff/company-default-backends '((company-capf
-                                          company-files
-                                          company-dabbrev)
-                                         (company-abbrev
-                                          company-ispell)))
-  (setq company-backends +ff/company-default-backends)
-
-  ;; Let dabbrev backend be case sensitive
-  (setq company-dabbrev-downcase nil)
-
-  ;; enable company globally
-  (global-company-mode 1)
-  :bind (("C-c C-y" . company-yasnippet)
-         :map company-active-map
-         ("TAB" . company-complete-selection)))
-
-
-;; disable company mode for terminals
-(dolist (mode '(term-mode-hook
-                vterm-mode-hook
-                eshell-mode-hook
-                dap-ui-repl-mode-hook))
-  (add-hook mode (lambda () (company-mode 0))))
-
-(use-package company-prescient
-  :init
-  (company-prescient-mode 1))
-
-;; -------------------------------------------------------------------
 ;; Buffer move & transpose frame
 ;; -------------------------------------------------------------------
 (use-package buffer-move
@@ -665,13 +621,13 @@ TEXT: title"
   (downcase (replace-regexp-in-string " \\|:\\|-" "_" text)))
 
 (use-package yasnippet
+  :init
+  ;; enable yas everywhere
+  (yas-global-mode 1)
   :config
   (setq yas-verbosity 1
 	    yas-wrap-around-region t)
-
-  ;; enable yas everywhere
-  (yas-reload-all)
-  (yas-global-mode 1))
+  :bind (("C-c C-y" . yas-insert-snippet)))
 
 (use-package yasnippet-snippets
   :after yasnippet)
