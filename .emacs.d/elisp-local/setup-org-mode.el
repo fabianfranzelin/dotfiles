@@ -84,9 +84,7 @@
   :pin org
   :ensure-system-package ("/usr/share/fonts/opentype/cantarell" . "sudo apt install fonts-cantarell -y")
   :commands (org-capture org-agenda)
-  :hook ((org-mode . efs/org-mode-setup)
-         (org-mode . (lambda ()
-                       (setq company-backends +ff/company-default-backends))))
+  :hook ((org-mode . efs/org-mode-setup))
   :config
   (setq org-ellipsis " ▾")
 
