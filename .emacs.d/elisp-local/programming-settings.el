@@ -11,15 +11,13 @@
 (defun ff/configure-text-mode ()
   "Configure text mode."
   (interactive)
-  (set (make-local-variable 'company-backends)
-       '((company-abbrev
-          company-dabbrev
-          company-ispell
-          company-files))))
+  (set (make-local-variable 'completion-at-point-functions)
+       '(cape-dabbrev
+         cape-ispell)))
 
 (use-package text-mode
   :ensure nil
-  :after company
+  :after cape
   :hook (text-mode . ff/configure-text-mode))
 
 ;; -------------------------------------------------------------------
@@ -169,13 +167,19 @@
 ;;    Export as a temporary buffer. Do not create a file.
 (use-package ox-rst)
 
+
+(defun ff/configure-rst-mode ()
+  "Configure text mode."
+  (interactive)
+  (set (make-local-variable 'completion-at-point-functions)
+       '(cape-dabbrev
+         cape-ispell)))
+
 (use-package rst
-  :after company
-  :mode (("\\.txtt$" . rst-mode)
-         ("\\.rst$" . rst-mode)
+  :mode (("\\.rst$" . rst-mode)
          ("\\.rest$" . rst-mode))
-  ;; enable support of virtualenvironments
-  :hook ((rst-mode . pyvenv-mode)))
+  :hook ((rst-mode . pyvenv-mode) ;; enable support of virtualenvironments
+         (text-mode . ff/configure-rst-mode)))
 
 ;; -------------------------------------------------------------------
 ;; Typescript

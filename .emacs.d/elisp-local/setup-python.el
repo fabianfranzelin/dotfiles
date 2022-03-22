@@ -31,11 +31,7 @@
   :mode (("\\.py$" . python-mode)
          ("SConstruct" . python-mode)
          ("SConscript" . python-mode))
-  :hook ((python-mode . (lambda ()
-                          (setq company-backends '((company-capf
-                                                    company-files)
-                                                   (company-abbrev)))))
-         (python-mode . annotate-pdb)
+  :hook ((python-mode . annotate-pdb)
          (python-mode . (lambda ()
                           (require 'lsp-python-ms)
                           ;; debugging package for python using ptvsd
