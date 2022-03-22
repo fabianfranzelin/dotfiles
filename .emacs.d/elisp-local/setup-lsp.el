@@ -4,9 +4,6 @@
 
 ;;; Code:
 
-(defun ff/lsp-mode-setup ()
-  "Setup-hook for lsp-mode."
-
 (use-package lsp-mode
   :commands lsp
   :init
