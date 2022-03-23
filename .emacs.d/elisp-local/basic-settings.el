@@ -115,8 +115,16 @@
 ;;   :config
 ;;   (load-theme 'material t))
 
-;; Silence compiler warnings as they can be pretty disruptive
-(setq native-comp-async-report-warnings-errors nil)
+;; Add frame borders and window dividers
+(modify-all-frames-parameters
+ '((right-divider-width . 0)
+   (internal-border-width . 0)))
+(dolist (face '(window-divider
+                window-divider-first-pixel
+                window-divider-last-pixel))
+  (face-spec-reset-face face)
+  (set-face-foreground face (face-attribute 'default :background)))
+(set-face-background 'fringe (face-attribute 'default :background))
 
 ;; -------------------------------------------------------------------
 ;; Global key bindings
@@ -506,6 +514,9 @@
 ;; Org-mode
 ;; -------------------------------------------------------------------
 (use-package setup-org-mode
+  :load-path local-load-path)
+
+(use-package setup-org-roam
   :load-path local-load-path)
 
 ;; -------------------------------------------------------------------

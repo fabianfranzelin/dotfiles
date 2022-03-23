@@ -4,129 +4,135 @@
 
 ;;; Code:
 
-(setq org-directory "~/workspace/org_files")
+(defvar dw/org-roam-project-template
+  '("p" "project" plain "** TODO %?"
+    :if-new (file+head+olp "%<%Y%m%d%H%M%S>-${slug}.org"
+                           "#+title: ${title}\n#+category: ${title}\n#+filetags: Project\n"
+                           ("Tasks"))))
 
-;; (setq org-agenda-files `(,org-directory))
-(defun dw/org-path (path)
-  (expand-file-name path org-directory))
+(defun my/org-roam-filter-by-tag (tag-name)
+  (lambda (node)
+    (member tag-name (org-roam-node-tags node))))
 
-(setq org-default-notes-file (dw/org-path "tasks.org"))
+(defun my/org-roam-list-notes-by-tag (tag-name)
+  (mapcar #'org-roam-node-file
+          (seq-filter
+           (my/org-roam-filter-by-tag tag-name)
+           (org-roam-node-list))))
 
-(with-eval-after-load 'org-roam
-  (defun my/org-roam-project-finalize-hook ()
-    "Adds the captured project file to `org-agenda-files' if the
-  capture was not aborted."
-    ;; Remove the hook since it was added temporarily
-    (remove-hook 'org-capture-after-finalize-hook #'my/org-roam-project-finalize-hook)
+(defun org-roam-node-insert-immediate (arg &rest args)
+  (interactive "P")
+  (let ((args (push arg args))
+        (org-roam-capture-templates (list (append (car org-roam-capture-templates)
+                                                  '(:immediate-finish t)))))
+    (apply #'org-roam-node-insert args)))
 
-    ;; Add project file to the agenda list if the capture was confirmed
-    (unless org-note-abort
-      (with-current-buffer (org-capture-get :buffer)
-        (add-to-list 'org-agenda-files (buffer-file-name)))))
+(defun dw/org-roam-goto-month ()
+  (interactive)
+  (org-roam-capture- :goto (when (org-roam-node-from-title-or-alias (format-time-string "%Y-%B")) '(4))
+                     :node (org-roam-node-create)
+                     :templates '(("m" "month" plain "\n* Goals\n\n%?* Summary\n\n"
+                                   :if-new (file+head "%<%Y-%B>.org"
+                                                      "#+title: %<%Y-%B>\n#+filetags: Project\n")
+                                   :unnarrowed t))))
 
-  (defun my/org-roam-find-project ()
-    (interactive)
-    ;; Add the project file to the agenda after capture is finished
-    (add-hook 'org-capture-after-finalize-hook #'my/org-roam-project-finalize-hook)
+(defun dw/org-roam-goto-year ()
+  (interactive)
+  (org-roam-capture- :goto (when (org-roam-node-from-title-or-alias (format-time-string "%Y")) '(4))
+                     :node (org-roam-node-create)
+                     :templates '(("y" "year" plain "\n* Goals\n\n%?* Summary\n\n"
+                                   :if-new (file+head "%<%Y>.org"
+                                                      "#+title: %<%Y>\n#+filetags: Project\n")
+                                   :unnarrowed t))))
 
-    ;; Select a project file to open, creating it if necessary
-    (org-roam-node-find
-     nil
-     nil
-     (my/org-roam-filter-by-tag "Project")
-     :templates
-     '(("p" "project" plain "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates\n\n"
-        :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: Project")
-        :unnarrowed t))))
+(defun dw/org-roam-capture-task ()
+  (interactive)
+  ;; Add the project file to the agenda after capture is finished
+  (add-hook 'org-capture-after-finalize-hook #'my/org-roam-project-finalize-hook)
 
-  (defun my/org-roam-capture-inbox ()
-    (interactive)
-    (org-roam-capture- :node (org-roam-node-create)
-                       :templates '(("i" "inbox" plain "* %?"
-                                     :if-new (file+head "Inbox.org" "#+title: Inbox\n")))))
+  ;; Capture the new task, creating the project file if necessary
+  (org-roam-capture- :node (org-roam-node-read
+                            nil
+                            (my/org-roam-filter-by-tag "Project"))
+                     :templates (list dw/org-roam-project-template)))
 
-  (defun my/org-roam-copy-todo-to-today ()
-    (interactive)
-    (let ((org-refile-keep t) ;; Set this to nil to delete the original!
-          (org-roam-dailies-capture-templates
-           '(("t" "tasks" entry "%?"
-              :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n" ("Tasks")))))
-          (org-after-refile-insert-hook #'save-buffer)
-          today-file
-          pos)
-      (save-window-excursion
-        (org-roam-dailies--capture (current-time) t)
-        (setq today-file (buffer-file-name))
-        (setq pos (point)))
+(defun my/org-roam-refresh-agenda-list ()
+  (interactive)
+  (setq org-agenda-files (my/org-roam-list-notes-by-tag "Project")))
 
-      ;; Only refile if the target file is different than the current file
-      (unless (equal (file-truename today-file)
-                     (file-truename (buffer-file-name)))
-        (org-refile nil nil (list "Tasks" today-file nil pos)))))
+(defhydra dw/org-roam-jump-menu (:hint nil)
+  "
+  ^Dailies^        ^Capture^       ^Jump^
+  ^^^^^^^^-------------------------------------------------
+  _t_: today       _T_: today       _m_: current month
+  _r_: tomorrow    _R_: tomorrow    _e_: current year
+  _y_: yesterday   _Y_: yesterday   ^ ^
+  _d_: date        ^ ^              ^ ^
+  "
+  ("t" org-roam-dailies-goto-today)
+  ("r" org-roam-dailies-goto-tomorrow)
+  ("y" org-roam-dailies-goto-yesterday)
+  ("d" org-roam-dailies-goto-date)
+  ("T" org-roam-dailies-capture-today)
+  ("R" org-roam-dailies-capture-tomorrow)
+  ("Y" org-roam-dailies-capture-yesterday)
+  ("m" dw/org-roam-goto-month)
+  ("e" dw/org-roam-goto-year)
+  ("c" nil "cancel"))
 
-  ;; (add-to-list 'org-after-todo-state-change-hook
-  ;;              (lambda ()
-  ;;                (when (equal org-state "DONE")
-  ;;                  (my/org-roam-copy-todo-to-today))))
-  )
+(use-package org-roam
+  :init
+  (org-roam-db-autosync-mode)
+  (my/org-roam-refresh-agenda-list)
+  :config
+  (setq org-roam-v2-ack t)
+  (setq dw/daily-note-filename "%<%Y-%m-%d>.org"
+        dw/daily-note-header "#+title: %<%Y-%m-%d %a>\n\n[[roam:%<%Y-%B>]]\n\n")
 
+  :custom
+  (org-roam-directory "~/workspace/org/")
+  (org-roam-dailies-directory "journal/")
+  (org-roam-completion-everywhere t)
+  (org-roam-capture-templates
+        '(("d" "default" plain "%?"
+           :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                              "#+title: ${title}\n")
+           :unnarrowed t)))
+  (org-roam-dailies-capture-templates
+   `(("d" "default" entry
+      "* %?"
+      :if-new (file+head ,dw/daily-note-filename
+                         ,dw/daily-note-header))
+     ("t" "task" entry
+      "* TODO %?\n  %U\n  %a\n  %i"
+      :if-new (file+head+olp ,dw/daily-note-filename
+                             ,dw/daily-note-header
+                             ("Tasks"))
+      :empty-lines 1)
+     ("l" "log entry" entry
+      "* %<%I:%M %p> - %?"
+      :if-new (file+head+olp ,dw/daily-note-filename
+                             ,dw/daily-note-header
+                             ("Log")))
+     ("j" "journal" entry
+      "* %<%I:%M %p> - Journal  :journal:\n\n%?\n\n"
+      :if-new (file+head+olp ,dw/daily-note-filename
+                             ,dw/daily-note-header
+                             ("Log")))
+     ("m" "meeting" entry
+      "* %<%I:%M %p> - %^{Meeting Title}  :meetings:\n\n%?\n\n"
+      :if-new (file+head+olp ,dw/daily-note-filename
+                             ,dw/daily-note-header
+                             ("Log")))))
 
-(setq org-todo-keywords
-      '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
-        (sequence "|" "WAIT(w)" "BACK(b)")))
-
-;; TODO: org-todo-keyword-faces
-(setq org-todo-keyword-faces
-      '(("NEXT" . (:foreground "orange red" :weight bold))
-        ("WAIT" . (:foreground "HotPink2" :weight bold))
-        ("BACK" . (:foreground "MediumPurple3" :weight bold))))
-
-
-;; Configure common tags
-(setq org-tag-alist
-      '((:startgroup)
-                                        ; Put mutually exclusive tags here
-        (:endgroup)
-        ("@home" . ?H)
-        ("@work" . ?W)
-        ("batch" . ?b)
-        ("followup" . ?f)))
-
-(setq org-agenda-window-setup 'current-window)
-(setq org-agenda-span 'day)
-(setq org-agenda-start-with-log-mode t)
-
-;; Make done tasks show up in the agenda log
-(setq org-log-done 'time)
-(setq org-log-into-drawer t)
-
-(setq org-columns-default-format "%20CATEGORY(Category) %65ITEM(Task) %TODO %6Effort(Estim){:}  %6CLOCKSUM(Clock) %TAGS")
-
-(setq org-agenda-custom-commands
-      `(("d" "Dashboard"
-         ((agenda "" ((org-deadline-warning-days 7)))
-          (tags-todo "+PRIORITY=\"A\""
-                     ((org-agenda-overriding-header "High Priority")))
-          (tags-todo "+followup" ((org-agenda-overriding-header "Needs Follow Up")))
-          (todo "NEXT"
-                ((org-agenda-overriding-header "Next Actions")
-                 (org-agenda-max-todos nil)))
-          (todo "TODO"
-                ((org-agenda-overriding-header "Unprocessed Inbox Tasks")
-                 (org-agenda-files '(,(dw/org-path "Inbox.org")))
-                 (org-agenda-text-search-extra-files nil)))))
-
-        ("n" "Next Tasks"
-         ((agenda "" ((org-deadline-warning-days 7)))
-          (todo "NEXT"
-                ((org-agenda-overriding-header "Next Tasks")))))
-
-        ;; Low-effort next actions
-        ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
-         ((org-agenda-overriding-header "Low Effort Tasks")
-          (org-agenda-max-todos 20)
-          (org-agenda-files org-agenda-files)))))
-
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n d" . dw/org-roam-jump-menu/body)
+         ("C-c n c" . org-roam-dailies-capture-today)
+         ("C-c n t" . dw/org-roam-capture-task)
+         ("C-c n g" . org-roam-graph)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n I" . org-roam-insert-immediate)))
 
 (provide 'setup-org-roam)
 
