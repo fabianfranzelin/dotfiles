@@ -11,13 +11,13 @@ To do so, you need to install quite some third-party packages
 
 Then, clone the Emacs repository and checkout the current release branch of version 28
 
-  #+begin_src shell
-    mkdir -p "${HOME}/opt"
-    cd "${HOME}/opt"
-    git clone https://git.savannah.gnu.org/git/emacs.git emacs-28.0
-    cd "emacs-28.0"
-    git checkout emacs-28
-  #+end_src
+#+begin_src shell
+  mkdir -p "${HOME}/opt"
+  cd "${HOME}/opt"
+  git clone https://git.savannah.gnu.org/git/emacs.git emacs-28.0
+  cd "emacs-28.0"
+  git checkout emacs-28
+#+end_src
 
 To build Emacs, run
 
@@ -56,7 +56,7 @@ according to your system settings. Since I use the Emacs daemon, the
 following command works nicely together with my Emacs settings
 
 #+begin_src shell
-emacsclient -c -a emacs
+  emacsclient -c -a emacs
 #+end_src
 
 It starts a new Emacs session if it is not already running. Otherwise,
