@@ -59,6 +59,19 @@ ARG: position"
   ;; Recommended: Enable Corfu globally.
   ;; This is recommended since dabbrev can be used globally (M-/).
   :init
+  ;; TAB cycle if there are only few candidates
+  (setq completion-cycle-threshold 3)
+
+  ;; Emacs 28: Hide commands in M-x which do not apply to the current mode.
+  ;; Corfu commands are hidden, since they are not supposed to be used via M-x.
+  (setq read-extended-command-predicate
+        #'command-completion-default-include-p)
+
+  ;; Enable indentation+completion using the TAB key.
+  ;; `completion-at-point' is often bound to M-TAB.
+  (setq tab-always-indent 'complete)
+
+  ;; Recommended: Enable Corfu globally.
   (corfu-global-mode)
   :bind(:map corfu-map
              ("C-j" . corfu-next)
@@ -82,22 +95,6 @@ ARG: position"
   ;; Swap M-/ and C-M-/
   :bind (("M-/" . dabbrev-completion)
          ("C-M-/" . dabbrev-expand)))
-
-
-;; A few more useful configurations...
-(use-package emacs
-  :init
-  ;; TAB cycle if there are only few candidates
-  (setq completion-cycle-threshold 3)
-
-  ;; Emacs 28: Hide commands in M-x which do not apply to the current mode.
-  ;; Corfu commands are hidden, since they are not supposed to be used via M-x.
-  (setq read-extended-command-predicate
-        #'command-completion-default-include-p)
-
-  ;; Enable indentation+completion using the TAB key.
-  ;; `completion-at-point' is often bound to M-TAB.
-  (setq tab-always-indent 'complete))
 
 ;; Add extensions
 (use-package cape
@@ -196,21 +193,20 @@ ARG: position"
          ("C-x C-j" . consult-dir-jump-file)))
 
 ;; -------------------------------------------------------------------
-;; Embark: https://github.com/oantolin/embark
+;; Embark & Marginalia: https://github.com/oantolin/embark
 ;; -------------------------------------------------------------------
+;; Enable richer annotations using the Marginalia package
 (use-package marginalia
   :after projectile vertico
   :init
   (marginalia-mode)
   :config
-  (setq marginalia-annotators '(marginalia-annotators-heavy
-                                marginalia-annotators-light
-                                nil))
   (setq marginalia-command-categories
         (append '((projectile-find-file . project-file)
                   (projectile-find-dir . project-file)
                   (projectile-switch-project . file))
-                marginalia-command-categories)))
+                marginalia-command-categories))
+  :bind (("M-A" . marginalia-cycle)))
 
 (defun sudo-find-file (file)
   "Open FILE as root."
@@ -248,6 +244,7 @@ ARG: position"
         embark-become-indicator embark-action-indicator)
 
   :bind (("C-." . embark-act)
+         ("C-;" . embark-dwim)
          ("C-h B" . embark-bindings)
          ("C-c C-o" . occur-edit-mode)
          :map minibuffer-local-map

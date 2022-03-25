@@ -26,9 +26,7 @@
   (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
   (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
 
-  ;; -------------------------------------------------------------------
-  ;; Clocking
-  ;; -------------------------------------------------------------------
+  ;; clocking
   (add-hook 'org-timer-set-hook #'org-clock-in))
 
 ;; -------------------------------------------------------------------
