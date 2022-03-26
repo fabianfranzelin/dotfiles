@@ -93,6 +93,7 @@ $RECYCLE.BIN/
 
 build/
 .vscode/
+*.db
 
 ### Emacs ###
 flycheck_*
@@ -118,4 +119,4 @@ flycheck_*
 .emacs.d/workspace
 .emacs.d/eaf
 .emacs.d/request
-*.db
+.emacs.d/url/

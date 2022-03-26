@@ -246,7 +246,6 @@ ARG: position"
   :bind (("C-." . embark-act)
          ("C-;" . embark-dwim)
          ("C-h B" . embark-bindings)
-         ("C-c C-o" . occur-edit-mode)
          :map minibuffer-local-map
          ("C-." . embark-act)
          :map embark-region-map
