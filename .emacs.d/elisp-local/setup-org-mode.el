@@ -85,8 +85,9 @@
  "⭠ now ─────────────────────────────────────────────────")
 
 ;; Enable org-modern-mode
-(add-hook 'org-mode-hook #'org-modern-mode)
-(add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
+(use-package org-modern
+  :hook ((org-mode . org-modern-mode)
+         (org-agenda-finalize . org-modern-agenda)))
 
 (provide 'setup-org-mode)
 
