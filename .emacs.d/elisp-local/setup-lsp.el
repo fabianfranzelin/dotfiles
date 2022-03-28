@@ -53,8 +53,7 @@
   (lsp-enable-which-key-integration)
   (lsp-headerline-breadcrumb-mode)
 
-  :hook ((lsp-mode . ff/lsp-mode-setup)
-         (lsp-completion-mode . my/lsp-mode-setup-completion)
+  :hook ((lsp-completion-mode . my/lsp-mode-setup-completion)
          (c++-mode . lsp-deferred)
          (c-mode . lsp-deferred)
          (java-mode . lsp-deferred)
