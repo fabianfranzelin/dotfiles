@@ -30,10 +30,8 @@
         ;; increase watch threshold
         lsp-file-watch-threshold 100000
         lsp-headerline-breadcrumb-segments '(project file symbols)
-        ;; Disables lsp linter as default for python-mode. It is
-        ;; crucial that this happens before loading lsp-mode.
-        lsp-diagnostic-package :none
-
+        ;; Disable diagnostics provider of lsp. Use flycheck
+        lsp-diagnostics-provider :none
         ;; increase threshold for lsp to run smoothly
         ;; https://emacs-lsp.github.io/lsp-mode/page/performance/
         read-process-output-max (* 1024 1024) ;; 1mb
