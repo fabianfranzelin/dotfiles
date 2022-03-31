@@ -404,7 +404,7 @@
                 '("pdf"))
                "okular" '(file))
          (list (openwith-make-extension-regexp
-                '("html"))
+                '("html" "htm"))
                "firefox" '(file)))))
 
 ;; -------------------------------------------------------------------
