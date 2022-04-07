@@ -33,8 +33,7 @@ REPLACE-STR: string that replaces all regex matches"
 
 
 (defun ff/container-host-compile-commands-mapping ()
-  "Adjusts the compile commands json of CMake to match the host
-system and not the containers."
+  "Adjusts the compile commands json of CMake to match the host system and not the containers."
   (interactive)
   (ff/search-replace (concat (plist-get ccls-initialization-options :compilationDatabaseDirectory) "/compile_commands.json")
                      +ccls-container-workspace
@@ -237,7 +236,8 @@ system and not the containers."
              ("\\<[A-Z]\\{3,\\}\\>"  . font-lock-constant-face))
        t)))
   :bind (;; TODO this is a hack for now. It should only be enabled in C++ mode
-         ("C-c p r" . ff/container-host-compile-commands-mapping)))
+         :map c++-mode-map
+         ("C-c l r c" . ff/container-host-compile-commands-mapping)))
 
 ;; Major mode for editing QT Declarative (QML) code.
 ;; https://github.com/coldnew/qml-mode
