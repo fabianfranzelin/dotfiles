@@ -160,8 +160,7 @@
 
 (use-package markdownfmt
   :after markdown-mode
-  :ensure-system-package ((markdownfmt . "go get -u github.com/shurcooL/markdownfmt"))
-  :hook ((markdown-mode . markdownfmt-enable-on-save)))
+  :ensure-system-package ((markdownfmt . "go get -u github.com/shurcooL/markdownfmt")))
 
 ;; -------------------------------------------------------------------
 ;; RST mode
