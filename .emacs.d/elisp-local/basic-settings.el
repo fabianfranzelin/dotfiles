@@ -680,6 +680,15 @@ TEXT: title"
 (use-package direnv
  :init (direnv-mode))
 
+;; -------------------------------------------------------------------
+;; Highlight indentation; nice for yaml files, for example
+;; -------------------------------------------------------------------
+(use-package highlight-indentation
+  :load-path local-load-path
+  :config
+  (set-face-background 'highlight-indentation-face "#e3e3d3")
+  (set-face-background 'highlight-indentation-current-column-face "#c3b3b3"))
+
 (provide 'basic-settings)
 
 ;;; basic-settings.el ends here
