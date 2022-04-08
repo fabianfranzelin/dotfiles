@@ -94,6 +94,7 @@
   :ensure-system-package ((yamllint . "python3 -m pip install -U 'yamllint'"))
   :mode (("\\.yml$" . yaml-mode)
          ("\\.yaml$" . yaml-mode))
+  :hook ((yaml-mode . highlight-indentation-current-column-mode))
   :bind ((:map yaml-mode-map
                ("C-m" . newline-and-indent))))
 
