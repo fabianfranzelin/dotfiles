@@ -93,7 +93,9 @@
 (use-package yaml-mode
   :ensure-system-package ((yamllint . "python3 -m pip install -U 'yamllint'"))
   :mode (("\\.yml$" . yaml-mode)
-         ("\\.yaml$" . yaml-mode)))
+         ("\\.yaml$" . yaml-mode))
+  :bind ((:map yaml-mode-map
+               ("C-m" . newline-and-indent))))
 
 ;; -------------------------------------------------------------------
 ;; dockerfile mode
