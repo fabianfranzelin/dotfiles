@@ -34,7 +34,11 @@ eval "$(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)"
 export SSH_AUTH_SOCK
 
 # expand path to include local bin directory
-PATH=$HOME/opt/bin:$HOME/.local/bin:/usr/lib/ccache:$PATH
+export PATH=$HOME/opt/bin:$HOME/.local/bin:/usr/lib/ccache:$PATH
+
+# go work
+export GOPATH="$HOME/.go"
+export PATH=$PATH:"$GOPATH/bin"
 
 #------------------------------------------------------------------------------#
 # ros setup

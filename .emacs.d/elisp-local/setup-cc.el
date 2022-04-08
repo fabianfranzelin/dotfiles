@@ -12,7 +12,6 @@
 ;; -----------------------------------------------------------------------------------
 ;; Formatting and linting
 
-
 ;; Get to work with Docker mounted workspaces: Usually, the docker
 ;; container I am running does not contain a
 
