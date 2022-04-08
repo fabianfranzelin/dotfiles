@@ -139,18 +139,29 @@
 ;; -------------------------------------------------------------------
 ;; markdown mode
 ;; -------------------------------------------------------------------
+(defun ff/configure-markdown-mode ()
+  "Configure text mode."
+  (interactive)
+  (set-fill-column 100))
+
 (use-package markdown-mode
   :commands markdown-mode
   :ensure-system-package ((markdown . "sudo apt install markdown -y")
                           (pandoc . "sudo apt install pandoc -y"))
-  :init
-  (add-hook 'markdown-mode-hook #'visual-line-mode)
-  (add-hook 'markdown-mode-hook #'flyspell-mode)
   :config
   ;; The default command for markdown (~markdown~), doesn't support tables
   ;; (e.g. GitHub flavored markdown). Pandoc does, so let's use that.
-  (setq markdown-command "pandoc --from markdown --to html")
-  (setq markdown-command-needs-filename t))
+  (setq markdown-command "pandoc --from markdown --to html"
+        markdown-command-needs-filename t)
+
+  :hook((markdown-mode . visual-line-mode)
+        (markdown-mode . flyspell-mode)
+        (markdown-mode . (lambda() (interactive) () (ff/configure-markdown-mode)))))
+
+(use-package markdownfmt
+  :after markdown-mode
+  :ensure-system-package ((markdownfmt . "go get -u github.com/shurcooL/markdownfmt"))
+  :hook ((markdown-mode . markdownfmt-enable-on-save)))
 
 ;; -------------------------------------------------------------------
 ;; RST mode
