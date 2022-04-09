@@ -79,20 +79,23 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          stow
 
     # install go
-    GO_VERSION="1.15.11"
+    GO_VERSION="1.17.4"
     if [[ ! -d "${HOME}/.local/etc/go/${GO_VERSION}" ]]; then
         (
+            echo -e "${__COLOR_INFO}INFO: Installing go${__COLOR_RESET}"
             mkdir -p "/tmp/go"
             cd "/tmp/go"
             curl -O "https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd64.tar.gz"
             tar -xvf "go${GO_VERSION}.linux-amd64.tar.gz"
             mkdir -p "${HOME}/.local/etc/go"
             mv "go" "${HOME}/.local/etc/go/${GO_VERSION}"
-            rm "${HOME}/.local/bin/go"
-            ln -s "${HOME}/.local/etc/go/${GO_VERSION}/bin/go" "${HOME}/.local/bin/go"
-            mkdir -p "${HOME}/.go"
         )
     fi
+
+    echo -e "${__COLOR_INFO}INFO: Make go available in PATH${__COLOR_RESET}"
+    [[ -f "${HOME}/.local/bin/go" ]] && rm "${HOME}/.local/bin/go"
+    ln -s "${HOME}/.local/etc/go/${GO_VERSION}/bin/go" "${HOME}/.local/bin/go"
+    mkdir -p "${HOME}/.go"
 
     # install dependencies for emacs
     sudo apt install -y \
@@ -117,7 +120,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
 
     sudo snap install ccls --classic
 
-    go get -u github.com/shurcooL/markdownfmt
+    go install github.com/shurcooL/markdownfmt@latest
 fi
 
 #------------------------------------------------------------------------------#

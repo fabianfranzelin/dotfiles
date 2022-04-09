@@ -163,7 +163,7 @@
 
 (use-package markdownfmt
   :after markdown-mode
-  :ensure-system-package ((markdownfmt . "go get -u github.com/shurcooL/markdownfmt")))
+  :ensure-system-package ((markdownfmt . "go install -u github.com/shurcooL/markdownfmt@latest")))
 
 ;; -------------------------------------------------------------------
 ;; RST mode
