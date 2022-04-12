@@ -126,6 +126,8 @@
   (set-face-foreground face (face-attribute 'default :background)))
 (set-face-background 'fringe (face-attribute 'default :background))
 
+(set-face-attribute 'default nil :height 110)
+
 ;; -------------------------------------------------------------------
 ;; Global key bindings
 ;; -------------------------------------------------------------------
@@ -679,15 +681,6 @@ TEXT: title"
 ;; -------------------------------------------------------------------
 (use-package direnv
  :init (direnv-mode))
-
-;; -------------------------------------------------------------------
-;; Highlight indentation; nice for yaml files, for example
-;; -------------------------------------------------------------------
-(use-package highlight-indentation
-  :load-path local-load-path
-  :config
-  (set-face-background 'highlight-indentation-face "#e3e3d3")
-  (set-face-background 'highlight-indentation-current-column-face "#c3b3b3"))
 
 ;; -------------------------------------------------------------------
 ;; Origami for folding stuff
