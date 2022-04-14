@@ -56,8 +56,7 @@ ARG: position"
   ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
   ;; (corfu-echo-documentation nil) ;; Disable documentation in the echo area
   (corfu-scroll-margin 5)        ;; Use scroll margin
-  ;; Recommended: Enable Corfu globally.
-  ;; This is recommended since dabbrev can be used globally (M-/).
+  (corfu-auto-prefix 1)
   :init
   ;; TAB cycle if there are only few candidates
   (setq completion-cycle-threshold 3)
