@@ -92,6 +92,9 @@
 ;; Iterate through CamelCase
 (global-subword-mode t)
 
+;; do not report warnings or errors of native comp
+(setq native-comp-async-report-warnings-errors nil)
+
 ;; Color theme
 (use-package doom-themes
   :ensure t
