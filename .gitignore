@@ -121,3 +121,4 @@ flycheck_*
 .emacs.d/request
 .emacs.d/url/
 /.emacs.d/eclipse.jdt.ls/
+/.emacs.d/projects
