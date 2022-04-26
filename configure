@@ -120,7 +120,8 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
 
     sudo snap install ccls --classic
 
-    go install github.com/shurcooL/markdownfmt@latest
+    # Install go dependencies like this, for example
+    # go install github.com/shurcooL/markdownfmt@latest
 fi
 
 #------------------------------------------------------------------------------#

@@ -146,10 +146,17 @@
   (interactive)
   (set-fill-column 100))
 
+(defun ff/run-mdformat ()
+  "Run mdformat on current buffer."
+  (interactive)
+  (when (string-match-p ".md\\'" (buffer-file-name))
+    (shell-command (concat "mdformat " (buffer-file-name)))))
+
 (use-package markdown-mode
   :commands markdown-mode
   :ensure-system-package ((markdown . "sudo apt install markdown -y")
-                          (pandoc . "sudo apt install pandoc -y"))
+                          (pandoc . "sudo apt install pandoc -y")
+                          (mdformat . "python3 -m pip install mdformat"))
   :config
   ;; The default command for markdown (~markdown~), doesn't support tables
   ;; (e.g. GitHub flavored markdown). Pandoc does, so let's use that.
@@ -158,13 +165,9 @@
 
   :hook((markdown-mode . visual-line-mode)
         (markdown-mode . flyspell-mode)
-        (markdown-mode . (lambda() (interactive) () (ff/configure-markdown-mode)))))
-
-(use-package markdownfmt
-  :after markdown-mode
-  :ensure-system-package ((markdownfmt . "go install -u github.com/shurcooL/markdownfmt@latest"))
+        (markdown-mode . (lambda() (interactive) () (ff/configure-markdown-mode))))
   :bind (:map markdown-mode-map
-         ("C-c C-f" . markdownfmt-format-buffer)))
+         ("C-c C-f" . ff/run-mdformat)))
 
 ;; -------------------------------------------------------------------
 ;; RST mode
