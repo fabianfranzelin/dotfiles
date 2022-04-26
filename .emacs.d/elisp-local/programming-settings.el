@@ -119,11 +119,11 @@
   (defun ff/docker-container-vterm (container)
     "Open `vterm' in CONTAINER."
     (interactive "P")
-    (ff/make-windows-visible-with-prefix "*vterm")
+    (ff/make-windows-visible-with-prefix (ff/vterm-buffer-name-prefix))
     (let* ((command (concat "docker exec -it -e \"DEBIAN_FRONTEND=noninteractive\" -e \"DISPLAY=$DISPLAY\" "
                             container " "
                             "\"/bin/bash\"")))
-      (with-current-buffer (vterm (concat "*vterm " command "*"))
+      (with-current-buffer (vterm (ff/vterm-buffer-name))
         (set-process-sentinel vterm--process #'ff/run-in-vterm-kill)
         (vterm-send-string command)
         (vterm-send-return))))
@@ -224,7 +224,6 @@
 ;; -------------------------------------------------------------------
 ;; Plantuml mode
 ;; -------------------------------------------------------------------
-
 (defun ff/plantuml-create-svg (source_filename)
   "Create SVG from current puml file.
 SOURCE_FILENAME: filename to the puml file."
