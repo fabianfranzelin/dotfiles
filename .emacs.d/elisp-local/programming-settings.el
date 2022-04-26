@@ -162,7 +162,9 @@
 
 (use-package markdownfmt
   :after markdown-mode
-  :ensure-system-package ((markdownfmt . "go install -u github.com/shurcooL/markdownfmt@latest")))
+  :ensure-system-package ((markdownfmt . "go install -u github.com/shurcooL/markdownfmt@latest"))
+  :bind (:map markdown-mode-map
+         ("C-c C-f" . markdownfmt-format-buffer)))
 
 ;; -------------------------------------------------------------------
 ;; RST mode
