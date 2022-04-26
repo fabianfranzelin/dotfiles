@@ -6,6 +6,18 @@
 
 ;;; Code:
 
+(defun ff/vterm-buffer-name-prefix ()
+  "Create a prefix string for the name of a vterm buffer."
+  (if (bound-and-true-p persp-mode)
+      (concat "*vterm-" (persp-name (persp-curr)))
+    "*vterm"))
+
+(defun ff/vterm-buffer-name (&optional postfix)
+  (let ((prefix (ff/vterm-buffer-name-prefix)))
+        (if (equal postfix nil)
+            (concat prefix "*")
+          (concat prefix "-" postfix "*"))))
+
 (defun ff/run-in-vterm-kill (process event)
   "A process sentinel.  Kill PROCESS's buffer if it is live.
 PROCESS:
@@ -39,7 +51,7 @@ COMMAND:"
                           (cons filename 0)
                           (cons 'shell-command-history 1)
                           (list filename)))))
-  (with-current-buffer (vterm (concat "*vterm " command "*"))
+  (with-current-buffer (vterm (ff/vterm-buffer-name (command)))
     (set-process-sentinel vterm--process #'ff/run-in-vterm-kill)
     (vterm-send-string command)
     (vterm-send-return)))
@@ -47,8 +59,7 @@ COMMAND:"
 (defun ff/start-vterm ()
   "Start Vterm terminal emulator."
   (interactive)
-  (ff/toggle-windows-with-prefix "*vterm" '(vterm t)))
-
+  (ff/toggle-windows-with-prefix (ff/vterm-buffer-name-prefix) '(vterm (ff/vterm-buffer-name))))
 
 (defun ff/open-vterm-below ()
   "Opens new v-term below of the current window."
@@ -56,7 +67,7 @@ COMMAND:"
   (split-window-below)
   (balance-windows)
   (other-window 1)
-  (vterm t))
+  (vterm (ff/vterm-buffer-name)))
 
 (defun ff/open-vterm-right ()
   "Opens new v-term right of the current window."
@@ -64,7 +75,7 @@ COMMAND:"
   (split-window-right)
   (balance-windows)
   (other-window 1)
-  (vterm t))
+  (vterm (ff/vterm-buffer-name)))
 
 (defun ff/term-exec-hook ()
   "Delete the buffer once the terminal session is terminated."

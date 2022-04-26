@@ -19,6 +19,40 @@
 
 ;; -------------------------------------------------------------
 
+(defun ff/is-buffer-visible (buffer-name)
+  "Check whether a buffer is visible or not.
+BUFFER-NAME: string name of the buffer"
+  (cond ((eq buffer-name (window-buffer (selected-window)))
+         ;; Visible and focused
+         t)
+        ((get-buffer-window buffer-name)
+         ;; Visible and unfocused
+         t)
+        (t
+         nil)))
+
+(defun ff/load-visible-buffers (buffer-list)
+  "Filter all buffers that begin with the given prefix.
+BUFFER-LIST: string list of buffer names"
+  (let (filtered-buffers '())
+    (dolist (next-buffer buffer-list)
+      (if (ff/is-buffer-visible next-buffer)
+          (add-to-list 'filtered-buffers next-buffer)))
+    ;; sort the buffers
+    (cl-sort filtered-buffers 'string-lessp :key 'downcase)))
+
+
+(defun ff/is-any-buffer-visible (buffer-list)
+  "Check whether any of the listed buffers is currently visible.
+BUFFER-LIST: string list of buffer names"
+  (setq is-visible nil)
+  (dolist (next-buffer buffer-list)
+    (if (ff/is-buffer-visible next-buffer)
+        (setq is-visible t)))
+  (eval is-visible))
+
+;; -------------------------------------------------------------
+
 (defun ff/download-and-extract-zip-archive (url name extract-to expected-binary-file package-name)
   "Download and install zip archives."
   (let* ((temporary-file (concat temporary-file-directory name ".zip")))
@@ -73,15 +107,12 @@
 (defun ff/plantum-preview ()
   "First, delete the preview window if present, then compile puml file."
   (interactive)
-  (let ((plantuml-preview-buffer-window
-         (get-buffer-window (eval plantuml-preview-buffer))))
-    ;; delete current preview window if visible
-    (when plantuml-preview-buffer-window
-      (delete-window (eval plantuml-preview-buffer-window)))
+  ;; delete current preview window if visible
+  (let (current-buffer (buffer-name))
+    (when (ff/is-buffer-visible plantuml-preview-buffer)
+      (delete-window (get-buffer-window plantuml-preview-buffer)))
     ;; run actual plantuml preview with 4=new frame setting
-    (plantuml-preview 4)
-    ;; go back to the cursor position in the previous window
-    (ff/switch-to-last-window)))
+    (plantuml-preview 0)))
 
 ;; -------------------------------------------------------------
 
