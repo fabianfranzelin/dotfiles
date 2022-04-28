@@ -149,7 +149,7 @@
   (set-face-foreground face (face-attribute 'default :background)))
 (set-face-background 'fringe (face-attribute 'default :background))
 
-(set-face-attribute 'default nil :height 130)
+(set-face-attribute 'default nil :height 110) ;; default = 110
 
 ;; -------------------------------------------------------------------
 ;; Global key bindings
