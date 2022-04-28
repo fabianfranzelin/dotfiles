@@ -1,4 +1,4 @@
-;;; init.el --- this file starts here
+;;; .emacs --- this file starts here
 
 ;;; Commentary:
 ;; inspired by https://github.com/daviwil/dotfiles/blob/master/Emacs.org
@@ -36,26 +36,6 @@
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
 
-(use-package auto-package-update
-  :init
-  ;; for emacs 28, quelpa is required as a dependency
-  (when (> emacs-major-version 27)
-    (use-package quelpa))
-  :config
-  (setq auto-package-update-delete-old-versions t
-        auto-package-update-hide-results t
-        ;; update the packages every week
-        auto-package-update-interval 7)
-  (auto-package-update-maybe))
-
-;; add the possibility to define system dependencies in use-package
-;; declaration
-(use-package use-package-ensure-system-package)
-
-;; get latest signatures for elpa
-(setq package-check-signature nil)
-(use-package gnu-elpa-keyring-update)
-
 ;; make sure that the path environment from shell is available in
 ;; emacs
 (use-package exec-path-from-shell
@@ -80,6 +60,22 @@
 (defvar local-load-path (concat emacs-config-home "/elisp-local")
   "Load path for local Emacs configurations.")
 (add-to-list 'load-path local-load-path)
+
+;; -------------------------------------------------------------------
+;; Before we do anything, set up the no littering package
+;; -------------------------------------------------------------------
+(defvar ff/user-emacs-directory (expand-file-name "~/.cache/emacs")
+  "Location of all temporary files.")
+
+;; Create the folder if it does not exist already
+(unless (file-directory-p ff/user-emacs-directory)
+  (make-directory (eval ff/user-emacs-directory)))
+
+(setq user-emacs-directory ff/user-emacs-directory)
+
+(use-package no-littering)
+
+;; -------------------------------------------------------------------
 
 (use-package helpers
   :load-path local-load-path)
@@ -107,4 +103,4 @@
 (use-package programming-settings
   :load-path local-load-path)
 
-;;; init.el ends here
+;;; .emacs ends here
