@@ -235,7 +235,7 @@
 (use-package perspective
   :custom
   (persp-mode-prefix-key (kbd "C-x x"))
-  (persp-state-default-file (concat emacs-config-home "/.cache/persp-state.el"))
+  (persp-state-default-file (concat user-emacs-directory "/persp-state.el"))
   :init
   (unless (equal persp-mode t)
     (persp-mode))
