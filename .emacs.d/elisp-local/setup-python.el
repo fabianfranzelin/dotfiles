@@ -21,9 +21,9 @@
   (highlight-lines-matching-regexp "import pdb")
   (highlight-lines-matching-regexp "pdb.set_trace()"))
 
-
-(use-package lsp-python-ms
+(use-package python-mode
   :ensure-system-package ((pip3 . "sudo apt install python3-pip -y")
+                          (pylsp . "python3 -m pip install -U 'python-lsp-server[all]'")
                           ;; both packages are required for debugging
                           ;; with dap
                           ("~/.local/lib/python3.8/site-packages/epc" . "python3 -m pip install -U 'epc'")
@@ -33,14 +33,12 @@
          ("SConscript" . python-mode))
   :hook ((python-mode . annotate-pdb)
          (python-mode . (lambda ()
-                          (require 'lsp-python-ms)
                           ;; debugging package for python using ptvsd
                           (require 'dap-python)
                           (lsp))))  ; or lsp-deferred
   :init
-  (setq lsp-python-ms-auto-install-server t)
   ;; use ipython as default interpreter
-  (setq python-shell-interpreter "ipython"
+  (setq python-shell-interpreter "ipython3"
         python-shell-interpreter-args "--simple-prompt -i")
   (setq python-indent-offset 4
         python-indent-guess-indent-offset nil)
@@ -60,7 +58,8 @@
 
 ;; supports virtual environments. To be set with pyvenv-workon
 (use-package pyvenv
-  :init (pyvenv-mode 1))
+  :init (pyvenv-mode 1)
+  :config (pyvenv-tracking-mode 1))
 
 (use-package pipenv
   :ensure-system-package ((pipenv . "python3 -m pip install --user -U pipenv"))

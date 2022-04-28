@@ -5,6 +5,26 @@
 
 ;;; Code:
 
+(use-package auto-package-update
+  :init
+  ;; for emacs 28, quelpa is required as a dependency
+  (when (> emacs-major-version 27)
+    (use-package quelpa))
+  :config
+  (setq auto-package-update-delete-old-versions t
+        auto-package-update-hide-results t
+        ;; update the packages every week
+        auto-package-update-interval 7)
+  (auto-package-update-maybe))
+
+;; add the possibility to define system dependencies in use-package
+;; declaration
+(use-package use-package-ensure-system-package)
+
+;; get latest signatures for elpa
+(setq package-check-signature nil)
+(use-package gnu-elpa-keyring-update)
+
 ;; set frame transparency and maximize frame by default
 (set-frame-parameter (selected-frame) 'alpha '(100 . 100))
 (add-to-list 'default-frame-alist '(alpha . (100 . 100)))
@@ -35,7 +55,7 @@
 (setq create-lockfiles nil)
 
 ;; setup a new custom file
-(defvar emacs-d-custom (concat (ff/emacs-config-home) "/custom.el")
+(defvar emacs-d-custom (concat user-emacs-directory "/custom.el")
   "Path to custom file in emacs.d directory.")
 (unless (file-exists-p emacs-d-custom)
   (with-temp-buffer (write-file emacs-d-custom)))
@@ -129,7 +149,7 @@
   (set-face-foreground face (face-attribute 'default :background)))
 (set-face-background 'fringe (face-attribute 'default :background))
 
-(set-face-attribute 'default nil :height 110)
+(set-face-attribute 'default nil :height 130)
 
 ;; -------------------------------------------------------------------
 ;; Global key bindings
