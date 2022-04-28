@@ -53,7 +53,8 @@
 
   ;; use lsp yaml schema validation
   (setq lsp-yaml-schemas nil)
-  (push '(/home/frf2lr/.emacs.d/yaml/runnable\.schema\.json . ["*.runnable.yaml"]) lsp-yaml-schemas)
+  ;; to be specific, one could to it like
+  ;; (push '(/home/frf2lr/.emacs.d/yaml/runnable\.schema\.json . ["*.runnable.yaml"]) lsp-yaml-schemas)
 
   :hook ((lsp-completion-mode . my/lsp-mode-setup-completion)
          (c++-mode . lsp-deferred)
