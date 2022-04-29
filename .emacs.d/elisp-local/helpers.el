@@ -64,14 +64,6 @@ BUFFER-LIST: string list of buffer names"
       (message (concat "[" package-name "] Decompress " name " to " extract-to))
       (call-process-shell-command (concat "unzip " temporary-file " -d " extract-to) nil 0))))
 
-(defun ff/lsp-treemacs-symbols-toggle ()
-  "Toggle the lsp-treemacs-symbols buffer."
-  (interactive)
-  (if (get-buffer "*LSP Symbols List*")
-      (kill-buffer "*LSP Symbols List*")
-    (progn (lsp-treemacs-symbols)
-           (other-window -1))))
-
 (defun ff/python-interpreter-version (type)
   "Provide version of python interpreter."
   (let* ((python-command (if (boundp 'python-shell-interpreter)
@@ -103,23 +95,6 @@ BUFFER-LIST: string list of buffer names"
     (let ((frame (window-frame win)))
       (select-frame-set-input-focus frame)
       (select-window win))))
-
-(defun ff/plantum-preview ()
-  "First, delete the preview window if present, then compile puml file."
-  (interactive)
-  ;; delete current preview window if visible
-  (let (current-buffer (buffer-name))
-    (when (ff/is-buffer-visible plantuml-preview-buffer)
-      (delete-window (get-buffer-window plantuml-preview-buffer)))
-    ;; run actual plantuml preview with 4=new frame setting
-    (plantuml-preview 0)))
-
-;; -------------------------------------------------------------
-
-(defun ff/visual-fill-center-text ()
-  (setq visual-fill-column-width 120
-        visual-fill-column-center-text t)
-  (visual-fill-column-mode 1))
 
 (provide 'helpers)
 
