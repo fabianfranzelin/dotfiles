@@ -14,7 +14,7 @@
 
 (use-package eaf-browser
   :ensure nil
-  :after eaf
+  :after (eaf)
   :custom
   (eaf-browser-continue-where-left-off t)
   (eaf-browser-enable-adblocker t)
@@ -23,7 +23,7 @@
 
 (use-package eaf-pdf-viewer
   :ensure nil
-  :after eaf
+  :after (eaf)
   :custom
   (eaf-bind-key scroll_up "C-n" eaf-pdf-viewer-keybinding)
   (eaf-bind-key scroll_down "C-p" eaf-pdf-viewer-keybinding))

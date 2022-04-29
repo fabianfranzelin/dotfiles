@@ -71,9 +71,9 @@
          (before-save-hook . lsp-format-buffer)))
 
 (use-package lsp-ui
-  :after lsp-mode
+  :after (lsp-mode)
   :commands lsp-ui-mode
-  :hook (lsp-mode . lsp-ui-mode)
+  :hook ((lsp-mode . lsp-ui-mode))
   :config
   (setq imenu-auto-rescan t
         imenu-auto-rescan-maxout (* 1024 1024)
@@ -98,7 +98,7 @@
 ;; LSP integration with treemacs
 ;; -------------------------------------------------------------------
 (use-package lsp-treemacs
-  :after lsp-mode treemacs
+  :after (lsp-mode treemacs)
   :commands lsp-treemacs-errors-list
   :config
   (setq treemacs-space-between-root-nodes nil)
@@ -109,8 +109,7 @@
 ;; Enable dap
 ;; -------------------------------------------------------------------
 (use-package dap-mode
-  :after lsp-mode
-  :hook (dap-stopped . (lambda (arg) (call-interactively #'dap-hydra)))
+  :after (lsp-mode)
   :init
   ;; use tooltips for mouse hover
   ;; if it is not enabled `dap-mode' will use the minibuffer.
@@ -118,12 +117,13 @@
   ;; displays floating panel with debug buttons
   ;; requies emacs 26+
   (dap-ui-controls-mode 1)
-  :config (dap-auto-configure-mode)
+  :config
+  (dap-auto-configure-mode)
   :hook ((dap-stopped . (lambda (arg) (call-interactively #'dap-hydra))))
-  :bind(("C-c d d" . dap-debug)
-        ("C-c d h" . dap-hydra)
-        ("C-c d t" . dap-breakpoint-toggle)
-        ("C-c d r" . dap-ui-repl)))
+  :bind (("C-c d d" . dap-debug)
+         ("C-c d h" . dap-hydra)
+         ("C-c d t" . dap-breakpoint-toggle)
+         ("C-c d r" . dap-ui-repl)))
 
 (provide 'setup-lsp)
 

@@ -18,7 +18,7 @@
 (use-package git-gutter-fringe)
 
 (use-package git-gutter
-  :after git-gutter-fringe
+  :after (git-gutter-fringe)
   :diminish
   :hook ((text-mode . git-gutter-mode)
          (prog-mode . git-gutter-mode))

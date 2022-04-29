@@ -129,8 +129,8 @@
   (ff/toggle-windows-with-prefix "*eshell" #'(eshell t)))
 
 (use-package eshell
-  :after magit
-  :hook (eshell-first-time-mode . dw/eshell-configure)
+  :after (magit)
+  :hook ((eshell-first-time-mode . dw/eshell-configure))
   :bind (("C-x e" . ff/start-eshell)
          ("C-c t" . (lambda()
                       (interactive)

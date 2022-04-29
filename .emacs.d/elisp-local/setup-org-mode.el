@@ -8,7 +8,7 @@
 ;; -------------------------------------------------------------------
 
 (use-package org
-  :after plantuml-mode
+  :after (plantuml-mode)
   :pin org
   :commands (org-capture org-agenda)
   :config

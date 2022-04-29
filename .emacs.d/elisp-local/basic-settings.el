@@ -230,7 +230,7 @@ INCREMENT: Value of which the current font-size is changed"
 ;; you’ll need to run `M-x all-the-icons-install-fonts` so that mode
 ;; line icons display correctly.
 (use-package all-the-icons
-  :after font-lock+)
+  :after (font-lock+))
 
 (use-package which-key
   :diminish which-key-mode
@@ -349,7 +349,7 @@ INCREMENT: Value of which the current font-size is changed"
 (use-package dired
   :ensure nil
   :defer 1
-  :after org-download
+  :after (org-download)
   :commands (dired dired-jump)
   :hook ((dired-mode . auto-revert-mode)
          (dired-mode . dired-hide-details-mode)
@@ -397,7 +397,7 @@ INCREMENT: Value of which the current font-size is changed"
   (dired-rainbow-define-chmod executable-unix "#38c172" "-.*x.*"))
 
 (use-package all-the-icons-dired
-  :hook (dired-mode . all-the-icons-dired-mode))
+  :hook ((dired-mode . all-the-icons-dired-mode)))
 
 (use-package dired-hide-dotfiles
   :bind (:map dired-mode-map
@@ -471,7 +471,7 @@ INCREMENT: Value of which the current font-size is changed"
 ;; Use doom modeline
 ;; -------------------------------------------------------------------
 (use-package minions
-  :hook (minions-mode . doom-modeline-mode))
+  :hook ((minions-mode . doom-modeline-mode)))
 
 (use-package doom-modeline
   :init
@@ -531,7 +531,7 @@ INCREMENT: Value of which the current font-size is changed"
 ;; Popper - handle pop up buffers nicely
 ;; -------------------------------------------------------------------
 (use-package popper
-  :after projectile
+  :after (projectile)
   :bind (("C-*" . popper-toggle-latest)
          ("M-*" . popper-cycle)
          ("C-M-*" . popper-toggle-type))
@@ -638,11 +638,11 @@ FILE: filename"
 ;; -------------------------------------------------------------------
 (use-package setup-eshell
   :load-path local-load-path
-  :after shell-loader)
+  :after (shell-loader))
 
 (use-package setup-vterm
   :load-path local-load-path
-  :after shell-loader)
+  :after (shell-loader))
 
 ;; -------------------------------------------------------------------
 ;; Show number of lines in the left side of the buffer
@@ -684,13 +684,13 @@ TEXT: title"
   :bind (("C-c C-y" . yas-insert-snippet)))
 
 (use-package yasnippet-snippets
-  :after yasnippet)
+  :after (yasnippet))
 
 ;; -------------------------------------------------------------------
 ;; Code style checker
 ;; -------------------------------------------------------------------
 (use-package flycheck
-  :hook (lsp-mode . flycheck-mode)
+  :hook ((lsp-mode . flycheck-mode))
   :init (global-flycheck-mode))
 
 ;; -------------------------------------------------------------------

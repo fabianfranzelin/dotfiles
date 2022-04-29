@@ -139,7 +139,7 @@ ARG: position"
   :defines consult-buffer-sources
   ;; Enable automatic preview at point in the *Completions* buffer. This is
   ;; relevant when you use the default completion UI.
-  :hook (completion-list-mode . consult-preview-at-point-mode)
+  :hook ((completion-list-mode . consult-preview-at-point-mode))
   :config
   (setq consult-project-root-function #'dw/get-project-root
         completion-in-region-function #'consult-completion-in-region)
@@ -189,7 +189,7 @@ ARG: position"
 ;; -------------------------------------------------------------------
 ;; Enable richer annotations using the Marginalia package
 (use-package marginalia
-  :after projectile vertico
+  :after (projectile vertico)
   :init
   (marginalia-mode)
   :config
@@ -218,7 +218,7 @@ ARG: position"
 (use-package 0x0)
 
 (use-package embark
-  :after highlight-symbol
+  :after (highlight-symbol)
   :init
   ;; Optionally replace the key help with a completing-read interface
   (setq prefix-help-command #'embark-prefix-help-command)
@@ -287,8 +287,7 @@ targets."
   :after (embark consult)
   ;; if you want to have consult previews as you move around an
   ;; auto-updating embark collect buffer
-  :hook
-  (embark-collect-mode . consult-preview-at-point-mode))
+  :hook ((embark-collect-mode . consult-preview-at-point-mode)))
 
 (provide 'setup-completion)
 
