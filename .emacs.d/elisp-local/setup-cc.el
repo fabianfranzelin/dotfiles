@@ -45,7 +45,7 @@ REPLACE-STR: string that replaces all regex matches"
     (clang-format-buffer)))
 
 (use-package clang-format+
-  :ensure-system-package (clang-format . "sudo apt install clang-format clang-format-10 -y")
+  :ensure-system-package (clang-format . "sudo apt install clang-format clang-format -y")
   :hook (((c-mode c++-mode) . clang-format+-mode))
          ((c-mode c++-mode) . (lambda ()
                                 (add-hook 'before-save-hook 'ff/clang-format-buffer-smart nil t)))
@@ -207,8 +207,8 @@ REPLACE-STR: string that replaces all regex matches"
 
 (use-package cc-mode
   :after (clang-format+)
-  :ensure-system-package ((clangd . "sudo apt install clangd clangd-10 -y")
-                          (clang . "sudo apt install clang clang-10 -y"))
+  :ensure-system-package ((clangd . "sudo apt install clangd -y")
+                          (clang . "sudo apt install clang -y"))
   :hook (((c++-mode c-mode) . (lambda ()
                                 (+ccls|enable)
                                 (+cc-fontify-constants-h))))
