@@ -149,6 +149,9 @@
   (set-face-foreground face (face-attribute 'default :background)))
 (set-face-background 'fringe (face-attribute 'default :background))
 
+;; -------------------------------------------------------------------
+;; Define font size and methods to adjust it on the fly
+
 (set-face-attribute 'default nil :height 110) ;; default = 110
 
 ;; define functions that increase and decrease the font-size for the
