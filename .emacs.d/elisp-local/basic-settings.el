@@ -237,8 +237,14 @@ INCREMENT: Value of which the current font-size is changed"
   :init (which-key-mode 1)
   :config (setq which-key-idle-delay 0.5))
 
+;; -------------------------------------------------------------
 ;; center the text for the corresponding modes; writing documentation
 ;; is easier with this setting.
+(defun ff/visual-fill-center-text ()
+  (setq visual-fill-column-width 120
+        visual-fill-column-center-text t)
+  (visual-fill-column-mode 1))
+
 (use-package visual-fill-column
   :hook ((org-mode . ff/visual-fill-center-text)
          (rst-mode . ff/visual-fill-center-text)
@@ -613,6 +619,14 @@ INCREMENT: Value of which the current font-size is changed"
 FILE: filename"
   (or (s-ends-with? ".aux" file)
       (s-ends-with? ".lint" file)))
+
+(defun ff/lsp-treemacs-symbols-toggle ()
+  "Toggle the lsp-treemacs-symbols buffer."
+  (interactive)
+  (if (get-buffer "*LSP Symbols List*")
+      (kill-buffer "*LSP Symbols List*")
+    (progn (lsp-treemacs-symbols)
+           (other-window -1))))
 
 (use-package treemacs
   :commands (treemacs

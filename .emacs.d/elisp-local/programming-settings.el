@@ -244,6 +244,16 @@ SOURCE_FILENAME: filename to the puml file."
                                " -tsvg -charset utf-8"))
   (message "Conversion succeeded."))
 
+(defun ff/plantum-preview ()
+  "First, delete the preview window if present, then compile puml file."
+  (interactive)
+  ;; delete current preview window if visible
+  (let (current-buffer (buffer-name))
+    (when (ff/is-buffer-visible plantuml-preview-buffer)
+      (delete-window (get-buffer-window plantuml-preview-buffer)))
+    ;; run actual plantuml preview with 4=new frame setting
+    (plantuml-preview 0)))
+
 (use-package plantuml-mode
   :ensure-system-package (dot . "sudo apt install graphviz -y")
   :mode (("\\.puml" . plantuml-mode)
