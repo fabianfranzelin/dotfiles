@@ -101,12 +101,12 @@
   (setq ivy-flx-limit 10000))
 
 (use-package smex ;; Adds M-x recent command sorting for counsel-M-x
-  :after counsel)
+  :after (counsel))
 
 (use-package prescient)
 
 (use-package ivy-prescient
-  :after prescient
+  :after (prescient)
   :custom
   (ivy-prescient-enable-filtering nil)
   :init
@@ -125,7 +125,7 @@
   (setq password-store-password-length 20))
 
 (use-package lsp-ivy
-  :after lsp-mode
+  :after (lsp-mode)
   :commands lsp-ivy-workspace-symbol
   :bind (:map lsp-mode-map
               ("C-c l s" . (lambda()
@@ -138,7 +138,7 @@
 ;; -------------------------------------------------------------------
 
 (use-package counsel-projectile
-  :after projectile
+  :after (projectile)
   :init
   (counsel-projectile-mode t)
   :config

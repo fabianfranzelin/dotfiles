@@ -17,15 +17,15 @@
 
 (use-package text-mode
   :ensure nil
-  :after cape
-  :hook (text-mode . ff/configure-text-mode))
+  :after (cape)
+  :hook ((text-mode . ff/configure-text-mode)))
 
 ;; -------------------------------------------------------------------
 ;; Emacs lisp
 ;; -------------------------------------------------------------------
 ;; enable rainbow delimiters for emacs lisp
 (use-package rainbow-delimiters
-  :hook (emacs-lisp-mode . rainbow-delimiters-mode))
+  :hook ((emacs-lisp-mode . rainbow-delimiters-mode)))
 
 ;; -------------------------------------------------------------------
 ;; C/C++
@@ -106,7 +106,7 @@
   (put 'dockerfile-image-name 'safe-local-variable #'stringp))
 
 (use-package docker
-  :after setup-vterm
+  :after (setup-vterm)
   :bind ("C-x d" . docker)
   :config
   (defun ff/docker-container-vterm-selection (prefix)
@@ -163,9 +163,9 @@
   (setq markdown-command "pandoc --from markdown --to html"
         markdown-command-needs-filename t)
 
-  :hook((markdown-mode . visual-line-mode)
-        (markdown-mode . flyspell-mode)
-        (markdown-mode . (lambda() (interactive) () (ff/configure-markdown-mode))))
+  :hook ((markdown-mode . visual-line-mode)
+         (markdown-mode . flyspell-mode)
+         (markdown-mode . ff/configure-markdown-mode))
   :bind (:map markdown-mode-map
          ("C-c C-f" . ff/run-mdformat)))
 
@@ -202,7 +202,7 @@
 ;; Typescript
 ;; -------------------------------------------------------------------
 (use-package tide
-  :after typescript-mode
+  :after (typescript-mode)
   :hook ((typescript-mode . tide-setup)
          (typescript-mode . tide-hl-identifier-mode)
          (before-save . tide-format-before-save)))
@@ -210,7 +210,7 @@
 (use-package nvm)
 
 (use-package typescript-mode
-  :after dap-node
+  :after (dap-node)
   :config
   (setq typescript-indent-level 4)
   (dap-node-setup))
@@ -294,7 +294,7 @@ SOURCE_FILENAME: filename to the puml file."
 ;; Java mode
 ;; -------------------------------------------------------------------
 (use-package lsp-java
-  :after lsp-mode
+  :after (lsp-mode)
   :hook ((java-mode . lsp)))
 
 (use-package dap-java

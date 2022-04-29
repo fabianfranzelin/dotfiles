@@ -63,7 +63,7 @@
 
 (use-package pipenv
   :ensure-system-package ((pipenv . "python3 -m pip install --user -U pipenv"))
-  :hook (python-mode . pipenv-mode)
+  :hook ((python-mode . pipenv-mode))
   :init
   (setq pipenv-projectile-after-switch-function
         #'pipenv-projectile-after-switch-extended))

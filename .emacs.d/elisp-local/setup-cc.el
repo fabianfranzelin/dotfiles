@@ -55,10 +55,10 @@ REPLACE-STR: string that replaces all regex matches"
 
 ;; (use-package flycheck-clang-tidy
 ;;   :ensure-system-package ((clang-tidy . "sudo apt install clang-tidy -y"))
-;;   :after flycheck
+;;   :after (flycheck)
 ;;   :init
 ;;   (setq flycheck-clang-tidy-executable "/usr/bin/clang-tidy")
-;;   :hook (flycheck-mode . flycheck-clang-tidy-setup))
+;;   :hook ((flycheck-mode . flycheck-clang-tidy-setup)))
 
 ;; ----------------------------------------------------------------------------------
 ;; Autloads for CCLS and cc-mode
@@ -161,7 +161,7 @@ REPLACE-STR: string that replaces all regex matches"
 ;; adds font-lock highlighting for modern C++ upto C++17
 ;; https://github.com/ludwigpacifici/modern-cpp-font-lock
 (use-package modern-cpp-font-lock
-  :hook (c++-mode . modern-c++-font-lock-mode))
+  :hook ((c++-mode . modern-c++-font-lock-mode)))
 
 ;; ccls: Emacs client for ccls, a C/C++ language server
 ;; https://github.com/MaskRay/emacs-ccls
@@ -206,7 +206,7 @@ REPLACE-STR: string that replaces all regex matches"
       (setq-local lsp-enable-file-watchers nil))))
 
 (use-package cc-mode
-  :after clang-format+
+  :after (clang-format+)
   :ensure-system-package ((clangd . "sudo apt install clangd clangd-10 -y")
                           (clang . "sudo apt install clang clang-10 -y"))
   :hook (((c++-mode c-mode) . (lambda ()
