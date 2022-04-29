@@ -108,10 +108,10 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          cmake \
          libtool-bin \
          aspell aspell-de aspell-en \
-         clang-format-10 \
+         clang-format \
          clang-tidy \
-         clangd-10 \
-         clang-10 \
+         clangd \
+         clang \
          vlc \
          firefox \
          eog \
@@ -160,11 +160,11 @@ fi
 
 echo -e "${__COLOR_INFO}INFO: Creating and linking emacs-setup ...${__COLOR_RESET}"
 
-__DOT_EMACS_D="${HOME}/.emacs.d"
+__CACHE_EMACS_ETC="${HOME}/.cache/emacs/etc"
 
 # install emacs application framework
 echo -e "${__COLOR_INFO}INFO: Install Emacs Application Framework${__COLOR_RESET}"
-__DOT_EMACS_EAF="${__DOT_EMACS_D}/site-lisp/emacs-application-framework"
+__DOT_EMACS_EAF="${__CACHE_EMACS_ETC}/emacs-application-framework"
 if [[ ! -d "${__DOT_EMACS_EAF}" ]]; then
     mkdir -p "${__DOT_EMACS_EAF}"
     git clone --depth=1 \
