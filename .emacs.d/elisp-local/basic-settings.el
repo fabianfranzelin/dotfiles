@@ -151,6 +151,18 @@
 
 (set-face-attribute 'default nil :height 110) ;; default = 110
 
+;; define functions that increase and decrease the font-size for the
+;; whole frame globally
+(defun ff/adjust-font-size-per-frame (increment)
+  "Adjust the font size for all buffers in the current frame.
+INCREMENT: Value of which the current font-size is changed"
+  (interactive "P")
+  (let ((current-height (face-attribute 'default :height)))
+    (set-face-attribute 'default nil :height (+ current-height increment))))
+
+(global-set-key (kbd "C-c +") #'(lambda() (interactive) (ff/adjust-font-size-per-frame 10)))
+(global-set-key (kbd "C-c -") #'(lambda() (interactive) (ff/adjust-font-size-per-frame -10)))
+
 ;; -------------------------------------------------------------------
 ;; Global key bindings
 ;; -------------------------------------------------------------------
