@@ -1,6 +1,7 @@
-;;; package --- Set up lsp-mode
+;;; setup-lsp.el --- Set up lsp-mode
+
 ;;; Commentary:
-;;; Sets up lsp-mode for Emacs
+;; Sets up lsp-mode for Emacs
 
 ;;; Code:
 
