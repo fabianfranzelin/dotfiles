@@ -685,6 +685,12 @@ TEXT: title"
   (downcase (replace-regexp-in-string " \\|:\\|-" "_" text)))
 
 (use-package yasnippet
+  :custom
+  (yas-snippet-dirs (list
+                     ;; personal snippets
+                     (expand-file-name "snippets/" emacs-config-home)
+                     ;; global snippets
+                     (expand-file-name "snippets/" user-emacs-directory)))
   :init
   ;; enable yas everywhere
   (yas-global-mode 1)
