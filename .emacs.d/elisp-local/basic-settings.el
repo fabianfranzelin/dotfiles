@@ -415,9 +415,7 @@ INCREMENT: Value of which the current font-size is changed"
   (global-undo-tree-mode)
   :config
   ;; increase undo limit
-  (setq undo-limit 8000000)
-   ;; do not save the undo history
-  (setq undo-tree-auto-save-history nil))
+  (setq undo-limit 8000000))
 
 ;; -------------------------------------------------------------------
 ;; Credential management
