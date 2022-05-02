@@ -11,7 +11,7 @@
 
 (defun dw/get-current-package-version ()
   (interactive)
-  (let ((package-json-file (concat (eshell/pwd) "/package.json")))
+  (let ((package-json-file (expand-file-name "package.json" (eshell/pwd))))
     (when (file-exists-p package-json-file)
       (let* ((package-json-contents (read-file package-json-file))
              (package-json (ignore-errors (json-parse-string package-json-contents))))

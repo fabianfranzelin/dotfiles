@@ -22,10 +22,10 @@
   (defvar langtool-version "5.5")
   (defvar langtool-name (concat "LanguageTool-" langtool-version))
   (defvar langtool-url (concat "https://languagetool.org/download/" langtool-name ".zip"))
-  (defvar langtool-extract-to (expand-file-name "~/opt/languageTool"))
-  (defvar langtool-path (concat langtool-extract-to "/" langtool-name))
-  (defvar langtool-server (concat langtool-path "/languagetool-server.jar"))
-  (defvar langtool-commandline (concat langtool-path "/languagetool-commandline.jar"))
+  (defvar langtool-extract-to (expand-file-name "opt/languageTool" (getenv "HOME")))
+  (defvar langtool-path (expand-file-name langtool-name langtool-extract-to))
+  (defvar langtool-server (expand-file-name "languagetool-server.jar" langtool-path))
+  (defvar langtool-commandline (expand-file-name "languagetool-commandline.jar" langtool-path))
   (ff/download-and-extract-zip-archive langtool-url
                                        langtool-name
                                        langtool-extract-to

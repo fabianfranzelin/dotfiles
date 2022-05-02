@@ -34,7 +34,7 @@ REPLACE-STR: string that replaces all regex matches"
 (defun ff/container-host-compile-commands-mapping ()
   "Adjusts the compile commands json of CMake to match the host system and not the containers."
   (interactive)
-  (ff/search-replace (concat (plist-get ccls-initialization-options :compilationDatabaseDirectory) "/compile_commands.json")
+  (ff/search-replace (expand-file-name "compile_commands.json" (plist-get ccls-initialization-options :compilationDatabaseDirectory))
                      +ccls-container-workspace
                      (projectile-project-root)))
 
@@ -70,7 +70,7 @@ REPLACE-STR: string that replaces all regex matches"
 (defvar +ccls-initial-blacklist [])
 
 ;;;###autoload
-(defvar +ccls-cache-dir (concat (getenv "HOME") "/.cache/ccls"))
+(defvar +ccls-cache-dir (expand-file-name ".cache/ccls" (getenv "HOME")))
 
 ;;;###autoload
 (defvar +lsp-blacklist nil)

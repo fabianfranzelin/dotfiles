@@ -21,9 +21,14 @@
 ;; declaration
 (use-package use-package-ensure-system-package)
 
-;; get latest signatures for elpa
-(setq package-check-signature nil)
-(use-package gnu-elpa-keyring-update)
+;; make sure that the path environment from shell is available in
+;; emacs
+(use-package exec-path-from-shell
+  :unless (string-equal system-type "windows-nt")
+  :demand t
+  :config
+  (exec-path-from-shell-initialize)
+  (exec-path-from-shell-copy-env "SSH_AUTH_SOCK"))
 
 ;; set frame transparency and maximize frame by default
 (set-frame-parameter (selected-frame) 'alpha '(100 . 100))
@@ -54,15 +59,6 @@
 ;; disable lockfiles
 (setq create-lockfiles nil)
 
-;; setup a new custom file
-(defvar emacs-d-custom (concat user-emacs-directory "/custom.el")
-  "Path to custom file in emacs.d directory.")
-(unless (file-exists-p emacs-d-custom)
-  (with-temp-buffer (write-file emacs-d-custom)))
-
-(setq custom-file emacs-d-custom)
-(load custom-file t)
-
 ;; disable scrollbar
 (scroll-bar-mode -1) ; disbale scrollbar
 (menu-bar-mode -1) ; disable menu bar
@@ -92,6 +88,8 @@
 
 ;; enable recentf-mode
 (recentf-mode)
+(add-to-list 'recentf-exclude no-littering-var-directory)
+(add-to-list 'recentf-exclude no-littering-etc-directory)
 
 ;; Turn on syntax colouring in all modes supporting it
 (global-font-lock-mode t)
@@ -253,7 +251,7 @@ INCREMENT: Value of which the current font-size is changed"
 (use-package perspective
   :custom
   (persp-mode-prefix-key (kbd "C-x x"))
-  (persp-state-default-file (concat user-emacs-directory "/persp-state.el"))
+  (persp-state-default-file (expand-file-name "persp-state.el" user-emacs-directory))
   :init
   (unless (equal persp-mode t)
     (persp-mode))
@@ -290,11 +288,14 @@ INCREMENT: Value of which the current font-size is changed"
   ;; Use remote PATH on tramp (handy for eshell).
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
 
-  (setq tramp-auto-save-directory "~/.cache/emacs/backups"
-        tramp-persistency-file-name "~/.emacs.d/data/tramp"
+
+  (setq tramp-auto-save-directory (expand-file-name "var/tramp/backups" user-emacs-directory)
+        tramp-persistency-file-name (expand-file-name "var/tramp/persistency_data" user-emacs-directory)
         tramp-terminal-type "dumb"
         tramp-default-method "ssh"
         tramp-verbose 1)
+
+  (make-directory tramp-auto-save-directory t)
 
   ;; make sure vc stuff is not making tramp slower
   (setq vc-ignore-dir-regexp
