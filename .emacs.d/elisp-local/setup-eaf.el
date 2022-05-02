@@ -5,7 +5,7 @@
 
 ;;; Code:
 
-(defvar eaf-load-path (concat emacs-config-home "/site-lisp/emacs-application-framework")
+(defvar eaf-load-path (expand-file-name "etc/emacs-application-framework" user-emacs-directory)
   "Load path for EAF.")
 (add-to-list 'load-path eaf-load-path)
 

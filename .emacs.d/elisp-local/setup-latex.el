@@ -105,8 +105,8 @@
   ;; http://inthearmchair.wordpress.com/2010/09/02/latex-inverse-pdf-search-with-emacs/
   ;; (setq TeX-source-specials-mode 1)         ;; Inverse search
 
-  (setq TeX-auto-global (concat emacs-config-home "/auctex-auto-generated-info/"))
-  (setq TeX-auto-local  (concat emacs-config-home "/auctex-auto-generated-info/")))
+  (setq TeX-auto-global (expand-file-name "auctex-auto-generated-info/" user-emacs-directory))
+  (setq TeX-auto-local  (expand-file-name "auctex-auto-generated-info/" user-emacs-directory)))
 
 
 (provide 'setup-latex)

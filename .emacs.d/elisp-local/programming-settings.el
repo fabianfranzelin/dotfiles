@@ -266,9 +266,9 @@ SOURCE_FILENAME: filename to the puml file."
   (defvar plantuml-url
     (concat "https://sourceforge.net/projects/plantuml/files/" plantuml-version "/" plantuml-name ".zip/download")
     "URL to download plantuml from sourceforge.")
-  (defvar plantuml-extract-to (expand-file-name (concat "~/opt/plantuml/" plantuml-name))
-    "DEstination of plantuml binaries")
-  (defvar plantuml-expected-binary (concat plantuml-extract-to "/plantuml.jar")
+  (defvar plantuml-extract-to (expand-file-name plantuml-name "~/opt/plantuml/")
+    "Destination of plantuml binaries")
+  (defvar plantuml-expected-binary (expand-file-name "plantuml.jar" plantuml-extract-to)
     "Path to java archive of plantuml.")
   (ff/download-and-extract-zip-archive plantuml-url
                                        plantuml-name
