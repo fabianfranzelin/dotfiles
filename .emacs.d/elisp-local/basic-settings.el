@@ -266,7 +266,7 @@ INCREMENT: Value of which the current font-size is changed"
 (use-package gumshoe
   :init
   ;; Enabing global-gumshoe-mode will initiate tracking
-  (global-gumshoe-mode +1)
+  (global-gumshoe-mode)
   ;; customize peruse slot display if you like
   (setf gumshoe-slot-schema '(time buffer position line))
   :custom
@@ -685,13 +685,9 @@ TEXT: title"
   (downcase (replace-regexp-in-string " \\|:\\|-" "_" text)))
 
 (use-package yasnippet
-  :custom
-  (yas-snippet-dirs (list
-                     ;; personal snippets
-                     (expand-file-name "snippets/" emacs-config-home)
-                     ;; global snippets
-                     (expand-file-name "snippets/" user-emacs-directory)))
   :init
+  ;; add pesonal snippets directory
+  (add-to-list 'yas-snippet-dirs (expand-file-name "snippets/" emacs-config-home))
   ;; enable yas everywhere
   (yas-global-mode 1)
   :config
