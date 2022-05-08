@@ -71,7 +71,7 @@ ARG: position"
   (setq tab-always-indent 'complete)
 
   ;; Recommended: Enable Corfu globally.
-  (corfu-global-mode)
+  (global-corfu-mode)
   :bind(:map corfu-map
              ("C-j" . corfu-next)
              ("C-k" . corfu-previous)
