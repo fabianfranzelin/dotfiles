@@ -49,7 +49,7 @@
                      gcs-done)))
 
 ;; enables local variables per default
-(setq enable-local-variables :all)
+(setq enable-local-variables t)
 ;; dir-local variables will be applied to remote files.
 (setq enable-remote-dir-locals t)
 
