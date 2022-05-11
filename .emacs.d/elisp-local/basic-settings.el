@@ -428,10 +428,11 @@ INCREMENT: Value of which the current font-size is changed"
 ;; Open files externally
 ;; -------------------------------------------------------------------
 (use-package openwith
-  :ensure-system-package ((vlc . "sudo apt install vlc -y")
-                          (okular . "sudo apt install okular -y")
-                          (eog . "sudo apt install eog -y")
-                          (firefox . "sudo apt install firefox -y"))
+  ;; These dependencies need to be installed manually
+  ;; :ensure-system-package ((vlc . "sudo apt install vlc -y")
+  ;;                         (okular . "sudo apt install okular -y")
+  ;;                         (eog . "sudo apt install eog -y")
+  ;;                         (firefox . "sudo apt install firefox -y"))
   :config
   (setq openwith-associations
         (list

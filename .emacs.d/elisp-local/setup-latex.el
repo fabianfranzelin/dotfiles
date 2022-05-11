@@ -92,7 +92,8 @@
 ;; -------------------------------------------------------------------
 (use-package okular-search
   :load-path local-load-path
-  :ensure-system-package (okular . "sudo apt install okular -y")
+  ;; This dependency need to be installed manually
+  ;; :ensure-system-package (okular . "sudo apt install okular -y")
   :bind (:map LaTeX-mode-map
               ("C-c C-a" . okular-jump-to-line)
               :map tex-mode-map
