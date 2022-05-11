@@ -115,19 +115,13 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
 fi
 
 #------------------------------------------------------------------------------#
-# Setup all symlinks with GNU stow
-echo -e "${__COLOR_INFO}INFO: Setup symlinks with GNU stow.${__COLOR_RESET}"
-
-(
-    cd "${DOTFILES}"
-    stow . -t "${HOME}"
-)
-
-#------------------------------------------------------------------------------#
 # install oh-my-zsh if required
 OH_MY_ZSH_HOME="$HOME/.oh-my-zsh"
 if [[ ! -d "${OH_MY_ZSH_HOME}" ]]; then
     sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    # This script creates a .zshrc file in your home directory. We
+    # won't need it, since we have a preconfigured one in this repo
+    rm "${HOME}/.zshrc"
 fi
 
 POWERLEVEL10K_HOME=${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
@@ -144,6 +138,15 @@ ZSH_SYNTAX_HIGHLIGHTING=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-hi
 if [[ ! -d "${ZSH_SYNTAX_HIGHLIGHTING}" ]]; then
     git clone https://github.com/zsh-users/zsh-syntax-highlighting "${ZSH_SYNTAX_HIGHLIGHTING}"
 fi
+
+#------------------------------------------------------------------------------#
+# Setup all symlinks with GNU stow
+echo -e "${__COLOR_INFO}INFO: Setup symlinks with GNU stow.${__COLOR_RESET}"
+
+(
+    cd "${DOTFILES}"
+    stow . -t "${HOME}"
+)
 
 #------------------------------------------------------------------------------#
 # setup custom/emacs
