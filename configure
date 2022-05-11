@@ -79,6 +79,8 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          direnv \
          gnome-keyring \
          openjdk-17-jdk \
+         zip \
+         unzip \
          stow
 
     # install dependencies for emacs
