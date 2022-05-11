@@ -91,9 +91,16 @@ export AOS_INSTALL_DIR="${AOS_BASE_HOME}/install"
 # Run cat BOSCH-CA-DE_pem.cer /opt/az/lib/python3.6/site-packages/certifi/cacert.pem > azure-bosch-cert.pem
 export REQUESTS_CA_BUNDLE="${HOME}/.local/share/certificates/bosch/azure-bosch-cert.pem"
 
+#------------------------------------------------------------------------------#
+# Ford
+if [[ -f "${HOME}/.forddat3/devcontainer" ]]; then
+    source "${HOME}/.forddat3/devcontainer"
+fi
+
+#------------------------------------------------------------------------------#
 # Virtual environments for python
-export WORKON_HOME=$HOME/.virtualenvs
-export PIP_VIRTUALENV_BASE=$WORKON_HOME
+export WORKON_HOME="$HOME/.virtualenvs"
+export PIP_VIRTUALENV_BASE="$WORKON_HOME"
 
 #------------------------------------------------------------------------------#
 # make aliases available in eshell
