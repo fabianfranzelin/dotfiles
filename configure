@@ -29,6 +29,7 @@ export __SHELL_LIB
 __SHELL_LIB="${DOTFILES}/.local/bin/shell"
 
 . "${__SHELL_LIB}/formatting.sh"
+. "${__SHELL_LIB}/faq.sh"
 
 #------------------------------------------------------------------------------#
 # cmdline-parser
@@ -80,7 +81,6 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
 
     # install dependencies for emacs
     sudo apt install -y \
-         okular \
          markdown \
          pandoc \
          graphviz \
@@ -93,15 +93,25 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          clang-tidy \
          clangd \
          clang \
-         vlc \
-         firefox \
-         eog \
          ripgrep \
          fd-find
 
-    # try to install snap dependencies. Note that this is not working
-    # for Docker or WSL. Ignore if it fails
-    sudo snap install ccls --classic || true
+    if ( __is_linux ) then
+       # try to install snap dependencies. Note that this is not working
+       # for Docker or WSL.
+       echo -e "${__COLOR_INFO}INFO: Install GTK tools${__COLOR_RESET}"
+
+       sudo snap install ccls --classic
+
+       sudo apt install -y \
+            okular \
+            vlc \
+            firefox \
+            eog
+    else
+       echo -e "${__COLOR_INFO}INFO: Skip installing GTK tools since we are running in WSL or Docker.${__COLOR_RESET}"
+    fi
+
 fi
 
 #------------------------------------------------------------------------------#

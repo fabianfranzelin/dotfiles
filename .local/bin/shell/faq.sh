@@ -8,6 +8,15 @@ __is_bash() {
     test -n "${BASH}"
 }
 
+__is_wsl() {
+    grep -q microsoft /proc/version
+}
+
+__is_linux() {
+    ! __is_wsl
+}
+
+
 is_machine() {
     __MACHINE=$(echo "${1}" | tr '[:upper:]' '[:lower:]')
 
