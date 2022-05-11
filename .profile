@@ -97,23 +97,6 @@ export REQUESTS_CA_BUNDLE="${HOME}/.local/share/certificates/bosch/azure-bosch-c
 export WORKON_HOME=$HOME/.virtualenvs
 export PIP_VIRTUALENV_BASE=$WORKON_HOME
 
-# Make sure that the debian package virtualenvwrapper is installed for
-# the following to work. If errors occur, install it via "pip3 install
-# virtualenvwrapper"
-if [[ -f "/usr/share/virtualenvwrapper/virtualenvwrapper.sh" ]]; then
-    source "/usr/share/virtualenvwrapper/virtualenvwrapper.sh"
-
-    # pip bash completion start
-    _pip_completion()
-    {
-        COMPREPLY=( $( COMP_WORDS="${COMP_WORDS[*]}" \
-                                 COMP_CWORD=$COMP_CWORD \
-                                 PIP_AUTO_COMPLETE=1 $1 ) )
-    }
-    complete -o default -F _pip_completion pip
-    # pip bash completion end
-fi
-
 #------------------------------------------------------------------------------#
 # make aliases available in eshell
 # mkdir -p "$HOME/.emacs.d/eshell"
