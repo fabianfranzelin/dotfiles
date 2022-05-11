@@ -1,6 +1,8 @@
 [include]
     path = "~/.gitconfig.general"
 [core]
+    trustctime = false
+    filemode = false
     autocrlf = false
     editor = emacsclient -nw -c -a "emacs"
 [user]
@@ -24,6 +26,7 @@
     tool = meld
 [push]
     default = simple
+    recurseSubmodules = check
 [lfs]
     storage = /home/frf2lr/.cache/git/lfs
 [filter "lfs"]
