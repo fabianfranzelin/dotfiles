@@ -109,4 +109,8 @@ export PIP_VIRTUALENV_BASE="$WORKON_HOME"
 
 #------------------------------------------------------------------------------#
 # enable direnv for bash or zsh
-eval "$(direnv hook $(echo $0 | cut -d'/' -f3))" > /dev/null
+if (__is_zsh); then
+    eval "$(direnv hook $(which zsh))" > /dev/null
+elif (__is_bash); then
+    eval "$(direnv hook $(which bash))" > /dev/null
+fi
