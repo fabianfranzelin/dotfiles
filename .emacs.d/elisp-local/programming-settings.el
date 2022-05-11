@@ -260,13 +260,18 @@ SOURCE_FILENAME: filename to the puml file."
          ("\\.iuml" . plantuml-mode)
          ("\\.uml" . plantuml-mode))
   :init
+  ;; Create directory for plantuml binaries
+  (defvar plantuml-root (expand-file-name "opt/plantuml" (getenv "HOME")))
+  (mkdir plantuml-root t)
+
+  (mkdir "~/opt/plantuml/" t)
   ;; Consider using (plantuml-download-jar) as alternative
   (defvar plantuml-version "1.2022.2" "Version number of plantuml binary")
   (defvar plantuml-name (concat "plantuml-jar-asl-" plantuml-version) "Name of plantuml executable")
   (defvar plantuml-url
     (concat "https://sourceforge.net/projects/plantuml/files/" plantuml-version "/" plantuml-name ".zip/download")
     "URL to download plantuml from sourceforge.")
-  (defvar plantuml-extract-to (expand-file-name plantuml-name "~/opt/plantuml/")
+  (defvar plantuml-extract-to (expand-file-name plantuml-name plantuml-root)
     "Destination of plantuml binaries")
   (defvar plantuml-expected-binary (expand-file-name "plantuml.jar" plantuml-extract-to)
     "Path to java archive of plantuml.")
