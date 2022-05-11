@@ -206,13 +206,18 @@ REPLACE-STR: string that replaces all regex matches"
     (when (string-match-p "/llvm" buffer-file-name)
       (setq-local lsp-enable-file-watchers nil))))
 
+(defun setup-cc-mode ()
+  "Init function for cc-mode"
+  (interactive)
+  (+ccls|enable)
+  (+cc-fontify-constants-h))
+
 (use-package cc-mode
   :after (clang-format+)
   :ensure-system-package ((clangd . "sudo apt install clangd -y")
                           (clang . "sudo apt install clang -y"))
-  :hook (((c++-mode c-mode) . (lambda ()
-                                (+ccls|enable)
-                                (+cc-fontify-constants-h))))
+  :hook ((c++-mode . setup-cc-mode)
+         (c-mode . setup-cc-mode))
   :custom (lsp-clients-clangd-args '("--header-insertion-decorators=0" "--clang-tidy"))
   :init
   (c-add-style "my-cc"
@@ -237,8 +242,7 @@ REPLACE-STR: string that replaces all regex matches"
        nil '(("\\<[A-Z]*_[0-9A-Z_]+\\>" . font-lock-constant-face)
              ("\\<[A-Z]\\{3,\\}\\>"  . font-lock-constant-face))
        t)))
-  :bind (;; TODO this is a hack for now. It should only be enabled in C++ mode
-         :map c++-mode-map
+  :bind (:map c++-mode-map
          ("C-c l r c" . ff/container-host-compile-commands-mapping)))
 
 ;; Major mode for editing QT Declarative (QML) code.
