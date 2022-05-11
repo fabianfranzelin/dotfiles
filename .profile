@@ -36,10 +36,6 @@ export SSH_AUTH_SOCK
 # expand path to include local bin directory
 export PATH=$HOME/opt/bin:$HOME/.local/bin:/usr/lib/ccache:$PATH
 
-# go work
-export GOPATH="$HOME/.go"
-export PATH=$PATH:"$GOPATH/bin"
-
 #------------------------------------------------------------------------------#
 # ros setup
 
