@@ -166,7 +166,8 @@ REPLACE-STR: string that replaces all regex matches"
 ;; ccls: Emacs client for ccls, a C/C++ language server
 ;; https://github.com/MaskRay/emacs-ccls
 (use-package ccls
-  :ensure-system-package (ccls . "sudo snap install ccls --classic")
+  ;; Currently installed manually
+  ;; :ensure-system-package (ccls . "sudo snap install ccls --classic")
   :init
   (setq ccls-executable (executable-find "ccls"))
 
