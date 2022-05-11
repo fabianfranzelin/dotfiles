@@ -23,7 +23,7 @@
   (defvar langtool-extract-to (expand-file-name "opt/languageTool" (getenv "HOME")))
   (mkdir langtool-extract-to t)
 
-  (defvar langtool-version "5.5")
+  (defvar langtool-version "5.7")
   (defvar langtool-name (concat "LanguageTool-" langtool-version))
   (defvar langtool-url (concat "https://languagetool.org/download/" langtool-name ".zip"))
   (defvar langtool-path (expand-file-name langtool-name langtool-extract-to))
