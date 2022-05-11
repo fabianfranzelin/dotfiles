@@ -102,7 +102,10 @@
   ;; Use completion-at-point to provide completions in eshell
   (define-key eshell-mode-map (kbd "<tab>") 'completion-at-point)
 
-  (define-key eshell-mode-map (kbd "C-r") 'counsel-esh-history)
+  ;; Initialize the shell history
+  (eshell-hist-initialize)
+
+  (define-key eshell-mode-map (kbd "C-r") 'consult-history)
   (define-key eshell-mode-map (kbd "<home>") 'eshell-bol)
 
   ;; close eshell
@@ -131,15 +134,13 @@
 (use-package eshell
   :after (magit)
   :hook ((eshell-first-time-mode . dw/eshell-configure))
+  :custom ((eshell-aliases-file (expand-file-name "eshell/alias" emacs-config-home)))
   :bind (("C-x e" . ff/start-eshell)
          ("C-c t" . (lambda()
                       (interactive)
                       (ff/start-eshell)
                       (ff/toggle-shell-vertical-alignment)
-                      (ff/start-eshell))))
-  :init
-  (setq eshell-directory-name "~/.emacs.d/eshell/"
-        eshell-aliases-file (expand-file-name "~/.emacs.d/eshell/alias")))
+                      (ff/start-eshell)))))
 
 (use-package eshell-z
   :hook ((eshell-mode . (lambda () (require 'eshell-z)))
