@@ -129,10 +129,6 @@
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
-;; (use-package material-theme
-;;   :config
-;;   (load-theme 'material t))
-
 ;; Add frame borders and window dividers
 (modify-all-frames-parameters
  '((right-divider-width . 0)
