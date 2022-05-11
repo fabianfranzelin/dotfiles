@@ -78,6 +78,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          npm \
          direnv \
          gnome-keyring \
+         openjdk-17-jdk \
          stow
 
     # install dependencies for emacs
