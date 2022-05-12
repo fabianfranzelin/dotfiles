@@ -67,8 +67,15 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
     # installed afterwards again via Ubuntu package sources.
     # python3 -m pip uninstall PyQt5
 
+    # Make sure that there is just one venv package installed. We do
+    # this via pip
+    sudo apt remove python3-venv -y
+
     # Update python setuptools to latest release from pypi
-    python3 -m pip install --upgrade setuptools pip wheel
+    python3 -m pip install --upgrade \
+            setuptools \
+            pip \
+            wheel
 
     sudo apt install -y \
          xclip \
@@ -98,14 +105,26 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          clangd \
          clang \
          ripgrep \
-         fd-find
+         fd-find \
+         ccls
+
+    # additional python dependencies
+    python3 -m pip install --upgrade \
+            virtualenv \
+            epc \
+            ptvsd>=4.2 \
+            black \
+            pipenv \
+            isort \
+            yamllint \
+            mdformat \
+            cmake_language_server \
+            python-lsp-server[all]
 
     if ( __is_linux ) then
        # try to install snap dependencies. Note that this is not working
        # for Docker or WSL.
        echo -e "${__COLOR_INFO}INFO: Install GTK tools${__COLOR_RESET}"
-
-       sudo snap install ccls --classic
 
        sudo apt install -y \
             okular \

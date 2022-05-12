@@ -24,10 +24,9 @@
 (use-package python-mode
   :ensure-system-package ((pip3 . "sudo apt install python3-pip -y")
                           (pylsp . "python3 -m pip install -U 'python-lsp-server[all]'")
-                          ;; both packages are required for debugging
-                          ;; with dap
-                          ("~/.local/lib/python3.8/site-packages/epc" . "python3 -m pip install -U 'epc'")
-                          ("~/.local/lib/python3.8/site-packages/ptvsd" . "python3 -m pip install -U 'ptvsd>=4.2'"))
+                          ;; both packages are required for debugging with dap
+                          ((:eval ff/python-local-site-packages-path "epc") . "python3 -m pip install -U 'epc'")
+                          ((:eval ff/python-local-site-packages-path "ptvsd") . "python3 -m pip install -U 'ptvsd>=4.2'"))
   :mode (("\\.py$" . python-mode)
          ("SConstruct" . python-mode)
          ("SConscript" . python-mode))
@@ -39,11 +38,11 @@
   :init
   ;; use ipython as default interpreter
   (setq python-shell-interpreter "ipython3"
-        python-shell-interpreter-args "--simple-prompt -i")
-  (setq python-indent-offset 4
-        python-indent-guess-indent-offset nil)
-  ;; default python interpreter for dap
-  (setq dap-python-executable "python3")
+        python-shell-interpreter-args "--simple-prompt -i"
+        python-indent-offset 4
+        python-indent-guess-indent-offset nil
+        ;; default python interpreter for dap
+        dap-python-executable "python3")
   :config
   ;; delete output buffer on buffer execution
   (setq py-shell-switch-buffers-on-execute nil))

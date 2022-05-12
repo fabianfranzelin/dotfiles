@@ -64,28 +64,24 @@ BUFFER-LIST: string list of buffer names"
       (message (concat "[" package-name "] Decompress " name " to " extract-to))
       (call-process-shell-command (concat "unzip " temporary-file " -d " extract-to) nil 0))))
 
-(defun ff/python-interpreter-version (type)
+(defun ff/python-interpreter-version ()
   "Provide version of python interpreter."
   (let* ((python-command (if (boundp 'python-shell-interpreter)
                              (eval python-shell-interpreter)
                            "python"))
          (python-interpreter-versions
-          (split-string (car (cdr
-                              (split-string
-                               (shell-command-to-string
-                                (concat (eval python-command)
-                                        " --version"))
-                               " "))) "\\.")))
-    (cond ((equal (eval type) "major") (elt python-interpreter-versions 0))
-          ((equal (eval type) "minor") (elt python-interpreter-versions 1)))))
+          (split-string (car (cdr (split-string
+                              (shell-command-to-string "python3 --version")
+                              " "))) "\\.")))
+    (concat (elt python-interpreter-versions 0) "." (elt python-interpreter-versions 1))))
 
 (defun ff/python-local-site-packages-path (package-name)
-  "Provide the path to the local site packages."
-  (concat (expand-file-name "~/.local/lib/python")
-          (ff/python-interpreter-version "major")
-          "."
-          (ff/python-interpreter-version "minor")
-          "/site-packages/" (eval package-name)))
+  "Provide the path to the local site packages.
+
+PACKAGE-NAME: name of the package to be checked."
+  (concat (expand-file-name ".local/lib/python" (getenv "HOME"))
+          (ff/python-interpreter-version)
+          "/site-packages/" package-name))
 
 (defun ff/switch-to-last-window ()
   "Switch to last visible window."
