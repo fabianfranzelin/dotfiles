@@ -12,26 +12,11 @@
 
 ;; define path of local lisp packages that are part of the dotfiles
 ;; repo
-(defvar emacs-config-home (expand-file-name "~/.emacs.d")
+(defvar emacs-config-home (expand-file-name ".emacs.d" (getenv "HOME"))
   "Location of the Emacs configuration.")
-(defvar local-load-path (concat emacs-config-home "/elisp-local")
+(defvar local-load-path (expand-file-name "elisp-local" emacs-config-home)
   "Load path for local Emacs configurations.")
 (add-to-list 'load-path local-load-path)
-
-;; -------------------------------------------------------------------
-;; configure native compilation
-
-(when (featurep 'native-compile)
-  ;; Set the right directory to store the native compilation cache
-  (add-to-list 'native-comp-eln-load-path (expand-file-name "var/eln-cache/" user-emacs-directory))
-
-  ;; Silence compiler warnings as they can be pretty disruptive
-  (setq native-comp-async-report-warnings-errors nil)
-
-  ;; Make native compilation happens asynchronously
-  (setq native-comp-deferred-compilation t)
-
-  (setq native-comp-deferred-compilation-deny-list '("bytecomp-.*")))
 
 ;; -------------------------------------------------------------------
 ;; Package Management
@@ -47,7 +32,7 @@
   (package-initialize))
 
 (when (not package-archive-contents)
-  (package-refresh-contents))
+  (package-refresh-contents t))
 
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))

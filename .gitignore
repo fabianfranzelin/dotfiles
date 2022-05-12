@@ -97,5 +97,3 @@ build/
 
 ### Emacs ###
 flycheck_*
-.emacs.d/eln-cache
-.emacs.d/elpa

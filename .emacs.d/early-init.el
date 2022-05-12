@@ -20,4 +20,17 @@
    (convert-standard-filename
   (expand-file-name  "var/eln-cache/" user-emacs-directory))))
 
+;; -------------------------------------------------------------------
+;; configure native compilation
+
+(when (featurep 'native-compile)
+  ;; Set the right directory to store the native compilation cache
+  (add-to-list 'native-comp-eln-load-path (expand-file-name "var/eln-cache/" user-emacs-directory))
+
+  ;; Silence compiler warnings as they can be pretty disruptive
+  (setq native-comp-async-report-warnings-errors nil)
+
+  ;; Make native compilation happens asynchronously
+  (setq native-comp-deferred-compilation t))
+
 ;;; early-init.el ends here
