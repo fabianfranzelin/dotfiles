@@ -424,7 +424,7 @@ INCREMENT: Value of which the current font-size is changed"
 ;; Open files externally
 ;; -------------------------------------------------------------------
 (use-package openwith
-  :if window-system
+  :if (memq window-system '(x))
   :ensure-system-package ((vlc . "sudo apt install vlc -y")
                           (okular . "sudo apt install okular -y")
                           (eog . "sudo apt install eog -y")
@@ -622,6 +622,7 @@ FILE: filename"
            (other-window -1))))
 
 (use-package treemacs
+  :if (memq window-system '(x))
   :commands (treemacs
              treemacs-follow-mode
              treemacs-filewatch-mode
@@ -629,13 +630,12 @@ FILE: filename"
   :bind (("C-x t t" . treemacs)
          ("C-x t s" . ff/lsp-treemacs-symbols-toggle))
   :init
-  (when window-system
-    (setq treemacs-width 40
-          treemacs-indentation 1
-          treemacs-space-between-root-nodes nil)
-    (treemacs-follow-mode t)
-    (treemacs-filewatch-mode t)
-    (treemacs-fringe-indicator-mode nil))
+  (setq treemacs-width 40
+        treemacs-indentation 1
+        treemacs-space-between-root-nodes nil)
+  (treemacs-follow-mode t)
+  (treemacs-filewatch-mode t)
+  (treemacs-fringe-indicator-mode nil)
   :config
   ;; (add-to-list 'treemacs-pre-file-insert-predicates #'treemacs-is-file-git-ignored?)
   (push #'treemacs-custom-filter treemacs-ignored-file-predicates))
