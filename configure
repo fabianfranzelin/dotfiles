@@ -68,7 +68,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
     # python3 -m pip uninstall PyQt5
 
     # Update python setuptools to latest release from pypi
-    python3 -m pip install --upgrade setuptools pip wheel virtualenvwrapper
+    python3 -m pip install --upgrade setuptools pip wheel
 
     sudo apt install -y \
          xclip \
