@@ -10,6 +10,7 @@
 ;; --------------------------------------------------------
 
 (use-package languagetool
+  :ensure-system-package ((unzip . "sudo apt install unzip -y"))
   :commands (languagetool-check
              languagetool-clear-suggestions
              languagetool-correct-at-point
@@ -20,12 +21,10 @@
              languagetool-server-stop)
   :init
   ;; Create directory for languagetool binaries
-  (defvar langtool-extract-to (expand-file-name "opt/languageTool" (getenv "HOME")))
-  (mkdir langtool-extract-to t)
-
   (defvar langtool-version "5.7")
   (defvar langtool-name (concat "LanguageTool-" langtool-version))
   (defvar langtool-url (concat "https://languagetool.org/download/" langtool-name ".zip"))
+  (defvar langtool-extract-to (expand-file-name "opt/languageTool" (getenv "HOME")))
   (defvar langtool-path (expand-file-name langtool-name langtool-extract-to))
   (defvar langtool-server (expand-file-name "languagetool-server.jar" langtool-path))
   (defvar langtool-commandline (expand-file-name "languagetool-commandline.jar" langtool-path))

@@ -56,7 +56,7 @@ BUFFER-LIST: string list of buffer names"
 (defun ff/download-and-extract-zip-archive (url name extract-to expected-binary-file package-name)
   "Download and install zip archives."
   (let* ((temporary-file (concat temporary-file-directory name ".zip")))
-    (unless (file-directory-p extract-to) (make-directory extract-to))
+    (unless (file-directory-p extract-to) (make-directory extract-to t))
     (unless  (file-exists-p expected-binary-file)
       (unless (file-exists-p temporary-file)
         (message (concat "[" package-name "] Downloading " name " to " temporary-file))
