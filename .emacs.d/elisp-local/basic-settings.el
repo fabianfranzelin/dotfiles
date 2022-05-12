@@ -25,7 +25,6 @@
 ;; emacs
 (use-package exec-path-from-shell
   :unless (string-equal system-type "windows-nt")
-  :demand t
   :config
   (exec-path-from-shell-initialize)
   (exec-path-from-shell-copy-env "SSH_AUTH_SOCK"))
@@ -731,30 +730,6 @@ TEXT: title"
 ;; -------------------------------------------------------------------
 (use-package direnv
  :init (direnv-mode))
-
-;; -------------------------------------------------------------------
-;; Origami for folding stuff
-;; -------------------------------------------------------------------
-(use-package origami
-  :init
-  (global-origami-mode)
-  :config
-  (define-prefix-command 'origami-mode-map)
-  (define-key ctl-x-map (kbd "z") 'origami-mode-map)
-  :bind
-  (:map origami-mode-map
-   ("o" . origami-open-node)
-   ("O" . origami-open-node-recursively)
-   ("c" . origami-close-node)
-   ("C" . origami-close-node-recursively)
-   ("a" . origami-toggle-node)
-   ("A" . origami-recursively-toggle-node)
-   ("R" . origami-open-all-nodes)
-   ("M" . origami-close-all-nodes)
-   ("v" . origami-show-only-node)
-   ("k" . origami-previous-fold)
-   ("j" . origami-forward-fold)
-   ("x" . origami-reset)))
 
 (provide 'basic-settings)
 

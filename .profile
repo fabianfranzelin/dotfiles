@@ -36,7 +36,7 @@ if ( __is_linux ) then
 fi
 
 # expand path to include local bin directory
-export PATH=$HOME/opt/bin:$HOME/.local/bin:/usr/lib/ccache:$PATH
+export PATH="${HOME}/opt/bin:${HOME}/.local/bin:/usr/lib/ccache:${PATH}"
 
 #------------------------------------------------------------------------------#
 # ros setup
@@ -58,7 +58,7 @@ fi
 export JAVA_HOME="$(dirname $(dirname $(readlink $(readlink $(which java)))))"
 
 # certificates path
-export CERT_PATH="$HOME/.local/share/certificates"
+export CERT_PATH="${HOME}/.local/share/certificates"
 
 # Postgres debug port
 export POSTGRES_PORT=2345
@@ -76,31 +76,14 @@ fi
 
 #------------------------------------------------------------------------------#
 # SGpp
-export SGPP_HOME=$HOME/workspace/SGpp_ff
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SGPP_HOME/lib/sgpp
-export PYTHONPATH=$PYTHONPATH:$SGPP_HOME/lib
-
-#------------------------------------------------------------------------------#
-# AOS
-export AOS_BASE_HOME="${HOME}/workspace/aos_base"
-export AOS_BUILD_DIR="${AOS_BASE_HOME}/build"
-export AOS_INSTALL_DIR="${AOS_BASE_HOME}/install"
-
-#------------------------------------------------------------------------------#
-# Azure DevOps
-# Run cat BOSCH-CA-DE_pem.cer /opt/az/lib/python3.6/site-packages/certifi/cacert.pem > azure-bosch-cert.pem
-export REQUESTS_CA_BUNDLE="${HOME}/.local/share/certificates/bosch/azure-bosch-cert.pem"
-
-#------------------------------------------------------------------------------#
-# Ford
-if [[ -f "${HOME}/.forddat3/devcontainer" ]]; then
-    source "${HOME}/.forddat3/devcontainer"
-fi
+export SGPP_HOME="${HOME}/workspace/SGpp_ff"
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${SGPP_HOME}/lib/sgpp"
+export PYTHONPATH="${PYTHONPATH}:${SGPP_HOME}/lib"
 
 #------------------------------------------------------------------------------#
 # Virtual environments for python
-export WORKON_HOME="$HOME/.virtualenvs"
-export PIP_VIRTUALENV_BASE="$WORKON_HOME"
+export WORKON_HOME="${HOME}/.virtualenvs"
+export PIP_VIRTUALENV_BASE="${WORKON_HOME}"
 
 #------------------------------------------------------------------------------#
 # make aliases available in eshell
@@ -113,4 +96,15 @@ if (__is_zsh); then
     eval "$(direnv hook $(which zsh))" > /dev/null
 elif (__is_bash); then
     eval "$(direnv hook $(which bash))" > /dev/null
+fi
+
+
+#------------------------------------------------------------------------------#
+# Load specific settings per workstation
+export __SHELL_LIB="$HOME/.local/bin/shell"
+
+if [[ "$(hostname)" -eq "ThinkPad" ]]; then
+    source "${__SHELL_LIB}/workstations/ThinkPad.sh"
+elif [[ "$(hostname)" -eq "Bosch" ]]; then
+    source "${__SHELL_LIB}/workstations/bosch.sh"
 fi
