@@ -6,15 +6,16 @@
 ;;; Code:
 
 (use-package auto-package-update
+  :custom
+  ((auto-package-update-delete-old-versions t)
+   (auto-package-update-hide-results t)
+   ;; update the packages every week
+   (auto-package-update-interval 7))
   :init
   ;; for emacs 28, quelpa is required as a dependency
   (when (> emacs-major-version 27)
     (use-package quelpa))
   :config
-  (setq auto-package-update-delete-old-versions t
-        auto-package-update-hide-results t
-        ;; update the packages every week
-        auto-package-update-interval 7)
   (auto-package-update-maybe))
 
 ;; add the possibility to define system dependencies in use-package
@@ -63,10 +64,6 @@
 (menu-bar-mode -1) ; disable menu bar
 (tool-bar-mode -1) ; disbale tool bar
 
-;; disable backup
-(setq backup-inhibited t)
-(setq make-backup-files nil)
-
 ;; no splash screen
 (setq inhibit-splash-screen t)
 
@@ -111,19 +108,18 @@
 
 ;; Color theme
 (use-package doom-themes
-  :ensure t
+  :custom
+  ((doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
+   (doom-themes-enable-bold t)    ; if nil, bold is universally disabled
+   (doom-themes-enable-italic t)) ; if nil, italics is universally disabled
   :config
   ;; Global settings (defaults)
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
   (load-theme 'doom-vibrant t)
-
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
   ;; Enable custom neotree theme (all-the-icons must be installed!)
   (doom-themes-neotree-config)
   ;; or for treemacs users
-  (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
   (doom-themes-treemacs-config)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
@@ -141,7 +137,6 @@
 
 ;; -------------------------------------------------------------------
 ;; Define font size and methods to adjust it on the fly
-
 (set-face-attribute 'default nil :height 110) ;; default = 110
 
 ;; define functions that increase and decrease the font-size for the
@@ -179,7 +174,6 @@ INCREMENT: Value of which the current font-size is changed"
 (global-set-key (kbd "C-x <up>")    'windmove-up)
 (global-set-key (kbd "C-x <down>")  'windmove-down)
 
-
 ;; higlight the marked region (C-SPC) and use commands (like
 ;; latex-environment) on current region. Rectangle mark mode is
 ;; enabled via C-x SPC.
@@ -199,13 +193,12 @@ INCREMENT: Value of which the current font-size is changed"
 
 ;; Let kill operate on the whole line when no region is selected
 (use-package whole-line-or-region
-  :config (whole-line-or-region-global-mode))
+  :init (whole-line-or-region-global-mode))
 
 ;; volatile highlights - temporarily highlight changes from pasting
 ;; etc
 (use-package volatile-highlights
-  :init
-  (volatile-highlights-mode t))
+  :init (volatile-highlights-mode t))
 
 ;; winner mode for for redo/undo window configurations
 (winner-mode 1)
@@ -224,16 +217,16 @@ INCREMENT: Value of which the current font-size is changed"
 
 (use-package which-key
   :diminish which-key-mode
+  :custom ((which-key-idle-delay 1))
   :init (which-key-mode 1)
-  :config (setq which-key-idle-delay 0.5))
 
-;; -------------------------------------------------------------
-;; center the text for the corresponding modes; writing documentation
-;; is easier with this setting.
-(defun ff/visual-fill-center-text ()
-  (setq visual-fill-column-width 120
-        visual-fill-column-center-text t)
-  (visual-fill-column-mode 1))
+  ;; -------------------------------------------------------------
+  ;; center the text for the corresponding modes; writing documentation
+  ;; is easier with this setting.
+  (defun ff/visual-fill-center-text ()
+    (setq visual-fill-column-width 120
+          visual-fill-column-center-text t)
+    (visual-fill-column-mode 1)))
 
 (use-package visual-fill-column
   :hook ((org-mode . ff/visual-fill-center-text)
@@ -245,13 +238,12 @@ INCREMENT: Value of which the current font-size is changed"
 ;; -------------------------------------------------------------------
 (use-package perspective
   :custom
-  (persp-mode-prefix-key (kbd "C-x x"))
-  (persp-state-default-file (expand-file-name "persp-state.el" user-emacs-directory))
+  ((persp-mode-prefix-key (kbd "C-x x"))
+   (persp-state-default-file (expand-file-name "persp-state.el" user-emacs-directory))
+   (persp-initial-frame-name "Main"))
   :init
   (unless (equal persp-mode t)
     (persp-mode))
-  :config
-  (setq persp-initial-frame-name "Main")
   :bind (("C-M-<next>" . persp-next)
          ("C-M-<prior>" . persp-prev)))
 
@@ -259,15 +251,14 @@ INCREMENT: Value of which the current font-size is changed"
 ;; Gumshoe: jump back and forth through marked positions
 ;; -------------------------------------------------------------------
 (use-package gumshoe
+  :custom
+  ((gumshoe-slot-schema '(time buffer position line))
+   (gumshoe-idle-time 0.2)
+   (gumshoe-log-len 50)
+   (gumshoe-show-footprints-p nil))
   :init
   ;; Enabing global-gumshoe-mode will initiate tracking
   (global-gumshoe-mode)
-  ;; customize peruse slot display if you like
-  (setf gumshoe-slot-schema '(time buffer position line))
-  :custom
-  (gumshoe-idle-time 0.2)
-  (gumshoe-log-len 50)
-  (gumshoe-show-footprints-p nil)
   :bind (;; enable browser like key bindings to move forth and
          ;; back in bookmarks
          ("M-<left>" . gumshoe-backtrack-back)
@@ -278,29 +269,24 @@ INCREMENT: Value of which the current font-size is changed"
 ;; -------------------------------------------------------------------
 (use-package tramp
   :ensure nil
+  :custom
+  ((tramp-terminal-type "dumb")
+   (tramp-default-method "ssh")
+   (tramp-verbose 1)
+   (tramp-use-ssh-controlmaster-options nil)
+   (vc-handled-backends '(Git)))
   :config
+  (setq tramp-auto-save-directory (expand-file-name "var/tramp/backups" user-emacs-directory)
+        tramp-persistency-file-name (expand-file-name "var/tramp/persistency_data" user-emacs-directory)
+        ;; make sure vc stuff is not making tramp slower
+        vc-ignore-dir-regexp
+        (format "%s\\|%s"
+		        vc-ignore-dir-regexp
+		        tramp-file-name-regexp))
   (put 'temporary-file-directory 'standard-value '("/tmp"))
   ;; Use remote PATH on tramp (handy for eshell).
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
-
-
-  (setq tramp-auto-save-directory (expand-file-name "var/tramp/backups" user-emacs-directory)
-        tramp-persistency-file-name (expand-file-name "var/tramp/persistency_data" user-emacs-directory)
-        tramp-terminal-type "dumb"
-        tramp-default-method "ssh"
-        tramp-verbose 1)
-
-  (make-directory tramp-auto-save-directory t)
-
-  ;; make sure vc stuff is not making tramp slower
-  (setq vc-ignore-dir-regexp
-	    (format "%s\\|%s"
-		        vc-ignore-dir-regexp
-		        tramp-file-name-regexp))
-
-  (setq vc-handled-backends '(Git)))
-
-(customize-set-variable 'tramp-use-ssh-controlmaster-options nil)
+  (make-directory tramp-auto-save-directory t))
 
 ;; multihop example: /ssh:frf2lr@ws|docker:vscode@c8416d9f4da6:/
 (use-package docker-tramp)
@@ -309,12 +295,12 @@ INCREMENT: Value of which the current font-size is changed"
 ;; Tab bar
 ;; -------------------------------------------------------------------
 (use-package tab-bar
-  :config
+  :custom
   ;; Don't turn on tab-bar-mode when tabs are created
-  (setq tab-bar-show 1
-        tab-bar-new-tab-choice "*scratch*"
-        tab-bar-close-button-show nil
-        tab-bar-new-button-show nil)
+  ((tab-bar-show 1)
+   (tab-bar-new-tab-choice "*scratch*")
+   (tab-bar-close-button-show nil)
+   (tab-bar-new-button-show nil))
   :bind (("C-x t n" . tab-new)
          ("C-x t w" . tab-close)
          ("C-<prior>" . tab-previous)
@@ -347,9 +333,18 @@ INCREMENT: Value of which the current font-size is changed"
 ;; rename buffer content: C-x C-q, C-c C-c to apply and C-c ESC to cancel
 (use-package dired
   :ensure nil
-  :defer 1
   :after (org-download)
   :commands (dired dired-jump)
+  :custom
+  ((dired-auto-revert-buffer t) ; Auto update when buffer is revisited
+   (dired-dwim-target t)
+   (dired-recursive-deletes 'always)
+   (dired-recursive-copies 'always)
+   (delete-by-moving-to-trash t)
+   (dired-listing-switches "-agho --group-directories-first")
+   (dired-hide-details-hide-symlink-targets nil))
+  :config
+  (autoload 'dired-omit-mode "dired-x")
   :hook ((dired-mode . auto-revert-mode)
          (dired-mode . dired-hide-details-mode)
          (dired-mode . hl-line-mode)
@@ -358,21 +353,10 @@ INCREMENT: Value of which the current font-size is changed"
   :bind (("C-x C-j" . dired-jump)
          :map dired-mode-map
          ("<backspace>" . dired-up-directory)
-         ("TAB" . dired-find-file))
-  :custom
-  ((dired-auto-revert-buffer t) ; Auto update when buffer is revisited
-   (dired-dwim-target t)
-   (dired-recursive-deletes 'always)
-   (dired-recursive-copies 'always)
-   (delete-by-moving-to-trash t))
-  :config
-  (setq dired-listing-switches "-agho --group-directories-first"
-        dired-hide-details-hide-symlink-targets nil)
-
-  (autoload 'dired-omit-mode "dired-x"))
+         ("TAB" . dired-find-file)))
 
 (use-package dired-rainbow
-  :defer 2
+  :after (dired)
   :config
   (dired-rainbow-define-chmod directory "#6cb2eb" "d.*")
   (dired-rainbow-define html "#eb5286" ("css" "less" "sass" "scss" "htm" "html" "jhtm" "mht" "eml" "mustache" "xhtml"))
@@ -396,9 +380,11 @@ INCREMENT: Value of which the current font-size is changed"
   (dired-rainbow-define-chmod executable-unix "#38c172" "-.*x.*"))
 
 (use-package all-the-icons-dired
+  :after (dired)
   :hook ((dired-mode . all-the-icons-dired-mode)))
 
 (use-package dired-hide-dotfiles
+  :after (dired)
   :bind (:map dired-mode-map
               ("H" . dired-hide-dotfiles-mode)))
 
@@ -472,23 +458,23 @@ INCREMENT: Value of which the current font-size is changed"
   :hook ((minions-mode . doom-modeline-mode)))
 
 (use-package doom-modeline
+  :custom
+  ((doom-modeline-height 15)
+   (doom-modeline-bar-width 6)
+   (doom-modeline-modal-icon t)
+   (doom-modeline-lsp t)
+   (doom-modeline-github nil)
+   (doom-modeline-mu4e nil)
+   (doom-modeline-irc nil)
+   (doom-modeline-minor-modes nil)
+   (doom-modeline-persp-name nil)
+   (doom-modeline-buffer-file-name-style 'truncate-except-project)
+   (doom-modeline-buffer-modification-icon t)
+   (doom-modeline-major-mode-icon t)
+   (doom-modeline-buffer-encoding nil)
+   (doom-modeline-vcs-max-length 48))
   :init
-  (doom-modeline-mode +1)
-  :config
-  (setq doom-modeline-height 15
-        doom-modeline-bar-width 6
-        doom-modeline-modal-icon t
-        doom-modeline-lsp t
-        doom-modeline-github nil
-        doom-modeline-mu4e nil
-        doom-modeline-irc nil
-        doom-modeline-minor-modes nil
-        doom-modeline-persp-name nil
-        doom-modeline-buffer-file-name-style 'truncate-except-project
-        doom-modeline-buffer-modification-icon t
-        doom-modeline-major-mode-icon t
-        doom-modeline-buffer-encoding nil
-        doom-modeline-vcs-max-length 48))
+  (doom-modeline-mode +1))
 
 ;; -------------------------------------------------------------------
 ;; Auto-saving changed files
@@ -506,33 +492,30 @@ INCREMENT: Value of which the current font-size is changed"
 ;; Insert Pairs of Matching Elements
 ;; -------------------------------------------------------------------
 (use-package paren
+  :custom
+  ((show-paren-style 'mixed)	;; The entire expression
+   (blink-matching-paren t))
   :init
   (show-paren-mode 1)
   :config
   (set-face-background 'show-paren-match (face-background 'default))
   (set-face-foreground 'show-paren-match "#def")
   (set-face-attribute 'show-paren-match nil :weight 'extra-bold)
-  (set-face-attribute 'show-paren-match-expression nil :background "#363e4a")
-  (setq show-paren-style 'mixed)	;; The entire expression
-  (setq blink-matching-paren t))
+  (set-face-attribute 'show-paren-match-expression nil :background "#363e4a"))
 
 ;; -------------------------------------------------------------------
 ;; Save history during sessions
 ;; -------------------------------------------------------------------
 (use-package savehist
+  :custom
+  (savehist-additional-variables '(extended-command-history kill-ring))
   :init
-  (savehist-mode t)
-  :config
-  (setq savehist-additional-variables '(extended-command-history kill-ring)))
-
+  (savehist-mode t))
 ;; -------------------------------------------------------------------
 ;; Popper - handle pop up buffers nicely
 ;; -------------------------------------------------------------------
 (use-package popper
   :after (projectile)
-  :bind (("C-*" . popper-toggle-latest)
-         ("M-*" . popper-cycle)
-         ("C-M-*" . popper-toggle-type))
   :init
   (setq popper-reference-buffers
         '("\\*Messages\\*"
@@ -542,7 +525,10 @@ INCREMENT: Value of which the current font-size is changed"
           compilation-mode))
   ;; group poppers by projectile projects
   (setq popper-group-function #'popper-group-by-projectile)
-  (popper-mode t))
+  (popper-mode t)
+  :bind (("C-*" . popper-toggle-latest)
+         ("M-*" . popper-cycle)
+         ("C-M-*" . popper-toggle-type)))
 
 ;; -------------------------------------------------------------------
 ;; Ripgrep integration
@@ -571,8 +557,13 @@ INCREMENT: Value of which the current font-size is changed"
 
 (use-package projectile
   :ensure-system-package ((fdfind . "sudo apt install fd-find -y"))
-  :diminish projectile-mode
-  :custom (projectile-completion-system 'default)
+  :custom
+  ((projectile-completion-system 'default)
+   (projectile-file-exists-remote-cache-expire nil)
+   (projectile-require-project-root t)
+   (projectile-indexing-method 'alien)
+   (projectile-sort-order 'recentf)
+   (projectile-enable-caching t))
   :bind-keymap ("C-c p" . projectile-command-map)
   :init
   ;; NOTE: Set this to the folder where you keep your Git repos!
@@ -580,21 +571,7 @@ INCREMENT: Value of which the current font-size is changed"
     (setq projectile-project-search-path '("~/workspace")))
   (setq projectile-switch-project-action #'ff/switch-project-action)
   ;; enable projectile mode
-  (projectile-mode t)
-  :config
-  (setq projectile-file-exists-remote-cache-expire nil
-        projectile-globally-ignored-directories
-        (quote
-         (".idea" ".eunit" ".git" ".hg" ".svn"
-          ".fslckout" ".bzr" "_darcs" ".tox"
-          "build" "target" "_build" ".history"
-          "tmp" ".ccls-root" ".ccls-cache"
-          "compile_commands.json" ".clangd"
-          ".ccls"))
-        projectile-require-project-root t
-        projectile-indexing-method 'alien
-        projectile-sort-order 'recentf
-        projectile-enable-caching t))
+  (projectile-mode t))
 
 ;; -------------------------------------------------------------------
 ;; Lsp-mode
@@ -622,22 +599,24 @@ FILE: filename"
 
 (use-package treemacs
   :if (memq window-system '(x))
-  :commands (treemacs
-             treemacs-follow-mode
-             treemacs-filewatch-mode
-             treemacs-fringe-indicator-mode)
-  :bind (("C-x t t" . treemacs)
-         ("C-x t s" . ff/lsp-treemacs-symbols-toggle))
+  :commands
+  (treemacs
+   treemacs-follow-mode
+   treemacs-filewatch-mode
+   treemacs-fringe-indicator-mode)
+  :custom
+  ((treemacs-width 40)
+   (treemacs-indentation 1)
+   (treemacs-space-between-root-nodes nil))
   :init
-  (setq treemacs-width 40
-        treemacs-indentation 1
-        treemacs-space-between-root-nodes nil)
   (treemacs-follow-mode t)
   (treemacs-filewatch-mode t)
   (treemacs-fringe-indicator-mode nil)
   :config
   ;; (add-to-list 'treemacs-pre-file-insert-predicates #'treemacs-is-file-git-ignored?)
-  (push #'treemacs-custom-filter treemacs-ignored-file-predicates))
+  (push #'treemacs-custom-filter treemacs-ignored-file-predicates)
+  :bind (("C-x t t" . treemacs)
+         ("C-x t s" . ff/lsp-treemacs-symbols-toggle)))
 
 ;; -------------------------------------------------------------------
 ;; Eshell & Vterm
@@ -681,14 +660,15 @@ TEXT: title"
   (downcase (replace-regexp-in-string " \\|:\\|-" "_" text)))
 
 (use-package yasnippet
+  :custom
+  ((yas-wrap-around-region t))
   :init
   ;; add pesonal snippets directory
   (add-to-list 'yas-snippet-dirs (expand-file-name "snippets/" emacs-config-home))
   ;; enable yas everywhere
   (yas-global-mode 1)
   :config
-  (setq yas-verbosity 1
-	    yas-wrap-around-region t)
+  (setq yas-verbosity 1)
   :bind (("C-c C-y" . yas-insert-snippet)))
 
 (use-package yasnippet-snippets
@@ -729,7 +709,7 @@ TEXT: title"
 ;; Direnv integration
 ;; -------------------------------------------------------------------
 (use-package direnv
- :init (direnv-mode))
+  :init (direnv-mode))
 
 (provide 'basic-settings)
 

@@ -13,15 +13,15 @@
 ;; put the package downloads into the user emacs directory
 (setq package-user-dir (expand-file-name "elpa" user-emacs-directory))
 
+;; -------------------------------------------------------------------
+;; configure native compilation
+
 ;; store the eln-cache into the standard paths of the no-littering
 ;; package
 (when (fboundp 'startup-redirect-eln-cache)
   (startup-redirect-eln-cache
    (convert-standard-filename
   (expand-file-name  "var/eln-cache/" user-emacs-directory))))
-
-;; -------------------------------------------------------------------
-;; configure native compilation
 
 (when (featurep 'native-compile)
   ;; Set the right directory to store the native compilation cache

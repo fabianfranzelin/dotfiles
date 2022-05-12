@@ -6,7 +6,6 @@
 ;;; Code:
 
 (use-package auctex
-  :defer t
   :hook ((LaTeX-mode . TeX-fold-mode)
          (LaTeX-mode . outline-minor-mode)))
 
