@@ -52,14 +52,6 @@ REPLACE-STR: string that replaces all regex matches"
   :config
   (setq clang-format-executable "/usr/bin/clang-format"))
 
-
-;; (use-package flycheck-clang-tidy
-;;   :ensure-system-package ((clang-tidy . "sudo apt install clang-tidy -y"))
-;;   :after (flycheck)
-;;   :init
-;;   (setq flycheck-clang-tidy-executable "/usr/bin/clang-tidy")
-;;   :hook ((flycheck-mode . flycheck-clang-tidy-setup)))
-
 ;; ----------------------------------------------------------------------------------
 ;; Autloads for CCLS and cc-mode
 
@@ -166,8 +158,7 @@ REPLACE-STR: string that replaces all regex matches"
 ;; ccls: Emacs client for ccls, a C/C++ language server
 ;; https://github.com/MaskRay/emacs-ccls
 (use-package ccls
-  ;; Currently installed manually
-  ;; :ensure-system-package (ccls . "sudo snap install ccls --classic")
+  :ensure-system-package (ccls . "sudo apt install ccls -y")
   :init
   (setq ccls-executable (executable-find "ccls"))
 
@@ -207,7 +198,7 @@ REPLACE-STR: string that replaces all regex matches"
       (setq-local lsp-enable-file-watchers nil))))
 
 (defun setup-cc-mode ()
-  "Init function for cc-mode"
+  "Init function for cc-mode."
   (interactive)
   (+ccls|enable)
   (+cc-fontify-constants-h))

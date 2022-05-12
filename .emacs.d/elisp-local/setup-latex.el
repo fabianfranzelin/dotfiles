@@ -91,9 +91,9 @@
 ;; Forward and inverse search with okular
 ;; -------------------------------------------------------------------
 (use-package okular-search
+  :if window-system
   :load-path local-load-path
-  ;; This dependency need to be installed manually
-  ;; :ensure-system-package (okular . "sudo apt install okular -y")
+  :ensure-system-package (okular . "sudo apt install okular -y")
   :bind (:map LaTeX-mode-map
               ("C-c C-a" . okular-jump-to-line)
               :map tex-mode-map
