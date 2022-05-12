@@ -22,11 +22,7 @@
   (highlight-lines-matching-regexp "pdb.set_trace()"))
 
 (use-package python-mode
-  :ensure-system-package ((pip3 . "sudo apt install python3-pip -y")
-                          (pylsp . "python3 -m pip install -U 'python-lsp-server[all]'")
-                          ;; both packages are required for debugging with dap
-                          ((:eval ff/python-local-site-packages-path "epc") . "python3 -m pip install -U 'epc'")
-                          ((:eval ff/python-local-site-packages-path "ptvsd") . "python3 -m pip install -U 'ptvsd>=4.2'"))
+  :ensure-system-package ((pylsp . "python3 -m pip install -U 'python-lsp-server[all]'"))
   :mode (("\\.py$" . python-mode)
          ("SConstruct" . python-mode)
          ("SConscript" . python-mode))
@@ -43,6 +39,12 @@
         python-indent-guess-indent-offset nil
         ;; default python interpreter for dap
         dap-python-executable "python3")
+
+  ;; both packages are required for debugging with dap
+  ;; I do not know how to include this in "ensure-system-package"
+  ;; for varying python versions
+  (ff/ensure-python-package "epc")
+  (ff/ensure-python-package "ptvsd" "4.2.0")
   :config
   ;; delete output buffer on buffer execution
   (setq py-shell-switch-buffers-on-execute nil))
