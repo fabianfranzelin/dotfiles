@@ -83,6 +83,20 @@ PACKAGE-NAME: name of the package to be checked."
           (ff/python-interpreter-version)
           "/site-packages/" package-name))
 
+(defun ff/ensure-python-package (package-name &optional version)
+  "Provide the path to the local site packages.
+
+PACKAGE-NAME: name of the package to be installed.
+VERSION: version of the package to be installed"
+  (let* ((python-pip-install-cmd "python3 -m pip install --upgrade")
+         (package-path (ff/python-local-site-packages-path package-name))
+         (package-path-with-version (concat package-path "-" version ".dist-info")))
+    (if version
+        (unless (file-directory-p package-path-with-version)
+          (async-shell-command (concat python-pip-install-cmd " '" package-name "==" version "'")))
+      (unless (file-directory-p package-path)
+        (async-shell-command (concat python-pip-install-cmd " '" package-name "'"))))))
+
 (defun ff/switch-to-last-window ()
   "Switch to last visible window."
   (interactive)

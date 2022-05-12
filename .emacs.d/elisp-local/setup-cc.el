@@ -251,7 +251,7 @@ REPLACE-STR: string that replaces all regex matches"
 ;; cmake-mode: major mode for cmake files
 ;; https://gitlab.kitware.com/cmake/cmake/blob/master/Auxiliary/cmake-mode.el
 (use-package cmake-mode
-  :ensure-system-package ((:eval (ff/python-local-site-packages-path "cmake_language_server") . "python3 -m pip install -U 'cmake_language_server'"))
+  :ensure-system-package ((cmake-language-server . "python3 -m pip install -U 'cmake_language_server'"))
   :mode (("\\.cmake$" . cmake-mode)
          ("CMakeLists.txt" . cmake-mode)))
 
