@@ -91,7 +91,7 @@
 ;; Forward and inverse search with okular
 ;; -------------------------------------------------------------------
 (use-package okular-search
-  :if window-system
+  :if (memq window-system '(x))
   :load-path local-load-path
   :ensure-system-package (okular . "sudo apt install okular -y")
   :bind (:map LaTeX-mode-map
