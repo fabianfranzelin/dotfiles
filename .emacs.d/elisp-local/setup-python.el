@@ -45,6 +45,9 @@
   ;; for varying python versions
   (ff/ensure-python-package "epc")
   (ff/ensure-python-package "ptvsd" "4.2.0")
+  (ff/ensure-python-package "pylint")
+  (ff/ensure-python-package "mypy")
+  (ff/ensure-python-package "flake8")
   :config
   ;; delete output buffer on buffer execution
   (setq py-shell-switch-buffers-on-execute nil))
@@ -79,7 +82,7 @@
 (use-package sphinx-doc
   :hook ((python-mode . sphinx-doc-mode))
   :bind (:map python-mode-map
-         ("C-c C-d" . sphinx-doc)))
+              ("C-c C-d" . sphinx-doc)))
 
 (provide 'setup-python)
 

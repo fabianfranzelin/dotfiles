@@ -97,11 +97,9 @@
             '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
 
 ;; set unicode encoding
-(defvar prefer-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'latin-1)
-(setq buffer-file-coding-system 'utf-8)
 
 ;; Iterate through CamelCase
 (global-subword-mode t)
@@ -203,30 +201,24 @@ INCREMENT: Value of which the current font-size is changed"
 ;; winner mode for for redo/undo window configurations
 (winner-mode 1)
 
-;; setup all the icons with fix for fonts from
-;; https://github.com/domtronn/all-the-icons.el/issues/107
-(require 'font-lock)
-(use-package font-lock+
-  :load-path local-load-path)
-
 ;; NOTE: The first time you load your configuration on a new machine,
 ;; you’ll need to run `M-x all-the-icons-install-fonts` so that mode
 ;; line icons display correctly.
 (use-package all-the-icons
-  :after (font-lock+))
+  :if (display-graphic-p))
 
 (use-package which-key
   :diminish which-key-mode
   :custom ((which-key-idle-delay 1))
-  :init (which-key-mode 1)
+  :init (which-key-mode 1))
 
-  ;; -------------------------------------------------------------
-  ;; center the text for the corresponding modes; writing documentation
-  ;; is easier with this setting.
-  (defun ff/visual-fill-center-text ()
-    (setq visual-fill-column-width 120
-          visual-fill-column-center-text t)
-    (visual-fill-column-mode 1)))
+;; -------------------------------------------------------------
+;; center the text for the corresponding modes; writing documentation
+;; is easier with this setting.
+(defun ff/visual-fill-center-text ()
+  (setq visual-fill-column-width 120
+        visual-fill-column-center-text t)
+  (visual-fill-column-mode 1))
 
 (use-package visual-fill-column
   :hook ((org-mode . ff/visual-fill-center-text)
@@ -331,6 +323,7 @@ INCREMENT: Value of which the current font-size is changed"
 ;; Set up dired
 ;; -------------------------------------------------------------------
 ;; rename buffer content: C-x C-q, C-c C-c to apply and C-c ESC to cancel
+;; copy path of file: 0 w in dired buffer
 (use-package dired
   :ensure nil
   :after (org-download)
@@ -435,28 +428,8 @@ INCREMENT: Value of which the current font-size is changed"
                "firefox" '(file)))))
 
 ;; -------------------------------------------------------------------
-;; Copy filename of buffer into clipboard
-;; -------------------------------------------------------------------
-(defun my-put-file-name-on-clipboard ()
-  "Put the current file name on the clipboard."
-  (interactive)
-  (let ((filename (if (equal major-mode 'dired-mode)
-                      default-directory
-                    (buffer-file-name))))
-    (when filename
-      (with-temp-buffer
-        (insert filename)
-        (clipboard-kill-region (point-min) (point-max)))
-      (message filename))))
-
-(global-set-key [f12] 'my-put-file-name-on-clipboard)
-
-;; -------------------------------------------------------------------
 ;; Use doom modeline
 ;; -------------------------------------------------------------------
-(use-package minions
-  :hook ((minions-mode . doom-modeline-mode)))
-
 (use-package doom-modeline
   :custom
   ((doom-modeline-height 15)
@@ -482,11 +455,10 @@ INCREMENT: Value of which the current font-size is changed"
 (setq auto-save-default t)
 
 (use-package super-save
+  :custom
+  ((super-save-auto-save-when-idle t))
   :init
-  (super-save-mode t)
-  :config
-  ;; enable auto save
-  (setq super-save-auto-save-when-idle t))
+  (super-save-mode t))
 
 ;; -------------------------------------------------------------------
 ;; Insert Pairs of Matching Elements
@@ -516,13 +488,13 @@ INCREMENT: Value of which the current font-size is changed"
 ;; -------------------------------------------------------------------
 (use-package popper
   :after (projectile)
+  :custom
+  (popper-reference-buffers '("\\*Messages\\*"
+                              "Output\\*$"
+                              "\\*Async Shell Command\\*"
+                              help-mode
+                              compilation-mode))
   :init
-  (setq popper-reference-buffers
-        '("\\*Messages\\*"
-          "Output\\*$"
-          "\\*Async Shell Command\\*"
-          help-mode
-          compilation-mode))
   ;; group poppers by projectile projects
   (setq popper-group-function #'popper-group-by-projectile)
   (popper-mode t)

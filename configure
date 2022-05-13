@@ -95,7 +95,6 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          markdown \
          pandoc \
          graphviz \
-         npm \
          fonts-cantarell \
          cmake \
          libtool-bin \
