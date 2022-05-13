@@ -37,17 +37,14 @@
 ;; CRAN R
 ;; -------------------------------------------------------------------
 (use-package ess
-  :init
-  (setq ess-use-eldoc nil)
-  ;; ESS will not print the evaluated commands, also speeds up the
-  ;; evaluation
-  (setq ess-eval-visibly nil)
-  ;; if you don't want to be prompted each time you start an
-  ;; interactive R session
-  (setq ess-ask-for-ess-directory nil)
-  :config
-  (setq ess-nuke-trailing-whitespace-p t
-        tab-always-indent t))
+  :custom
+  ((ess-use-eldoc nil)
+   ;; ESS will not print the evaluated commands, also speeds up the
+   ;; evaluation
+   (ess-eval-visibly nil)
+   ;; if you don't want to be prompted each time you start an
+   ;; interactive R session
+   (ess-ask-for-ess-directory nil)))
 
 ;; -------------------------------------------------------------------
 ;; Latex
@@ -107,7 +104,13 @@
 
 (use-package docker
   :after (setup-vterm)
-  :bind ("C-x d" . docker)
+  :custom
+  (docker-run-default-args '("-i"
+                             "-t"
+                             "-e DEBIAN_FRONTEND=noninteractive"
+                             "-v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY"
+                             "--shm-size=16g"
+                             "--entrypoint /bin/bash"))
   :config
   (defun ff/docker-container-vterm-selection (prefix)
     "Run `docker-container-vterm' on the containers selection."
@@ -120,7 +123,9 @@
     "Open `vterm' in CONTAINER."
     (interactive "P")
     (ff/make-windows-visible-with-prefix (ff/vterm-buffer-name-prefix))
-    (let* ((command (concat "docker exec -it -e \"DEBIAN_FRONTEND=noninteractive\" -e \"DISPLAY=$DISPLAY\" "
+    (let* ((command (concat "docker exec -it -e "
+                            "\"DEBIAN_FRONTEND=noninteractive\" "
+                            "-e \"DISPLAY=$DISPLAY\" "
                             container " "
                             "\"/bin/bash\"")))
       (with-current-buffer (vterm (ff/vterm-buffer-name))
@@ -129,14 +134,11 @@
         (vterm-send-return))))
 
   ;; add new entry to transient of docker package
-  (transient-append-suffix 'docker-container-shells "b" '("v" "vterm" ff/docker-container-vterm-selection))
-
-  :custom (docker-run-default-args '("-i"
-                                     "-t"
-                                     "-e DEBIAN_FRONTEND=noninteractive"
-                                     "-v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY"
-                                     "--shm-size=16g"
-                                     "--entrypoint /bin/bash")))
+  (transient-append-suffix
+    'docker-container-shells
+    "b"
+    '("v" "vterm" ff/docker-container-vterm-selection))
+  :bind ("C-x d" . docker))
 
 ;; -------------------------------------------------------------------
 ;; markdown mode
@@ -157,12 +159,11 @@
   :ensure-system-package ((markdown . "sudo apt install markdown -y")
                           (pandoc . "sudo apt install pandoc -y")
                           (mdformat . "python3 -m pip install mdformat"))
-  :config
+  :custom
   ;; The default command for markdown (~markdown~), doesn't support tables
   ;; (e.g. GitHub flavored markdown). Pandoc does, so let's use that.
-  (setq markdown-command "pandoc --from markdown --to html"
-        markdown-command-needs-filename t)
-
+  ((markdown-command "pandoc --from markdown --to html")
+   (markdown-command-needs-filename t))
   :hook ((markdown-mode . visual-line-mode)
          (markdown-mode . flyspell-mode)
          (markdown-mode . ff/configure-markdown-mode))
@@ -183,7 +184,6 @@
 ;; C-c C-e r R (org-rst-export-as-rst)
 ;;    Export as a temporary buffer. Do not create a file.
 (use-package ox-rst)
-
 
 (defun ff/configure-rst-mode ()
   "Configure text mode."
@@ -207,8 +207,6 @@
          (typescript-mode . tide-hl-identifier-mode)
          (before-save . tide-format-before-save)))
 
-(use-package nvm)
-
 (use-package typescript-mode
   :after (dap-node)
   :config
@@ -220,11 +218,6 @@
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
 (add-to-list 'auto-mode-alist '("\\.js\\'" . typescript-mode))
-
-(use-package json-snatcher
-  :hook ((js-mode-hook . js-mode-bindings)
-         (js2-mode-hook . js-mode-bindings))
-  :bind (("C-C C-g" . jsons-print-path)))
 
 ;; -------------------------------------------------------------------
 ;; Plantuml mode
@@ -300,8 +293,6 @@ SOURCE_FILENAME: filename to the puml file."
 (use-package groovy-mode
   :mode (("\\.groovy$" . groovy-mode)))
 
-(use-package groovy-imports)
-
 ;; -------------------------------------------------------------------
 ;; Java mode
 ;; -------------------------------------------------------------------
@@ -317,7 +308,7 @@ SOURCE_FILENAME: filename to the puml file."
 ;; -------------------------------------------------------------------
 (use-package json-mode
   :ensure-system-package ((npm . "sudo apt install npm -y")
-                          (jsonlint . "sudo env \"PATH=$PATH\" npm install jsonlint -g"))
+                          (jsonlint . "npm install jsonlint -g"))
   :mode (("\\.json$" . json-mode)))
 
 ;; -------------------------------------------------------------------
