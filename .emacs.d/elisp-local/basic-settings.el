@@ -519,6 +519,41 @@ INCREMENT: Value of which the current font-size is changed"
   :load-path local-load-path)
 
 ;; -------------------------------------------------------------------
+;; Project (built in project handling mode; similar to projectile)
+;; -------------------------------------------------------------------
+(defun ff/project-name (dir)
+  "Define the name of a project as the name of the root directory.
+
+DIR: root directory of project"
+  (file-name-nondirectory (directory-file-name (file-name-directory dir))))
+
+(defun ff/project-switch-project ()
+  "Switch to a workspace with the project name and start `magit-status'."
+  (interactive (list ))
+  (let* ((dir (project-prompt-project-dir))
+         (project-name (ff/project-name dir)))
+    (if (not (member project-name (persp-all-names)))
+        (persp-switch project-name))
+    (project-switch-project dir)))
+
+(defun ff/project-magit ()
+  "Show the Git status of the current project."
+  (interactive)
+  (magit-status (project-root (project-current t))))
+
+(use-package project
+  :custom
+  ((project-switch-commands '((project-find-file "Find file")
+                              (project-find-dir "Find directory")
+                              (ff/project-magit "Magit")
+                              (project-dired "Dired"))))
+  :bind (("C-x x p" . ff/project-switch-project)
+         :map project-prefix-map
+         (("m" . ff/project-magit)
+          ("P" . ff/project-test)
+          ("L" . ff/project-install))))
+
+;; -------------------------------------------------------------------
 ;; Projectile mode
 ;; -------------------------------------------------------------------
 (defun ff/switch-project-action ()
@@ -543,7 +578,12 @@ INCREMENT: Value of which the current font-size is changed"
     (setq projectile-project-search-path '("~/workspace")))
   (setq projectile-switch-project-action #'ff/switch-project-action)
   ;; enable projectile mode
-  (projectile-mode t))
+  (projectile-mode t)
+  :bind (:map projectile-command-map
+              ;; projectiles find file function does not work nicely
+              ;; with Embark; hence, replaced by built-ins project
+              ;; functionality
+              ("f" . project-find-file)))
 
 ;; -------------------------------------------------------------------
 ;; Lsp-mode
