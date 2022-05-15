@@ -56,6 +56,17 @@ COMMAND:"
     (vterm-send-string command)
     (vterm-send-return)))
 
+(defun ff/start-vterm-in-dir (dir)
+  "Start a new vterm in given directory.
+
+DIR: Path to the root directory of the current project."
+  (interactive)
+  (ff/make-windows-visible-with-prefix (ff/vterm-buffer-name-prefix))
+  (with-current-buffer (vterm (ff/vterm-buffer-name))
+    (set-process-sentinel vterm--process #'ff/run-in-vterm-kill)
+    (vterm-send-string (concat "cd " dir))
+    (vterm-send-return)))
+
 (defun ff/start-vterm ()
   "Start Vterm terminal emulator."
   (interactive)

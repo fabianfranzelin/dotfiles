@@ -529,29 +529,36 @@ DIR: root directory of project"
 
 (defun ff/project-switch-project ()
   "Switch to a workspace with the project name and start `magit-status'."
-  (interactive (list ))
-  (let* ((dir (project-prompt-project-dir))
-         (project-name (ff/project-name dir)))
+  (interactive)
+  (let* ((project-dir (project-prompt-project-dir))
+         (project-name (ff/project-name project-dir)))
     (if (not (member project-name (persp-all-names)))
         (persp-switch project-name))
-    (project-switch-project dir)))
+    (project-switch-project project-dir)))
 
 (defun ff/project-magit ()
   "Show the Git status of the current project."
   (interactive)
   (magit-status (project-root (project-current t))))
 
+(defun ff/project-vterm ()
+  "Start a new vterm in project root.
+
+PROJECT-ROOT: Path to the root directory of the current project."
+  (interactive)
+  (ff/start-vterm-in-dir (project-root (project-current t))))
+
 (use-package project
   :custom
   ((project-switch-commands '((project-find-file "Find file")
                               (project-find-dir "Find directory")
                               (ff/project-magit "Magit")
-                              (project-dired "Dired"))))
-  :bind (("C-x x p" . ff/project-switch-project)
-         :map project-prefix-map
-         (("m" . ff/project-magit)
-          ("P" . ff/project-test)
-          ("L" . ff/project-install))))
+                              (project-dired "Dired")
+                              (ff/project-vterm "Vterm"))))
+  :bind (:map project-prefix-map
+         ("p" . ff/project-switch-project)
+         ("m" . ff/project-magit)
+         ("v" . ff/project-vterm)))
 
 ;; -------------------------------------------------------------------
 ;; Projectile mode
@@ -583,7 +590,8 @@ DIR: root directory of project"
               ;; projectiles find file function does not work nicely
               ;; with Embark; hence, replaced by built-ins project
               ;; functionality
-              ("f" . project-find-file)))
+              ("f" . project-find-file)
+              ("v" . (lambda () (interactive) (ff/start-vterm-in-dir (projectile-project-root))))))
 
 ;; -------------------------------------------------------------------
 ;; Lsp-mode
