@@ -68,6 +68,8 @@
          (sh-mode . lsp-deferred)
          (cmake-mode . lsp-deferred)
          (dockerfile-mode . lsp-deferred)
+         (html-mode . lsp-deferred)
+         (css-mode . lsp-deferred)
          (before-save-hook . lsp-format-buffer)))
 
 (use-package lsp-ui
