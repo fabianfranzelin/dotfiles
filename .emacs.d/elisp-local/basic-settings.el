@@ -11,10 +11,6 @@
    (auto-package-update-hide-results t)
    ;; update the packages every week
    (auto-package-update-interval 7))
-  :init
-  ;; for emacs 28, quelpa is required as a dependency
-  (when (> emacs-major-version 27)
-    (use-package quelpa))
   :config
   (auto-package-update-maybe))
 
