@@ -189,6 +189,9 @@ INCREMENT: Value of which the current font-size is changed"
 ;; enable auto pair mode globally
 (electric-pair-mode t)
 
+;; save cursor position in files even when buffers are killed
+(save-place-mode)
+
 ;; Let kill operate on the whole line when no region is selected
 (use-package whole-line-or-region
   :init (whole-line-or-region-global-mode))
@@ -587,10 +590,6 @@ PROJECT-ROOT: Path to the root directory of the current project."
   ;; enable projectile mode
   (projectile-mode t)
   :bind (:map projectile-command-map
-              ;; projectiles find file function does not work nicely
-              ;; with Embark; hence, replaced by built-ins project
-              ;; functionality
-              ("f" . project-find-file)
               ("v" . (lambda () (interactive) (ff/start-vterm-in-dir (projectile-project-root))))))
 
 ;; -------------------------------------------------------------------
