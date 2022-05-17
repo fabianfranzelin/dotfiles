@@ -98,7 +98,6 @@ elif (__is_bash); then
     eval "$(direnv hook $(which bash))" > /dev/null
 fi
 
-
 #------------------------------------------------------------------------------#
 # Load specific settings per workstation
 export __SHELL_LIB="$HOME/.local/bin/shell"
@@ -107,4 +106,6 @@ if [[ "$(hostname)" -eq "ThinkPad" ]]; then
     source "${__SHELL_LIB}/workstations/ThinkPad.sh"
 elif [[ "$(hostname)" -eq "ST39-C-00066" ]]; then
     source "${__SHELL_LIB}/workstations/st39-c-00066.sh"
+elif [[ "$(hostname)" -eq "LR-Z7407" ]]; then
+    source "${__SHELL_LIB}/workstations/LR-Z7407.sh"
 fi
