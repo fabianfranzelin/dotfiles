@@ -119,6 +119,10 @@ alias dosp='docker system prune -f'
 alias dormi='docker rmi $(docker images --filter "dangling=true" -q --no-trunc)'
 alias doir='docker image rm'
 
+# Emacs
+alias e="emacsclient -c -a emacs"
+alias ed="emacs --daemon"
+alias en="emacsclient -nw"
 alias ff='find_file'
 
 #------------------------------------------------------------------------------#
