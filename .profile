@@ -102,10 +102,10 @@ fi
 # Load specific settings per workstation
 export __SHELL_LIB="$HOME/.local/bin/shell"
 
-if [[ "$(hostname)" -eq "ThinkPad" ]]; then
+if [[ "$(hostname)" = "ThinkPad" ]]; then
     source "${__SHELL_LIB}/workstations/ThinkPad.sh"
-elif [[ "$(hostname)" -eq "ST39-C-00066" ]]; then
+elif [[ "$(hostname)" = "ST39-C-00066" ]]; then
     source "${__SHELL_LIB}/workstations/st39-c-00066.sh"
-elif [[ "$(hostname)" -eq "LR-Z7407" ]]; then
+elif [[ "$(hostname)" = "LR-Z7407" ]]; then
     source "${__SHELL_LIB}/workstations/LR-Z7407.sh"
 fi
