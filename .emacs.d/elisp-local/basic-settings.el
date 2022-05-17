@@ -108,7 +108,11 @@
    (doom-themes-enable-italic t)) ; if nil, italics is universally disabled
   :config
   ;; Global settings (defaults)
-  (load-theme 'doom-vibrant t)
+  (if (memq window-system '(x))
+      ;; make this the default theme if X is available
+      (load-theme 'doom-vibrant t)
+    ;; when emacs is running in terminal mode, this theme works better
+    (load-theme 'doom-material t))
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
   ;; Enable custom neotree theme (all-the-icons must be installed!)
