@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# shellcheck disable=SC1090
+
 #------------------------------------------------------------------------------#
 # sourcing own functions
 # check in both cases whether directory exists and is not empty
