@@ -173,11 +173,10 @@ INCREMENT: Value of which the current font-size is changed"
 (global-set-key (kbd "C-x <down>")  'windmove-down)
 
 ;; higlight the marked region (C-SPC) and use commands (like
-;; latex-environment) on current region. Rectangle mark mode is
-;; enabled via C-x SPC.
+;; latex-environment) on current region.
 (transient-mark-mode t) ;; C-SPC - for selection
-(rectangle-mark-mode t) ;; C-x SPC - for selection; C-x SPC C-t for
-;; inserting stuff
+;; for highlighting rectangles, use the (rectangle-mark-mode).
+;; C-x SPC - for selection; C-x SPC C-t for inserting stuff
 
 ;; Indentation
 (setq-default indent-tabs-mode nil)    ; use only spaces and no tabs
