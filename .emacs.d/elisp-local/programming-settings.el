@@ -63,6 +63,10 @@
 ;; -------------------------------------------------------------------
 ;; part of the lsp-mode configuration
 
+(use-package sh-mode
+  :ensure nil
+  :ensure-system-package ((shellcheck . "sudo apt install -y shellcheck")))
+
 ;; -------------------------------------------------------------------
 ;; Swig-Mode
 ;; -------------------------------------------------------------------
