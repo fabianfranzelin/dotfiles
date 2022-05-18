@@ -617,7 +617,6 @@ FILE: filename"
            (other-window -1))))
 
 (use-package treemacs
-  :if (memq window-system '(x))
   :commands
   (treemacs
    treemacs-follow-mode
