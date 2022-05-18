@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+# shellcheck disable=SC1090
+
 #------------------------------------------------------------------------------#
 # If not running interactively, don't do anything
 
@@ -16,7 +18,7 @@ export XDG_CACHE_HOME="$HOME/.cache"
 # ----------------------------------------------------
 # Dotfiles setup
 export __SHELL_LIB="$HOME/.local/bin/shell"
-source "${__SHELL_LIB}/shellrc.sh"
+. "${__SHELL_LIB}/shellrc.sh"
 
 # ----------------------------------------------------
 # personal
@@ -46,19 +48,20 @@ export DOCKER_BUILDKIT=0
 
 if (__is_zsh); then
     # melodic is only for Ubuntu 20.04
-    if [[ -f "/opt/ros/noetic/setup.zsh" ]]; then
-        source "/opt/ros/noetic/setup.zsh" > /dev/null
+    if [ -f "/opt/ros/noetic/setup.zsh" ]; then
+        . "/opt/ros/noetic/setup.zsh" > /dev/null
     fi
 elif (__is_bash); then
     # melodic is only for Ubuntu 20.04
-    if [[ -f "/opt/ros/noetic/setup.bash" ]]; then
-        source "/opt/ros/noetic/setup.bash" > /dev/null
+    if [ -f "/opt/ros/noetic/setup.bash" ]; then
+        . "/opt/ros/noetic/setup.bash" > /dev/null
     fi
 fi
 
 #------------------------------------------------------------------------------#
 # Export the path to Java so that tools pick it up correctly
-export JAVA_HOME="$(dirname $(dirname $(readlink $(readlink $(which java)))))"
+JAVA_HOME="$(dirname "$(dirname "$(readlink "$(readlink "$(command -v java)")")")")"
+export JAVA_HOME
 
 # certificates path
 export CERT_PATH="${HOME}/.local/share/certificates"
@@ -68,12 +71,14 @@ export POSTGRES_PORT=2345
 
 #------------------------------------------------------------------------------#
 # Kubernetes setup
-if command -v kubectl &> /dev/null
+if command -v kubectl > /dev/null
 then
     if (__is_zsh); then
-        source <(kubectl completion zsh)
+        # shellcheck disable=SC2039
+        . <(kubectl completion zsh)
     elif (__is_bash); then
-        source <(kubectl completion bash)
+        # shellcheck disable=SC2039
+        . <(kubectl completion bash)
     fi
 fi
 
@@ -96,19 +101,17 @@ export PIP_VIRTUALENV_BASE="${WORKON_HOME}"
 #------------------------------------------------------------------------------#
 # enable direnv for bash or zsh
 if (__is_zsh); then
-    eval "$(direnv hook $(which zsh))" > /dev/null
+    eval "$(direnv hook "$(command -v zsh)")" > /dev/null
 elif (__is_bash); then
-    eval "$(direnv hook $(which bash))" > /dev/null
+    eval "$(direnv hook "$(command -v bash)")" > /dev/null
 fi
 
 #------------------------------------------------------------------------------#
 # Load specific settings per workstation
-export __SHELL_LIB="$HOME/.local/bin/shell"
-
-if [[ "$(hostname)" = "ThinkPad" ]]; then
-    source "${__SHELL_LIB}/workstations/ThinkPad.sh"
-elif [[ "$(hostname)" = "ST39-C-00066" ]]; then
-    source "${__SHELL_LIB}/workstations/st39-c-00066.sh"
-elif [[ "$(hostname)" = "LR-Z7407" ]]; then
-    source "${__SHELL_LIB}/workstations/LR-Z7407.sh"
+if [ "$(hostname)" = "ThinkPad" ]; then
+    . "${__SHELL_LIB}/workstations/ThinkPad.sh"
+elif [ "$(hostname)" = "ST39-C-00066" ]; then
+    . "${__SHELL_LIB}/workstations/st39-c-00066.sh"
+elif [ "$(hostname)" = "LR-Z7407" ]; then
+    . "${__SHELL_LIB}/workstations/LR-Z7407.sh"
 fi

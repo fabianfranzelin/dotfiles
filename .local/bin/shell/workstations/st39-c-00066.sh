@@ -1,7 +1,8 @@
 #!/usr/bin/env sh
 
-# Load specific settings for Bosch
+# shellcheck disable=SC1090
 
+# Load specific settings for Bosch
 
 #------------------------------------------------------------------------------#
 # AOS
@@ -17,5 +18,5 @@ export REQUESTS_CA_BUNDLE="${HOME}/.local/share/certificates/bosch/azure-bosch-c
 #------------------------------------------------------------------------------#
 # Ford
 if [ -f "${HOME}/.forddat3/devcontainer" ]; then
-    source "${HOME}/.forddat3/devcontainer"
+    . "${HOME}/.forddat3/devcontainer"
 fi

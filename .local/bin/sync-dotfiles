@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+
+# shellcheck disable=SC1090
+
 # Sync dotfiles repo and ensure that dotfiles are tangled correctly
 # afterward
 
@@ -29,17 +32,17 @@ __SHELL_LIB="${DOTFILES}/.local/bin/shell"
     git pull origin gnu-stow
     echo
 
-    if [[ $needs_pop -eq 1 ]]; then
+    if [ $needs_pop -eq 1 ]; then
         echo -e "${__COLOR_INFO}Popping stashed changes...${__COLOR_RESET}"
         echo
         git stash pop
     fi
 
     unmerged_files=$(git diff --name-only --diff-filter=U)
-    if [[ ! -z $unmerged_files ]]; then
+    if [ -n "$unmerged_files" ]; then
         echo -e "${__COLOR_ERROR}The following files have merge conflicts after popping the stash:${__COLOR_RESET}"
         echo
-        printf %"s\n" $unmerged_files  # Ensure newlines are printed
+        printf %"s\n" "$unmerged_files"  # Ensure newlines are printed
     else
         update-dotfiles
     fi

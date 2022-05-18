@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 vterm_printf(){
-    if [ -n "$TMUX" ] && ([ "${TERM%%-*}" = "tmux" ] || [ "${TERM%%-*}" = "screen" ] ); then
+    if [ -n "$TMUX" ] && { [ "${TERM%%-*}" = "tmux" ] || [ "${TERM%%-*}" = "screen" ]; }; then
         # Tell tmux to pass the escape sequences through
         printf "\ePtmux;\e\e]%s\007\e\\" "$1"
     elif [ "${TERM%%-*}" = "screen" ]; then
@@ -12,13 +12,12 @@ vterm_printf(){
     fi
 }
 
-if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
+if [ "$INSIDE_EMACS" = 'vterm' ]; then
     alias clear='vterm_printf "51;Evterm-clear-scrollback";tput clear'
 fi
 
 
 vterm_cmd() {
-    local vterm_elisp
     vterm_elisp=""
     while [ $# -gt 0 ]; do
         vterm_elisp="$vterm_elisp""$(printf '"%s" ' "$(printf "%s" "$1" | sed -e 's|\\|\\\\|g' -e 's|"|\\"|g')")"
@@ -40,4 +39,4 @@ vterm_prompt_end() {
 }
 
 setopt PROMPT_SUBST
-PROMPT=$PROMPT'%{$(vterm_prompt_end)%}'
+PROMPT=$PROMPT"%{$(vterm_prompt_end)%}"

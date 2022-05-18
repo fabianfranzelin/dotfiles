@@ -2,6 +2,7 @@
 
 # disabling warnings about unused variables
 # shellcheck disable=SC2034
+# shellcheck disable=SC1090
 
 #------------------------------------------------------------------------------#
 # formatting-settings
