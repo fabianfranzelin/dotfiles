@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# shellcheck disable=SC1090
+
 #------------------------------------------------------------------------------#
 # description of cmdline-parser
 
@@ -105,7 +107,8 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          clang \
          ripgrep \
          fd-find \
-         ccls
+         ccls \
+         shellcheck
 
     # additional python dependencies
     python3 -m pip install --upgrade \
@@ -118,7 +121,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
             yamllint \
             mdformat \
             cmake_language_server \
-            python-lsp-server[all]
+            "python-lsp-server[all]"
 
     if ( __is_linux ) then
        # try to install snap dependencies. Note that this is not working
