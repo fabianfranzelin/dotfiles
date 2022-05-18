@@ -47,12 +47,12 @@ export DOCKER_BUILDKIT=0
 # ros setup
 
 if (__is_zsh); then
-    # melodic is only for Ubuntu 20.04
+    # noetic is only for Ubuntu 20.04
     if [ -f "/opt/ros/noetic/setup.zsh" ]; then
         . "/opt/ros/noetic/setup.zsh" > /dev/null
     fi
 elif (__is_bash); then
-    # melodic is only for Ubuntu 20.04
+    # noetic is only for Ubuntu 20.04
     if [ -f "/opt/ros/noetic/setup.bash" ]; then
         . "/opt/ros/noetic/setup.bash" > /dev/null
     fi
