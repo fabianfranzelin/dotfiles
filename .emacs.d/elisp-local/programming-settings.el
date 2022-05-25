@@ -63,9 +63,9 @@
 ;; -------------------------------------------------------------------
 ;; part of the lsp-mode configuration
 
-(use-package sh-mode
-  :ensure nil
-  :ensure-system-package ((shellcheck . "sudo apt install -y shellcheck")))
+;; Make sure that my preferred linter is installed
+(unless (system-packages-package-installed-p "shellcheck")
+  (system-packages-install "shellcheck"))
 
 ;; -------------------------------------------------------------------
 ;; Swig-Mode
