@@ -442,13 +442,15 @@ INCREMENT: Value of which the current font-size is changed"
    (doom-modeline-mu4e nil)
    (doom-modeline-irc nil)
    (doom-modeline-minor-modes nil)
-   (doom-modeline-persp-name nil)
+   (doom-modeline-persp-name t)
    (doom-modeline-buffer-file-name-style 'truncate-except-project)
    (doom-modeline-buffer-modification-icon t)
    (doom-modeline-major-mode-icon t)
    (doom-modeline-buffer-encoding nil)
    (doom-modeline-vcs-max-length 48))
   :init
+  ;; show column numbers on the modeline
+  (column-number-mode 1)
   (doom-modeline-mode +1))
 
 ;; -------------------------------------------------------------------
