@@ -1,0 +1,22 @@
+aos_run_container() {
+    docker run -it --rm \
+           --net host \
+           -e http_proxy \
+           -e https_proxy \
+           -e USER \
+           -e BOSCH_USER \
+           -e BITBUCKET_TOKEN \
+           -e ARTIFACTORY_APIKEY \
+           -e RECOMPUTE_CONAN_PROFILE=ubuntu2004_x86_64_gcc8_debug \
+           -e DISABLE_RECOMPUTE_DEPENDENCY_CHECK=1 \
+           -e DISPLAY \
+           -v "${HOME}/.bash_history:/tmp/user/.bash_history" \
+           -v "/tmp/.X11-unix:/tmp/.X11-unix" \
+           -v "${XAUTHORITY}:/home/frf2lr/.Xauthority" \
+           -e "DEBIAN_FRONTEND=noninteractive" \
+           -u $(id -u):$(id -g) \
+           -v "$HOME/workspace/aos_base":/tmp/user/aos_base \
+           -v "${HOME}/.conan:/tmp/user/.conan" \
+           --shm-size 4g \
+           rb-dtr.de.bosch.com/aos/aos_dev_osd6
+}
