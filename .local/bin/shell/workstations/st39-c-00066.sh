@@ -5,10 +5,17 @@
 # Load specific settings for Bosch
 
 #------------------------------------------------------------------------------#
+# load credentials
+. ./b_credentials.sh
+
+#------------------------------------------------------------------------------#
 # AOS
 export AOS_BASE_HOME="${HOME}/workspace/aos_base"
 export AOS_BUILD_DIR="${AOS_BASE_HOME}/build"
 export AOS_INSTALL_DIR="${AOS_BASE_HOME}/install"
+
+#------------------------------------------------------------------------------#
+# PJ-Rec
 
 #------------------------------------------------------------------------------#
 # Azure DevOps
