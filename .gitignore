@@ -94,8 +94,10 @@ $RECYCLE.BIN/
 build/
 .vscode/
 *.db
-/.ssh/id_rsa
 /.ssh/known_hosts
+
+# Sensitive information
+/.ssh/id_rsa
 
 ### Emacs ###
 flycheck_*
