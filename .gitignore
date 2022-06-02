@@ -98,6 +98,7 @@ build/
 
 # Sensitive information
 /.ssh/id_rsa
+.local/bin/shell/workstations/b_credentials.sh
 
 ### Emacs ###
 flycheck_*
