@@ -83,11 +83,17 @@ ARG: position"
 ;; Enable `partial-completion' for files to allow path expansion.
 ;; You may prefer to use `initials' instead of `partial-completion'.
 (use-package orderless
+  :custom
+  (completion-styles '(orderless))
+  (completion-category-overrides '((file (styles basic partial-completion))))
   :config
-  (setq completion-styles '(orderless)
-        completion-category-defaults nil
-        completion-category-overrides '((file (styles basic partial-completion)))))
+  (setq completion-category-defaults nil))
 
+(use-package affe
+  :after (orderless consult)
+  :config
+  ;; Manual preview key for `affe-grep'
+  (consult-customize affe-grep :preview-key (kbd "M-.")))
 
 ;; Use dabbrev with Corfu!
 (use-package dabbrev
@@ -183,22 +189,6 @@ ARG: position"
          :map vertico-map
          ("C-x C-d" . consult-dir)
          ("C-x C-j" . consult-dir-jump-file)))
-
-
-;; -------------------------------------------------------------------
-;; setup fuzzy find for arbitrary folders
-
-(defun affe-orderless-regexp-compiler (input type ignore-case)
-  (setq input (orderless-pattern-compiler input))
-  (cons input (lambda (str) (orderless--highlight input str))))
-
-(use-package affe
-  :custom
-  ;; user orderless as regexp compiler
-  ((affe-regexp-compiler #'affe-orderless-regexp-compiler))
-  :config
-  ;; Manual preview key for `affe-grep'
-  (consult-customize affe-grep :preview-key (kbd "M-.")))
 
 ;; -------------------------------------------------------------------
 ;; Embark & Marginalia: https://github.com/oantolin/embark
