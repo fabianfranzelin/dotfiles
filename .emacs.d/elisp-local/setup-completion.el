@@ -90,10 +90,11 @@ ARG: position"
   (setq completion-category-defaults nil))
 
 (use-package affe
-  :after (orderless consult)
   :config
   ;; Manual preview key for `affe-grep'
-  (consult-customize affe-grep :preview-key (kbd "M-.")))
+  (consult-customize affe-grep :preview-key (kbd "M-."))
+  :bind (("C-c C-f" . affe-find)
+         ("C-c C-g" . affe-grep)))
 
 ;; Use dabbrev with Corfu!
 (use-package dabbrev
