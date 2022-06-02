@@ -184,6 +184,22 @@ ARG: position"
          ("C-x C-d" . consult-dir)
          ("C-x C-j" . consult-dir-jump-file)))
 
+
+;; -------------------------------------------------------------------
+;; setup fuzzy find for arbitrary folders
+
+(defun affe-orderless-regexp-compiler (input type ignore-case)
+  (setq input (orderless-pattern-compiler input))
+  (cons input (lambda (str) (orderless--highlight input str))))
+
+(use-package affe
+  :custom
+  ;; user orderless as regexp compiler
+  ((affe-regexp-compiler #'affe-orderless-regexp-compiler))
+  :config
+  ;; Manual preview key for `affe-grep'
+  (consult-customize affe-grep :preview-key (kbd "M-.")))
+
 ;; -------------------------------------------------------------------
 ;; Embark & Marginalia: https://github.com/oantolin/embark
 ;; -------------------------------------------------------------------
