@@ -19,10 +19,13 @@
     helper = /usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret
 [credential "https://github.com"]
     username = fabianfranzelin
+    provider = github
 [credential "https://github.boschdevcloud.com"]
-    username=frf2lr
+    username = frf2lr
+    provider = github
 [credential "https://sourcecode01.de.bosch.com"]
     username = frf2lr
+    provider = bitbucket
 [merge]
     tool = meld
 [diff]
