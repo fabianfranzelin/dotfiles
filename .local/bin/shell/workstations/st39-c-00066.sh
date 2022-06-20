@@ -6,9 +6,10 @@
 
 #------------------------------------------------------------------------------#
 # load credentials
-__DOTFILES=$(git rev-parse --show-toplevel)
-__WORKSTATIONS_CONFIGS_PATH="${__DOTFILES}/.local/bin/shell/workstations"
-[ -f "${__WORKSTATIONS_CONFIGS_PATH}/b_credentials.sh" ] && . "${__WORKSTATIONS_CONFIGS_PATH}/b_credentials.sh"
+# ----------------------------------------------------
+# Dotfiles setup
+export __SHELL_LIB="$HOME/.local/bin/shell"
+[ -f "${__SHELL_LIB}/workstations/b_credentials.sh" ] && . "${__SHELL_LIB}/workstations/b_credentials.sh"
 
 #------------------------------------------------------------------------------#
 # AOS
