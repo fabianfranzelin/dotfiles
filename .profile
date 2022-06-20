@@ -108,10 +108,6 @@ fi
 
 #------------------------------------------------------------------------------#
 # Load specific settings per workstation
-if [ "$(hostname)" = "ThinkPad" ]; then
-    . "${__SHELL_LIB}/workstations/ThinkPad.sh"
-elif [ "$(hostname)" = "ST39-C-00066" ]; then
-    . "${__SHELL_LIB}/workstations/st39-c-00066.sh"
-elif [ "$(hostname)" = "LR-Z7407" ]; then
-    . "${__SHELL_LIB}/workstations/LR-Z7407.sh"
-fi
+[ "$(hostname)" = "ThinkPad" ] && . "${__SHELL_LIB}/workstations/ThinkPad.sh"
+[ "$(hostname)" = "ST39-C-00066" ] && . "${__SHELL_LIB}/workstations/st39-c-00066.sh"
+[ "$(hostname)" = "LR-Z7407" ] && . "${__SHELL_LIB}/workstations/LR-Z7407.sh"

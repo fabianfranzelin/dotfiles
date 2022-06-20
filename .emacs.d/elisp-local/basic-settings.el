@@ -442,7 +442,7 @@ INCREMENT: Value of which the current font-size is changed"
    (doom-modeline-mu4e nil)
    (doom-modeline-irc nil)
    (doom-modeline-minor-modes nil)
-   (doom-modeline-persp-name t)
+   (doom-modeline-persp-name nil)
    (doom-modeline-buffer-file-name-style 'truncate-except-project)
    (doom-modeline-buffer-modification-icon t)
    (doom-modeline-major-mode-icon t)
