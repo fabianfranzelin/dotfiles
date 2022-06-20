@@ -6,7 +6,9 @@
 
 #------------------------------------------------------------------------------#
 # load credentials
-[ -f "./b_credentials.sh" ] && . ./b_credentials.sh
+__DOTFILES=$(git rev-parse --show-toplevel)
+__WORKSTATIONS_CONFIGS_PATH="${__DOTFILES}/.local/bin/shell/workstations"
+[ -f "${__WORKSTATIONS_CONFIGS_PATH}/b_credentials.sh" ] && . "${__WORKSTATIONS_CONFIGS_PATH}/b_credentials.sh"
 
 #------------------------------------------------------------------------------#
 # WSL specific stuff
