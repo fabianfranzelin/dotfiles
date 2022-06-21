@@ -84,13 +84,16 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          apt-transport-https \
          python3-pyqt5 \
          zsh \
-         npm \
          direnv \
          gnome-keyring \
          openjdk-17-jdk \
          zip \
          unzip \
          stow
+
+    # Quickfix required here: Apt is not the best way to install npm
+    sudo apt install -y \
+         npm
 
     # install dependencies for emacs
     sudo apt install -y \
