@@ -1,0 +1,3 @@
+rec_run_container() {
+    make docker-run-developer
+}
