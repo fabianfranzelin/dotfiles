@@ -454,13 +454,13 @@ INCREMENT: Value of which the current font-size is changed"
   (doom-modeline-mode +1))
 
 ;; -------------------------------------------------------------------
-;; Auto-saving changed files
+;; Auto-saving changed files when they lose focus
 ;; -------------------------------------------------------------------
-(setq auto-save-default t)
+(setq auto-save-default nil)
 
 (use-package super-save
   :custom
-  ((super-save-auto-save-when-idle t))
+  ((super-save-auto-save-when-idle nil))
   :init
   (super-save-mode t))
 
