@@ -1,5 +1,6 @@
 dt_run_container() {
     ./.devcontainer/run_container.py \
+        -t venv \
         -v "/tmp/.X11-unix:/tmp/.X11-unix" \
         -v "${XAUTHORITY}:/home/frf2lr/.Xauthority" \
         -v "$HOME/.bash_history:/home/frf2lr/.bash_history" \
