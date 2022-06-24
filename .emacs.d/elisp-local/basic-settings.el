@@ -203,6 +203,22 @@ INCREMENT: Value of which the current font-size is changed"
 ;; winner mode for for redo/undo window configurations
 (winner-mode 1)
 
+;; -------------------------------------------------------------
+;; present a nice dashboard on startup
+(use-package dashboard
+  :custom
+  ;; Content is not centered by default. To center, set
+  (dashboard-center-content t)
+  ;; To disable shortcut "jump" indicators for each section, set
+  (dashboard-show-shortcuts nil)
+  (dashboard-items '((projects . 5)
+                     (recents  . 5)))
+  (dashboard-set-heading-icons t)
+  (dashboard-set-file-icons t)
+  :config
+  (dashboard-setup-startup-hook))
+
+;; -------------------------------------------------------------
 ;; NOTE: The first time you load your configuration on a new machine,
 ;; you’ll need to run `M-x all-the-icons-install-fonts` so that mode
 ;; line icons display correctly.
