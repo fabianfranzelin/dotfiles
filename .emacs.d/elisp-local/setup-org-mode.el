@@ -9,7 +9,6 @@
 
 (use-package org
   :after (plantuml-mode)
-  :pin org
   :commands (org-capture org-agenda)
   :config
   (setq org-agenda-start-with-log-mode t)

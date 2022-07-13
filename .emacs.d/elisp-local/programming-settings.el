@@ -16,7 +16,7 @@
          cape-ispell)))
 
 (use-package text-mode
-  :ensure nil
+  :straight nil
   :after (cape)
   :hook ((text-mode . ff/configure-text-mode)))
 
@@ -31,7 +31,7 @@
 ;; C/C++
 ;; -------------------------------------------------------------------
 (use-package setup-cc
-  :load-path local-load-path)
+  :straight nil)
 
 ;; -------------------------------------------------------------------
 ;; CRAN R
@@ -50,13 +50,13 @@
 ;; Latex
 ;; -------------------------------------------------------------------
 (use-package setup-latex
-  :load-path local-load-path)
+  :straight nil)
 
 ;; -------------------------------------------------------------------
 ;; Python
 ;; -------------------------------------------------------------------
 (use-package setup-python
-  :load-path local-load-path)
+  :straight nil)
 
 ;; -------------------------------------------------------------------
 ;; Shell
@@ -64,8 +64,7 @@
 ;; part of the lsp-mode configuration
 
 ;; Make sure that my preferred linter is installed
-(unless (system-packages-package-installed-p "shellcheck")
-  (system-packages-install "shellcheck"))
+(ff/ensure-apt-package "shellcheck" "shellcheck")
 
 ;; -------------------------------------------------------------------
 ;; Swig-Mode
@@ -85,16 +84,18 @@
   (compile compile-command))
 
 (use-package swig-mode
-  :load-path local-load-path
+  :straight nil
   :mode (("\\.i$" . swig-mode)))
 
 ;; -------------------------------------------------------------------
 ;; yaml mode
 ;; -------------------------------------------------------------------
 (use-package yaml-mode
-  :ensure-system-package ((yamllint . "python3 -m pip install -U 'yamllint'"))
   :mode (("\\.yml$" . yaml-mode)
          ("\\.yaml$" . yaml-mode))
+  :init
+  ;; install system dependencies
+  (ff/ensure-python-package "yamllint" nil "yamllint")
   :bind ((:map yaml-mode-map
                ("C-m" . newline-and-indent))))
 
@@ -160,14 +161,16 @@
 
 (use-package markdown-mode
   :commands markdown-mode
-  :ensure-system-package ((markdown . "sudo apt install markdown -y")
-                          (pandoc . "sudo apt install pandoc -y")
-                          (mdformat . "python3 -m pip install mdformat"))
   :custom
   ;; The default command for markdown (~markdown~), doesn't support tables
   ;; (e.g. GitHub flavored markdown). Pandoc does, so let's use that.
   ((markdown-command "pandoc --from markdown --to html")
    (markdown-command-needs-filename t))
+  :init
+  (ff/ensure-apt-package "markdown" "markdown")
+  (ff/ensure-apt-package "pandoc" "pandoc")
+  (ff/ensure-python-package "mdformat" nil "mdformat")
+
   :hook ((markdown-mode . visual-line-mode)
          (markdown-mode . flyspell-mode)
          (markdown-mode . ff/configure-markdown-mode))
@@ -252,12 +255,14 @@ SOURCE_FILENAME: filename to the puml file."
     (plantuml-preview 0)))
 
 (use-package plantuml-mode
-  :ensure-system-package ((dot . "sudo apt install graphviz -y")
-                          (unzip . "sudo apt install unzip -y"))
   :mode (("\\.puml" . plantuml-mode)
          ("\\.iuml" . plantuml-mode)
          ("\\.uml" . plantuml-mode))
   :init
+  ;; install system dependencies
+  (ff/ensure-apt-package "graphviz" "dot")
+  (ff/ensure-apt-package "unzip" "unzip")
+
   ;; Consider using (plantuml-download-jar) as alternative
   (defvar plantuml-version "1.2022.2" "Version number of plantuml binary")
   (defvar plantuml-name (concat "plantuml-jar-asl-" plantuml-version) "Name of plantuml executable")
@@ -301,19 +306,20 @@ SOURCE_FILENAME: filename to the puml file."
 ;; Java mode
 ;; -------------------------------------------------------------------
 (use-package lsp-java
-  :after (lsp-mode)
-  :hook ((java-mode . lsp)))
+  :after (lsp-mode))
 
 (use-package dap-java
-  :ensure nil)
+  :straight nil)
 
 ;; -------------------------------------------------------------------
 ;; Json
 ;; -------------------------------------------------------------------
 (use-package json-mode
-  :ensure-system-package ((npm . "sudo apt install npm -y")
-                          (jsonlint . "npm install jsonlint -g"))
-  :mode (("\\.json$" . json-mode)))
+  :mode (("\\.json$" . json-mode))
+  :init
+  ;; ensure system packages
+  (ff/ensure-apt-package "npm" "npm")
+  (ff/ensure-npm-package "jsonlint" "jsonlint"))
 
 ;; -------------------------------------------------------------------
 ;; Jinja2 mode for code generation

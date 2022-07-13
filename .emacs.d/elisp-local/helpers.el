@@ -83,19 +83,54 @@ PACKAGE-NAME: name of the package to be checked."
           (ff/python-interpreter-version)
           "/site-packages/" package-name))
 
-(defun ff/ensure-python-package (package-name &optional version)
-  "Provide the path to the local site packages.
+(defun ff/ensure-system-package (install-cmd package-name &optional executable)
+  "Ensure that the provided system package is installed.
+
+INSTALL-CMD: command to be executed
+PACKAGE-NAME: name of the package to be installed.
+EXECUTABLE: just install if the executable does not exist
+"
+  ;; just install the package when the provided executable does not exist
+  (if (or (null executable)
+              (and
+               (null (executable-find executable))
+               (not (file-exists-p executable))))
+    (async-shell-command (concat install-cmd " " package-name))))
+
+(defun ff/ensure-apt-package (package-name &optional executable)
+  "Ensure that the provided apt package is installed.
 
 PACKAGE-NAME: name of the package to be installed.
-VERSION: version of the package to be installed"
+EXECUTABLE: just install if the executable does not exist
+"
+  (ff/ensure-system-package "sudo apt install -y" package-name executable))
+
+(defun ff/ensure-npm-package (package-name &optional executable)
+  "Ensure that the provided apt package is installed.
+
+PACKAGE-NAME: name of the package to be installed.
+EXECUTABLE: just install if the executable does not exist
+"
+  (ff/ensure-system-package "npm install -g" package-name executable))
+
+(defun ff/ensure-python-package (package-name &optional version executable)
+  "Ensure that the provided python package is installed.
+
+PACKAGE-NAME: name of the package to be installed.
+VERSION: version of the package to be installed
+EXECUTABLE: just install if the executable does not exist
+"
   (let* ((python-pip-install-cmd "python3 -m pip install --upgrade")
-         (package-path (ff/python-local-site-packages-path package-name))
+         (package-folder-name (car (split-string package-name "\\[")))
+         (package-path (ff/python-local-site-packages-path package-folder-name))
          (package-path-with-version (concat package-path "-" version ".dist-info")))
-    (if version
-        (unless (file-directory-p package-path-with-version)
-          (async-shell-command (concat python-pip-install-cmd " '" package-name "==" version "'")))
-      (unless (file-directory-p package-path)
-        (async-shell-command (concat python-pip-install-cmd " '" package-name "'"))))))
+    ;; just install the package when the provided executable does not exist
+    (unless (or (null executable) (not (null (executable-find executable))))
+      (if version
+          (unless (file-directory-p package-path-with-version)
+            (async-shell-command (concat python-pip-install-cmd " '" package-name "==" version "'")))
+        (unless (file-directory-p package-path)
+          (async-shell-command (concat python-pip-install-cmd " '" package-name "'")))))))
 
 (defun ff/switch-to-last-window ()
   "Switch to last visible window."

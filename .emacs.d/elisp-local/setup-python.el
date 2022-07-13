@@ -22,7 +22,6 @@
   (highlight-lines-matching-regexp "pdb.set_trace()"))
 
 (use-package python-mode
-  :ensure-system-package ((pylsp . "python3 -m pip install -U 'python-lsp-server[all]'"))
   :mode (("\\.py$" . python-mode)
          ("SConstruct" . python-mode)
          ("SConscript" . python-mode))
@@ -32,6 +31,9 @@
                           (require 'dap-python)
                           (lsp))))  ; or lsp-deferred
   :init
+  ;; install system dependencies
+  (ff/ensure-python-package "python-lsp-server[all]" nil "pylsp")
+
   ;; use ipython as default interpreter
   (setq python-shell-interpreter "ipython3"
         python-shell-interpreter-args "--simple-prompt -i"
@@ -41,8 +43,6 @@
         dap-python-executable "python3")
 
   ;; both packages are required for debugging with dap
-  ;; I do not know how to include this in "ensure-system-package"
-  ;; for varying python versions
   (ff/ensure-python-package "epc")
   (ff/ensure-python-package "ptvsd" "4.2.0")
   (ff/ensure-python-package "pylint")
@@ -57,7 +57,10 @@
 ;; ~/.local/bin, provide a dummy one that runs black in library mode
 ;; python3 -m black "${@}"
 (use-package python-black
-  :ensure-system-package ((black . "python3 -m pip install --user -U black"))
+  :init
+  ;; install system dependencies
+  (ff/ensure-python-package "black" nil "black")
+
   :hook ((python-mode . python-black-on-save-mode)))
 
 ;; supports virtual environments. To be set with pyvenv-workon
@@ -66,15 +69,20 @@
   :config (pyvenv-tracking-mode 1))
 
 (use-package pipenv
-  :ensure-system-package ((pipenv . "python3 -m pip install --user -U pipenv"))
   :hook ((python-mode . pipenv-mode))
   :init
+  ;; install system dependencies
+  (ff/ensure-python-package "pipenv" nil "pipenv")
+
   (setq pipenv-projectile-after-switch-function
         #'pipenv-projectile-after-switch-extended))
 
 ;; enable py-isort to resort imports on save
 (use-package py-isort
-  :ensure-system-package ((isort . "python3 -m pip install --user -U isort"))
+  :init
+  ;; install system dependencies
+  (ff/ensure-python-package "isort" nil "isort")
+
   :hook ((python-mode . (lambda ()
                                 (add-hook 'before-save-hook 'py-isort-before-save)))))
 

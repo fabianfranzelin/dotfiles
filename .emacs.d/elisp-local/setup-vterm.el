@@ -105,11 +105,14 @@ DIR: Path to the root directory of the current project."
   (clear-this-command-keys))
 
 (use-package vterm
-  :ensure-system-package ((cmake . "sudo apt install cmake -y")
-                          (libtool . "sudo apt install libtool-bin -y")
-                          ("/bin/zsh" . "sudo apt install zsh -y"))
   :commands vterm
   :hook ((vterm-mode . ff/term-exec-hook))
+  :init
+  ;; ensure system packages
+  (ff/ensure-apt-package "cmake" "cmake")
+  (ff/ensure-apt-package "libtool-bin" "libtool")
+  (ff/ensure-apt-package "zsh" "zsh")
+
   :config
   (setq vterm-shell "/bin/zsh")
   (setq vterm-max-scrollback 100000)

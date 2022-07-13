@@ -45,7 +45,10 @@ REPLACE-STR: string that replaces all regex matches"
     (clang-format-buffer)))
 
 (use-package clang-format+
-  :ensure-system-package (clang-format . "sudo apt install clang-format clang-format -y")
+  :init
+  ;; ensure system packages
+  (ff/ensure-apt-package "clang-format" "clang-format")
+
   :hook (((c-mode c++-mode) . clang-format+-mode))
          ((c-mode c++-mode) . (lambda ()
                                 (add-hook 'before-save-hook 'ff/clang-format-buffer-smart nil t)))
@@ -158,8 +161,9 @@ REPLACE-STR: string that replaces all regex matches"
 ;; ccls: Emacs client for ccls, a C/C++ language server
 ;; https://github.com/MaskRay/emacs-ccls
 (use-package ccls
-  :ensure-system-package (ccls . "sudo apt install ccls -y")
   :init
+  ;; ensure system packages
+  (ff/ensure-apt-package "ccls" "ccls")
   (setq ccls-executable (executable-find "ccls"))
 
   :config
@@ -205,12 +209,14 @@ REPLACE-STR: string that replaces all regex matches"
 
 (use-package cc-mode
   :after (clang-format+)
-  :ensure-system-package ((clangd . "sudo apt install clangd -y")
-                          (clang . "sudo apt install clang -y"))
   :hook ((c++-mode . setup-cc-mode)
          (c-mode . setup-cc-mode))
   :custom (lsp-clients-clangd-args '("--header-insertion-decorators=0" "--clang-tidy"))
   :init
+  ;; ensure system packages
+  (ff/ensure-apt-package "clangd" "clangd")
+  (ff/ensure-apt-package "clang" "clang")
+
   (c-add-style "my-cc"
                '("user"
                  (c-basic-offset . 4)
@@ -251,7 +257,10 @@ REPLACE-STR: string that replaces all regex matches"
 ;; cmake-mode: major mode for cmake files
 ;; https://gitlab.kitware.com/cmake/cmake/blob/master/Auxiliary/cmake-mode.el
 (use-package cmake-mode
-  :ensure-system-package ((cmake-language-server . "python3 -m pip install -U 'cmake_language_server'"))
+  :init
+  ;; install system dependencies
+  (ff/ensure-python-package "cmake_language_server" nil "cmake_language_server")
+
   :mode (("\\.cmake$" . cmake-mode)
          ("CMakeLists.txt" . cmake-mode)))
 

@@ -90,14 +90,15 @@
 ;; Forward and inverse search with okular
 ;; -------------------------------------------------------------------
 (use-package okular-search
+  :straight nil
   :if (memq window-system '(x))
-  :load-path local-load-path
-  :ensure-system-package (okular . "sudo apt install okular -y")
   :bind (:map LaTeX-mode-map
               ("C-c C-a" . okular-jump-to-line)
               :map tex-mode-map
               ("C-c C-a" . okular-jump-to-line))
   :init
+  (ff/ensure-apt-package "okular" "okular")
+
   (setq TeX-view-program-list '(("Okular" "okular --unique %o")))
   (setq TeX-view-program-selection '((output-pdf "Okular") (output-dvi "Okular")))
 
@@ -107,7 +108,6 @@
 
   (setq TeX-auto-global (expand-file-name "auctex-auto-generated-info/" user-emacs-directory))
   (setq TeX-auto-local  (expand-file-name "auctex-auto-generated-info/" user-emacs-directory)))
-
 
 (provide 'setup-latex)
 

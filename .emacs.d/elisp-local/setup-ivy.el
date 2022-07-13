@@ -115,7 +115,6 @@
   (prescient-persist-mode t))
 
 (use-package ivy-xref
-  :ensure t
   :init
   (setq xref-show-definitions-function #'ivy-xref-show-defs))
 
