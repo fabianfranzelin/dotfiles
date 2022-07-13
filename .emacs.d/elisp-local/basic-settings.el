@@ -5,19 +5,6 @@
 
 ;;; Code:
 
-(use-package auto-package-update
-  :custom
-  ((auto-package-update-delete-old-versions t)
-   (auto-package-update-hide-results t)
-   ;; update the packages every week
-   (auto-package-update-interval 7))
-  :config
-  (auto-package-update-maybe))
-
-;; add the possibility to define system dependencies in use-package
-;; declaration
-(use-package use-package-ensure-system-package)
-
 ;; make sure that the path environment from shell is available in
 ;; emacs
 (use-package exec-path-from-shell
@@ -278,7 +265,6 @@ INCREMENT: Value of which the current font-size is changed"
 ;; Tramp
 ;; -------------------------------------------------------------------
 (use-package tramp
-  :ensure nil
   :custom
   ((tramp-terminal-type "dumb")
    (tramp-default-method "ssh")
@@ -317,13 +303,10 @@ INCREMENT: Value of which the current font-size is changed"
          ("C-<next>" . tab-next)))
 
 ;; -------------------------------------------------------------------
-;; Completion system
+;; Completion system: Vertico
 ;; ------------------------------------------------------------------
 (use-package setup-completion
-  :load-path local-load-path)
-
-;; (use-package setup-ivy
-;;   :load-path local-load-path)
+  :straight nil)
 
 ;; -------------------------------------------------------------------
 ;; Buffer move & transpose frame
@@ -343,7 +326,7 @@ INCREMENT: Value of which the current font-size is changed"
 ;; rename buffer content: C-x C-q, C-c C-c to apply and C-c ESC to cancel
 ;; copy path of file: 0 w in dired buffer
 (use-package dired
-  :ensure nil
+  :straight nil
   :after (org-download)
   :commands (dired dired-jump)
   :custom
@@ -421,10 +404,12 @@ INCREMENT: Value of which the current font-size is changed"
 ;; -------------------------------------------------------------------
 (use-package openwith
   :if (memq window-system '(x))
-  :ensure-system-package ((vlc . "sudo apt install vlc -y")
-                          (okular . "sudo apt install okular -y")
-                          (eog . "sudo apt install eog -y")
-                          (firefox . "sudo apt install firefox -y"))
+  :init
+  ;; ensure system dependencies
+  (ff/ensure-apt-package "vlc" "vlc")
+  (ff/ensure-apt-package "okular" "okular")
+  (ff/ensure-apt-package "eog" "eog")
+  (ff/ensure-apt-package "firefox" "firefox")
   :config
   (setq openwith-associations
         (list
@@ -529,17 +514,18 @@ INCREMENT: Value of which the current font-size is changed"
 ;; Ripgrep integration
 ;; -------------------------------------------------------------------
 (use-package rg
-  :ensure-system-package (rg . "sudo apt install ripgrep -y")
-  :init (rg-enable-menu))
+  :init
+  (ff/ensure-apt-package "ripgrep" "rg")
+  (rg-enable-menu))
 
 ;; -------------------------------------------------------------------
 ;; Org-mode
 ;; -------------------------------------------------------------------
 (use-package setup-org-mode
-  :load-path local-load-path)
+  :straight nil)
 
 (use-package setup-org-roam
-  :load-path local-load-path)
+  :straight nil)
 
 ;; -------------------------------------------------------------------
 ;; Project (built in project handling mode; similar to projectile)
@@ -593,7 +579,6 @@ PROJECT-ROOT: Path to the root directory of the current project."
   (projectile-find-file))
 
 (use-package projectile
-  :ensure-system-package ((fdfind . "sudo apt install fd-find -y"))
   :custom
   ((projectile-completion-system 'default)
    (projectile-file-exists-remote-cache-expire nil)
@@ -603,6 +588,8 @@ PROJECT-ROOT: Path to the root directory of the current project."
    (projectile-enable-caching t))
   :bind-keymap ("C-c p" . projectile-command-map)
   :init
+  (ff/ensure-npm-package "fd-find" "fdfind")
+
   ;; NOTE: Set this to the folder where you keep your Git repos!
   (when (file-directory-p "~/workspace")
     (setq projectile-project-search-path '("~/workspace")))
@@ -616,7 +603,7 @@ PROJECT-ROOT: Path to the root directory of the current project."
 ;; Lsp-mode
 ;; -------------------------------------------------------------------
 (use-package setup-lsp
-  :load-path local-load-path)
+  :straight nil)
 
 ;; -------------------------------------------------------------------
 ;; Treemacs
@@ -660,11 +647,11 @@ FILE: filename"
 ;; Eshell & Vterm
 ;; -------------------------------------------------------------------
 (use-package setup-eshell
-  :load-path local-load-path
+  :straight nil
   :after (shell-loader))
 
 (use-package setup-vterm
-  :load-path local-load-path
+  :straight nil
   :after (shell-loader))
 
 ;; -------------------------------------------------------------------
@@ -723,19 +710,19 @@ TEXT: title"
 ;; Spell checker: Language tool and ispell/aspell
 ;; -------------------------------------------------------------------
 (use-package setup-spellcheck
-  :load-path local-load-path)
+  :straight nil)
 
 ;; -------------------------------------------------------------------
 ;; Git - magit
 ;; -------------------------------------------------------------------
 (use-package setup-magit
-  :load-path local-load-path)
+  :straight nil)
 
 ;; -------------------------------------------------------------------
 ;; Emacs application framework: it does not seem to be stable
 ;; -------------------------------------------------------------------
 ;; (use-package setup-eaf
-;;   :load-path local-load-path)
+;;   :straight nil)
 
 ;; -------------------------------------------------------------------
 ;; Ace window: select windows based on numbers

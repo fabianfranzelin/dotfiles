@@ -10,7 +10,6 @@
 ;; --------------------------------------------------------
 
 (use-package languagetool
-  :ensure-system-package ((unzip . "sudo apt install unzip -y"))
   :commands (languagetool-check
              languagetool-clear-suggestions
              languagetool-correct-at-point
@@ -20,6 +19,9 @@
              languagetool-server-start
              languagetool-server-stop)
   :init
+  ;; ensure system packages
+  (ff/ensure-apt-package "unzip" "unzip")
+
   ;; Create directory for languagetool binaries
   (defvar langtool-version "5.7")
   (defvar langtool-name (concat "LanguageTool-" langtool-version))
@@ -60,10 +62,11 @@
   (flyspell-buffer))
 
 (use-package ispell
-  :ensure-system-package (("/usr/bin/aspell" . "sudo apt install aspell -y")
-                          ("/usr/lib/aspell/en_US.multi" . "sudo apt install aspell-en -y")
-                          ("/usr/lib/aspell/de_DE.multi" . "sudo apt install aspell-de -y"))
   :init
+  (ff/ensure-apt-package "aspell" "aspell")
+  (ff/ensure-apt-package "aspell-en" "/usr/lib/aspell/en_US.multi")
+  (ff/ensure-apt-package "aspell-de" "/usr/lib/aspell/de_DE.multi")
+
   (setq ispell-dictionary "en_US"
         ispell-local-dictionary "en_US"
         ispell-program-name "/usr/bin/aspell"
