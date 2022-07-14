@@ -13,6 +13,11 @@
 ;; -------------------------------------------------------------------
 ;; Package Management - straight.el
 
+;; set actual repository user from github, so that pull straight works
+;; with given recipe from
+;; https://github.com/radian-software/straight.el#overriding-recipes
+(setq straight-repository-user "radian-software")
+
 ;; Download straight directly from github
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -21,7 +26,7 @@
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
         (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
          'silent 'inhibit-cookies)
       (goto-char (point-max))
       (eval-print-last-sexp)))
@@ -87,10 +92,12 @@
   (load custom-file t))
 
 ;; -------------------------------------------------------------------
-(require 'helpers)
+(use-package helpers
+  :straight nil)
 
-(require 'shell-loader)
-(setq ff/shell-vertical-alignment t)
+(use-package shell-loader
+  :straight nil
+  :custom (ff/shell-vertical-alignment t))
 
 ;; -------------------------------------------------------------------
 ;; Daemon settings
@@ -102,11 +109,13 @@
 ;; -------------------------------------------------------------------
 ;; Basic settings
 ;; -------------------------------------------------------------------
-(require 'basic-settings)
+(use-package basic-settings
+  :straight nil)
 
 ;; -------------------------------------------------------------------
 ;; Adjusting modes for programming
 ;; -------------------------------------------------------------------
-(require 'programming-settings)
+(use-package programming-settings
+  :straight nil)
 
 ;;; .emacs ends here

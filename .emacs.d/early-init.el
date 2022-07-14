@@ -6,6 +6,10 @@
 ;;; Code:
 
 ;; -------------------------------------------------------------------
+;; Disable package.el since we use straight.el
+(setq package-enable-at-startup nil)
+
+;; -------------------------------------------------------------------
 ;; Change my user emacs directory to non-default location since it is
 ;; under version control
 (setq user-emacs-directory (expand-file-name "~/.cache/emacs"))
