@@ -191,6 +191,23 @@ INCREMENT: Value of which the current font-size is changed"
 (winner-mode 1)
 
 ;; -------------------------------------------------------------
+;; Multiple cursors
+(use-package multiple-cursors
+  :bind (;; Do what I mean with currently selected word
+         ("C-c m j" . mc/mark-all-dwim)
+         ;; Mark lines, then create cursors
+         ("C-c m c" . mc/edit-lines)
+         ;; Expand region
+         ("C-c m l" . mc/expand-region)
+         ;; Select region first, then create cursors
+         ("C-c m /" . mc/mark-all-like-this)
+         ("C-c m ," . mc/mark-previous-like-this)
+         ("C-c m ." . mc/mark-next-like-this)
+         ;; Skip this match and move to next one
+         ("C-c m <" . mc/skip-to-previous-like-this)
+         ("C-c m >" . mc/skip-to-next-like-this)))
+
+;; -------------------------------------------------------------
 ;; present a nice dashboard on startup
 (use-package dashboard
   :custom
