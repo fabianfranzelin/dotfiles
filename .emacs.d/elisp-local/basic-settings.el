@@ -191,6 +191,16 @@ INCREMENT: Value of which the current font-size is changed"
 (winner-mode 1)
 
 ;; -------------------------------------------------------------
+;; Better help
+(use-package helpful
+  :bind (("C-h f" . helpful-callable)
+         ("C-h v" . helpful-variable)
+         ("C-h k" . helpful-key)
+         ("C-c C-d" . helpful-at-point)
+         ("C-h F" . helpful-function)
+         ("C-h C" . helpful-command)))
+
+;; -------------------------------------------------------------
 ;; Multiple cursors
 (use-package multiple-cursors
   :bind (;; Do what I mean with currently selected word
