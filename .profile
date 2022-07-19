@@ -44,6 +44,12 @@ export PATH="${HOME}/opt/bin:${HOME}/.local/bin:/usr/lib/ccache:${PATH}"
 export DOCKER_BUILDKIT=0
 
 #------------------------------------------------------------------------------#
+# GNU GUIX setup
+
+export GUIX_PROFILE="${HOME}/.config/guix/current"
+[ -f "${GUIX_PROFILE}" ] && . "$GUIX_PROFILE/etc/profile"
+
+#------------------------------------------------------------------------------#
 # ros setup
 
 if (__is_zsh); then
