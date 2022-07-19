@@ -348,13 +348,18 @@ INCREMENT: Value of which the current font-size is changed"
   :bind (("C-c b t" . transpose-frame)))
 
 ;; -------------------------------------------------------------------
-;; Set up dired
+;; Set up dired with async
 ;; -------------------------------------------------------------------
+
+;; generic package to allow concurrency for certain tasks in
+;; Emacs. Currently only used for dired.
+(use-package async)
+
 ;; rename buffer content: C-x C-q, C-c C-c to apply and C-c ESC to cancel
 ;; copy path of file: 0 w in dired buffer
 (use-package dired
   :straight nil
-  :after (org-download)
+  :after (org-download async)
   :commands (dired dired-jump)
   :custom
   ((dired-auto-revert-buffer t) ; Auto update when buffer is revisited
@@ -366,6 +371,9 @@ INCREMENT: Value of which the current font-size is changed"
    (dired-hide-details-hide-symlink-targets nil))
   :config
   (autoload 'dired-omit-mode "dired-x")
+  ;; enable async copy
+  (autoload 'dired-async-mode "dired-async.el" nil t)
+  (dired-async-mode 1)
   :hook ((dired-mode . auto-revert-mode)
          (dired-mode . dired-hide-details-mode)
          (dired-mode . hl-line-mode)
