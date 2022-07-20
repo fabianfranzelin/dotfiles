@@ -118,6 +118,7 @@ DIR: Path to the root directory of the current project."
   (setq vterm-max-scrollback 100000)
   (setq explicit-shell-file-name "/bin/zsh")
 
+  (define-key vterm-mode-map [return] #'vterm-send-return)
   (define-key vterm-mode-map (kbd "<C-backspace>")
     (lambda () (interactive) (vterm-send-key (kbd "C-w"))))
 

@@ -65,10 +65,11 @@
 ;; Support wheel mouse scrolling
 (mouse-wheel-mode t)
 
+;; CURRENTLY NOT WORKING. It fails with "Method 'Docker' is not known."
 ;; enable recentf-mode
-(recentf-mode)
-(add-to-list 'recentf-exclude no-littering-var-directory)
-(add-to-list 'recentf-exclude no-littering-etc-directory)
+;; (recentf-mode t)
+;; (add-to-list 'recentf-exclude no-littering-var-directory)
+;; (add-to-list 'recentf-exclude no-littering-etc-directory)
 
 ;; Turn on syntax colouring in all modes supporting it
 (global-font-lock-mode t)
@@ -219,7 +220,10 @@ INCREMENT: Value of which the current font-size is changed"
 
 ;; -------------------------------------------------------------
 ;; present a nice dashboard on startup
+(use-package page-break-lines)
+
 (use-package dashboard
+  :after (projectile all-the-icons page-break-lines)
   :custom
   ;; Content is not centered by default. To center, set
   (dashboard-center-content t)
@@ -229,6 +233,9 @@ INCREMENT: Value of which the current font-size is changed"
                      (recents  . 5)))
   (dashboard-set-heading-icons t)
   (dashboard-set-file-icons t)
+  :init
+  ;; Show dashboard for newly created frames
+  (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
   :config
   (dashboard-setup-startup-hook))
 
