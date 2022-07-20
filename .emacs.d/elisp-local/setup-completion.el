@@ -15,16 +15,41 @@ ARG: position"
   (interactive "p")
   (if minibuffer-completing-file-name
       (progn
-        (when (string-match-p "~/$" (minibuffer-contents))
+        ;; Expand the home path when hitting ~/ and continue
+        (when (string-match-p "^~/$" (minibuffer-contents))
           (delete-minibuffer-contents)
           (insert (substitute-in-file-name "$HOME/")))
 
-        ;; Borrowed from
-        ;; https://github.com/raxod502/selectrum/issues/498#issuecomment-803283608
-        (if (string-match-p ".*/$" (minibuffer-contents))
-              (zap-up-to-char (- arg) ?/)
-          (delete-char -1)))
+        (cond (;; Go to the parent directory when hitting backspace instead
+               ;; of deleting character by character.
+               ;; Borrowed from
+               ;; https://github.com/raxod502/selectrum/issues/498#issuecomment-803283608
+               (string-match-p ".*/$" (minibuffer-contents))
+               ;; If there is a semicolon in the folder name, we
+               ;; assume that tramp is involved and we stop at the
+               ;; protocol name
+               (if (string-match-p ".*:.*/$" (minibuffer-contents))
+                   (zap-up-to-char (- arg) ?:)
+                 (zap-up-to-char (- arg) ?/)))
+              (;; When a semicolon is encountered, we assume that
+               ;; tramp is used and delete the protocol to get to the
+               ;; root folder
+               (string-match-p ".*:$" (minibuffer-contents))
+               (if (string-match-p ".*:.*:$" (minibuffer-contents))
+                   (zap-up-to-char (- arg) ?:)
+                 (zap-up-to-char (- arg) ?/)))
+              (;; default
+               t
+               (delete-char -1))))
     (delete-char -1)))
+
+(defun ff/minibuffer-go-to-root (arg)
+  "Delete the complete minibuffer content and go the the root folder.
+ARG: position"
+  (interactive "p")
+  (when minibuffer-completing-file-name
+    (delete-minibuffer-contents)
+    (insert (substitute-in-file-name "/"))))
 
 (use-package vertico
   :custom (vertico-cycle t)
@@ -38,7 +63,7 @@ ARG: position"
               ("C-f" . vertico-exit)
               :map minibuffer-local-map
               ("DEL" . ff/minibuffer-backward-kill)
-              ("C-<backspace>" . (lambda(arg) (interactive "p") (backward-word) (kill-word 1)))))
+              ("C-l" . ff/minibuffer-go-to-root)))
 
 ;; -------------------------------------------------------------------
 ;; Corfu, Cape and Orderless

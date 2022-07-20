@@ -7,9 +7,12 @@
 
 ;;; Code:
 
+(require 'cl-lib)
+
 (defcustom ff/shell-vertical-alignment t
   "When non-nil, the terminals are aligned in a vertical manner on the right."
-  :type 'boolean)
+  :type 'boolean
+  :group 'shell-loader)
 
 (defun ff/toggle-shell-vertical-alignment ()
   "Toggle whether the alignment of shells is vertical or horizontal."
