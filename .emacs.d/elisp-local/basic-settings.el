@@ -536,11 +536,13 @@ INCREMENT: Value of which the current font-size is changed"
                               "Output\\*$"
                               "\\*Async Shell Command\\*"
                               help-mode
+                              helpful-mode
                               compilation-mode))
   :init
   ;; group poppers by projectile projects
   (setq popper-group-function #'popper-group-by-projectile)
   (popper-mode t)
+  (popper-echo-mode t)
   :bind (("C-*" . popper-toggle-latest)
          ("M-*" . popper-cycle)
          ("C-M-*" . popper-toggle-type)))
