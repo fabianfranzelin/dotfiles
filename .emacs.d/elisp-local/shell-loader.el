@@ -21,6 +21,13 @@
       (customize-set-variable 'ff/shell-vertical-alignment nil)
     (customize-set-variable 'ff/shell-vertical-alignment t)))
 
+(defun ff/split-shell-window ()
+  "Create a shell window according to the current alignment."
+  (if ff/shell-vertical-alignment
+      (split-window-below)
+    (split-window-right))
+  (other-window 1))
+
 (defun ff/load-buffers (prefix)
   "Filter all buffers that begin with the given prefix.
 PREFIX: start string of buffer name"
@@ -93,20 +100,12 @@ PREFIX: start string of buffer name"
          ;; no buffers available -> create a new one
          (ff/split-main-window))
         ((= (length visible-buffers) 0)
-         (ff/open-windows visible-buffers)
-         ;; create a shell window according to the current alignment
-         (if ff/shell-vertical-alignment
-             (split-window-below)
-           (split-window-right))
-         (other-window 1))
+         (ff/open-windows buffer-names)
+         (ff/split-shell-window))
         ((> (length visible-buffers) 0)
          ;; get the latest created vterm session
          (select-window (get-buffer-window (car (reverse visible-buffers))))
-         ;; create a shell window according to the current alignment
-         (if ff/shell-vertical-alignment
-             (split-window-below)
-           (split-window-right))
-         (other-window 1)))
+         (ff/split-shell-window)))
   (balance-windows))
 
 (provide 'shell-loader)
