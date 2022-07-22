@@ -65,11 +65,13 @@
 ;; Support wheel mouse scrolling
 (mouse-wheel-mode t)
 
-;; CURRENTLY NOT WORKING. It fails with "Method 'Docker' is not known."
-;; enable recentf-mode
-;; (recentf-mode t)
-;; (add-to-list 'recentf-exclude no-littering-var-directory)
-;; (add-to-list 'recentf-exclude no-littering-etc-directory)
+;; enable recentf-mode but ignore files that where opened with docker
+;; tramp
+(recentf-mode t)
+(add-to-list 'recentf-exclude "^/docker:.*")
+;; make sure that recentf is not littering emacs user home
+(add-to-list 'recentf-exclude no-littering-var-directory)
+(add-to-list 'recentf-exclude no-littering-etc-directory)
 
 ;; Turn on syntax colouring in all modes supporting it
 (global-font-lock-mode t)
