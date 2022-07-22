@@ -2,4 +2,4 @@
 
 This folder contains my Desktop backgrounds
 
--[[file:dolomites.jpg][ Dolomites]]
+- [[file:dolomites.jpg][Dolomites]]
