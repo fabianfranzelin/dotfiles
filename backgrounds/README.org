@@ -1,0 +1,5 @@
+#+TITLE: Desktop Backgrounds
+
+This folder contains my Desktop backgrounds
+
+-[[file:dolomites.jpg][ Dolomites]]
