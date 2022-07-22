@@ -549,4 +549,5 @@ beautiful.useless_gap = 5
 -- Autostart
 
 awful.spawn.with_shell("picom")
-awful.spawn.with_shell("nitrogen --set-zoom-fill --restore)
+awful.spawn.with_shell("nitrogen --set-zoom-fill --restore")
+awful.spawn.with_shell("emacs --daemon")
