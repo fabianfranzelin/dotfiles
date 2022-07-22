@@ -70,6 +70,7 @@
          (dockerfile-mode . lsp-deferred)
          (html-mode . lsp-deferred)
          (css-mode . lsp-deferred)
+         (lua-mode . lsp-deferred)
          (before-save-hook . lsp-format-buffer)))
 
 (use-package lsp-ui

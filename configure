@@ -113,6 +113,13 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          ccls \
          shellcheck
 
+    # Awesome Window manager
+    sudo apt install -y \
+         awesome \
+         comption \
+         nitrogen \
+         dmenu
+
     # additional python dependencies
     python3 -m pip install --upgrade \
             virtualenv \
