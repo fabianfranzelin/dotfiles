@@ -91,7 +91,7 @@
 ;; -------------------------------------------------------------------
 (use-package okular-search
   :straight nil
-  :if (memq window-system '(x))
+  :if (display-graphic-p)
   :bind (:map LaTeX-mode-map
               ("C-c C-a" . okular-jump-to-line)
               :map tex-mode-map

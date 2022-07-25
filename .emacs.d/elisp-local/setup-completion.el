@@ -28,9 +28,9 @@ ARG: position"
                ;; If there is a semicolon in the folder name, we
                ;; assume that tramp is involved and we stop at the
                ;; protocol name
-               (if (string-match-p ".*:.*/$" (minibuffer-contents))
-                   (zap-up-to-char (- arg) ?:)
-                 (zap-up-to-char (- arg) ?/)))
+               (if (string-match-p ".*:.*/.*/$" (minibuffer-contents))
+                   (zap-up-to-char (- arg) ?/)
+                 (zap-up-to-char (- arg) ?:)))
               (;; When a semicolon is encountered, we assume that
                ;; tramp is used and delete the protocol to get to the
                ;; root folder

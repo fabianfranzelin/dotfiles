@@ -105,8 +105,6 @@
     (load-theme 'doom-material t))
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
-  ;; Enable custom neotree theme (all-the-icons must be installed!)
-  (doom-themes-neotree-config)
   ;; or for treemacs users
   (doom-themes-treemacs-config)
   ;; Corrects (and improves) org-mode's native fontification.
@@ -447,7 +445,7 @@ INCREMENT: Value of which the current font-size is changed"
 ;; Open files externally
 ;; -------------------------------------------------------------------
 (use-package openwith
-  :if (memq window-system '(x))
+  :if (display-graphic-p)
   :init
   ;; ensure system dependencies
   (ff/ensure-apt-package "vlc" "vlc")
