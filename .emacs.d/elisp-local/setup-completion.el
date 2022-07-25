@@ -20,27 +20,28 @@ ARG: position"
           (delete-minibuffer-contents)
           (insert (substitute-in-file-name "$HOME/")))
 
-        (cond (;; Go to the parent directory when hitting backspace instead
+        (cond ((string-match-p "^/.*:.*:.*/.*/$" (minibuffer-contents))
+               (message "1")
+               (zap-up-to-char (- arg) ?/))
+              ((string-match-p "^/.*:.*:.*/$" (minibuffer-contents))
+               (message "2")
+               (zap-up-to-char (- (+ arg 1)) ?:))
+              ((string-match-p "^/.*:.*:.*$" (minibuffer-contents))
+               (message "5")
+               (zap-up-to-char (- arg) ?:))
+              ((string-match-p "^/.*:.*:$" (minibuffer-contents))
+               (message "3")
+               (zap-up-to-char (- arg) ?:))
+              ((string-match-p "^/.*:$" (minibuffer-contents))
+               (message "4")
+               (zap-up-to-char (- arg) ?/))
+              (;; Go to the parent directory when hitting backspace instead
                ;; of deleting character by character.
                ;; Borrowed from
                ;; https://github.com/raxod502/selectrum/issues/498#issuecomment-803283608
-               (string-match-p ".*/$" (minibuffer-contents))
-               ;; If there is a semicolon in the folder name, we
-               ;; assume that tramp is involved and we stop at the
-               ;; protocol name
-               (if (string-match-p ".*:.*/.*/$" (minibuffer-contents))
-                   (zap-up-to-char (- arg) ?/)
-                 (zap-up-to-char (- arg) ?:)))
-              (;; When a semicolon is encountered, we assume that
-               ;; tramp is used and delete the protocol to get to the
-               ;; root folder
-               (string-match-p ".*:$" (minibuffer-contents))
-               (if (string-match-p ".*:.*:$" (minibuffer-contents))
-                   (zap-up-to-char (- arg) ?:)
-                 (zap-up-to-char (- arg) ?/)))
-              (;; default
-               t
-               (delete-char -1))))
+               (string-match-p "^/.*/$" (minibuffer-contents))
+               (message "4")
+               (zap-up-to-char (- arg) ?/))))
     (delete-char -1)))
 
 (defun ff/minibuffer-go-to-root (arg)
