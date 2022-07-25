@@ -138,7 +138,8 @@
         (vterm-send-string command)
         (vterm-send-return))))
 
-  ;; add new entry to transient of docker package
+  ;; add new entry to transient of docker package for my own vterm
+  ;; startup function
   (transient-append-suffix
     'docker-container-shells
     "b"

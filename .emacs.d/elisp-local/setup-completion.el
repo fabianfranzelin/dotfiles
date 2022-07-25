@@ -18,30 +18,28 @@ ARG: position"
         ;; Expand the home path when hitting ~/ and continue
         (when (string-match-p "^~/$" (minibuffer-contents))
           (delete-minibuffer-contents)
-          (insert (substitute-in-file-name "$HOME/")))
+          (insert (expand-file-name "~/")))
 
+        ;; Expand home path when hitting tilde with tramp
+        (when (string-match-p "^/.*:.*:~/$" (minibuffer-contents))
+          (zap-up-to-char (- arg) ?~)
+          (delete-char -1)
+          (insert (expand-file-name "~/")))
+
+        ;; Continue
         (cond ((string-match-p "^/.*:.*:.*/.*/$" (minibuffer-contents))
-               (message "1")
                (zap-up-to-char (- arg) ?/))
               ((string-match-p "^/.*:.*:.*/$" (minibuffer-contents))
-               (message "2")
                (zap-up-to-char (- (+ arg 1)) ?:))
               ((string-match-p "^/.*:.*:.*$" (minibuffer-contents))
-               (message "5")
-               (zap-up-to-char (- arg) ?:))
-              ((string-match-p "^/.*:.*:$" (minibuffer-contents))
-               (message "3")
                (zap-up-to-char (- arg) ?:))
               ((string-match-p "^/.*:$" (minibuffer-contents))
-               (message "4")
                (zap-up-to-char (- arg) ?/))
-              (;; Go to the parent directory when hitting backspace instead
-               ;; of deleting character by character.
-               ;; Borrowed from
-               ;; https://github.com/raxod502/selectrum/issues/498#issuecomment-803283608
-               (string-match-p "^/.*/$" (minibuffer-contents))
-               (message "4")
-               (zap-up-to-char (- arg) ?/))))
+              ((or (string-match-p "^/.*/$" (minibuffer-contents))
+                   (string-match-p "^~/.*/$" (minibuffer-contents)))
+               (zap-up-to-char (- arg) ?/))
+              (t ;; default
+               (delete-char -1))))
     (delete-char -1)))
 
 (defun ff/minibuffer-go-to-root (arg)
@@ -82,7 +80,7 @@ ARG: position"
   ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
   ;; (corfu-echo-documentation nil) ;; Disable documentation in the echo area
   (corfu-scroll-margin 5)        ;; Use scroll margin
-  (corfu-auto-prefix 1)
+  (corfu-auto-prefix 3)
   :init
   ;; TAB cycle if there are only few candidates
   (setq completion-cycle-threshold 3)
