@@ -68,17 +68,9 @@
   :init (pyvenv-mode 1)
   :config (pyvenv-tracking-mode 1))
 
-(use-package pipenv
-  :hook ((python-mode . pipenv-mode))
-  :init
-  ;; install system dependencies
-  (ff/ensure-python-package "pipenv" nil "pipenv")
-
-  (setq pipenv-projectile-after-switch-function
-        #'pipenv-projectile-after-switch-extended))
-
 ;; enable py-isort to resort imports on save
 (use-package py-isort
+  :after (python-black)
   :init
   ;; install system dependencies
   (ff/ensure-python-package "isort" nil "isort")
