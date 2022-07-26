@@ -70,11 +70,9 @@
 
 ;; enable py-isort to resort imports on save
 (use-package py-isort
-  :after (python-black)
   :init
   ;; install system dependencies
   (ff/ensure-python-package "isort" nil "isort")
-
   :hook ((python-mode . (lambda ()
                                 (add-hook 'before-save-hook 'py-isort-before-save)))))
 

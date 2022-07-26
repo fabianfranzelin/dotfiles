@@ -89,7 +89,11 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          openjdk-17-jdk \
          zip \
          unzip \
-         stow
+         stow \
+         compton \
+         nitrogen \
+         dmenu \
+         rofi
 
     # Quickfix required here: Apt is not the best way to install npm
     sudo apt install -y \
@@ -114,11 +118,28 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          shellcheck
 
     # Awesome Window manager
-    sudo apt install -y \
-         awesome \
-         comption \
-         nitrogen \
-         dmenu
+    sudo apt install -y awesome
+
+    # Qtile window manager
+    python3 -m pip install --upgrade xcffib
+    python3 -m pip install --upgrade --no-cache-dir cairocffi
+    sudo apt install -y libpangocairo-1.0-0
+
+    # Create xsessions entry for qtile according to
+    # https://docs.qtile.org/en/latest/manual/install/index.html#starting-qtile
+    echo "[Desktop Entry]
+Name=Qtile
+Comment=Qtile Session
+Exec=qtile start
+Type=Application
+Keywords=wm;tiling" | sudo tee "/usr/share/xsessions/qtile.desktop"
+
+    echo "[Desktop Entry]
+Name=Qtile
+Comment=Qtile Session
+Exec=/etc/X11/Xsession
+Type=Application
+Keywords=wm;tiling" | sudo tee "/usr/share/xsessions/custom.desktop"
 
     # additional python dependencies
     python3 -m pip install --upgrade \
@@ -126,7 +147,6 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
             epc \
             "ptvsd==4.2" \
             black \
-            pipenv \
             isort \
             yamllint \
             mdformat \
@@ -146,7 +166,6 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
     else
        echo -e "${__COLOR_INFO}INFO: Skip installing GTK tools since we are running in WSL or Docker.${__COLOR_RESET}"
     fi
-
 fi
 
 #------------------------------------------------------------------------------#

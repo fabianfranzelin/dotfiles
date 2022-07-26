@@ -96,6 +96,10 @@ build/
 *.db
 /.ssh/known_hosts
 
+# Python
+__pycache__
+.mypy_cache
+
 # Sensitive information
 /.ssh/id_rsa
 .local/bin/shell/workstations/b_credentials.sh
