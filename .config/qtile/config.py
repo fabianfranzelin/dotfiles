@@ -98,8 +98,8 @@ keys = [
     Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
 ]
 
-## -----------------------------
-## Personal key bindings
+# --------------------------------------------------------
+# Personal key bindings
 
 keys += [
     Key(
@@ -111,8 +111,7 @@ keys += [
     Key([mod, "shift"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "r", lazy.spawn("rofi -show run"), desc="Run Rofi"),
 ]
-## -----------------------------
-
+# --------------------------------------------------------
 
 groups = [Group(i) for i in "123456789"]
 
