@@ -7,6 +7,27 @@
 
 (use-package lsp-mode
   :commands lsp
+  :custom
+  ((lsp-log-io nil) ;; if set to true can cause a performance hit
+   (lsp-enable-symbol-highlighting t)
+   (lsp-lens-enable nil)
+   (lsp-headerline-breadcrumb-enable t)
+   (lsp-modeline-code-actions-enable t)
+   (lsp-signature-render-documentation nil)
+   (lsp-pyls-plugins-flake8-enabled nil)
+   (lsp-pyls-plugins-pycodestyle-enabled t)
+   (lsp-enable-snippet t)
+   ;; increase watch threshold
+   (lsp-file-watch-threshold 100000)
+   (lsp-headerline-breadcrumb-segments '(project file symbols))
+   ;; Disable diagnostics provider of lsp. Use flycheck
+   (lsp-diagnostics-provider :flycheck)
+   ;; clangd is fast
+   (lsp-idle-delay 0.05)
+   ;; be more ide-ish
+   (lsp-headerline-breadcrumb-enable t)
+   ;; we use Corfu!
+   (lsp-completion-provider :none))
   :init
   (defun my/orderless-dispatch-flex-first (_pattern index _total)
     (and (eq index 0) 'orderless-flex))
@@ -22,32 +43,13 @@
   (setq-local completion-at-point-functions (list (cape-capf-buster #'lsp-completion-at-point)))
   :config
   (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
-  (setq lsp-log-io nil ;; if set to true can cause a performance hit
-        lsp-pyls-plugins-flake8-enabled nil
-        lsp-pyls-plugins-pycodestyle-enabled t
-        lsp-enable-snippet t
-        ;; disable flymake
-        lsp-prefer-flymake nil
-        ;; increase watch threshold
-        lsp-file-watch-threshold 100000
-        lsp-headerline-breadcrumb-segments '(project file symbols)
-        ;; Disable diagnostics provider of lsp. Use flycheck
-        lsp-diagnostics-provider :none
-        ;; increase threshold for lsp to run smoothly
+  (setq ;; increase threshold for lsp to run smoothly
         ;; https://emacs-lsp.github.io/lsp-mode/page/performance/
         read-process-output-max (* 1024 1024) ;; 1mb
         ;; bigger number required for client-server communication
         gc-cons-threshold (* 100 1024 1024)
         ;; disable plists parsing and use hasmaps
-        lsp-use-plists nil
-        ;; switch off logging
-        lsp-log-io nil ; if set to true can cause a performance hit
-        ;; clangd is fast
-        lsp-idle-delay 0.1
-        ;; be more ide-ish
-        lsp-headerline-breadcrumb-enable t
-        ;; we use Corfu!
-        lsp-completion-provider :none)
+        lsp-use-plists nil))
 
   (lsp-enable-which-key-integration)
   (lsp-headerline-breadcrumb-mode)
@@ -70,23 +72,28 @@
          (dockerfile-mode . lsp-deferred)
          (html-mode . lsp-deferred)
          (css-mode . lsp-deferred)
-         (lua-mode . lsp-deferred)
-         (before-save-hook . lsp-format-buffer)))
+         (lua-mode . lsp-deferred)))
 
 (use-package lsp-ui
   :after (lsp-mode)
-  :commands lsp-ui-mode
+  :custom
+  ;; infos: https://emacs-lsp.github.io/lsp-mode/tutorials/how-to-turn-off/
+  ((lsp-ui-doc-enable nil)
+   (lsp-ui-doc-show-with-cursor nil)
+   (lsp-ui-doc-show-with-mouse nil)
+   (lsp-ui-doc-include-signature nil)
+   (lsp-eldoc-enable-hover nil)
+   (imenu-auto-rescan t)
+   (imenu-auto-rescan-maxout (* 1024 1024))
+   (imenu--rescan-item '("" . -99))
+   (lsp-ui-doc-position 'top)
+   (lsp-ui-doc-alignment 'window)
+   (lsp-ui-sideline-enable nil)
+   (lsp-ui-sideline-show-code-actions nil)
+   (lsp-ui-sideline-show-symbol nil)
+   (lsp-ui-sideline-show-hover nil))
   :hook ((lsp-mode . lsp-ui-mode))
   :config
-  (setq imenu-auto-rescan t
-        imenu-auto-rescan-maxout (* 1024 1024)
-        imenu--rescan-item '("" . -99)
-        lsp-ui-doc-position 'top
-        lsp-ui-doc-alignment 'window
-        lsp-ui-sideline-enable t
-        lsp-ui-sideline-show-hover nil
-        lsp-ui-doc-include-signature nil  ; don't include type signature in the child frame
-        lsp-ui-sideline-show-symbol nil)  ; don't show symbol on the right of info
   (lsp-ui-peek-enable t))
 
 (with-eval-after-load 'lsp-mode
