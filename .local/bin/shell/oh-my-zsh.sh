@@ -81,6 +81,7 @@ plugins=(cp # rsync with cpv
          zsh-autosuggestions
          zsh-syntax-highlighting
          zsh-navigation-tools
+         you-should-use
         )
 
 source $ZSH/oh-my-zsh.sh

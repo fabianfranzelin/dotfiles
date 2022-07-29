@@ -193,6 +193,11 @@ if [[ ! -d "${ZSH_SYNTAX_HIGHLIGHTING}" ]]; then
     git clone https://github.com/zsh-users/zsh-syntax-highlighting "${ZSH_SYNTAX_HIGHLIGHTING}"
 fi
 
+ZSH_YOU_SHOULD_USE=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/you-should-use
+if [[ ! -d "${ZSH_YOU_SHOULD_USE}" ]]; then
+    git clone https://github.com/MichaelAquilina/zsh-you-should-use "${ZSH_YOU_SHOULD_USE}"
+fi
+
 #------------------------------------------------------------------------------#
 # Setup all symlinks with GNU stow
 echo -e "${__COLOR_INFO}INFO: Setup symlinks with GNU stow.${__COLOR_RESET}"
