@@ -34,7 +34,7 @@ from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 
 mod = "mod4"
-myTerm = "gnome-terminal"
+myTerm = "terminator"
 myBrowser = "firefox"
 
 terminal = guess_terminal()
@@ -109,6 +109,7 @@ keys += [
     Key([mod, "shift"], "b", lazy.spawn(myBrowser), desc="Launch my browser"),
     Key([mod, "shift"], "r", lazy.restart(), desc="Restart Qtile"),
     Key([mod, "shift"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
+    Key([mod], "r", lazy.spawn("rofi -show run"), desc="Run Rofi"),
 ]
 ## -----------------------------
 
@@ -140,8 +141,8 @@ for i in groups:
     )
 
 layout_theme = {
-    "border_width": 2,
-    "margin": 8,
+    "border_width": 1,
+    "margin": 0,
     "border_focus": "e1acff",
     "border_normal": "1D2330",
 }
@@ -224,10 +225,35 @@ def init_widgets_list():
             padding=0,
             scale=0.7,
         ),
-        widget.CurrentLayout(foreground=colors[2], background=colors[0], padding=5),
-        widget.WindowName(foreground=colors[6], background=colors[0], padding=0),
+        widget.TextBox(
+            text="|",
+            font="Ubuntu Mono",
+            background=colors[0],
+            foreground="474747",
+            padding=2,
+            fontsize=14,
+        ),
+        widget.WindowCount(
+            font="Ubuntu Mono",
+            background=colors[0],
+            foreground="ffffff",
+            padding=2,
+            fontsize=14,
+        ),
+        widget.WindowName(
+            foreground=colors[6],
+            background=colors[0],
+            padding=10,
+            font="Ubuntu Mono",
+            fontsize=14,
+        ),
+        # widget.TaskList(foreground=colors[6], background=colors[0], padding=0),
         widget.Systray(background=colors[0], padding=5),
         widget.Sep(linewidth=0, padding=6, foreground=colors[0], background=colors[0]),
+        widget.CPU(
+            foreground=colors[1],
+            background=colors[9],
+        ),
         widget.Memory(
             foreground=colors[1],
             background=colors[6],
@@ -235,11 +261,14 @@ def init_widgets_list():
             fmt="Mem: {}",
             padding=5,
         ),
-        widget.CPUGraph(
-            # foreground=colors[1], background=colors[9], format="%A, %B %d - %H:%M "
-        ),
         widget.Clock(
             foreground=colors[1], background=colors[9], format="%A, %B %d - %H:%M "
+        ),
+        widget.QuickExit(
+            default_text="[X]",
+            countdown_format="[{}]",
+            foreground=colors[1],
+            background=colors[6],
         ),
     ]
     return widgets_list

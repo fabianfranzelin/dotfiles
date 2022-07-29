@@ -14,8 +14,8 @@
   (exec-path-from-shell-copy-env "SSH_AUTH_SOCK"))
 
 ;; set frame transparency and maximize frame by default
-(set-frame-parameter (selected-frame) 'alpha '(100 . 100))
-(add-to-list 'default-frame-alist '(alpha . (100 . 100)))
+(set-frame-parameter (selected-frame) 'alpha '(98 . 98))
+(add-to-list 'default-frame-alist '(alpha . (98 . 98)))
 (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
@@ -98,11 +98,13 @@
    (doom-themes-enable-italic t)) ; if nil, italics is universally disabled
   :config
   ;; Global settings (defaults)
-  (if (memq window-system '(x))
-      ;; make this the default theme if X is available
-      (load-theme 'doom-vibrant t)
-    ;; when emacs is running in terminal mode, this theme works better
-    (load-theme 'doom-material t))
+  (load-theme 'doom-vibrant t)
+  ;; TODO: when launched in qtile, X does not seem available when autostart is called
+  ;; (if (memq window-system '(x))
+  ;;     ;; make this the default theme if X is available
+  ;;     (load-theme 'doom-vibrant t)
+  ;;   ;; when emacs is running in terminal mode, this theme works better
+  ;;   (load-theme 'doom-material t))
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
   ;; or for treemacs users

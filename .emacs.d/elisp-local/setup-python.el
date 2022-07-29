@@ -60,8 +60,8 @@
   :init
   ;; install system dependencies
   (ff/ensure-python-package "black" nil "black")
-
-  :hook ((python-mode . python-black-on-save-mode)))
+  :hook ((python-mode . (lambda ()
+                                (add-hook 'before-save-hook 'python-black-on-save-mode)))))
 
 ;; supports virtual environments. To be set with pyvenv-workon
 (use-package pyvenv

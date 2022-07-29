@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 picom &
-emacs --daemon &
 nm-applet &
 
 ### UNCOMMENT ONLY ONE OF THE FOLLOWING THREE OPTIONS! ###
@@ -10,4 +9,8 @@ nm-applet &
 # 2. Uncomment to set a random wallpaper on login
 # find /usr/share/backgrounds/dtos-backgrounds/ -type f | shuf -n 1 | xargs xwallpaper --stretch &
 # 3. Uncomment to set wallpaper with nitrogen
-nitrogen --set-zoom-fill ~/workspace/dotfiles/backgrounds/dolomites.jpg
+nitrogen --set-zoom-fill \
+         ~/workspace/dotfiles/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg
+
+# Emacs daemon
+systemctl start --user emacs &
