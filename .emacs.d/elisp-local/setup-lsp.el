@@ -21,7 +21,7 @@
    (lsp-file-watch-threshold 100000)
    (lsp-headerline-breadcrumb-segments '(project file symbols))
    ;; Disable diagnostics provider of lsp. Use flycheck
-   (lsp-diagnostics-provider :flycheck)
+   (lsp-diagnostics-provider :none)
    ;; clangd is fast
    (lsp-idle-delay 0.0)
    ;; be more ide-ish

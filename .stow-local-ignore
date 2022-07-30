@@ -2,6 +2,7 @@
 \.site
 \.build.yml
 \.files
+.mypy_cache
 archive
 backgrounds
 mail

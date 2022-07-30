@@ -7,15 +7,15 @@
 
 * {
     background-color:            #282c34;
-    border-color:                #282c34;
+    border-color:                #a9a1e1;
     text-color:                  #bbc2cf;
-    prompt-background:           #51afef;
+    prompt-background:           #46D9FF;
     prompt-foreground:           #282c34;
     prompt-padding:              4px;
-    alternate-normal-background: #1c1f24;
+    alternate-normal-background: #282c34;
     alternate-normal-foreground: @text-color;
-    selected-normal-background:  #ae3f3e;
-    selected-normal-foreground:  #ffffff;
+    selected-normal-background:  #a9a1e1;
+    selected-normal-foreground:  #000000;
     spacing:                     3;
 }
 #window {
@@ -86,11 +86,3 @@ element-text {
     background-color: inherit;
     text-color:       inherit;
 }
-
-/* Not actually relevant for this configuration, but it might
-be useful to someone having issues with their icons' background color
-
-element-icon {
-    background-color: inherit;
-}
-*/
