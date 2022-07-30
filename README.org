@@ -5,7 +5,8 @@
 In this repository, I gather my system configurations that allow me to have
 a consistent computing experience over multiple Linux machines.
 
-It configures two main tools: [[https://www.gnu.org/software/emacs/][GNU Emacs]] and [[https://zsh.sourceforge.io/][ZSH]].
+It configures three main tools: [[https://www.gnu.org/software/emacs/][GNU Emacs]], [[https://zsh.sourceforge.io/][ZSH]] and the [[http://docs.qtile.org/en/stable/][Qtile]] window
+manager.
 
 I use [[https://www.gnu.org/software/stow/][GNU Stow]] to install my configuration files on my Linux
 distributions. Everything can be rolled out by calling the main
