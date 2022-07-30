@@ -117,10 +117,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          ccls \
          shellcheck
 
-    # Awesome Window manager
-    sudo apt install -y awesome
-
-    # Qtile window manager
+    # Install Qtile window manager
     python3 -m pip install --upgrade xcffib
     python3 -m pip install --upgrade --no-cache-dir cairocffi
     sudo apt install -y libpangocairo-1.0-0
