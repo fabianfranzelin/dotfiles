@@ -80,7 +80,7 @@ ARG: position"
   ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
   ;; (corfu-echo-documentation nil) ;; Disable documentation in the echo area
   (corfu-scroll-margin 5)        ;; Use scroll margin
-  (corfu-auto-prefix 3)
+  (corfu-auto-prefix 2)
   :init
   ;; TAB cycle if there are only few candidates
   (setq completion-cycle-threshold 3)
