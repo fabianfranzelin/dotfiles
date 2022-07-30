@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# Shutdown and reboot with rofi
+bash -c "$(echo "systemctl reboot|systemctl poweroff|systemctl --user restart emacs" | rofi -sep "|" -dmenu)"

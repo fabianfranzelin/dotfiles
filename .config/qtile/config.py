@@ -27,16 +27,13 @@
 import subprocess
 from pathlib import Path
 
-from libqtile import bar, hook, layout, qtile, widget
+from libqtile import bar, extension, hook, layout, qtile, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
-from libqtile.utils import guess_terminal
 
 mod = "mod4"
-myTerm = "terminator"
-myBrowser = "firefox"
-
-terminal = guess_terminal()
+my_term = "terminator"
+my_browser = "firefox"
 
 keys = [
     # A list of available commands that can be bound to keys can be found
@@ -90,7 +87,6 @@ keys = [
         lazy.layout.toggle_split(),
         desc="Toggle between split and unsplit sides of stack",
     ),
-    Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
     # Toggle between different layouts as defined below
     Key([mod, "control"], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
@@ -102,11 +98,12 @@ keys = [
     Key(
         [mod, "shift"], "e", lazy.spawn("emacsclient -c -a emacs"), desc="Launch Emacs"
     ),
-    Key([mod, "shift"], "Return", lazy.spawn(myTerm), desc="Launch my terminal"),
-    Key([mod, "shift"], "b", lazy.spawn(myBrowser), desc="Launch my browser"),
+    Key([mod, "shift"], "Return", lazy.spawn(my_term), desc="Launch my terminal"),
+    Key([mod, "shift"], "b", lazy.spawn(my_browser), desc="Launch my browser"),
     Key([mod, "shift"], "r", lazy.restart(), desc="Restart Qtile"),
     Key([mod, "shift"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "r", lazy.spawn("rofi -show run"), desc="Run Rofi"),
+    Key([mod], "s", lazy.spawn(str(Path("~/.local/bin/rofi-shutdown").expanduser()))),
 ]
 # --------------------------------------------------------
 
@@ -212,17 +209,29 @@ def init_widgets_list():
         ),
         widget.Systray(padding=5),
         widget.Sep(linewidth=0, padding=6),
+        widget.TextBox(
+            text=" ",
+            background=my_colors["violet"],
+        ),
         widget.CPU(
             foreground=my_colors["dark-grey"],
             background=my_colors["violet"],
-            mouse_callbacks={"Button1": lambda: qtile.cmd_spawn(myTerm + " -e htop")},
+            mouse_callbacks={"Button1": lambda: qtile.cmd_spawn(my_term + " -e htop")},
+        ),
+        widget.TextBox(
+            text=" ",
+            background=my_colors["cyan"],
         ),
         widget.Memory(
             foreground=my_colors["dark-grey"],
             background=my_colors["cyan"],
-            mouse_callbacks={"Button1": lambda: qtile.cmd_spawn(myTerm + " -e htop")},
+            mouse_callbacks={"Button1": lambda: qtile.cmd_spawn(my_term + " -e htop")},
             fmt="Mem: {}",
             padding=5,
+        ),
+        widget.TextBox(
+            text=" ",
+            background=my_colors["violet"],
         ),
         widget.Clock(
             foreground=my_colors["dark-grey"],
