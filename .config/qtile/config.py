@@ -24,7 +24,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import os
 import subprocess
 from pathlib import Path
 
@@ -57,6 +56,8 @@ keys = [
     Key([mod, "shift"], "f", lazy.window.toggle_floating(), desc="toggle floating"),
     Key([mod], "f", lazy.window.toggle_fullscreen(), desc="toggle fullscreen"),
     Key([mod], "space", lazy.layout.next(), desc="Move window focus to other window"),
+    Key([mod], "Tab", lazy.group.next_window()),
+    Key([mod, "shift"], "Tab", lazy.group.prev_window()),
     # Move windows between left/right columns or move up/down in current stack.
     # Moving out of range in Columns layout will create new column.
     Key(
@@ -91,17 +92,13 @@ keys = [
     ),
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
     # Toggle between different layouts as defined below
-    Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
+    Key([mod, "control"], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
-]
-
-# --------------------------------------------------------
-# Personal key bindings
-
-keys += [
+    # --------------------------------------------------------
+    # Personal key bindings
     Key(
         [mod, "shift"], "e", lazy.spawn("emacsclient -c -a emacs"), desc="Launch Emacs"
     ),
@@ -147,127 +144,90 @@ layout_theme = {
 }
 
 layouts = [
+    layout.MonadTall(**layout_theme),
     layout.Columns(**layout_theme),
     layout.Max(**layout_theme),
-    # Try more layouts by unleashing below layouts.
-    # layout.Stack(num_stacks=2),
-    # layout.Bsp(),
-    # layout.Matrix(),
-    # layout.MonadTall(),
-    # layout.MonadWide(),
-    # layout.RatioTile(),
-    # layout.Tile(),
-    # layout.TreeTab(),
     layout.Floating(**layout_theme),
-    # layout.VerticalTile(),
-    # layout.Zoomy(),
 ]
 
-colors = [
-    ["#282c34", "#282c34"],
-    ["#1c1f24", "#1c1f24"],
-    ["#dfdfdf", "#dfdfdf"],
-    ["#ff6c6b", "#ff6c6b"],
-    ["#98be65", "#98be65"],
-    ["#da8548", "#da8548"],
-    ["#51afef", "#51afef"],
-    ["#c678dd", "#c678dd"],
-    ["#46d9ff", "#46d9ff"],
-    ["#a9a1e1", "#a9a1e1"],
-]
 
-widget_defaults = dict(font="Ubuntu Bold", fontsize=10, padding=2, background=colors[2])
+# Based on the Emacs Doom vibrant theme
+# https://github.com/doomemacs/themes/blob/master/themes/doom-vibrant-theme.el
+my_colors = {
+    "bg": "#282c34",
+    "fg": "#bfbfbf",
+    "dark-grey": "#1c1f24",
+    "grey": "#5e5e5e",
+    "red": "#ff6655" "red",
+    "orange": "#dd8844",
+    "green": "#99bb66",
+    "teal": "#44b9b1",
+    "yellow": "#ECBE7B",
+    "blue": "#51afef",
+    "dark-blue": "#2257A0",
+    "magenta": "#c678dd",
+    "violet": "#a9a1e1",
+    "cyan": "#46D9FF",
+    "dark-cyan": "#5699AF",
+}
+
+widget_defaults = dict(
+    font="Ubuntu Bold",
+    fontsize=14,
+    padding=2,
+    background=my_colors["bg"],
+    foreground=my_colors["fg"],
+)
 extension_defaults = widget_defaults.copy()
 
 
 def init_widgets_list():
+    """Create my widgets for the top toolbar.
+
+    :returns: List of widgets
+    """
     widgets_list = [
-        widget.Sep(linewidth=0, padding=6, foreground=colors[2], background=colors[0]),
-        widget.Image(
-            filename="~/.config/qtile/icons/python-white.png",
-            scale="False",
-            mouse_callbacks={"Button1": lambda: qtile.cmd_spawn(myTerm)},
-        ),
-        widget.Sep(linewidth=0, padding=6, foreground=colors[2], background=colors[0]),
         widget.GroupBox(
-            font="Ubuntu Bold",
-            fontsize=9,
+            font="Ubuntu Mono",
             margin_y=3,
             margin_x=0,
             padding_y=5,
-            padding_x=3,
+            padding_x=5,
             borderwidth=3,
-            active=colors[2],
-            inactive=colors[7],
-            rounded=False,
-            highlight_color=colors[1],
+            active=my_colors["cyan"],
+            inactive=my_colors["violet"],
             highlight_method="line",
-            this_current_screen_border=colors[6],
-            this_screen_border=colors[4],
-            other_current_screen_border=colors[6],
-            other_screen_border=colors[4],
-            foreground=colors[2],
-            background=colors[0],
+            highlight_color=my_colors["dark-grey"],
         ),
-        widget.TextBox(
-            text="|",
-            font="Ubuntu Mono",
-            background=colors[0],
-            foreground="474747",
-            padding=2,
-            fontsize=14,
-        ),
+        widget.Sep(linewidth=0, padding=6),
         widget.CurrentLayoutIcon(
-            custom_icon_paths=[os.path.expanduser("~/.config/qtile/icons")],
-            foreground=colors[2],
-            background=colors[0],
+            custom_icon_paths=[Path("~/.config/qtile/icons").expanduser()],
             padding=0,
             scale=0.7,
         ),
-        widget.TextBox(
-            text="|",
-            font="Ubuntu Mono",
-            background=colors[0],
-            foreground="474747",
-            padding=2,
-            fontsize=14,
-        ),
-        widget.WindowCount(
-            font="Ubuntu Mono",
-            background=colors[0],
-            foreground="ffffff",
-            padding=2,
-            fontsize=14,
-        ),
         widget.WindowName(
-            foreground=colors[6],
-            background=colors[0],
-            padding=10,
             font="Ubuntu Mono",
-            fontsize=14,
+            foreground=my_colors["green"],
+            padding=10,
         ),
-        # widget.TaskList(foreground=colors[6], background=colors[0], padding=0),
-        widget.Systray(background=colors[0], padding=5),
-        widget.Sep(linewidth=0, padding=6, foreground=colors[0], background=colors[0]),
+        widget.Systray(padding=5),
+        widget.Sep(linewidth=0, padding=6),
         widget.CPU(
-            foreground=colors[1],
-            background=colors[9],
+            foreground=my_colors["dark-grey"],
+            background=my_colors["violet"],
+            mouse_callbacks={"Button1": lambda: qtile.cmd_spawn(myTerm + " -e htop")},
         ),
         widget.Memory(
-            foreground=colors[1],
-            background=colors[6],
+            foreground=my_colors["dark-grey"],
+            background=my_colors["cyan"],
             mouse_callbacks={"Button1": lambda: qtile.cmd_spawn(myTerm + " -e htop")},
             fmt="Mem: {}",
             padding=5,
         ),
         widget.Clock(
-            foreground=colors[1], background=colors[9], format="%A, %B %d - %H:%M "
-        ),
-        widget.QuickExit(
-            default_text="[X]",
-            countdown_format="[{}]",
-            foreground=colors[1],
-            background=colors[6],
+            foreground=my_colors["dark-grey"],
+            background=my_colors["violet"],
+            format="%A, %B %d - %H:%M ",
         ),
     ]
     return widgets_list
@@ -293,12 +253,13 @@ mouse = [
 
 dgroups_key_binder = None
 dgroups_app_rules = []  # type: list
-follow_mouse_focus = True
+follow_mouse_focus = False
 bring_front_click = False
 cursor_warp = False
 floating_layout = layout.Floating(
     float_rules=[
-        # Run the utility of `xprop` to see the wm class and name of an X client.
+        # Run the utility of `xprop` to see the wm class and name of
+        # an X client.
         *layout.Floating.default_float_rules,
         Match(wm_class="confirmreset"),  # gitk
         Match(wm_class="makebranch"),  # gitk
@@ -319,6 +280,7 @@ auto_minimize = True
 
 @hook.subscribe.startup_once
 def start_once():
+    """Execute some applications at startup."""
     subprocess.Popen([Path("~/.config/qtile/autostart.sh").expanduser()])
 
 
