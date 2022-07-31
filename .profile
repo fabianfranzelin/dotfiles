@@ -52,17 +52,17 @@ export GUIX_PROFILE="${HOME}/.config/guix/current"
 #------------------------------------------------------------------------------#
 # ros setup
 
-if (__is_zsh); then
-    # noetic is only for Ubuntu 20.04
-    if [ -f "/opt/ros/noetic/setup.zsh" ]; then
-        . "/opt/ros/noetic/setup.zsh" > /dev/null
+for ROS_VERSION in "noetic" "humble"; do
+    if (__is_zsh); then
+        if [ -f "/opt/ros/${ROS_VERSION}/setup.zsh" ]; then
+            . "/opt/ros/${ROS_VERSION}/setup.zsh" > /dev/null
+        fi
+    elif (__is_bash); then
+        if [ -f "/opt/ros/${ROS_VERSION}/setup.bash" ]; then
+            . "/opt/ros/${ROS_VERSION}/setup.bash" > /dev/null
+        fi
     fi
-elif (__is_bash); then
-    # noetic is only for Ubuntu 20.04
-    if [ -f "/opt/ros/noetic/setup.bash" ]; then
-        . "/opt/ros/noetic/setup.bash" > /dev/null
-    fi
-fi
+done
 
 #------------------------------------------------------------------------------#
 # Export the path to Java so that tools pick it up correctly
