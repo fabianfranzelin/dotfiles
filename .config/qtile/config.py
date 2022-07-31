@@ -202,6 +202,9 @@ def init_widgets_list():
             padding=0,
             scale=0.7,
         ),
+        widget.Sep(linewidth=0, padding=6),
+        widget.WindowCount(fmt="#{}", font="Ubuntu Mono", foreground=my_colors["cyan"]),
+        widget.Sep(linewidth=0, padding=6),
         widget.WindowName(
             font="Ubuntu Mono",
             foreground=my_colors["green"],
@@ -276,6 +279,17 @@ floating_layout = layout.Floating(
         Match(wm_class="ssh-askpass"),  # ssh-askpass
         Match(title="branchdialog"),  # gitk
         Match(title="pinentry"),  # GPG key password entry
+        Match(wm_class="pinentry-gtk-2"),
+        Match(wm_class="Matplotlib"),
+        Match(wm_class="file_progress"),
+        Match(wm_class="notification"),
+        Match(wm_class="toolbar"),
+        Match(wm_class="splash"),
+        Match(wm_class="dialog"),
+        Match(title="Execute File"),
+        Match(title="Open"),
+        Match(title="Confirm File Replacing"),
+        Match(title="about"),
     ]
 )
 auto_fullscreen = True

@@ -98,9 +98,12 @@
    (doom-themes-enable-italic t)) ; if nil, italics is universally disabled
   :config
   ;; Global settings (defaults)
+  (if (display-graphic-p)
+      (message "Running in GUI mode")
+    (message "Running in terminal mode"))
   (load-theme 'doom-vibrant t)
   ;; TODO: when launched in qtile, X does not seem available when autostart is called
-  ;; (if (memq window-system '(x))
+  ;; (if (display-graphic-p)
   ;;     ;; make this the default theme if X is available
   ;;     (load-theme 'doom-vibrant t)
   ;;   ;; when emacs is running in terminal mode, this theme works better
