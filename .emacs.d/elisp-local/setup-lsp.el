@@ -22,6 +22,7 @@
    (lsp-headerline-breadcrumb-segments '(project file symbols))
    ;; Disable diagnostics provider of lsp. Use flycheck
    (lsp-diagnostics-provider :none)
+   (lsp-modeline-diagnostics-scope :workspace)
    ;; clangd is fast
    (lsp-idle-delay 0.0)
    ;; be more ide-ish
@@ -78,14 +79,14 @@
   :after (lsp-mode)
   :custom
   ;; infos: https://emacs-lsp.github.io/lsp-mode/tutorials/how-to-turn-off/
-  ((lsp-ui-doc-enable nil)
+  ((imenu-auto-rescan t)
+   (imenu-auto-rescan-maxout (* 1024 1024))
+   (imenu--rescan-item '("" . -99))
+   (lsp-ui-doc-enable nil)
    (lsp-ui-doc-show-with-cursor nil)
    (lsp-ui-doc-show-with-mouse nil)
    (lsp-ui-doc-include-signature nil)
    (lsp-eldoc-enable-hover nil)
-   (imenu-auto-rescan t)
-   (imenu-auto-rescan-maxout (* 1024 1024))
-   (imenu--rescan-item '("" . -99))
    (lsp-ui-doc-position 'top)
    (lsp-ui-doc-alignment 'window)
    (lsp-ui-sideline-enable nil)
@@ -94,15 +95,9 @@
    (lsp-ui-sideline-show-hover nil))
   :hook ((lsp-mode . lsp-ui-mode))
   :config
-  (lsp-ui-peek-enable t))
-
-(with-eval-after-load 'lsp-mode
-  ;; :global/:workspace/:file
-  (setq lsp-modeline-diagnostics-scope :workspace))
-
-(with-eval-after-load 'lsp-ui-mode
   (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
-  (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references))
+  (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
+  (lsp-ui-peek-enable t))
 
 ;; -------------------------------------------------------------------
 ;; LSP integration with treemacs

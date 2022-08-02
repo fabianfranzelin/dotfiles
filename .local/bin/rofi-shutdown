@@ -1,4 +1,6 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
+
+# shellcheck disable=SC1090
 
 # Shutdown and reboot with rofi
-bash -c "$(echo "systemctl reboot|systemctl poweroff|systemctl --user restart emacs" | rofi -sep "|" -dmenu)"
+bash -i -c "$(echo "logout|reboot|shutdown" | rofi -sep "|" -dmenu)"

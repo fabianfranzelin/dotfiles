@@ -1,5 +1,15 @@
 [tool.isort]
 profile = "black"
 
-[tool.pylint.format]
-max-line-length = "100"
+[tool.pylint.messages_control]
+
+max-line-length = 100
+
+disable = [
+  "no-member",
+  "invalid-name",
+  "bad-whitespace",
+  "bad-continuation",
+  "fixme",
+  "too-few-public-methods",
+]
