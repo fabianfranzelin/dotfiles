@@ -24,11 +24,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+"""My Qtile configuration."""
+
+
 import subprocess
 from pathlib import Path
 
-from libqtile import bar, extension, hook, layout, qtile, widget
+from libqtile import bar, hook, layout, qtile, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
+from libqtile.dgroups import simple_key_binder
 from libqtile.lazy import lazy
 
 mod = "mod4"
@@ -105,33 +109,8 @@ keys = [
     Key([mod], "r", lazy.spawn("rofi -show run"), desc="Run Rofi"),
     Key([mod], "s", lazy.spawn(str(Path("~/.local/bin/rofi-shutdown").expanduser()))),
 ]
+
 # --------------------------------------------------------
-
-groups = [Group(i) for i in "123456789"]
-
-for i in groups:
-    keys.extend(
-        [
-            # mod1 + letter of group = switch to group
-            Key(
-                [mod],
-                i.name,
-                lazy.group[i.name].toscreen(),
-                desc="Switch to group {}".format(i.name),
-            ),
-            # mod1 + shift + letter of group = switch to & move focused window to group
-            Key(
-                [mod, "shift"],
-                i.name,
-                lazy.window.togroup(i.name, switch_group=True),
-                desc="Switch to & move focused window to group {}".format(i.name),
-            ),
-            # Or, use below if you prefer not to switch to that group.
-            # # mod1 + shift + letter of group = move focused window to group
-            # Key([mod, "shift"], i.name, lazy.window.togroup(i.name),
-            #     desc="move focused window to group {}".format(i.name)),
-        ]
-    )
 
 layout_theme = {
     "border_width": 1,
@@ -144,9 +123,25 @@ layouts = [
     layout.MonadTall(**layout_theme),
     layout.Columns(**layout_theme),
     layout.Max(**layout_theme),
-    layout.Floating(**layout_theme),
+    layout.Floating(),
 ]
 
+# --------------------------------------------------------
+
+groups = [
+    Group("Emacs", layout="monadtall"),
+    Group("Code", layout="monadtall"),
+    Group("Stuff", layout="monadtall"),
+]
+
+
+# Allow MODKEY+[0 through 9] to bind to groups, see
+# https://docs.qtile.org/en/stable/manual/config/groups.html MOD4 +
+# index Number : Switch to Group[index] MOD4 + shift + index Number :
+# Send active window to another Group
+dgroups_key_binder = simple_key_binder(mod)
+
+# --------------------------------------------------------
 
 # Based on the Emacs Doom vibrant theme
 # https://github.com/doomemacs/themes/blob/master/themes/doom-vibrant-theme.el
@@ -263,7 +258,6 @@ mouse = [
     Click([mod], "Button2", lazy.window.bring_to_front()),
 ]
 
-dgroups_key_binder = None
 dgroups_app_rules = []  # type: list
 follow_mouse_focus = False
 bring_front_click = False
@@ -302,15 +296,25 @@ auto_minimize = True
 
 
 @hook.subscribe.startup_once
-def start_once():
-    """Execute some applications at startup."""
-    subprocess.Popen([Path("~/.config/qtile/autostart.sh").expanduser()])
+def startup_once():
+    """Execute some applications at startup once when machine is booted."""
+    subprocess.Popen(  # pylint: disable=consider-using-with
+        [Path("~/.config/qtile/autostart.sh").expanduser()]
+    )
+
+
+@hook.subscribe.startup
+def startup():
+    """Execute some applications at startup of qtile."""
+    subprocess.Popen(  # pylint: disable=consider-using-with
+        [Path("~/.config/qtile/startup.sh").expanduser()]
+    )
 
 
 # When using the Wayland backend, this can be used to configure input devices.
 wl_input_rules = None
 
-# XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
+# Gasp! We're lying here. In fact, nobody really uses or cares about this
 # string besides java UI toolkits; you can see several discussions on the
 # mailing lists, GitHub issues, and other WM documentation that suggest setting
 # this string if your java app doesn't work correctly. We may as well just lie
