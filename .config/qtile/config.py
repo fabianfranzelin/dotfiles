@@ -150,7 +150,7 @@ my_colors = {
     "fg": "#bfbfbf",
     "dark-grey": "#1c1f24",
     "grey": "#5e5e5e",
-    "red": "#ff6655" "red",
+    "red": "#ff6655",
     "orange": "#dd8844",
     "green": "#99bb66",
     "teal": "#44b9b1",
