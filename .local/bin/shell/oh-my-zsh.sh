@@ -82,9 +82,10 @@ plugins=(cp # rsync with cpv
          zsh-syntax-highlighting
          zsh-navigation-tools
          you-should-use
+         sudo # ESC-ESC puts sudo in front of last command
         )
 
-source $ZSH/oh-my-zsh.sh
+. "${ZSH}/oh-my-zsh.sh"
 
 # User configuration
 

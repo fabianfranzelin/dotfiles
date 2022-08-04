@@ -3,4 +3,4 @@
 # shellcheck disable=SC1090
 
 # Shutdown and reboot with rofi
-bash -i -c "$(echo "logout|reboot|shutdown" | rofi -sep "|" -dmenu)"
+bash -i -c "$(echo "logout|reboot|shutdown|emacs_start|emacs_stop|emacs_restart" | rofi -sep "|" -dmenu)"

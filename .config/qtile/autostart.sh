@@ -10,7 +10,7 @@ nm-applet &
 # find /usr/share/backgrounds/dtos-backgrounds/ -type f | shuf -n 1 | xargs xwallpaper --stretch &
 # 3. Uncomment to set wallpaper with nitrogen
 nitrogen --set-zoom-fill \
-         "$HOME/workspace/dotfiles/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg"
+         "$HOME/.local/share/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg" &
 
 # Emacs daemon
 systemctl start --user emacs &
