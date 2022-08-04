@@ -106,5 +106,5 @@ __pycache__
 
 ### Emacs ###
 flycheck_*
-/.local/emacs/eln-cache/
+/.config/emacs/eln-cache/
 /.config/systemd/user/default.target.wants/*.service
