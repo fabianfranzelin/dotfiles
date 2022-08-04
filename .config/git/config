@@ -1,5 +1,5 @@
 [include]
-    path = "~/.gitconfig.general"
+    path = "~/.config/git/config.general"
 [core]
     trustctime = false
     filemode = false

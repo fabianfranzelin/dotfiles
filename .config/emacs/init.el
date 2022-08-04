@@ -70,7 +70,7 @@
 ;; -------------------------------------------------------------------
 ;; define path of local lisp packages that are part of the dotfiles
 ;; repo
-(defvar emacs-config-home (expand-file-name ".emacs.d" (getenv "HOME"))
+(defvar emacs-config-home (expand-file-name ".config/emacs" (getenv "HOME"))
   "Location of the Emacs configuration.")
 (defvar local-load-path (expand-file-name "elisp-local" emacs-config-home)
   "Load path for local Emacs configurations.")
