@@ -93,10 +93,9 @@ keys = [
     ),
     # Toggle between different layouts as defined below
     Key([mod, "control"], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
-    Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-    Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
+    Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
     # --------------------------------------------------------
     # Personal key bindings
     Key(
@@ -108,6 +107,9 @@ keys = [
     Key([mod, "shift"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "r", lazy.spawn("rofi -show run"), desc="Run Rofi"),
     Key([mod], "s", lazy.spawn(str(Path("~/.local/bin/rofi-shutdown").expanduser()))),
+    # Groups
+    Key([mod, "control"], "Left", lazy.screen.prev_group()),
+    Key([mod, "control"], "Right", lazy.screen.next_group()),
 ]
 
 # --------------------------------------------------------

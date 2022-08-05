@@ -98,22 +98,35 @@
    (doom-themes-enable-italic t)) ; if nil, italics is universally disabled
   :config
   ;; Global settings (defaults)
-  (if (display-graphic-p)
-      (message "Running in GUI mode")
-    (message "Running in terminal mode"))
   (load-theme 'doom-vibrant t)
-  ;; TODO: when launched in qtile, X does not seem available when autostart is called
-  ;; (if (display-graphic-p)
-  ;;     ;; make this the default theme if X is available
-  ;;     (load-theme 'doom-vibrant t)
-  ;;   ;; when emacs is running in terminal mode, this theme works better
-  ;;   (load-theme 'doom-material t))
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
   ;; or for treemacs users
   (doom-themes-treemacs-config)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
+
+
+;; Currently disabled: it is just not the right way to do it :)
+;; (defun ff/load-theme (frame)
+;;   "Set theme depending on frame running in GUI or terminal.
+
+;; For details, check
+;; https://emacs.stackexchange.com/questions/24609/determine-graphical-display-on-startup-for-emacs-server-client
+
+;; FRAME: frame to be checked"
+;;   (if (display-graphic-p frame)
+;;       ;; make this the default theme if X is available
+;;       (load-theme 'doom-vibrant t)
+;;     ;; when emacs is running in terminal mode, this theme works better
+;;     (load-theme 'doom-material t)))
+
+;; (with-eval-after-load 'doom-themes
+;;   ;; Run for already-existing frames
+;;   (mapc 'ff/load-theme (frame-list))
+;;   ;; Run when a new frame is created
+;;   (unless (daemonp)
+;;     (add-hook 'after-make-frame-functions 'ff/load-theme)))
 
 ;; Add frame borders and window dividers
 (modify-all-frames-parameters
