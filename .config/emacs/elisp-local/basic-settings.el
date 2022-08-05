@@ -62,6 +62,16 @@
 ;; let me confirm emacs before killing it
 (setq confirm-kill-emacs 'yes-or-no-p)
 
+(defun ff/ask-before-closing-frame ()
+  "Close only if y was pressed."
+  (interactive)
+  (if (y-or-n-p (format "Are you sure you want to close this frame? "))
+      (server-save-buffers-kill-terminal nil)
+    (message "Canceled frame close")))
+
+(when (daemonp)
+  (global-set-key (kbd "C-x C-c") 'ff/ask-before-closing-frame))
+
 ;; Support wheel mouse scrolling
 (mouse-wheel-mode t)
 
