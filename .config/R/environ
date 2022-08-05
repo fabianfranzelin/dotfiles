@@ -11,5 +11,5 @@
 #R_HOME="${HOME}/R"
 R_BROWSER="brave"
 # only in .libPaths() if dir exists
-R_LIBS_USER="${HOME}/R/library/4.0"
-R_HISTFILE="${HOME}/.Rhistory"
+R_LIBS_USER="${XDG_DATA_HOME}/R/library/4.0"
+R_HISTFILE="${XDG_CACHE_HOME}/R/history"
