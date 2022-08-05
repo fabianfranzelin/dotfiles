@@ -70,8 +70,8 @@ JAVA_HOME="$(dirname "$(dirname "$(readlink "$(readlink "$(command -v java)")")"
 export JAVA_HOME
 
 # R setup
-export R_ENVIRON_USER="${XDG_CONFIG_HOME}/R/environ"
-export R_PROFILE_USER="${XDG_CONFIG_HOME}/R/profile"
+export R_ENVIRON_USER="${XDG_CONFIG_HOME}/R/environ.sh"
+export R_PROFILE_USER="${XDG_CONFIG_HOME}/R/profile.R"
 
 # certificates path
 export CERT_PATH="${HOME}/.local/share/certificates"
