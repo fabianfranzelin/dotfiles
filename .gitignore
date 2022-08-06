@@ -5,11 +5,12 @@
 # Edit at https://www.gitignore.io/?templates=code,linux,macos,visualstudiocode,windows
 
 ### Code ###
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+.config/Code/User/*
+!.config/Code/User/settings.json
+!.config/Code/User/keybindings.json
+!.config/Code/User/tasks.json
+!.config/Code/User/launch.json
+!.config/Code/User/extensions.sh
 
 ### Linux ###
 *~

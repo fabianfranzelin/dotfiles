@@ -1,0 +1,317 @@
+{
+  //------------------------------------------------------------------------//
+  // window settings
+  "window.title": "${activeEditorMedium}${separator}${rootName}",
+  "window.titleBarStyle": "custom",
+  "window.zoomLevel": 0,
+  "workbench.editor.showTabs": true,
+  "workbench.sideBar.location": "left",
+  "workbench.statusBar.visible": true,
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.colorTheme": "Dracula", // "Dracula",
+  "workbench.activityBar.visible": true,
+  "window.menuBarVisibility": "compact",
+  "breadcrumbs.enabled": true,
+  "editor.renderControlCharacters": false,
+  // settings-ui
+  "workbench.settings.editor": "json",
+  "workbench.settings.useSplitJSON": true,
+  "workbench.settings.openDefaultSettings": false,
+  // terminal
+  "terminal.integrated.scrollback": 100000,
+  //------------------------------------------------------------------------//
+  // editor settings
+  "explorer.sortOrder": "filesFirst",
+  "files.exclude": {
+    "**/.DS_Store": true,
+    "**/.git": true,
+    "**/.hg": true,
+    "**/.pyc": true,
+    "**/.svn": true,
+    "**/CVS": true
+  },
+  "explorer.confirmDragAndDrop": false,
+  "extensions.ignoreRecommendations": false,
+  "editor.cursorSmoothCaretAnimation": true,
+  "editor.lineNumbers": "relative",
+  "editor.rulers": [80, 100, 120],
+  "editor.cursorSurroundingLines": 0,
+  "editor.cursorStyle": "line",
+  "editor.renderLineHighlight": "none",
+  "editor.renderFinalNewline": true,
+  "editor.formatOnSave": false,
+  "editor.tokenColorCustomizations": true,
+  // whitespaces (change whitespace+ mode to trailing in the Command Palette)
+  "editor.renderWhitespace": "none",
+  // "workbench.colorCustomizations": {
+  //     "editorWhitespace.foreground": "#ff0000",
+  //     // "editorIndentGuide.activeBackground": "#88C0D0",
+  //     // "editorIndentGuide.background": "#4C566A",
+  // }a
+
+  "files.trimTrailingWhitespace": false, // some files need false!
+  "diffEditor.ignoreTrimWhitespace": false,
+  // tabs
+  "editor.insertSpaces": true,
+  "editor.tabSize": 4,
+  "editor.detectIndentation": false,
+  // line wrapping
+  "editor.wordWrap": "off",
+  // minimap
+  "editor.minimap.enabled": true,
+  "editor.minimap.maxColumn": 120,
+  // utility
+  "files.autoSave": "onFocusChange",
+  "files.autoSaveDelay": 1000,
+  "editor.suggestSelection": "first",
+  // DO NOT SET MANUALLY
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+  // font settings
+  // - Cascadia Code is from Microsoft, easily installed (< 1 min) via GitHub
+  //   GitHub-Link: https://github.com/microsoft/cascadia-code/releases
+  // - Menlo is macOS
+  // - Courier and monospace are thinner and just fallbacks for the other two
+  //
+  // - all fonts are monospace-fonts
+  // - Cascadia Code and Menlo have * in the line's center
+  //   e.g. 3*4, /* comment */, x *= 4, * item in markdown
+  "editor.fontFamily": "Cascadia Code, Menlo, Courier, monospace",
+  // replaces (only visually!) common chars, e.g. >=
+  // - safe when searching >, =, >=
+  // - keep width of original chars (2 for >=)
+  // - shows original char under block-cursor
+  "editor.fontLigatures": true,
+  "editor.fontSize": 16,
+  //------------------------------------------------------------------------//
+  // brackets
+  "editor.matchBrackets": "never",
+  "bracket-pair-colorizer-2.forceUniqueOpeningColor": false,
+  "bracket-pair-colorizer-2.forceIterationColorCycle": false,
+  "bracket-pair-colorizer-2.colorMode": "Consecutive",
+  "bracket-pair-colorizer-2.highlightActiveScope": true,
+  "bracket-pair-colorizer-2.activeScopeCSS": [
+    "borderStyle : solid",
+    "borderWidth : 1px",
+    "borderColor : {color}",
+    "opacity     : 1.00"
+  ],
+  "bracket-pair-colorizer-2.showBracketsInGutter": true,
+  "bracket-pair-colorizer-2.showBracketsInRuler": false,
+  "bracket-pair-colorizer-2.showVerticalScopeLine": true,
+  "bracket-pair-colorizer-2.showHorizontalScopeLine": false,
+  "bracket-pair-colorizer-2.scopeLineRelativePosition": true,
+  "bracket-pair-colorizer-2.scopeLineCSS": [
+    "borderStyle : solid",
+    "borderWidth : 1px",
+    "borderColor : {color}",
+    "opacity     : 1.00"
+  ],
+  //------------------------------------------------------------------------//
+  // privacy
+  "telemetry.enableTelemetry": false,
+  // Also usage data is included and we're talking about microsoft.
+  "telemetry.enableCrashReporter": false,
+  //------------------------------------------------------------------------//
+  // specific stuff
+  "files.associations": {
+    "SConscript": "python",
+    "SConstruct": "python",
+    "TAG_EDITMSG": "git-commit",
+    ".latexmkrc": "perl",
+    "config": "properties",
+    "config.general": "properties",
+    "*.fmi": "properties", // github.com/dominicparga/osmgraphing
+    "*.route-pairs": "properties", // github.com/dominicparga/osmgraphing
+    "*.mdx": "markdown"
+    // "*.thor": "ruby",
+  },
+  //------------------------------------------------------------------------//
+  // cpp
+  "[cpp]": {
+    "editor.rulers": [100]
+  },
+  //------------------------------------------------------------------------//
+  // css
+  "[css]": {
+    "editor.rulers": [80],
+    "editor.tabSize": 2
+  },
+  //------------------------------------------------------------------------//
+  // git
+  "scm.defaultViewMode": "tree",
+  "[git-commit]": {
+    "editor.rulers": [50, 72]
+  },
+  //------------------------------------------------------------------------//
+  // html
+  "[html]": {
+    "editor.rulers": [80],
+    "editor.tabSize": 2
+  },
+  //------------------------------------------------------------------------//
+  // java
+  "[java]": {
+    "editor.rulers": [100],
+    "editor.defaultFormatter": "redhat.java",
+    "editor.formatOnSave": true
+  },
+  "java.format.settings.url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml",
+  "java.configuration.checkProjectSettingsExclusions": false,
+  //------------------------------------------------------------------------//
+  // JavaScript
+  "[javascript]": {
+    "editor.rulers": [100],
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[javascriptreact]": {
+    "editor.rulers": [100],
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[json]": {
+    "editor.rulers": [80],
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[jsonc]": {
+    "editor.rulers": [80],
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  //------------------------------------------------------------------------//
+  // LaTeX
+  "[latex]": {
+    "editor.wordWrap": "on"
+  },
+  // TexLab
+  // "latex.build.args": [],
+  // "latex.build.executable": "latexmk",
+  // "latex.build.onSave": false,
+  // LaTeX-Workshop
+  "latex-workshop.latex.autoBuild.run": "never",
+  "latex-workshop.view.pdf.viewer": "tab",
+  "latex-workshop.hover.preview.scale": 1,
+  "latex-workshop.latex.external.build.command": "latexmk",
+  // // relative to main.tex
+  // "latex-workshop.latex.outDir": "build",
+  // "latex-workshop.latex.magic.args": [
+  //     "-lualatex",
+  //     "-shell-escape",
+  //     "-file-line-error",
+  //     "-halt-on-error",
+  //     "-interaction=nonstopmode",
+  //     "-output-dir=%OUTDIR%",
+  //     "-synctex=1",
+  //     "%DOC%"
+  // ],
+  // "latex-workshop.latex.magic.bib.args": [
+  //     "%DOCFILE%",
+  //     "--input-directory=%OUTDIR%",
+  //     "--output-directory=%OUTDIR%"
+  // ],
+  //------------------------------------------------------------------------//
+  // Markdown
+  "[markdown]": {
+    "editor.wordWrap": "on",
+    "editor.quickSuggestions": {
+        "comments": "on",
+        "strings": "on",
+        "other": "on"
+    },
+    "editor.tabSize": 2
+  },
+  "markdownlint.config": {
+    "MD012": false, // no multiple blanks
+    "MD013": false, // line length
+    "MD024": false, // no duplicate heading/header
+    "MD033": false, // no inline-html
+    "MD041": false, // first line should be '# h1'
+    "MD046": false // code-block-style
+  },
+  //------------------------------------------------------------------------//
+  // python
+  "[python]": {
+    "editor.rulers": [72, 79],
+    "editor.trimAutoWhitespace": true,
+    "editor.formatOnSave": true
+  },
+  "python.formatting.provider": "autopep8",
+  "python.languageServer": "Pylance",
+  "python.analysis.completeFunctionParens": true,
+  "python.pythonPath": "${env:PYTHON_INTERPRETER_PATH}",
+  "python.autoComplete.addBrackets": true,
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": true,
+  "python.linting.pylintArgs": ["--max-line-length=79"],
+  "python.venvFolders": ["envs", ".pyenv", ".direnv", ".venv"],
+  "python.jediEnabled": false,
+  //------------------------------------------------------------------------//
+  // rust
+  "[rust]": {
+    "editor.rulers": [100],
+    "editor.trimAutoWhitespace": true,
+    "editor.defaultFormatter": "matklad.rust-analyzer",
+    "editor.formatOnSave": true
+  },
+  "rust-analyzer.inlayHints.chainingHints": false,
+  "rust-analyzer.inlayHints.parameterHints": false,
+  "rust-analyzer.inlayHints.typeHints": false,
+  "rust-analyzer.cargo.allFeatures": true,
+  "rust-analyzer.cargo.features": ["gpl"],
+  "rust-analyzer.updates.askBeforeDownload": true,
+  //------------------------------------------------------------------------//
+  // R
+  "[r]": {
+    "editor.rulers": [80],
+    "editor.trimAutoWhitespace": true,
+    "editor.defaultFormatter": "REditorSupport.r-lsp",
+    "editor.formatOnSave": false
+  },
+  //------------------------------------------------------------------------//
+  // shellscript
+  // SC1090 - Can't follow non-constant source.
+  // SC1091 - Not following
+  // SC2016 - ${...} doesn't expand in '...', use "..."
+  // SC2139 - Expansion when defined, not when used.
+  "[shellscript]": {
+    "editor.rulers": [80],
+    "editor.trimAutoWhitespace": true
+  },
+  "shellcheck.enable": true,
+  "shellcheck.run": "onType",
+  "shellcheck.executablePath": "shellcheck",
+  "shellcheck.exclude": ["SC1090", "SC1091", "SC2016", "SC2139"],
+  "shellcheck.customArgs": [],
+  "shellcheck.ignorePatterns": {},
+  "shellcheck.useWSL": false,
+  //------------------------------------------------------------------------//
+  // SQL
+  "vscode-mysql.enableTelemetry": false,
+  //------------------------------------------------------------------------//
+  // TypeScript
+  "[typescript]": {
+    "editor.rulers": [100],
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[typescriptreact]": {
+    "editor.rulers": [100],
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  //------------------------------------------------------------------------//
+  // yaml
+  "[yaml]": {
+    "editor.rulers": [80],
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  }
+}
