@@ -213,11 +213,3 @@ echo -e "${__COLOR_INFO}INFO: Setup symlinks with GNU stow.${__COLOR_RESET}"
     stow . -t "${HOME}"
 )
 
-#------------------------------------------------------------------------------#
-# setup custom/emacs
-
-echo -e "${__COLOR_INFO}INFO: Creating and linking emacs-setup ...${__COLOR_RESET}"
-
-__CACHE_EMACS_ETC="${HOME}/.cache/emacs/etc"
-
-echo -e "${__COLOR_SUCC}SUCCESS: Emacs Application Framework setup configured${__COLOR_RESET}"
