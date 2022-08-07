@@ -795,12 +795,6 @@ TEXT: title"
   :straight nil)
 
 ;; -------------------------------------------------------------------
-;; Emacs application framework: it does not seem to be stable
-;; -------------------------------------------------------------------
-;; (use-package setup-eaf
-;;   :straight nil)
-
-;; -------------------------------------------------------------------
 ;; Ace window: select windows based on numbers
 ;; -------------------------------------------------------------------
 (use-package ace-window
