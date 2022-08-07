@@ -198,8 +198,11 @@ INCREMENT: Value of which the current font-size is changed"
 (setq-default indent-tabs-mode nil)    ; use only spaces and no tabs
 (setq-default tab-width 4)
 
-;; Delete trailing white spaces
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
+;; Delete trailing white spaces only for lines that are touched. This
+;; replaces the obvious, more intrusive, approach of
+;; (add-hook 'before-save-hook 'delete-trailing-whitespace)
+(use-package ws-butler
+  :hook ((prog-mode . ws-butler-mode)))
 
 ;; enable auto pair mode globally
 (electric-pair-mode t)
@@ -737,7 +740,8 @@ FILE: filename"
                 eshell-mode-hook
                 vterm-mode-hook
                 treemacs-mode-hook
-                compilation-mode-hook))
+                compilation-mode-hook
+                pdf-view-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 ;; -------------------------------------------------------------------
