@@ -118,6 +118,13 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          ccls \
          shellcheck
 
+    # emacs pdf-tools dependencies
+    sudo apt install -y \
+         libpng-dev zlib1g-dev \
+         libpoppler-glib-dev \
+         libpoppler-private-dev \
+         imagemagick
+
     # Install Qtile window manager
     python3 -m pip install --upgrade xcffib
     python3 -m pip install --upgrade --no-cache-dir cairocffi

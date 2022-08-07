@@ -87,6 +87,22 @@
 ;; -------------------------------------------------------------------
 
 ;; -------------------------------------------------------------------
+;; Forward and inverse search with pdf-tools
+;; -------------------------------------------------------------------
+;; run M-x pdf-tools-install RET to finally install the package
+(use-package pdf-tools
+  :magic ("%PDF" . pdf-view-mode)
+  :init
+  ;; With a recent auctex installation, you might want to put the
+  ;; following somewhere in your dotemacs, which will revert the
+  ;; PDF-buffer after the TeX compilation has finished.
+  ;; https://github.com/politza/pdf-tools
+  (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
+  :hook (pdf-view-mode . pdf-isearch-minor-mode)
+  :bind (:map pdf-view-mode-map
+              ("C-s" . isearch-forward)))
+
+;; -------------------------------------------------------------------
 ;; Forward and inverse search with okular
 ;; -------------------------------------------------------------------
 (use-package okular-search
