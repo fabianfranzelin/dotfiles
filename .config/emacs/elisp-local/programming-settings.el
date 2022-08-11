@@ -330,11 +330,6 @@ SOURCE_FILENAME: filename to the puml file."
 (use-package jinja2-mode
   :mode ("\\.j2\\'" "\\.jinja2\\'"))
 
-;; -------------------------------------------------------------------
-;; Lua
-;; -------------------------------------------------------------------
-(use-package lua-mode)
-
 (provide 'programming-settings)
 
 ;;; programming-settings.el ends here

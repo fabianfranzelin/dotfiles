@@ -801,10 +801,11 @@ TEXT: title"
   :bind (("M-o" . ace-window)))
 
 ;; -------------------------------------------------------------------
-;; Direnv integration
+;; Direnv: I am using the buffer local version and not the direnv
+;; package
 ;; -------------------------------------------------------------------
-(use-package direnv
-  :init (direnv-mode))
+(use-package envrc
+  :init (envrc-global-mode t))
 
 (provide 'basic-settings)
 
