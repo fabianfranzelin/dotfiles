@@ -90,15 +90,22 @@
   ;; skip code blocks in org
   (add-to-list 'ispell-skip-region-alist '("^#+BEGIN_SRC" . "^#+END_SRC"))
 
-  :bind (("<f4>" . fd-switch-dictionary))
+  :bind (("<f4>" . fd-switch-dictionary)))
+
+;; flyspell mode
+(use-package flyspell
   :hook ((text-mode . flyspell-mode)
          (rst-mode . flyspell-mode)
          (htm-mode . flyspell-mode)
          (html-mode . flyspell-mode)
          (org-mode . flyspell-mode)))
 
-;; flyspell mode
-(require 'flyspell)
+(use-package flyspell-correct
+  :after flyspell
+  :bind (:map flyspell-mode-map ("C-." . flyspell-correct-wrapper)))
+
+(use-package flyspell-correct-popup
+  :after flyspell-correct)
 
 (put 'LaTeX-mode 'flyspell-mode-predicate 'auctex-mode-flyspell-verify)
 (defun auctex-mode-flyspell-verify ()

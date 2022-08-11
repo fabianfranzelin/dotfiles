@@ -72,8 +72,7 @@
          (cmake-mode . lsp-deferred)
          (dockerfile-mode . lsp-deferred)
          (html-mode . lsp-deferred)
-         (css-mode . lsp-deferred)
-         (lua-mode . lsp-deferred)))
+         (css-mode . lsp-deferred)))
 
 (use-package lsp-ui
   :after (lsp-mode)
