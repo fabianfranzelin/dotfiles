@@ -259,7 +259,7 @@ INCREMENT: Value of which the current font-size is changed"
   ;; Content is not centered by default. To center, set
   (dashboard-center-content t)
   ;; To disable shortcut "jump" indicators for each section, set
-  (setq dashboard-show-shortcuts t)
+  (dashboard-show-shortcuts t)
   (dashboard-items '((projects . 5)
                      (recents  . 5)
                      (agenda . 5)))
@@ -341,8 +341,8 @@ INCREMENT: Value of which the current font-size is changed"
    (tramp-use-ssh-controlmaster-options nil)
    (vc-handled-backends '(Git)))
   :config
-  (setq tramp-auto-save-directory (expand-file-name "var/tramp/backups" user-emacs-directory)
-        tramp-persistency-file-name (expand-file-name "var/tramp/persistency_data" user-emacs-directory)
+  (setq tramp-auto-save-directory (expand-file-name "tramp/backups" no-littering-var-directory)
+        tramp-persistency-file-name (expand-file-name "tramp/persistency_data" no-littering-var-directory)
         ;; make sure vc stuff is not making tramp slower
         vc-ignore-dir-regexp
         (format "%s\\|%s"
@@ -655,6 +655,10 @@ PROJECT-ROOT: Path to the root directory of the current project."
   "Switch to a workspace with the project name and start `magit-status'."
   (if (not (member (projectile-project-name) (persp-all-names)))
       (persp-switch (projectile-project-name)))
+  ;; for some reason, xref keeps breaking in elisp. If you observe an
+  ;; error such as "funcall-interactively: Wrong type argument: listp,
+  ;; 0", then clean up the history and it works again.
+  (setq xref--history (cons nil nil))
   (projectile-find-file))
 
 (use-package projectile
