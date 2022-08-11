@@ -114,9 +114,15 @@ ARG: position"
   (setq completion-category-defaults nil))
 
 (use-package affe
-  :config
-  ;; Manual preview key for `affe-grep'
-  (consult-customize affe-grep :preview-key (kbd "M-."))
+  ;; search also in hidden and ignoreg files by git
+  :custom ((affe-find-command
+              (cond
+               ((executable-find "rg") "rg --color=never --files -uu")
+               (t "find -not ( -wholename */.* -prune ) -type f")))
+           (affe-grep-command
+            (cond
+             ((executable-find "rg") "rg -uu --null --color=never --max-columns=1000 --no-heading --line-number -v ^$ .")
+             (t "grep -I -r --exclude=.* --exclude-dir=.* --null --color=never --line-number -v ^$"))))
   :bind (("C-c C-f" . affe-find)
          ("C-c C-g" . affe-grep)))
 
