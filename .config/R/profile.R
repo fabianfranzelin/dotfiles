@@ -23,3 +23,7 @@ options(show.signif.stars = FALSE)
 options(warn = 1)
 # post-mortem debugging facilities
 error <- quote(dump.frames("${R_HOME}/testdump", TRUE))
+
+# check
+# https://statsandr.com/blog/an-efficient-way-to-install-and-load-r-packages/
+# on how to install default packages efficiently
