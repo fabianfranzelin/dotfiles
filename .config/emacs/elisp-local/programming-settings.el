@@ -267,12 +267,12 @@ SOURCE_FILENAME: filename to the puml file."
   (ff/ensure-apt-package "unzip" "unzip")
 
   ;; Consider using (plantuml-download-jar) as alternative
-  (defvar plantuml-version "1.2022.2" "Version number of plantuml binary")
+  (defvar plantuml-version "1.2022.6" "Version number of plantuml binary")
   (defvar plantuml-name (concat "plantuml-jar-asl-" plantuml-version) "Name of plantuml executable")
   (defvar plantuml-url
     (concat "https://sourceforge.net/projects/plantuml/files/" plantuml-version "/" plantuml-name ".zip/download")
     "URL to download plantuml from sourceforge.")
-  (defvar plantuml-root (expand-file-name "opt/plantuml" (getenv "HOME")))
+  (defvar plantuml-root (expand-file-name "plantuml" no-littering-var-directory))
   (defvar plantuml-extract-to (expand-file-name plantuml-name plantuml-root)
     "Destination of plantuml binaries")
   (defvar plantuml-expected-binary (expand-file-name "plantuml.jar" plantuml-extract-to)

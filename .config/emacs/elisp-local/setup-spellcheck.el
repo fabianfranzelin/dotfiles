@@ -23,10 +23,10 @@
   (ff/ensure-apt-package "unzip" "unzip")
 
   ;; Create directory for languagetool binaries
-  (defvar langtool-version "5.7")
+  (defvar langtool-version "5.8")
   (defvar langtool-name (concat "LanguageTool-" langtool-version))
   (defvar langtool-url (concat "https://languagetool.org/download/" langtool-name ".zip"))
-  (defvar langtool-extract-to (expand-file-name "opt/languageTool" (getenv "HOME")))
+  (defvar langtool-extract-to (expand-file-name "language-tool" no-littering-var-directory))
   (defvar langtool-path (expand-file-name langtool-name langtool-extract-to))
   (defvar langtool-server (expand-file-name "languagetool-server.jar" langtool-path))
   (defvar langtool-commandline (expand-file-name "languagetool-commandline.jar" langtool-path))
