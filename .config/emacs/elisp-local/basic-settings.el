@@ -259,11 +259,15 @@ INCREMENT: Value of which the current font-size is changed"
   ;; Content is not centered by default. To center, set
   (dashboard-center-content t)
   ;; To disable shortcut "jump" indicators for each section, set
-  (dashboard-show-shortcuts nil)
+  (setq dashboard-show-shortcuts t)
   (dashboard-items '((projects . 5)
-                     (recents  . 5)))
+                     (recents  . 5)
+                     (agenda . 5)))
   (dashboard-set-heading-icons t)
   (dashboard-set-file-icons t)
+  (dashboard-set-init-info t)
+  (dashboard-week-agenda t)
+  (dashboard-filter-agenda-entry 'dashboard-no-filter-agenda)
   :init
   ;; Show dashboard for newly created frames
   (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
