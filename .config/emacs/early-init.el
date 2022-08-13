@@ -1,9 +1,18 @@
-;;; early-init.el --- Setup early-init
+;;; early-init.el -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 ;; Check https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
 
 ;;; Code:
+
+;;; Garbage collection
+;; Increase the GC threshold for faster startup
+;; The default is 800 kilobytes.  Measured in bytes.
+(setq gc-cons-threshold (* 50 1000 1000))
+
+;;; Emacs lisp source/compiled preference
+;; Prefer loading newest compiled .el file
+(customize-set-variable 'load-prefer-newer noninteractive)
 
 ;; -------------------------------------------------------------------
 ;; Disable package.el since we use straight.el
@@ -36,5 +45,20 @@
 
   ;; Make native compilation happens asynchronously
   (setq native-comp-deferred-compilation t))
+
+;; -------------------------------------------------------------------
+;;; UI configuration
+;; Remove some unneeded UI elements (the user can turn back on anything they wish)
+(setq inhibit-startup-message t)
+(push '(tool-bar-lines . 0) default-frame-alist)
+(push '(menu-bar-lines . 0) default-frame-alist)
+(push '(vertical-scroll-bars) default-frame-alist)
+(push '(mouse-color . "white") default-frame-alist)
+
+;; Loads a nice blue theme, avoids the white screen flash on startup.
+(load-theme 'deeper-blue t)
+
+;; Make the initial buffer load faster by setting its mode to fundamental-mode
+(customize-set-variable 'initial-major-mode 'fundamental-mode)
 
 ;;; early-init.el ends here

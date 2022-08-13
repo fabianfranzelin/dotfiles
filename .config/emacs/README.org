@@ -36,7 +36,8 @@ To build Emacs, run
               CFLAGS="-O3 -mtune=native -march=native -fomit-frame-pointer" \
               --with-mailutils --with-native-compilation --with-imagemagick \
               --with-jpeg --with-png --with-rsvg --with-tiff --with-wide-int \
-              --with-xft --with-xml2 --with-xpm
+              --with-xft --with-xml2 --with-xpm \
+              --with-x-toolkit=lucid
   make -j${nproc} && make install
 #+end_src
 
