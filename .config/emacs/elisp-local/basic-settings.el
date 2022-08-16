@@ -300,20 +300,6 @@ INCREMENT: Value of which the current font-size is changed"
          (LaTeX-mode . ff/visual-fill-center-text)))
 
 ;; -------------------------------------------------------------------
-;; Perspectives and workspaces
-;; -------------------------------------------------------------------
-(use-package perspective
-  :custom
-  ((persp-mode-prefix-key (kbd "C-x x"))
-   (persp-state-default-file (expand-file-name "persp-state.el" user-emacs-directory))
-   (persp-initial-frame-name "Main"))
-  :init
-  (unless (equal persp-mode t)
-    (persp-mode))
-  :bind (("C-M-<next>" . persp-next)
-         ("C-M-<prior>" . persp-prev)))
-
-;; -------------------------------------------------------------------
 ;; Gumshoe: jump back and forth through marked positions
 ;; -------------------------------------------------------------------
 (use-package gumshoe
@@ -359,13 +345,24 @@ INCREMENT: Value of which the current font-size is changed"
 ;; -------------------------------------------------------------------
 ;; Tab bar
 ;; -------------------------------------------------------------------
+;; Use project names as tab names
+;; see https://www.rousette.org.uk/archives/using-the-tab-bar-in-emacs/
+(defun ff/name-tab-by-project-or-default ()
+  "Return project name if in a project, or default tab-bar name if not.
+The default tab-bar name uses the buffer name."
+  (let ((project-name (projectile-project-name)))
+    (if (string= "-" project-name)
+        (tab-bar-tab-name-current)
+      (projectile-project-name))))
+
 (use-package tab-bar
   :custom
   ;; Don't turn on tab-bar-mode when tabs are created
-  ((tab-bar-show 1)
+  ((tab-bar-show nil)
    (tab-bar-new-tab-choice "*scratch*")
-   (tab-bar-close-button-show nil)
-   (tab-bar-new-button-show nil))
+   (tab-bar-tab-name-function #'ff/name-tab-by-project-or-default))
+  :init
+  (tab-bar-mode t)
   :bind (("C-x t n" . tab-new)
          ("C-x t w" . tab-close)
          ("C-<prior>" . tab-previous)
@@ -520,9 +517,9 @@ INCREMENT: Value of which the current font-size is changed"
    (doom-modeline-mu4e nil)
    (doom-modeline-irc nil)
    (doom-modeline-minor-modes nil)
-   (doom-modeline-persp-name t)
+   (doom-modeline-persp-name nil)
    (doom-modeline-display-default-persp-name nil)
-   (doom-modeline-persp-icon t)
+   (doom-modeline-persp-icon nil)
    (doom-modeline-lsp t)
    (doom-modeline-buffer-file-name-style 'truncate-except-project)
    (doom-modeline-buffer-modification-icon t)
@@ -615,15 +612,6 @@ INCREMENT: Value of which the current font-size is changed"
 DIR: root directory of project"
   (file-name-nondirectory (directory-file-name (file-name-directory dir))))
 
-(defun ff/project-switch-project ()
-  "Switch to a workspace with the project name and start `magit-status'."
-  (interactive)
-  (let* ((project-dir (project-prompt-project-dir))
-         (project-name (ff/project-name project-dir)))
-    (if (not (member project-name (persp-all-names)))
-        (persp-switch project-name))
-    (project-switch-project project-dir)))
-
 (defun ff/project-magit ()
   "Show the Git status of the current project."
   (interactive)
@@ -644,23 +632,12 @@ PROJECT-ROOT: Path to the root directory of the current project."
                               (project-dired "Dired")
                               (ff/project-vterm "Vterm"))))
   :bind (:map project-prefix-map
-         ("p" . ff/project-switch-project)
          ("m" . ff/project-magit)
          ("v" . ff/project-vterm)))
 
 ;; -------------------------------------------------------------------
 ;; Projectile mode
 ;; -------------------------------------------------------------------
-(defun ff/switch-project-action ()
-  "Switch to a workspace with the project name and start `magit-status'."
-  (if (not (member (projectile-project-name) (persp-all-names)))
-      (persp-switch (projectile-project-name)))
-  ;; for some reason, xref keeps breaking in elisp. If you observe an
-  ;; error such as "funcall-interactively: Wrong type argument: listp,
-  ;; 0", then clean up the history and it works again.
-  (setq xref--history (cons nil nil))
-  (projectile-find-file))
-
 (use-package projectile
   :custom
   ((projectile-completion-system 'default)
@@ -672,11 +649,9 @@ PROJECT-ROOT: Path to the root directory of the current project."
   :bind-keymap ("C-c p" . projectile-command-map)
   :init
   (ff/ensure-npm-package "fd-find" "fdfind")
-
   ;; NOTE: Set this to the folder where you keep your Git repos!
   (when (file-directory-p "~/workspace")
     (setq projectile-project-search-path '("~/workspace")))
-  (setq projectile-switch-project-action #'ff/switch-project-action)
   ;; enable projectile mode
   (projectile-mode t)
   :bind (:map projectile-command-map
