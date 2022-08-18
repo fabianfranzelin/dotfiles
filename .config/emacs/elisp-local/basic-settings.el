@@ -481,7 +481,6 @@ The default tab-bar name uses the buffer name."
   :init
   ;; ensure system dependencies
   (ff/ensure-apt-package "vlc" "vlc")
-  (ff/ensure-apt-package "okular" "okular")
   (ff/ensure-apt-package "eog" "eog")
   (ff/ensure-apt-package "firefox" "firefox")
   :config
@@ -497,9 +496,6 @@ The default tab-bar name uses the buffer name."
                   "png" "gif" "bmp" "tif" "jpeg"
                   "jpg"))
                "eog" '(file))
-         (list (openwith-make-extension-regexp
-                '("pdf"))
-               "okular" '(file))
          (list (openwith-make-extension-regexp
                 '("html" "htm"))
                "firefox" '(file)))))

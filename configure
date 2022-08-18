@@ -165,7 +165,6 @@ Keywords=wm;tiling" | sudo tee "/usr/share/xsessions/custom.desktop"
        echo -e "${__COLOR_INFO}INFO: Install GTK tools${__COLOR_RESET}"
 
        sudo apt install -y \
-            okular \
             vlc \
             firefox \
             eog

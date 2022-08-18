@@ -87,43 +87,31 @@
 ;; -------------------------------------------------------------------
 
 ;; -------------------------------------------------------------------
-;; Forward and inverse search with pdf-tools
+;; PDF-tools: Mainly used to display PDFs and to inverse and forward
+;; jumps for Latex documents
 ;; -------------------------------------------------------------------
-;; run M-x pdf-tools-install RET to finally install the package
 (use-package pdf-tools
+  :after (auctex)
   :magic ("%PDF" . pdf-view-mode)
   :init
+  (pdf-tools-install)  ; Standard activation command
+  (pdf-loader-install) ; On demand loading, leads to faster startup time
   ;; With a recent auctex installation, you might want to put the
   ;; following somewhere in your dotemacs, which will revert the
   ;; PDF-buffer after the TeX compilation has finished.
   ;; https://github.com/politza/pdf-tools
   (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
+  ;; Let auctex open pdf files with pdf-tools
+  (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+      TeX-source-correlate-start-server t)
   :hook (pdf-view-mode . pdf-isearch-minor-mode)
-  :bind (:map pdf-view-mode-map
-              ("C-s" . isearch-forward)))
-
-;; -------------------------------------------------------------------
-;; Forward and inverse search with okular
-;; -------------------------------------------------------------------
-(use-package okular-search
-  :straight nil
-  :if (display-graphic-p)
   :bind (:map LaTeX-mode-map
-              ("C-c C-a" . okular-jump-to-line)
+              ("C-c C-a" . pdf-sync-forward-search)
               :map tex-mode-map
-              ("C-c C-a" . okular-jump-to-line))
-  :init
-  (ff/ensure-apt-package "okular" "okular")
-
-  (setq TeX-view-program-list '(("Okular" "okular --unique %o")))
-  (setq TeX-view-program-selection '((output-pdf "Okular") (output-dvi "Okular")))
-
-  ;; Inverse search
-  ;; http://inthearmchair.wordpress.com/2010/09/02/latex-inverse-pdf-search-with-emacs/
-  ;; (setq TeX-source-specials-mode 1)         ;; Inverse search
-
-  (setq TeX-auto-global (expand-file-name "auctex-auto-generated-info/" user-emacs-directory))
-  (setq TeX-auto-local  (expand-file-name "auctex-auto-generated-info/" user-emacs-directory)))
+              ("C-c C-a" . pdf-sync-forward-search)
+              ;; Run C-Mouse 1 for inverse search in pdf buffer
+              :map pdf-view-mode-map
+              ("C-s" . isearch-forward)))
 
 (provide 'setup-latex)
 
