@@ -602,11 +602,29 @@ The default tab-bar name uses the buffer name."
 ;; -------------------------------------------------------------------
 ;; Project (built in project handling mode; similar to projectile)
 ;; -------------------------------------------------------------------
+(defun ff/tab-bar--names (&optional tabs frame)
+  "Return the list of tabs sorted by name.
+TABS: tabs as alist
+FRAME: frame"
+  (let* ((tabs (or tabs (funcall tab-bar-tabs-function frame))))
+    (mapcar (lambda (tab) (alist-get 'name tab)) tabs)))
+
 (defun ff/project-name (dir)
   "Define the name of a project as the name of the root directory.
 
 DIR: root directory of project"
   (file-name-nondirectory (directory-file-name (file-name-directory dir))))
+
+(defun ff/project-switch-project ()
+  "Switch to a workspace with the project name and start `magit-status'."
+  (interactive)
+  (let* ((project-dir (project-prompt-project-dir))
+         (project-name (ff/project-name project-dir)))
+  (when (not (member project-name (ff/tab-bar--names)))
+    (tab-bar-new-tab)
+    (tab-bar-rename-tab project-name))
+
+  (project-switch-project project-dir)))
 
 (defun ff/project-magit ()
   "Show the Git status of the current project."
@@ -628,12 +646,24 @@ PROJECT-ROOT: Path to the root directory of the current project."
                               (project-dired "Dired")
                               (ff/project-vterm "Vterm"))))
   :bind (:map project-prefix-map
-         ("m" . ff/project-magit)
-         ("v" . ff/project-vterm)))
+              ("p" . ff/project-switch-project)
+              ("m" . ff/project-magit)
+              ("v" . ff/project-vterm)))
 
 ;; -------------------------------------------------------------------
 ;; Projectile mode
 ;; -------------------------------------------------------------------
+(defun ff/switch-project-action ()
+  "Switch to a tab with the project name and start `projectile-find-file'."
+  (when (not (member (projectile-project-name) (ff/tab-bar--names)))
+    (tab-bar-new-tab)
+    (tab-bar-rename-tab (projectile-project-name)))
+  ;; for some reason, xref keeps breaking in elisp. If you observe an
+  ;; error such as "funcall-interactively: Wrong type argument: listp,
+  ;; 0", then clean up the history and it works again.
+  (setq xref--history (cons nil nil))
+  (projectile-find-file))
+
 (use-package projectile
   :custom
   ((projectile-completion-system 'default)
@@ -648,6 +678,7 @@ PROJECT-ROOT: Path to the root directory of the current project."
   ;; NOTE: Set this to the folder where you keep your Git repos!
   (when (file-directory-p "~/workspace")
     (setq projectile-project-search-path '("~/workspace")))
+  (setq projectile-switch-project-action #'ff/switch-project-action)
   ;; enable projectile mode
   (projectile-mode t)
   :bind (:map projectile-command-map

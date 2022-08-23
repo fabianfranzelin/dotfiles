@@ -8,9 +8,16 @@
 
 (defun ff/vterm-buffer-name-prefix ()
   "Create a prefix string for the name of a vterm buffer."
-  (if (bound-and-true-p persp-mode)
-      (concat "*vterm-" (persp-name (persp-curr)))
-    "*vterm"))
+  (cond ((bound-and-true-p persp-mode)
+         (concat "*vterm-" (persp-name (persp-curr))))
+        ((fboundp 'tab-bar-mode)
+         (let* ((current-tab (tab-bar--current-tab))
+                (tab-index (tab-bar--current-tab-index))
+                (explicit-name (alist-get 'explicit-name current-tab))
+                (tab-name (if explicit-name (alist-get 'name current-tab) (+ 1 tab-index))))
+           (concat "*vterm-tab-" (format "%s" tab-name))))
+        (t
+         "*vterm")))
 
 (defun ff/vterm-buffer-name (&optional postfix)
   (let ((prefix (ff/vterm-buffer-name-prefix)))
