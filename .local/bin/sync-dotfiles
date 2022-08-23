@@ -29,7 +29,7 @@ __SHELL_LIB="${DOTFILES}/.local/bin/shell"
 
     echo -e "${__COLOR_INFO}Pulling updates from dotfiles repo...${__COLOR_RESET}"
     echo
-    git pull origin gnu-stow
+    git pull origin nightly
     echo
 
     if [ $needs_pop -eq 1 ]; then
