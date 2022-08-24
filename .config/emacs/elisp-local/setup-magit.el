@@ -13,8 +13,6 @@
 
 (use-package git-timemachine)
 
-(use-package git-gutter-fringe)
-
 (use-package git-gutter
   :after (git-gutter-fringe)
   :diminish
