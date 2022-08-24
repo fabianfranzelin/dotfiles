@@ -232,6 +232,62 @@ INCREMENT: Value of which the current font-size is changed"
          ("C-h F" . helpful-function)
          ("C-h C" . helpful-command)))
 
+;; -------------------------------------------------------------------
+;; Project (built in project handling mode; similar to projectile)
+;; -------------------------------------------------------------------
+(defun ff/project-root ()
+  "Provide path to project root directory."
+  (interactive "P")
+  (cdr (project-current)))
+
+(defun ff/tab-bar--names (&optional tabs frame)
+  "Return the list of tabs sorted by name.
+TABS: tabs as alist
+FRAME: frame"
+  (let* ((tabs (or tabs (funcall tab-bar-tabs-function frame))))
+    (mapcar (lambda (tab) (alist-get 'name tab)) tabs)))
+
+(defun ff/project-name (dir)
+  "Define the name of a project as the name of the root directory.
+
+DIR: root directory of project"
+  (file-name-nondirectory (directory-file-name (file-name-directory dir))))
+
+(defun ff/project-switch-project ()
+  "Switch to a workspace with the project name and start `magit-status'."
+  (interactive)
+  (let* ((project-dir (project-prompt-project-dir))
+         (project-name (ff/project-name project-dir)))
+  (when (not (member project-name (ff/tab-bar--names)))
+    (tab-bar-new-tab)
+    (tab-bar-rename-tab project-name))
+
+  (project-switch-project project-dir)))
+
+(defun ff/project-magit ()
+  "Show the Git status of the current project."
+  (interactive)
+  (magit-status (project-root (project-current t))))
+
+(defun ff/project-vterm ()
+  "Start a new vterm in project root.
+
+PROJECT-ROOT: Path to the root directory of the current project."
+  (interactive)
+  (ff/start-vterm-in-dir (project-root (project-current t))))
+
+(use-package project
+  :custom
+  ((project-switch-commands '((project-find-file "Find file")
+                              (project-find-dir "Find directory")
+                              (ff/project-magit "Magit")
+                              (project-dired "Dired")
+                              (ff/project-vterm "Vterm"))))
+  :bind (:map project-prefix-map
+              ("p" . ff/project-switch-project)
+              ("m" . ff/project-magit)
+              ("v" . ff/project-vterm)))
+
 ;; -------------------------------------------------------------
 ;; Multiple cursors
 (use-package multiple-cursors
@@ -254,14 +310,13 @@ INCREMENT: Value of which the current font-size is changed"
 (use-package page-break-lines)
 
 (use-package dashboard
-  :after (projectile all-the-icons page-break-lines)
+  :after (all-the-icons page-break-lines)
   :custom
   ;; Content is not centered by default. To center, set
   (dashboard-center-content t)
   ;; To disable shortcut "jump" indicators for each section, set
   (dashboard-show-shortcuts t)
-  (dashboard-items '((projects . 5)
-                     (recents  . 5)
+  (dashboard-items '((recents  . 5)
                      (agenda . 5)))
   (dashboard-set-heading-icons t)
   (dashboard-set-file-icons t)
@@ -269,6 +324,8 @@ INCREMENT: Value of which the current font-size is changed"
   (dashboard-week-agenda t)
   (dashboard-filter-agenda-entry 'dashboard-no-filter-agenda)
   :init
+  (setq dashboard-items '((recents  . 5)
+                          (registers . 5)))
   ;; Show dashboard for newly created frames
   (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
   :config
@@ -345,22 +402,11 @@ INCREMENT: Value of which the current font-size is changed"
 ;; -------------------------------------------------------------------
 ;; Tab bar
 ;; -------------------------------------------------------------------
-;; Use project names as tab names
-;; see https://www.rousette.org.uk/archives/using-the-tab-bar-in-emacs/
-(defun ff/name-tab-by-project-or-default ()
-  "Return project name if in a project, or default tab-bar name if not.
-The default tab-bar name uses the buffer name."
-  (let ((project-name (projectile-project-name)))
-    (if (string= "-" project-name)
-        (tab-bar-tab-name-current)
-      (projectile-project-name))))
-
 (use-package tab-bar
   :custom
   ;; Don't turn on tab-bar-mode when tabs are created
   ((tab-bar-show nil)
-   (tab-bar-new-tab-choice "*scratch*")
-   (tab-bar-tab-name-function #'ff/name-tab-by-project-or-default))
+   (tab-bar-new-tab-choice "*scratch*"))
   :init
   (tab-bar-mode t)
   :bind (("C-x t n" . tab-new)
@@ -565,7 +611,6 @@ The default tab-bar name uses the buffer name."
 ;; Popper - handle pop up buffers nicely
 ;; -------------------------------------------------------------------
 (use-package popper
-  :after (projectile)
   :custom
   (popper-reference-buffers '("\\*Messages\\*"
                               "Output\\*$"
@@ -574,8 +619,8 @@ The default tab-bar name uses the buffer name."
                               helpful-mode
                               compilation-mode))
   :init
-  ;; group poppers by projectile projects
-  (setq popper-group-function #'popper-group-by-projectile)
+  ;; group poppers by project.el projects
+  (setq popper-group-function #'popper-group-by-project)
   (popper-mode t)
   (popper-echo-mode t)
   :bind (("C-*" . popper-toggle-latest)
@@ -598,91 +643,6 @@ The default tab-bar name uses the buffer name."
 
 (use-package setup-org-roam
   :straight nil)
-
-;; -------------------------------------------------------------------
-;; Project (built in project handling mode; similar to projectile)
-;; -------------------------------------------------------------------
-(defun ff/tab-bar--names (&optional tabs frame)
-  "Return the list of tabs sorted by name.
-TABS: tabs as alist
-FRAME: frame"
-  (let* ((tabs (or tabs (funcall tab-bar-tabs-function frame))))
-    (mapcar (lambda (tab) (alist-get 'name tab)) tabs)))
-
-(defun ff/project-name (dir)
-  "Define the name of a project as the name of the root directory.
-
-DIR: root directory of project"
-  (file-name-nondirectory (directory-file-name (file-name-directory dir))))
-
-(defun ff/project-switch-project ()
-  "Switch to a workspace with the project name and start `magit-status'."
-  (interactive)
-  (let* ((project-dir (project-prompt-project-dir))
-         (project-name (ff/project-name project-dir)))
-  (when (not (member project-name (ff/tab-bar--names)))
-    (tab-bar-new-tab)
-    (tab-bar-rename-tab project-name))
-
-  (project-switch-project project-dir)))
-
-(defun ff/project-magit ()
-  "Show the Git status of the current project."
-  (interactive)
-  (magit-status (project-root (project-current t))))
-
-(defun ff/project-vterm ()
-  "Start a new vterm in project root.
-
-PROJECT-ROOT: Path to the root directory of the current project."
-  (interactive)
-  (ff/start-vterm-in-dir (project-root (project-current t))))
-
-(use-package project
-  :custom
-  ((project-switch-commands '((project-find-file "Find file")
-                              (project-find-dir "Find directory")
-                              (ff/project-magit "Magit")
-                              (project-dired "Dired")
-                              (ff/project-vterm "Vterm"))))
-  :bind (:map project-prefix-map
-              ("p" . ff/project-switch-project)
-              ("m" . ff/project-magit)
-              ("v" . ff/project-vterm)))
-
-;; -------------------------------------------------------------------
-;; Projectile mode
-;; -------------------------------------------------------------------
-(defun ff/switch-project-action ()
-  "Switch to a tab with the project name and start `projectile-find-file'."
-  (when (not (member (projectile-project-name) (ff/tab-bar--names)))
-    (tab-bar-new-tab)
-    (tab-bar-rename-tab (projectile-project-name)))
-  ;; for some reason, xref keeps breaking in elisp. If you observe an
-  ;; error such as "funcall-interactively: Wrong type argument: listp,
-  ;; 0", then clean up the history and it works again.
-  (setq xref--history (cons nil nil))
-  (projectile-find-file))
-
-(use-package projectile
-  :custom
-  ((projectile-completion-system 'default)
-   (projectile-file-exists-remote-cache-expire nil)
-   (projectile-require-project-root t)
-   (projectile-indexing-method 'alien)
-   (projectile-sort-order 'recentf)
-   (projectile-enable-caching t))
-  :bind-keymap ("C-c p" . projectile-command-map)
-  :init
-  (ff/ensure-npm-package "fd-find" "fdfind")
-  ;; NOTE: Set this to the folder where you keep your Git repos!
-  (when (file-directory-p "~/workspace")
-    (setq projectile-project-search-path '("~/workspace")))
-  (setq projectile-switch-project-action #'ff/switch-project-action)
-  ;; enable projectile mode
-  (projectile-mode t)
-  :bind (:map projectile-command-map
-              ("v" . (lambda () (interactive) (ff/start-vterm-in-dir (projectile-project-root))))))
 
 ;; -------------------------------------------------------------------
 ;; Lsp-mode

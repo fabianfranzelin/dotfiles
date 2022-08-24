@@ -167,33 +167,19 @@ ARG: position"
 ;; -------------------------------------------------------------------
 ;; Consult
 ;; -------------------------------------------------------------------
-(defun dw/get-project-root ()
-  (when (fboundp 'projectile-project-root)
-    (projectile-project-root)))
-
 (use-package consult
-  :after (projectile vertico)
+  :after (vertico)
   :defines consult-buffer-sources
   ;; Enable automatic preview at point in the *Completions* buffer. This is
   ;; relevant when you use the default completion UI.
   :hook ((completion-list-mode . consult-preview-at-point-mode))
   :config
-  (setq consult-project-root-function #'dw/get-project-root
+  (setq consult-project-root-function #'ff/project-root
         completion-in-region-function #'consult-completion-in-region)
 
   ;; Use Consult to select xref locations with preview
   (setq xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
-
-  ;; add projectile projects to consult
-  (projectile-load-known-projects)
-  (setq my-consult-source-projectile-projects
-        `(:name "Projectile projects"
-                :narrow   ?P
-                :category project
-                :action   ,#'projectile-switch-project-by-name
-                :items    ,projectile-known-projects))
-  (add-to-list 'consult-buffer-sources my-consult-source-projectile-projects 'append)
 
   ;; Use `consult-completion-in-region' if Vertico is enabled.
   ;; Otherwise use the default `completion--in-region' function.
@@ -215,7 +201,6 @@ ARG: position"
          ("C-s" . consult-history)))
 
 (use-package consult-dir
-  :custom (consult-dir-project-list-function nil)
   :bind (("C-x C-d" . consult-dir)
          :map vertico-map
          ("C-x C-d" . consult-dir)
@@ -226,15 +211,9 @@ ARG: position"
 ;; -------------------------------------------------------------------
 ;; Enable richer annotations using the Marginalia package
 (use-package marginalia
-  :after (projectile vertico)
+  :after (vertico)
   :init
   (marginalia-mode)
-  :config
-  (setq marginalia-command-categories
-        (append '((projectile-find-file . project-file)
-                  (projectile-find-dir . project-file)
-                  (projectile-switch-project . file))
-                marginalia-command-categories))
   :bind (("M-A" . marginalia-cycle)))
 
 (defun sudo-find-file (file)

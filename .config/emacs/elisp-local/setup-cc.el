@@ -30,18 +30,18 @@ REPLACE-STR: string that replaces all regex matches"
     (while (re-search-forward regex-str nil t)
       (replace-match replace-str))))
 
-
 (defun ff/container-host-compile-commands-mapping ()
   "Adjusts the compile commands json of CMake to match the host system and not the containers."
   (interactive)
   (ff/search-replace (expand-file-name "compile_commands.json" (plist-get ccls-initialization-options :compilationDatabaseDirectory))
                      +ccls-container-workspace
-                     (projectile-project-root)))
+                     (ff/project-root)))
+
 
 (defun ff/clang-format-buffer-smart ()
-  "Reformat buffer if .clang-format exists in the projectile root."
+  "Reformat buffer if .clang-format exists in the project.el root."
   (interactive)
-  (when (f-exists? (expand-file-name ".clang-format" (projectile-project-root)))
+  (when (f-exists? (expand-file-name ".clang-format" (ff/project-root)))
     (clang-format-buffer)))
 
 (use-package clang-format+
