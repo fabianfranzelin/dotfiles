@@ -14,8 +14,6 @@
 (use-package git-timemachine)
 
 (use-package git-gutter
-  :after (git-gutter-fringe)
-  :diminish
   :hook ((text-mode . git-gutter-mode)
          (prog-mode . git-gutter-mode))
   :config
