@@ -317,21 +317,18 @@ PROJECT-ROOT: Path to the root directory of the current project."
   :after (all-the-icons page-break-lines)
   :custom
   ;; Content is not centered by default. To center, set
-  (dashboard-center-content t)
-  ;; To disable shortcut "jump" indicators for each section, set
-  (dashboard-show-shortcuts t)
-  (dashboard-items '((recents  . 5)
-                     (agenda . 5)))
-  (dashboard-set-heading-icons t)
-  (dashboard-set-file-icons t)
-  (dashboard-set-init-info t)
-  (dashboard-week-agenda t)
-  (dashboard-filter-agenda-entry 'dashboard-no-filter-agenda)
-  :init
-  (setq dashboard-items '((recents  . 5)
-                          (registers . 5)))
-  ;; Show dashboard for newly created frames
-  (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
+  ((dashboard-center-content t)
+   ;; To disable shortcut "jump" indicators for each section, set
+   (dashboard-show-shortcuts t)
+   (dashboard-items '((recents  . 5)
+                      (registers . 5)))
+   (dashboard-set-heading-icons t)
+   (dashboard-set-file-icons t)
+   (dashboard-set-init-info t)
+   (dashboard-week-agenda t)
+   (dashboard-filter-agenda-entry 'dashboard-no-filter-agenda)
+   ;; Show dashboard for newly created frames
+   (initial-buffer-choice (lambda () (get-buffer-create "*dashboard*"))))
   :config
   (dashboard-setup-startup-hook))
 
