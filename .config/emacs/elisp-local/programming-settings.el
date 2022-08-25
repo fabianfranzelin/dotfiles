@@ -46,7 +46,7 @@
    ;; interactive R session
    (ess-ask-for-ess-directory nil)))
 
-(require 'ess-smart-underscore)
+(use-package ess-smart-underscore)
 
 ;; -------------------------------------------------------------------
 ;; Latex
@@ -67,27 +67,6 @@
 
 ;; Make sure that my preferred linter is installed
 (ff/ensure-apt-package "shellcheck" "shellcheck")
-
-;; -------------------------------------------------------------------
-;; Swig-Mode
-;; -------------------------------------------------------------------
-(defun swig-switch-compile-command-auto ()
-  "Switch compile command if a setup.py file is present in the current folder."
-  (if (file-exists-p "setup.py")
-      (setq compile-command "python setup.py install --install-lib=.")
-    (setq compile-command "make -k"))
-  (message compile-command))
-
-;; compile command taking several compilation modes into account
-(defun swig-compile()
-  "Run compilation of swig interface."
-  (interactive)
-  (swig-switch-compile-command-auto)
-  (compile compile-command))
-
-(use-package swig-mode
-  :straight nil
-  :mode (("\\.i$" . swig-mode)))
 
 ;; -------------------------------------------------------------------
 ;; yaml mode
