@@ -100,6 +100,11 @@
 ;; Iterate through CamelCase
 (global-subword-mode t)
 
+;; save desktop session automatically
+(use-package desktop
+  :init
+  (desktop-save-mode))
+
 ;; Color theme
 (use-package doom-themes
   :custom
@@ -115,7 +120,6 @@
   (doom-themes-treemacs-config)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
-
 
 ;; Currently disabled: it is just not the right way to do it :)
 ;; (defun ff/load-theme (frame)

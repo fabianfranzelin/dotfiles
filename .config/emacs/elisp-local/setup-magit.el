@@ -16,60 +16,12 @@
 (use-package git-gutter
   :hook ((text-mode . git-gutter-mode)
          (prog-mode . git-gutter-mode))
+  :custom ((git-gutter:update-interval 2)
+           (git-gutter:modified-sign "≡")
+           (git-gutter:added-sign "≡")
+           (git-gutter:deleted-sign "≡"))
   :config
-  (setq git-gutter:update-interval 2)
-  (set-face-foreground 'git-gutter-fr:added "LightGreen")
-  (fringe-helper-define 'git-gutter-fr:added nil
-                        "XXXXXXXXXX"
-                        "XXXXXXXXXX"
-                        "XXXXXXXXXX"
-                        ".........."
-                        ".........."
-                        "XXXXXXXXXX"
-                        "XXXXXXXXXX"
-                        "XXXXXXXXXX"
-                        ".........."
-                        ".........."
-                        "XXXXXXXXXX"
-                        "XXXXXXXXXX"
-                        "XXXXXXXXXX")
-
-  (set-face-foreground 'git-gutter-fr:modified "LightGoldenrod")
-  (fringe-helper-define 'git-gutter-fr:modified nil
-                        "XXXXXXXXXX"
-                        "XXXXXXXXXX"
-                        "XXXXXXXXXX"
-                        ".........."
-                        ".........."
-                        "XXXXXXXXXX"
-                        "XXXXXXXXXX"
-                        "XXXXXXXXXX"
-                        ".........."
-                        ".........."
-                        "XXXXXXXXXX"
-                        "XXXXXXXXXX"
-                        "XXXXXXXXXX")
-
-  (set-face-foreground 'git-gutter-fr:deleted "LightCoral")
-  (fringe-helper-define 'git-gutter-fr:deleted nil
-                        "XXXXXXXXXX"
-                        "XXXXXXXXXX"
-                        "XXXXXXXXXX"
-                        ".........."
-                        ".........."
-                        "XXXXXXXXXX"
-                        "XXXXXXXXXX"
-                        "XXXXXXXXXX"
-                        ".........."
-                        ".........."
-                        "XXXXXXXXXX"
-                        "XXXXXXXXXX"
-                        "XXXXXXXXXX")
-
   ;; These characters are used in terminal mode
-  (setq git-gutter:modified-sign "≡")
-  (setq git-gutter:added-sign "≡")
-  (setq git-gutter:deleted-sign "≡")
   (set-face-foreground 'git-gutter:added "LightGreen")
   (set-face-foreground 'git-gutter:modified "LightGoldenrod")
   (set-face-foreground 'git-gutter:deleted "LightCoral"))
