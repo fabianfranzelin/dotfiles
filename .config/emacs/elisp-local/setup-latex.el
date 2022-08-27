@@ -10,7 +10,6 @@
          (LaTeX-mode . outline-minor-mode)))
 
 (use-package reftex
-  :commands turn-on-reftex
   :config
   (setq reftex-enable-partial-scans t)
   (setq reftex-use-multiple-selection-buffers t)

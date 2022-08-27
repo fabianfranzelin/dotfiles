@@ -6,10 +6,9 @@
 ;;; Code:
 (use-package magit
   :custom
-  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
-  :config
-  ; Show word based diff
-  (setq magit-diff-refine-hunk 'all))
+  ((magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
+   ;; Show word based diff
+   (magit-diff-refine-hunk 'all)))
 
 (use-package git-timemachine)
 
