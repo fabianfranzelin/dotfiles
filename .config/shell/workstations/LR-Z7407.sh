@@ -2,23 +2,33 @@
 
 # shellcheck disable=SC1090
 
-# Load specific settings for Bosch
+# Load specific settings for WSL
 
 #------------------------------------------------------------------------------#
 # load credentials
-# ----------------------------------------------------
-# Dotfiles setup
-export __SHELL_LIB="$HOME/.local/bin/shell"
+export __SHELL_LIB="${XDG_CONFIG_HOME}g/shell"
 [ -f "${__SHELL_LIB}/workstations/b_credentials.sh" ] && . "${__SHELL_LIB}/workstations/b_credentials.sh"
 
 #------------------------------------------------------------------------------#
-# AOS
-export AOS_BASE_HOME="${HOME}/workspace/aos_base"
-export AOS_BUILD_DIR="${AOS_BASE_HOME}/build"
-export AOS_INSTALL_DIR="${AOS_BASE_HOME}/install"
+# WSL specific stuff
 
-#------------------------------------------------------------------------------#
-# PJ-Rec
+# .profile
+export no_proxy="localhost,127.0.0.*,192.168.*,.local,172.*,.bosch.*,.bosch-iot-cloud.com"
+export http_proxy="http://127.0.0.1:3128"
+export https_proxy="http://127.0.0.1:3128"
+export HTTP_PROXY="http://127.0.0.1:3128"
+export HTTPS_PROXY="http://127.0.0.1:3128"
+export ALL_proxy="http://127.0.0.1:3128"
+export all_proxy="http://127.0.0.1:3128"
+export ftp_proxy="http://127.0.0.1:3128"
+
+# .bashrc
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+alias init='wsl.exe -d wsl-vpnkit service wsl-vpnkit start; sudo service cntlm start; sudo service docker start'
 
 #------------------------------------------------------------------------------#
 # Azure DevOps

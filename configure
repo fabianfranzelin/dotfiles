@@ -28,7 +28,7 @@ set -e
 export DOTFILES
 DOTFILES=$(git rev-parse --show-toplevel)
 export __SHELL_LIB
-__SHELL_LIB="${DOTFILES}/.local/bin/shell"
+__SHELL_LIB="${DOTFILES}/.config/shell"
 
 . "${__SHELL_LIB}/formatting.sh"
 . "${__SHELL_LIB}/faq.sh"
@@ -175,7 +175,7 @@ fi
 
 #------------------------------------------------------------------------------#
 # install oh-my-zsh if required
-export ZSH="${HOME}/.config/oh-my-zsh"
+export ZSH="${HOME}/.cache/oh-my-zsh"
 if [[ ! -f "${ZSH}/oh-my-zsh.sh" ]]; then
     sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     # This script creates a .zshrc file in your home directory. We

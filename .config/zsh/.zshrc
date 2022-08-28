@@ -1,0 +1,56 @@
+#!/usr/bin/env sh
+
+# shellcheck disable=SC1090,SC1091,SC3001
+
+#------------------------------------------------------------------------------#
+# Directory of dotfiles for zsh
+export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
+
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]; then
+    . "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# shellcheck source=gear.zsh
+. "${ZDOTDIR}/gear.zsh"
+
+# use oh-my-zsh init
+# shellcheck source=oh-my-zsh.sh
+. "${ZDOTDIR}/oh-my-zsh.sh"
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+if [ -f "${ZDOTDIR}/.p10k.zsh" ]; then
+    . "${ZDOTDIR}/.p10k.zsh"
+fi
+
+# ----------------------------------------------------
+# vterm setup
+# shellcheck source=vterm.zsh
+. "${ZDOTDIR}/vterm.zsh"
+
+#------------------------------------------------------------------------------#
+# set as a default for configurations
+. "${HOME}/.profile"
+
+#------------------------------------------------------------------------------#
+# ros setup
+
+for ROS_VERSION in "noetic" "humble"; do
+    if [ -f "/opt/ros/${ROS_VERSION}/setup.zsh" ]; then
+        . "/opt/ros/${ROS_VERSION}/setup.zsh" > /dev/null
+    fi
+done
+
+#------------------------------------------------------------------------------#
+# Kubernetes setup
+if command -v kubectl > /dev/null
+then
+    # shellcheck disable=SC2039
+    . <(kubectl completion zsh)
+fi
+
+#------------------------------------------------------------------------------#
+# enable direnv for bash or zsh
+eval "$(direnv hook "$(command -v zsh)")" > /dev/null

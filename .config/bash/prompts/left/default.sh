@@ -10,7 +10,7 @@
 #------------------------------------------------------------------------------#
 # prepare colors and details
 
-. "${__SHELL_LIB}/formatting.bash"
+. "${BASHDOTDIR}/formatting.bash"
 
 #---------------------------------------------------------------------------
 # stick everything together

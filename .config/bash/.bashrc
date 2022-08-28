@@ -1,0 +1,40 @@
+#!/usr/bin/env sh
+
+# shellcheck disable=SC1090,SC1091,SC3001
+
+#------------------------------------------------------------------------------#
+# Directory of dotfiles for zsh
+export BASHDOTDIR="${XDG_CONFIG_HOME}/bash"
+
+# shellcheck source=gear.bash
+. "${BASHDOTDIR}/gear.bash"
+
+# ----------------------------------------------------
+# Prompt setup
+# shellcheck source=prompts/left/default.sh
+. "${BASHDOTDIR}/prompts/left/default.sh"
+
+#------------------------------------------------------------------------------#
+# set as a default for configurations
+. "${HOME}/.profile"
+
+#------------------------------------------------------------------------------#
+# ros setup
+
+for ROS_VERSION in "noetic" "humble"; do
+    if [ -f "/opt/ros/${ROS_VERSION}/setup.bash" ]; then
+        . "/opt/ros/${ROS_VERSION}/setup.bash" > /dev/null
+    fi
+done
+
+#------------------------------------------------------------------------------#
+# Kubernetes setup
+if command -v kubectl > /dev/null
+then
+    # shellcheck disable=SC2039
+    . <(kubectl completion bash)
+fi
+
+#------------------------------------------------------------------------------#
+# enable direnv for bash or zsh
+eval "$(direnv hook "$(command -v bash)")" > /dev/null
