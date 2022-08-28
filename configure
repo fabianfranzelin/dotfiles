@@ -175,30 +175,30 @@ fi
 
 #------------------------------------------------------------------------------#
 # install oh-my-zsh if required
-OH_MY_ZSH_HOME="$HOME/.oh-my-zsh"
-if [[ ! -d "${OH_MY_ZSH_HOME}" ]]; then
+export ZSH="${HOME}/.config/oh-my-zsh"
+if [[ ! -f "${ZSH}/oh-my-zsh.sh" ]]; then
     sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     # This script creates a .zshrc file in your home directory. We
     # won't need it, since we have a preconfigured one in this repo
     rm "${HOME}/.zshrc"
 fi
 
-POWERLEVEL10K_HOME=${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+POWERLEVEL10K_HOME=${ZSH}/custom/themes/powerlevel10k
 if [[ ! -d "${POWERLEVEL10K_HOME}" ]]; then
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${POWERLEVEL10K_HOME}"
 fi
 
-ZSH_AUTOSUGGESTION_HOME=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+ZSH_AUTOSUGGESTION_HOME=${ZSH}/custom/plugins/zsh-autosuggestions
 if [[ ! -d "${ZSH_AUTOSUGGESTION_HOME}" ]]; then
     git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_AUTOSUGGESTION_HOME}"
 fi
 
-ZSH_SYNTAX_HIGHLIGHTING=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+ZSH_SYNTAX_HIGHLIGHTING=${ZSH}/custom/plugins/zsh-syntax-highlighting
 if [[ ! -d "${ZSH_SYNTAX_HIGHLIGHTING}" ]]; then
     git clone https://github.com/zsh-users/zsh-syntax-highlighting "${ZSH_SYNTAX_HIGHLIGHTING}"
 fi
 
-ZSH_YOU_SHOULD_USE=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/you-should-use
+ZSH_YOU_SHOULD_USE=${ZSH}/custom/plugins/you-should-use
 if [[ ! -d "${ZSH_YOU_SHOULD_USE}" ]]; then
     git clone https://github.com/MichaelAquilina/zsh-you-should-use "${ZSH_YOU_SHOULD_USE}"
 fi

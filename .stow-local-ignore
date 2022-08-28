@@ -8,9 +8,12 @@ mail
 fonts
 ^/.*\.org
 LICENSE
+^/.*\.bak
 
 .dir-locals.el
 .gitignore
 .github
 configure
 pyproject.toml
+
+.zcompdump*

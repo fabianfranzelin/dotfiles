@@ -20,6 +20,9 @@ if ( __is_zsh ); then
     # shellcheck source=gear.zsh
     . "${__SHELL_LIB}/gear.zsh"
 
+    # Directory of dotfiles for zsh
+    export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
+
     # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
     # Initialization code that may require console input (password prompts, [y/n]
     # confirmations, etc.) must go above this block; everything else may go below.
@@ -29,11 +32,11 @@ if ( __is_zsh ); then
 
     # use oh-my-zsh init
     # shellcheck source=oh-my-zsh.sh
-    . "${__SHELL_LIB}/oh-my-zsh.sh"
+    . "${ZDOTDIR}/oh-my-zsh.sh"
 
     # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-    if [ -f "$HOME/.p10k.zsh" ]; then
-        . "$HOME/.p10k.zsh"
+    if [ -f "${ZDOTDIR}/.p10k.zsh" ]; then
+        . "${ZDOTDIR}/.p10k.zsh"
     fi
 
     # bash compinit in zsh
