@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # shellcheck disable=SC1090,SC1091,SC3001
 
