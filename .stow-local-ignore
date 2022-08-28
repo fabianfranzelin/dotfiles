@@ -17,3 +17,4 @@ configure
 pyproject.toml
 
 .zcompdump*
+.zsh_history

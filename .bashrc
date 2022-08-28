@@ -1,1 +1,1 @@
-.profile
+.config/bash/.bashrc

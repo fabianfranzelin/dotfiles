@@ -26,6 +26,10 @@ done
 autoload -Uz compinit && compinit
 autoload colors && colors
 
+# bash auto completion
+autoload -U bashcompinit
+bashcompinit
+
 #------------------------------------------------------------------------------#
 # history
 
@@ -34,7 +38,7 @@ HISTSIZE=10000
 # history-length in HISTFILE
 SAVEHIST=10000
 
-HISTFILE="${HOME}/.zsh_history"
+HISTFILE="${XDG_CACHE_HOME}/zsh/.zsh_history"
 # append to the history file, don't overwrite it
 setopt append_history
 # share history across terminals

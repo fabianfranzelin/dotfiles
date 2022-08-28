@@ -6,7 +6,7 @@
 # sourcing own functions
 # check in both cases whether directory exists and is not empty
 
-__DIRS=( "${__SHELL_LIB}" "${__CUSTOM_SHELL_LIB}" )
+__DIRS=( "${__SHELL_LIB}" )
 for __DIR in "${__DIRS[@]}"; do
     if [ -d "${__DIR}/func" ]; then
         # is folder empty?
