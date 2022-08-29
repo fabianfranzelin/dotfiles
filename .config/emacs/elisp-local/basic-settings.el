@@ -102,24 +102,13 @@
 
 ;; save desktop session automatically
 (use-package desktop
+  :custom
+  ((desktop-load-locked-desktop t))
   :init
-  (defun ff/save-shell-buffer (desktop-dirname)
-    ;; we only need to save the current working directory
-    default-directory)
-
-  (defun ff/create-shell-buffer (_file-name buffer-name misc)
-    "MISC is the value returned by `ff/save-shell-buffer'.
-_FILE-NAME is nil."
-    ;; create a vterm buffer in directory MISC
-    (ff/start-vterm-in-dir misc))
-
-  ;; save all vterm-mode buffers
-  (add-hook 'vterm-mode-hook (lambda () (setq-local desktop-save-buffer #'ff/save-shell-buffer)))
-  ;; restore all shell-mode buffers
-  (add-to-list 'desktop-buffer-mode-handlers '(vterm-mode . ff/create-shell-buffer))
-
-  ;; enable desktop save mode
-  (desktop-save-mode))
+  (if (daemonp)
+      ;; delay desktop save mode until one frame is created
+      (add-hook 'after-make-frame-functions 'desktop-save-mode)
+    (desktop-save-mode)))
 
 ;; Color theme
 (use-package doom-themes

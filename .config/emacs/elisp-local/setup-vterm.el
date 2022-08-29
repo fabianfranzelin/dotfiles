@@ -21,9 +21,9 @@
 
 (defun ff/vterm-buffer-name (&optional postfix)
   (let ((prefix (ff/vterm-buffer-name-prefix)))
-        (if (equal postfix nil)
-            (concat prefix "*")
-          (concat prefix "-" postfix "*"))))
+    (if (equal postfix nil)
+        (concat prefix "*")
+      (concat prefix "-" postfix "*"))))
 
 (defun ff/run-in-vterm-kill (process event)
   "A process sentinel.  Kill PROCESS's buffer if it is live.
@@ -111,9 +111,21 @@ DIR: Path to the root directory of the current project."
   (vterm-send-string "\n")
   (clear-this-command-keys))
 
+(defun ff/save-shell-buffer (desktop-dirname)
+  ;; we only need to save the current working directory
+  default-directory)
+
+(defun ff/create-shell-buffer (_file-name buffer-name misc)
+  "MISC is the value returned by `ff/save-shell-buffer'.
+_FILE-NAME is nil."
+  ;; create a vterm buffer in directory MISC
+  (ff/start-vterm-in-dir misc))
+
 (use-package vterm
   :commands vterm
-  :hook ((vterm-mode . ff/term-exec-hook))
+  :hook ((vterm-mode . ff/term-exec-hook)
+         ;; save all vterm-mode buffers
+         (vterm-mode . (lambda () (setq-local desktop-save-buffer #'ff/save-shell-buffer))))
   :init
   ;; ensure system packages
   (ff/ensure-apt-package "cmake" "cmake")
@@ -140,6 +152,11 @@ DIR: Path to the root directory of the current project."
                       (ff/start-vterm)
                       (ff/toggle-shell-vertical-alignment)
                       (ff/start-vterm)))))
+
+(with-eval-after-load 'desktop
+  ;; make sure that vterm buffers are restored when a desktop file is
+  ;; read
+  (add-to-list 'desktop-buffer-mode-handlers '(vterm-mode . ff/create-shell-buffer)))
 
 (provide 'setup-vterm)
 
