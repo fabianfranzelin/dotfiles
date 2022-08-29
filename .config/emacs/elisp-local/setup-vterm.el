@@ -15,7 +15,7 @@
                 (tab-index (tab-bar--current-tab-index))
                 (explicit-name (alist-get 'explicit-name current-tab))
                 (tab-name (if explicit-name (alist-get 'name current-tab) (+ 1 tab-index))))
-           (concat "*vterm-tab-" (format "%s" tab-name))))
+           (concat "*vterm-" (format "%s" tab-name))))
         (t
          "*vterm")))
 
