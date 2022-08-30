@@ -38,6 +38,8 @@ HISTSIZE=10000
 # history-length in HISTFILE
 SAVEHIST=10000
 
+# put the history file to the xdg cache
+[ ! -d "${XDG_CACHE_HOME}/zsh" ] && mkdir -p "${XDG_CACHE_HOME}/zsh"
 HISTFILE="${XDG_CACHE_HOME}/zsh/.zsh_history"
 # append to the history file, don't overwrite it
 setopt append_history
