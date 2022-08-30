@@ -11,6 +11,11 @@ case $- in
 esac
 
 #------------------------------------------------------------------------------#
+# set as a default for configurations
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+
+#------------------------------------------------------------------------------#
 # Directory of dotfiles for zsh
 export BASHDOTDIR="${XDG_CONFIG_HOME}/bash"
 
