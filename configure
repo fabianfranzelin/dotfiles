@@ -120,32 +120,11 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
 
     # emacs pdf-tools dependencies
     sudo apt install -y \
-         libpng-dev zlib1g-dev \
+         libpng-dev \
+	     zlib1g-dev \
          libpoppler-glib-dev \
          libpoppler-private-dev \
          imagemagick
-
-    # Install Qtile window manager
-    python3 -m pip install --upgrade xcffib
-    python3 -m pip install --upgrade --no-cache-dir cairocffi
-    sudo apt install -y libpangocairo-1.0-0
-    python3 -m pip install --upgrade qtile
-
-    # Create xsessions entry for qtile according to
-    # https://docs.qtile.org/en/latest/manual/install/index.html#starting-qtile
-    echo "[Desktop Entry]
-Name=Qtile
-Comment=Qtile Session
-Exec=qtile start
-Type=Application
-Keywords=wm;tiling" | sudo tee "/usr/share/xsessions/qtile.desktop"
-
-    echo "[Desktop Entry]
-Name=Qtile
-Comment=Qtile Session
-Exec=/etc/X11/Xsession
-Type=Application
-Keywords=wm;tiling" | sudo tee "/usr/share/xsessions/custom.desktop"
 
     # additional python dependencies
     python3 -m pip install --upgrade \
@@ -163,6 +142,38 @@ Keywords=wm;tiling" | sudo tee "/usr/share/xsessions/custom.desktop"
        # try to install snap dependencies. Note that this is not working
        # for Docker or WSL.
        echo -e "${__COLOR_INFO}INFO: Install GTK tools${__COLOR_RESET}"
+
+       # Install Qtile window manager
+       python3 -m pip install --upgrade xcffib
+       python3 -m pip install --upgrade --no-cache-dir cairocffi
+       sudo apt install -y libpangocairo-1.0-0
+       python3 -m pip install --upgrade qtile
+
+       # Create xsessions entry for qtile according to
+       # https://docs.qtile.org/en/latest/manual/install/index.html#starting-qtile
+       QTILE_DESKTOP_FILE_PATH="/usr/share/xsessions/qtile.desktop"
+       if [ ! -f "${QTILE_DESKTOP_FILE_PATH}" ]; then
+           echo "[Desktop Entry]
+Name=Qtile
+Comment=Qtile Session
+Exec=qtile start
+Type=Application
+Keywords=wm;tiling" | sudo tee "${QTILE_DESKTOP_FILE_PATH}"
+       else
+           echo -e "${__COLOR_ERR}The file '${QTILE_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
+       fi
+
+       CUSTOM_DESKTOP_FILE_PATH="/usr/share/xsessions/custom.desktop"
+       if [ ! -f "${CUSTOM_DESKTOP_FILE_PATH}" ]; then
+           echo "[Desktop Entry]
+Name=Qtile
+Comment=Qtile Session
+Exec=/etc/X11/Xsession
+Type=Application
+Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
+       else
+           echo -e "${__COLOR_ERR}The file '${CUSTOM_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
+       fi
 
        sudo apt install -y \
             vlc \
