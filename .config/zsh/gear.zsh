@@ -2,6 +2,7 @@
 
 #------------------------------------------------------------------------------#
 # autoloading own functions
+__SHELL_LIB="${XDG_CONFIG_HOME}/shell"
 
 fpath=(
     "${__SHELL_LIB}/func"
