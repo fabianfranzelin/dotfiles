@@ -70,3 +70,6 @@ alias emacs_stop="systemctl --user stop emacs"
 alias emacs_start="systemctl --user start emacs"
 alias emacs_restart="systemctl --user restart emacs"
 alias ff='find_file'
+
+# Seahorse
+alias gnome_keyring_daemon="gnome-keyring-daemon --replace --components=pkcs11,secrets,ssh"
