@@ -6,7 +6,7 @@
 
 #------------------------------------------------------------------------------#
 # load credentials
-export __SHELL_LIB="${XDG_CONFIG_HOME}g/shell"
+export __SHELL_LIB="${XDG_CONFIG_HOME}/shell"
 [ -f "${__SHELL_LIB}/workstations/b_credentials.sh" ] && . "${__SHELL_LIB}/workstations/b_credentials.sh"
 
 #------------------------------------------------------------------------------#
