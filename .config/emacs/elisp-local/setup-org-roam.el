@@ -60,8 +60,6 @@
   (interactive)
   (setq org-agenda-files (my/org-roam-list-notes-by-tag "Project")))
 
-(use-package hydra)
-
 (defhydra dw/org-roam-jump-menu (:hint nil)
   "
   ^Dailies^        ^Capture^       ^Jump^
