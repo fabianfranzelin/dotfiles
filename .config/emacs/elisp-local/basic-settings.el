@@ -231,6 +231,9 @@ INCREMENT: Value of which the current font-size is changed"
 ;; winner mode for for redo/undo window configurations
 (winner-mode 1)
 
+;; package that allows to define nice user interfaces
+(use-package hydra)
+
 ;; -------------------------------------------------------------
 ;; Better help
 (use-package helpful
@@ -240,6 +243,66 @@ INCREMENT: Value of which the current font-size is changed"
          ("C-c C-d" . helpful-at-point)
          ("C-h F" . helpful-function)
          ("C-h C" . helpful-command)))
+
+;; -------------------------------------------------------------------
+;; Tab bar
+;; -------------------------------------------------------------------
+(defun ff/tab-bar-tab-exists (name)
+  (member name
+	  (mapcar #'(lambda (tab) (alist-get 'name tab))
+		  (tab-bar-tabs))))
+
+(defun ff/tab-bar-new-tab (name)
+  (when (eq nil tab-bar-mode)
+    (tab-bar-mode))
+  (tab-bar-new-tab)
+  (tab-bar-rename-tab name))
+
+(defun ff/tab-bar-switch-or-create (name func)
+  (if (ff/tab-bar-tab-exists name)
+      (tab-bar-switch-to-tab name)
+    (ff/tab-bar-new-tab name))
+  (funcall func))
+
+(defun ff/tab-bar-run-todos ()
+  (interactive)
+  (ff/tab-bar-switch-or-create
+   "org"
+   #'(lambda ()
+       (find-file "~/workspace/org/todos.org"))))
+
+(defun ff/tab-bar-run-notes ()
+  (interactive)
+  (ff/tab-bar-switch-or-create
+   "org"
+   #'(lambda ()
+       (find-file "~/workspace/org/notes.org"))))
+
+(defun ff/tab-bar-run-aos ()
+  (interactive)
+  (ff/tab-bar-switch-or-create
+   "org"
+   #'(lambda ()
+       (find-file "~/workspace/org/aos.org"))))
+
+(defhydra ff/tab-bar-quick-access (:color teal)
+  "My tab-bar helpers"
+  ("t" ff/tab-bar-run-todos "Todos")
+  ("n" ff/tab-bar-run-notes "Notes")
+  ("a" ff/tab-bar-run-aos "AOS"))
+
+(use-package tab-bar
+  :custom
+  ;; Don't turn on tab-bar-mode when tabs are created
+  ((tab-bar-show nil)
+   (tab-bar-new-tab-choice "*scratch*"))
+  :init
+  (tab-bar-mode t)
+  :bind (("C-x t n" . tab-new)
+         ("C-x t w" . tab-close)
+         ("C-<prior>" . tab-previous)
+         ("C-<next>" . tab-next)
+         ("C-x t h" . ff/tab-bar-quick-access/body)))
 
 ;; -------------------------------------------------------------------
 ;; Project (built in project handling mode; similar to projectile)
@@ -363,23 +426,6 @@ PROJECT-ROOT: Path to the root directory of the current project."
          (LaTeX-mode . ff/visual-fill-center-text)))
 
 ;; -------------------------------------------------------------------
-;; Gumshoe: jump back and forth through marked positions
-;; -------------------------------------------------------------------
-(use-package gumshoe
-  :custom
-  ((gumshoe-slot-schema '(time buffer position line))
-   (gumshoe-idle-time 0.2)
-   (gumshoe-log-len 50)
-   (gumshoe-show-footprints-p nil))
-  :init
-  ;; Enabing global-gumshoe-mode will initiate tracking
-  (global-gumshoe-mode)
-  :bind (;; enable browser like key bindings to move forth and
-         ;; back in bookmarks
-         ("M-<left>" . gumshoe-backtrack-back)
-         ("M-<right>" . gumshoe-backtrack-forward)))
-
-;; -------------------------------------------------------------------
 ;; Tramp
 ;; -------------------------------------------------------------------
 (use-package tramp
@@ -404,21 +450,6 @@ PROJECT-ROOT: Path to the root directory of the current project."
 
 ;; multihop example: /ssh:frf2lr@ws|docker:vscode@c8416d9f4da6:/
 (use-package docker-tramp)
-
-;; -------------------------------------------------------------------
-;; Tab bar
-;; -------------------------------------------------------------------
-(use-package tab-bar
-  :custom
-  ;; Don't turn on tab-bar-mode when tabs are created
-  ((tab-bar-show nil)
-   (tab-bar-new-tab-choice "*scratch*"))
-  :init
-  (tab-bar-mode t)
-  :bind (("C-x t n" . tab-new)
-         ("C-x t w" . tab-close)
-         ("C-<prior>" . tab-previous)
-         ("C-<next>" . tab-next)))
 
 ;; -------------------------------------------------------------------
 ;; Completion system: Vertico
@@ -649,6 +680,23 @@ PROJECT-ROOT: Path to the root directory of the current project."
 
 (use-package setup-org-roam
   :straight nil)
+
+;; -------------------------------------------------------------------
+;; Gumshoe: jump back and forth through marked positions
+;; -------------------------------------------------------------------
+(use-package gumshoe
+  :custom
+  ((gumshoe-slot-schema '(time buffer position line))
+   (gumshoe-idle-time 0.2)
+   (gumshoe-log-len 50)
+   (gumshoe-show-footprints-p nil))
+  :init
+  ;; Enabing global-gumshoe-mode will initiate tracking
+  (global-gumshoe-mode)
+  :bind (;; enable browser like key bindings to move forth and
+         ;; back in bookmarks
+         ("M-<left>" . gumshoe-backtrack-back)
+         ("M-<right>" . gumshoe-backtrack-forward)))
 
 ;; -------------------------------------------------------------------
 ;; Lsp-mode
