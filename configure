@@ -99,6 +99,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
     # Quickfix required here: Apt is not the best way to install npm
     sudo apt install -y \
          npm
+    npm install -g n
 
     # install dependencies for emacs
     sudo apt install -y \

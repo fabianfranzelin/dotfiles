@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Set default keyboard layout to German
+setxkbmap de
+
 picom &
 nm-applet &
 
