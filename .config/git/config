@@ -4,7 +4,7 @@
     trustctime = false
     filemode = false
     autocrlf = false
-    editor = emacsclient -nw -a "vim"
+    editor = vim
 [user]
     name = " Franzelin Fabian (XC-DX/ESB4)"
     email = fabian.franzelin@de.bosch.com
