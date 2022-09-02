@@ -75,6 +75,7 @@
  org-ellipsis "…"
 
  ;; Agenda styling
+ org-agenda-files '("~/workspace/org/todos.org")
  org-agenda-block-separator ?─
  org-agenda-time-grid
  '((daily today require-timed)

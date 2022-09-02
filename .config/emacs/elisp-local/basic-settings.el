@@ -388,7 +388,8 @@ PROJECT-ROOT: Path to the root directory of the current project."
   ((dashboard-center-content t)
    ;; To disable shortcut "jump" indicators for each section, set
    (dashboard-show-shortcuts t)
-   (dashboard-items '((recents  . 5)
+   (dashboard-items '((recents  . 10)
+                      (agenda . 10)
                       (registers . 5)))
    (dashboard-set-heading-icons t)
    (dashboard-set-file-icons t)
