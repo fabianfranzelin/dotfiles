@@ -384,20 +384,22 @@ PROJECT-ROOT: Path to the root directory of the current project."
 (use-package dashboard
   :after (all-the-icons page-break-lines)
   :custom
-  ;; Content is not centered by default. To center, set
-  ((dashboard-center-content t)
+  (;; Content is not centered by default. To center, set
+   (dashboard-center-content t)
    ;; To disable shortcut "jump" indicators for each section, set
    (dashboard-show-shortcuts t)
-   (dashboard-items '((recents  . 10)
-                      (agenda . 10)
-                      (registers . 5)))
+   (dashboard-items '((projects . 5)
+                      (agenda . 5)
+                      (recents  . 5)))
    (dashboard-set-heading-icons t)
    (dashboard-set-file-icons t)
    (dashboard-set-init-info t)
    (dashboard-week-agenda t)
    (dashboard-filter-agenda-entry 'dashboard-no-filter-agenda)
    ;; Show dashboard for newly created frames
-   (initial-buffer-choice (lambda () (get-buffer-create "*dashboard*"))))
+   (initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
+   ;; set the project backend to project.el
+   (dashboard-projects-backend `project-el))
   :config
   (dashboard-setup-startup-hook))
 
@@ -672,15 +674,6 @@ PROJECT-ROOT: Path to the root directory of the current project."
   :init
   (ff/ensure-apt-package "ripgrep" "rg")
   (rg-enable-menu))
-
-;; -------------------------------------------------------------------
-;; Org-mode
-;; -------------------------------------------------------------------
-(use-package setup-org-mode
-  :straight nil)
-
-(use-package setup-org-roam
-  :straight nil)
 
 ;; -------------------------------------------------------------------
 ;; Gumshoe: jump back and forth through marked positions
