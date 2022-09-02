@@ -118,4 +118,13 @@
 (use-package programming-settings
   :straight nil)
 
+;; -------------------------------------------------------------------
+;; Org-mode
+;; -------------------------------------------------------------------
+(use-package setup-org-mode
+  :straight nil)
+
+;; (use-package setup-org-roam
+;;   :straight nil)
+
 ;;; .emacs ends here
