@@ -1,4 +1,4 @@
-;;; .emacs --- this file starts here
+;;; init.el --- this file starts here
 
 ;;; Commentary:
 ;; inspired by https://github.com/daviwil/dotfiles/blob/master/Emacs.org
@@ -127,4 +127,5 @@
 ;; (use-package setup-org-roam
 ;;   :straight nil)
 
-;;; .emacs ends here
+(provide 'init)
+;;; init.el ends here
