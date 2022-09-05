@@ -485,7 +485,6 @@ PROJECT-ROOT: Path to the root directory of the current project."
 (use-package dired
   :straight nil
   :after (org-download async)
-  :commands (dired dired-jump)
   :custom
   ((dired-auto-revert-buffer t) ; Auto update when buffer is revisited
    (dired-dwim-target t)

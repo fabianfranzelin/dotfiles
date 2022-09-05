@@ -10,8 +10,6 @@
    ;; Show word based diff
    (magit-diff-refine-hunk 'all)))
 
-(use-package git-timemachine)
-
 (use-package git-gutter
   :hook ((text-mode . git-gutter-mode)
          (prog-mode . git-gutter-mode))
