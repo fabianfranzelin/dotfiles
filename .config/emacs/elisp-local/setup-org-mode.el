@@ -23,11 +23,6 @@
   (add-to-list 'org-modules 'org-habit)
   (setq org-habit-graph-column 60)
 
-  ;; plantuml
-  (setq org-plantuml-jar-path plantuml-jar-path)
-  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
-  (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
-
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
