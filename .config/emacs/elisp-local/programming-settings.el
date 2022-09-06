@@ -68,6 +68,13 @@
 ;; Make sure that my preferred linter is installed
 (ff/ensure-apt-package "shellcheck" "shellcheck")
 
+;; There is a keybinding defined in sh-mode that overwrites parts of
+;; my configuration. I disable it here manually
+(use-package sh-script
+  :straight nil
+  :config
+  (define-key sh-mode-map "\C-c\C-f" nil))
+
 ;; -------------------------------------------------------------------
 ;; yaml mode
 ;; -------------------------------------------------------------------

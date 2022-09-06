@@ -455,12 +455,6 @@ PROJECT-ROOT: Path to the root directory of the current project."
 (use-package docker-tramp)
 
 ;; -------------------------------------------------------------------
-;; Completion system: Vertico
-;; ------------------------------------------------------------------
-(use-package setup-completion
-  :straight nil)
-
-;; -------------------------------------------------------------------
 ;; Buffer move & transpose frame
 ;; -------------------------------------------------------------------
 (use-package buffer-move
@@ -692,12 +686,6 @@ PROJECT-ROOT: Path to the root directory of the current project."
          ("M-<right>" . gumshoe-backtrack-forward)))
 
 ;; -------------------------------------------------------------------
-;; Lsp-mode
-;; -------------------------------------------------------------------
-(use-package setup-lsp
-  :straight nil)
-
-;; -------------------------------------------------------------------
 ;; Treemacs
 ;; -------------------------------------------------------------------
 (defun treemacs-custom-filter (file _)
@@ -716,6 +704,7 @@ FILE: filename"
            (other-window -1))))
 
 (use-package treemacs
+  :after (lsp-mode)
   :commands
   (treemacs
    treemacs-follow-mode
@@ -734,17 +723,6 @@ FILE: filename"
   (push #'treemacs-custom-filter treemacs-ignored-file-predicates)
   :bind (("C-x t t" . treemacs)
          ("C-x t s" . ff/lsp-treemacs-symbols-toggle)))
-
-;; -------------------------------------------------------------------
-;; Eshell & Vterm
-;; -------------------------------------------------------------------
-(use-package setup-eshell
-  :straight nil
-  :after (shell-loader))
-
-(use-package setup-vterm
-  :straight nil
-  :after (shell-loader))
 
 ;; -------------------------------------------------------------------
 ;; Show number of lines in the left side of the buffer
@@ -798,18 +776,6 @@ TEXT: title"
 (use-package flycheck
   :hook ((lsp-mode . flycheck-mode))
   :init (global-flycheck-mode))
-
-;; -------------------------------------------------------------------
-;; Spell checker: Language tool and ispell/aspell
-;; -------------------------------------------------------------------
-(use-package setup-spellcheck
-  :straight nil)
-
-;; -------------------------------------------------------------------
-;; Git - magit
-;; -------------------------------------------------------------------
-(use-package setup-magit
-  :straight nil)
 
 ;; -------------------------------------------------------------------
 ;; Ace window: select windows based on numbers

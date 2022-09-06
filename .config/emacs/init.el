@@ -95,10 +95,6 @@
 (use-package helpers
   :straight nil)
 
-(use-package shell-loader
-  :straight nil
-  :custom (ff/shell-vertical-alignment t))
-
 ;; -------------------------------------------------------------------
 ;; Daemon settings
 ;; -------------------------------------------------------------------
@@ -110,6 +106,45 @@
 ;; Basic settings
 ;; -------------------------------------------------------------------
 (use-package basic-settings
+  :straight nil)
+
+;; -------------------------------------------------------------------
+;; Eshell & Vterm
+;; -------------------------------------------------------------------
+(use-package shell-loader
+  :straight nil
+  :custom (ff/shell-vertical-alignment t))
+
+(use-package setup-eshell
+  :straight nil
+  :after (shell-loader))
+
+(use-package setup-vterm
+  :straight nil
+  :after (shell-loader))
+
+;; -------------------------------------------------------------------
+;; Spell checker: Language tool and ispell/aspell
+;; -------------------------------------------------------------------
+(use-package setup-spellcheck
+  :straight nil)
+
+;; -------------------------------------------------------------------
+;; Git - magit
+;; -------------------------------------------------------------------
+(use-package setup-magit
+  :straight nil)
+
+;; -------------------------------------------------------------------
+;; Completion system: Vertico
+;; ------------------------------------------------------------------
+(use-package setup-completion
+  :straight nil)
+
+;; -------------------------------------------------------------------
+;; Lsp-mode
+;; -------------------------------------------------------------------
+(use-package setup-lsp
   :straight nil)
 
 ;; -------------------------------------------------------------------
