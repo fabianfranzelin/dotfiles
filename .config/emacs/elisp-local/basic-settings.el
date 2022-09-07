@@ -500,6 +500,7 @@ PROJECT-ROOT: Path to the root directory of the current project."
   :bind (("C-x C-j" . dired-jump)
          :map dired-mode-map
          ("<backspace>" . dired-up-directory)
+         ("C-l" . dired-up-directory) ;; backspace does not work in terminal-mode
          ("TAB" . dired-find-file)))
 
 (use-package dired-rainbow
