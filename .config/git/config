@@ -12,6 +12,8 @@
     # cd /usr/share/doc/git/contrib/credential/libsecret
     # sudo make
     helper = /usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret
+    # useHttpPath = true
+    # helper = /mnt/c/Program\\ Files/Git/mingw64/libexec/git-core/git-credential-wincred.exe
 [merge]
     tool = meld
 [diff]
@@ -29,3 +31,15 @@
     proxy=http://localhost:3128
 [https]
     proxy=http://localhost:3128
+[http "http://*.bosch.com/"]
+    proxy =
+[http "https://*.bosch.com/"]
+    proxy =
+[http "http://*.*.bosch.com/"]
+    proxy =
+[http "https://*.*.bosch.com/"]
+    proxy =
+[http "http://*.*.*.bosch.com/"]
+    proxy =
+[http "https://*.*.*.bosch.com/"]
+    proxy =
