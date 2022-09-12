@@ -27,16 +27,16 @@ ARG: position"
           (insert (expand-file-name "~/")))
 
         ;; Continue
-        (cond ((string-match-p "^/.*:.*:.*/.*/$" (minibuffer-contents))
+        (cond ((string-match-p "^/.*:.*:.*/.*" (minibuffer-contents))
                (zap-up-to-char (- arg) ?/))
-              ((string-match-p "^/.*:.*:.*/$" (minibuffer-contents))
+              ((string-match-p "^/.*:.*:.*" (minibuffer-contents))
                (zap-up-to-char (- (+ arg 1)) ?:))
-              ((string-match-p "^/.*:.*:.*$" (minibuffer-contents))
+              ((string-match-p "^/.*:.*:.*" (minibuffer-contents))
                (zap-up-to-char (- arg) ?:))
               ((string-match-p "^/.*:$" (minibuffer-contents))
                (zap-up-to-char (- arg) ?/))
-              ((or (string-match-p "^/.*/$" (minibuffer-contents))
-                   (string-match-p "^~/.*/$" (minibuffer-contents)))
+              ((or (string-match-p "^/.*" (minibuffer-contents))
+                   (string-match-p "^~/.*" (minibuffer-contents)))
                (zap-up-to-char (- arg) ?/))
               (t ;; default
                (delete-char -1))))
