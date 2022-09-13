@@ -123,8 +123,8 @@ ARG: position"
             (cond
              ((executable-find "rg") "rg -uu --null --color=never --max-columns=1000 --no-heading --line-number -v ^$ .")
              (t "grep -I -r --exclude=.* --exclude-dir=.* --null --color=never --line-number -v ^$"))))
-  :bind (("C-c C-f" . affe-find)
-         ("C-c C-g" . affe-grep)))
+  :bind (("C-x a f" . affe-find)
+         ("C-x a g" . affe-grep)))
 
 ;; Use dabbrev with Corfu!
 (use-package dabbrev
