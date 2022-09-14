@@ -288,8 +288,8 @@ INCREMENT: Value of which the current font-size is changed"
 (defhydra ff/tab-bar-quick-access (:color teal)
   "My tab-bar helpers"
   ("t" ff/tab-bar-run-todos "Todos")
-  ("n" ff/tab-bar-run-notes "Notes")
-  ("a" ff/tab-bar-run-aos "AOS"))
+  ("c" ff/tab-bar-run-notes "Notes (CRE)")
+  ("n" ff/tab-bar-run-notes "Notes (AOS)"))
 
 (use-package tab-bar
   :custom
