@@ -139,6 +139,40 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
             cmake_language_server \
             "python-lsp-server[all]"
 
+    #------------------------------------------------------------------------------#
+    # install dependencies for vscode
+    sudo apt install code
+
+    ## fill in custom extensions here
+    ## '--force' for updating
+    ## 'code --disable-extensions' would disable installed extensions
+
+    ## editor utils
+    code --force --install-extension davidhouchin.whitespace-plus
+    code --force --install-extension pnp.polacode
+
+    ## git
+    code --force --install-extension donjayamanne.githistory
+
+    ## markdown
+    code --force --install-extension davidanson.vscode-markdownlint
+
+    ## toml
+    code --force --install-extension bungcip.better-toml
+    ## csv
+    code --force --install-extension mechatroner.rainbow-csv
+    ## yaml
+    code --force --install-extension redhat.vscode-yaml
+    ## shell
+    code --force --install-extension timonwong.shellcheck
+    ## python
+    code --force --install-extension kevinrose.vsc-python-indent
+    code --force --install-extension ms-python.python
+    ## C/C++
+    code --force --install-extension cquera-project.cquery
+    code --force --install-extension ms-vscode.cpptools
+    code --force --install-extension twxs.cmake
+
     if ( __is_linux ) then
        # try to install snap dependencies. Note that this is not working
        # for Docker or WSL.

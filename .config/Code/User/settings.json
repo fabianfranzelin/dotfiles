@@ -7,8 +7,6 @@
   "workbench.editor.showTabs": true,
   "workbench.sideBar.location": "left",
   "workbench.statusBar.visible": true,
-  "workbench.iconTheme": "material-icon-theme",
-  "workbench.colorTheme": "Dracula", // "Dracula",
   "workbench.activityBar.visible": true,
   "window.menuBarVisibility": "compact",
   "breadcrumbs.enabled": true,
@@ -43,12 +41,6 @@
   "editor.tokenColorCustomizations": true,
   // whitespaces (change whitespace+ mode to trailing in the Command Palette)
   "editor.renderWhitespace": "none",
-  // "workbench.colorCustomizations": {
-  //     "editorWhitespace.foreground": "#ff0000",
-  //     // "editorIndentGuide.activeBackground": "#88C0D0",
-  //     // "editorIndentGuide.background": "#4C566A",
-  // }a
-
   "files.trimTrailingWhitespace": false, // some files need false!
   "diffEditor.ignoreTrimWhitespace": false,
   // tabs
@@ -83,34 +75,8 @@
   "editor.fontLigatures": true,
   "editor.fontSize": 16,
   //------------------------------------------------------------------------//
-  // brackets
-  "editor.matchBrackets": "never",
-  "bracket-pair-colorizer-2.forceUniqueOpeningColor": false,
-  "bracket-pair-colorizer-2.forceIterationColorCycle": false,
-  "bracket-pair-colorizer-2.colorMode": "Consecutive",
-  "bracket-pair-colorizer-2.highlightActiveScope": true,
-  "bracket-pair-colorizer-2.activeScopeCSS": [
-    "borderStyle : solid",
-    "borderWidth : 1px",
-    "borderColor : {color}",
-    "opacity     : 1.00"
-  ],
-  "bracket-pair-colorizer-2.showBracketsInGutter": true,
-  "bracket-pair-colorizer-2.showBracketsInRuler": false,
-  "bracket-pair-colorizer-2.showVerticalScopeLine": true,
-  "bracket-pair-colorizer-2.showHorizontalScopeLine": false,
-  "bracket-pair-colorizer-2.scopeLineRelativePosition": true,
-  "bracket-pair-colorizer-2.scopeLineCSS": [
-    "borderStyle : solid",
-    "borderWidth : 1px",
-    "borderColor : {color}",
-    "opacity     : 1.00"
-  ],
-  //------------------------------------------------------------------------//
   // privacy
-  "telemetry.enableTelemetry": false,
-  // Also usage data is included and we're talking about microsoft.
-  "telemetry.enableCrashReporter": false,
+  "telemetry.telemetryLevel": "off",
   //------------------------------------------------------------------------//
   // specific stuff
   "files.associations": {
@@ -149,15 +115,6 @@
     "editor.tabSize": 2
   },
   //------------------------------------------------------------------------//
-  // java
-  "[java]": {
-    "editor.rulers": [100],
-    "editor.defaultFormatter": "redhat.java",
-    "editor.formatOnSave": true
-  },
-  "java.format.settings.url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml",
-  "java.configuration.checkProjectSettingsExclusions": false,
-  //------------------------------------------------------------------------//
   // JavaScript
   "[javascript]": {
     "editor.rulers": [100],
@@ -183,37 +140,6 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
   },
-  //------------------------------------------------------------------------//
-  // LaTeX
-  "[latex]": {
-    "editor.wordWrap": "on"
-  },
-  // TexLab
-  // "latex.build.args": [],
-  // "latex.build.executable": "latexmk",
-  // "latex.build.onSave": false,
-  // LaTeX-Workshop
-  "latex-workshop.latex.autoBuild.run": "never",
-  "latex-workshop.view.pdf.viewer": "tab",
-  "latex-workshop.hover.preview.scale": 1,
-  "latex-workshop.latex.external.build.command": "latexmk",
-  // // relative to main.tex
-  // "latex-workshop.latex.outDir": "build",
-  // "latex-workshop.latex.magic.args": [
-  //     "-lualatex",
-  //     "-shell-escape",
-  //     "-file-line-error",
-  //     "-halt-on-error",
-  //     "-interaction=nonstopmode",
-  //     "-output-dir=%OUTDIR%",
-  //     "-synctex=1",
-  //     "%DOC%"
-  // ],
-  // "latex-workshop.latex.magic.bib.args": [
-  //     "%DOCFILE%",
-  //     "--input-directory=%OUTDIR%",
-  //     "--output-directory=%OUTDIR%"
-  // ],
   //------------------------------------------------------------------------//
   // Markdown
   "[markdown]": {
@@ -251,28 +177,6 @@
   "python.venvFolders": ["envs", ".pyenv", ".direnv", ".venv"],
   "python.jediEnabled": false,
   //------------------------------------------------------------------------//
-  // rust
-  "[rust]": {
-    "editor.rulers": [100],
-    "editor.trimAutoWhitespace": true,
-    "editor.defaultFormatter": "matklad.rust-analyzer",
-    "editor.formatOnSave": true
-  },
-  "rust-analyzer.inlayHints.chainingHints": false,
-  "rust-analyzer.inlayHints.parameterHints": false,
-  "rust-analyzer.inlayHints.typeHints": false,
-  "rust-analyzer.cargo.allFeatures": true,
-  "rust-analyzer.cargo.features": ["gpl"],
-  "rust-analyzer.updates.askBeforeDownload": true,
-  //------------------------------------------------------------------------//
-  // R
-  "[r]": {
-    "editor.rulers": [80],
-    "editor.trimAutoWhitespace": true,
-    "editor.defaultFormatter": "REditorSupport.r-lsp",
-    "editor.formatOnSave": false
-  },
-  //------------------------------------------------------------------------//
   // shellscript
   // SC1090 - Can't follow non-constant source.
   // SC1091 - Not following
@@ -289,9 +193,6 @@
   "shellcheck.customArgs": [],
   "shellcheck.ignorePatterns": {},
   "shellcheck.useWSL": false,
-  //------------------------------------------------------------------------//
-  // SQL
-  "vscode-mysql.enableTelemetry": false,
   //------------------------------------------------------------------------//
   // TypeScript
   "[typescript]": {
