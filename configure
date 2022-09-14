@@ -169,7 +169,6 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
     code --force --install-extension kevinrose.vsc-python-indent
     code --force --install-extension ms-python.python
     ## C/C++
-    code --force --install-extension cquera-project.cquery
     code --force --install-extension ms-vscode.cpptools
     code --force --install-extension twxs.cmake
 
