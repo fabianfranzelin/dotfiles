@@ -118,7 +118,7 @@
    (doom-themes-enable-italic t)) ; if nil, italics is universally disabled
   :config
   ;; Global settings (defaults)
-  (load-theme 'doom-vibrant t)
+  (load-theme 'doom-palenight t)
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
   ;; or for treemacs users
