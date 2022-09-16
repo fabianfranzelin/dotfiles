@@ -289,7 +289,7 @@ INCREMENT: Value of which the current font-size is changed"
   "My tab-bar helpers"
   ("t" ff/tab-bar-run-todos "Todos")
   ("c" ff/tab-bar-run-notes "Notes (CRE)")
-  ("n" ff/tab-bar-run-notes "Notes (AOS)"))
+  ("n" ff/tab-bar-run-aos "Notes (AOS)"))
 
 (use-package tab-bar
   :custom
