@@ -3,12 +3,14 @@
   geometry_hinting = True
   extra_styling = False
   always_on_top = True
+  title_transmit_bg_color = "#a9a1e1"
   title_font = Noto Sans 9
 [keybindings]
 [profiles]
   [[default]]
     urgent_bell = True
     icon_bell = False
+    background_color = "#282c34"
     background_darkness = 0.9
     background_type = transparent
     cursor_color = "#aaaaaa"
