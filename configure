@@ -96,11 +96,6 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          rofi \
          vim
 
-    # Quickfix required here: Apt is not the best way to install npm
-    sudo apt install -y \
-         npm
-    npm install -g n
-
     # install dependencies for emacs
     sudo apt install -y \
          markdown \
@@ -176,6 +171,11 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
        # try to install snap dependencies. Note that this is not working
        # for Docker or WSL.
        echo -e "${__COLOR_INFO}INFO: Install GTK tools${__COLOR_RESET}"
+
+       # Quickfix required here: Apt is not the best way to install npm
+       sudo apt install -y \
+            npm
+       npm install -g n
 
        # Install Qtile window manager
        python3 -m pip install --upgrade xcffib
