@@ -1,0 +1,20 @@
+[user]
+    name = " Franzelin Fabian (XC-DX/ESB4)"
+    email = fabian.franzelin@de.bosch.com
+[credential]
+    # ----------------------------------
+    # For WSL use
+    useHttpPath = true
+    helper = /mnt/c/Program\\ Files/Git/mingw64/libexec/git-core/git-credential-wincred.exe
+[http "http://*.bosch.com/"]
+    proxy =
+[http "https://*.bosch.com/"]
+    proxy =
+[http "http://*.*.bosch.com/"]
+    proxy =
+[http "https://*.*.bosch.com/"]
+    proxy =
+[http "http://*.*.*.bosch.com/"]
+    proxy =
+[http "https://*.*.*.bosch.com/"]
+    proxy =
