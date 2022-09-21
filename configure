@@ -260,12 +260,26 @@ fi
     cd "${DOTFILES}/.config/git"
     TARGET_GIT_CONFIG="config.$(hostname)"
     if [ -f "${TARGET_GIT_CONFIG}" ]; then
-        ln -s -f "config.$(hostname)" "config.workstation"
+        ln -s -f "${TARGET_GIT_CONFIG}" "config.workstation"
     else
         echo -e "${__COLOR_ERR}Missing git configuration for $(hostname). Provide \"$(pwd)/${TARGET_GIT_CONFIG}\"${__COLOR_RESET}"
         exit 1
     fi
 )
+
+#------------------------------------------------------------------------------#
+# Hack: setup workstation specific config for npm using extra symlink
+(
+    cd "${DOTFILES}"
+    TARGET_NPM_CONFIG=".config/npm/npmrc.$(hostname)"
+    if [ -f "${TARGET_NPM_CONFIG}" ]; then
+        ln -s -f "${TARGET_NPM_CONFIG}" ".npmrc"
+    else
+        echo -e "${__COLOR_ERR}Missing npm configuration for $(hostname). Provide \"${DOTFILES}/${TARGET_NPM_CONFIG}\"${__COLOR_RESET}"
+        exit 1
+    fi
+)
+
 #------------------------------------------------------------------------------#
 # Setup all symlinks with GNU stow
 echo -e "${__COLOR_INFO}INFO: Setup symlinks with GNU stow.${__COLOR_RESET}"
