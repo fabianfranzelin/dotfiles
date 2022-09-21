@@ -121,4 +121,4 @@ flycheck_*
 /.config/git/config.workstation
 
 ### NPMRC ###
-/.npmrc
+/.config/npm/npmrc

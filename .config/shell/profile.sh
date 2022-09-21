@@ -77,6 +77,10 @@ export WORKON_HOME="${HOME}/.virtualenvs"
 export PIP_VIRTUALENV_BASE="${WORKON_HOME}"
 
 #------------------------------------------------------------------------------#
+# NPM
+export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
+
+#------------------------------------------------------------------------------#
 # make aliases available in eshell
 # mkdir -p "${XDG_CONFIG_HOME}/emacs/eshell"
 # alias | sed 's/^alias //' | sed -E "s/^([^=]+)='(.+?)'$/\1=\2/" | sed "s/'\\\\''/'/g" | sed "s/'\\\\$/'/;" | sed -E 's/^([^=]+)=(.+)$/alias \1 \2/' > "$HOME/.emacs.d/eshell/alias"
