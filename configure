@@ -173,10 +173,10 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
        echo -e "${__COLOR_INFO}INFO: Install GTK tools${__COLOR_RESET}"
 
        # Quickfix required here: Apt is not the best way to install npm
-       sudo apt install -y \
-            npm
-       sudo apt remove -y \
-            nodejs
+       if [ ! "$(command -v npm)" ]; then
+           sudo apt install -y npm
+           sudo apt remove -y nodejs
+       fi
 
        sudo npm install -g n
        sudo n stable
