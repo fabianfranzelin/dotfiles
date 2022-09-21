@@ -249,6 +249,18 @@ if [[ ! -d "${ZSH_YOU_SHOULD_USE}" ]]; then
 fi
 
 #------------------------------------------------------------------------------#
+# Hack: setup workstation specific config for git using extra symlink
+(
+    cd "${DOTFILES}/.config/git"
+    TARGET_GIT_CONFIG="config.$(hostname)"
+    if [ -f "${TARGET_GIT_CONFIG}" ]; then
+        ln -s -f "config.$(hostname)" "config.workstation"
+    else
+        echo -e "${__COLOR_ERR}Missing git configuration for $(hostname). Provide \"$(pwd)/${TARGET_GIT_CONFIG}\"${__COLOR_RESET}"
+        exit 1
+    fi
+)
+#------------------------------------------------------------------------------#
 # Setup all symlinks with GNU stow
 echo -e "${__COLOR_INFO}INFO: Setup symlinks with GNU stow.${__COLOR_RESET}"
 
