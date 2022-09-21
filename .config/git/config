@@ -1,26 +1,5 @@
 [include]
-    path = "~/.config/git/config.general"
-[user]
-    name = " Franzelin Fabian (XC-DX/ESB4)"
-    email = fabian.franzelin@de.bosch.com
-[credential]
-    # ----------------------------------
-    # helper = cache --timeout=8000000
-    # useHttpPath = true
-    # ----------------------------------
-    # For installation, run:
-    # sudo apt-get install libsecret-1-0 libsecret-1-dev
-    # cd /usr/share/doc/git/contrib/credential/libsecret
-    # sudo make
-    helper = /usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret
-    # ----------------------------------
-    # For WSL use
-    # useHttpPath = true
-    # helper = /mnt/c/Program\\ Files/Git/mingw64/libexec/git-core/git-credential-wincred.exe
-[merge]
-    tool = meld
-[diff]
-    tool = meld
+    path = "~/.config/git/config.workstation"
 [lfs]
     storage = ~/.cache/git/lfs
 [filter "lfs"]
@@ -30,19 +9,88 @@
 	required = true
 [gc]
     autoDetach = false
-[http]
-    proxy=http://localhost:3128
-[https]
-    proxy=http://localhost:3128
-[http "http://*.bosch.com/"]
-    proxy =
-[http "https://*.bosch.com/"]
-    proxy =
-[http "http://*.*.bosch.com/"]
-    proxy =
-[http "https://*.*.bosch.com/"]
-    proxy =
-[http "http://*.*.*.bosch.com/"]
-    proxy =
-[http "https://*.*.*.bosch.com/"]
-    proxy =
+[lfs]
+    storage = ~/.cache/git/lfs
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[gc]
+    autoDetach = false
+[push]
+    default = simple
+    recurseSubmodules = check
+[pull]
+	rebase = false
+[core]
+    trustctime = false
+    autocrlf = input
+    safecrlf = true
+    editor = vim
+[fetch]
+    prune = true
+[alias]
+    # general
+    h     = "help"
+    s     = "status"
+    hash  = !"hash() { git rev-parse --verify ${1:-HEAD}; }; hash"
+    sub   = "submodule"
+    subup = "submodule update --recursive"
+
+    # efficient staging
+    unstage = "restore --staged" # "reset HEAD --"
+    discard = "restore" # "checkout --"
+    undo    = "reset HEAD^ --soft"
+
+    # committing
+    a   = "add"
+    aa  = !"git add -A && git status"
+    c   = "commit"
+    ca  = !"git add -A && git status && git commit"
+    cm  = "commit -m"
+    cam = !"git add -A && git status && git commit -m"
+    f   = "fetch"
+    fa  = "fetch --all"
+
+    # tagging
+    tags = "tag"
+    tl   = "tag" # same as "tag --list"
+    ta   = "tag --annotate"
+    twm  = "tag --message='See CHANGELOG.md' --annotate"
+    td   = "tag --delete"
+
+    # merging
+    m       = "merge"
+    squash  = "merge --squash"
+    squeeze = "merge --squash"
+
+    # branching
+    co  = "checkout"
+    cob = "checkout -b"
+    # list branches sorted by last modified
+    b   = "branch"
+    bsc = "branch --show-current"
+    ba  = "branch --list -a"
+    bv  = "branch --list -v"
+    bav = "branch --list -av"
+
+    # show last n commits where n is given as parameter (default is 1)
+    last = !"last() { git log -${1:-1} HEAD; }; last"
+
+    # local and global network history
+    localhist  = !"git localgraph1"
+    localgraph = !"git localgraph1"
+    l          = !"git localgraph1"
+
+    hist  = !"git globalgraph1"
+    graph = !"git globalgraph1"
+    la    = !"git globalgraph1"
+
+    globalgraph1 = !"git localgraph1 --all"
+    globalgraph2 = !"git localgraph2 --all"
+    globalgraph3 = !"git localgraph3 --all"
+
+    localgraph1 = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'"
+    localgraph2 = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'"
+    localgraph3 = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset) %C(bold cyan)(committed: %cD)%C(reset) %C(auto)%d%C(reset)%n''          %C(white)%s%C(reset)%n''          %C(dim white)- %an <%ae> %C(reset) %C(dim white)(committer: %cn <%ce>)%C(reset)'"

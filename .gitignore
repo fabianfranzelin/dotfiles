@@ -116,3 +116,6 @@ flycheck_*
 ### ZSH ###
 /.config/zsh/.zcompdump*
 /.config/zsh/.zsh_history
+
+### GIT ###
+/.config/git/config.workstation
