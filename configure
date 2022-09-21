@@ -175,7 +175,13 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
        # Quickfix required here: Apt is not the best way to install npm
        sudo apt install -y \
             npm
-       npm install -g n
+       sudo apt remove -y \
+            nodejs
+
+       sudo npm install -g n
+       sudo n stable
+       sudo npm install npm@latest
+       sudo npm install nodejs@latest
 
        # Install Qtile window manager
        python3 -m pip install --upgrade xcffib
