@@ -270,12 +270,12 @@ fi
 #------------------------------------------------------------------------------#
 # Hack: setup workstation specific config for npm using extra symlink
 (
-    cd "${DOTFILES}"
-    TARGET_NPM_CONFIG=".config/npm/npmrc.$(hostname)"
+    cd "${DOTFILES}/.config/npm"
+    TARGET_NPM_CONFIG="npmrc.$(hostname)"
     if [ -f "${TARGET_NPM_CONFIG}" ]; then
-        ln -s -f "${TARGET_NPM_CONFIG}" ".npmrc"
+        ln -s -f "${TARGET_NPM_CONFIG}" "npmrc"
     else
-        echo -e "${__COLOR_ERR}Missing npm configuration for $(hostname). Provide \"${DOTFILES}/${TARGET_NPM_CONFIG}\"${__COLOR_RESET}"
+        echo -e "${__COLOR_ERR}Missing npm configuration for $(hostname). Provide \"$(pwd)/${TARGET_NPM_CONFIG}\"${__COLOR_RESET}"
         exit 1
     fi
 )
