@@ -64,12 +64,13 @@ alias doir='docker image rm'
 # Emacs
 alias e="emacsclient -c -a emacs"
 alias en="emacsclient -nw"
-alias eds="systemctl --user start emacs"
-alias edr="systemctl --user restart emacs"
-alias emacs_stop="systemctl --user stop emacs"
-alias emacs_start="systemctl --user start emacs"
-alias emacs_restart="systemctl --user restart emacs"
+alias eds="emacs --daemon"
+alias edk="killall emacs"
+alias edr="edk; eds"
+alias emacs_stop="edk"
+alias emacs_start="eds"
+alias emacs_restart="edr"
 alias ff='find_file'
 
 # Seahorse
-alias gnome_keyring_daemon="gnome-keyring-daemon --replace --components=pkcs11,secrets,ssh"
+alias gnome_keyring_daemon="gnome-keyring-daemon --replace --components=pkcs11,secrets,ssh && seahorse"
