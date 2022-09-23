@@ -94,7 +94,8 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          nitrogen \
          dmenu \
          rofi \
-         vim
+         vim \
+         git-lfs
 
     # install dependencies for emacs
     sudo apt install -y \

@@ -5,6 +5,7 @@
 #------------------------------------------------------------------------------#
 # sourcing own functions
 # check in both cases whether directory exists and is not empty
+export __SHELL_LIB="${XDG_CONFIG_HOME}/shell"
 
 __DIRS=( "${__SHELL_LIB}" )
 for __DIR in "${__DIRS[@]}"; do
