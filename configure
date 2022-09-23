@@ -142,34 +142,10 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
        sudo apt install code
     fi
 
-    ## fill in custom extensions here
-    ## '--force' for updating
-    ## 'code --disable-extensions' would disable installed extensions
-
-    ## editor utils
-    code --force --install-extension davidhouchin.whitespace-plus
-    code --force --install-extension pnp.polacode
-
-    ## git
-    code --force --install-extension donjayamanne.githistory
-
-    ## markdown
-    code --force --install-extension davidanson.vscode-markdownlint
-
-    ## toml
-    code --force --install-extension bungcip.better-toml
-    ## csv
-    code --force --install-extension mechatroner.rainbow-csv
-    ## yaml
-    code --force --install-extension redhat.vscode-yaml
-    ## shell
-    code --force --install-extension timonwong.shellcheck
-    ## python
-    code --force --install-extension kevinrose.vsc-python-indent
-    code --force --install-extension ms-python.python
-    ## C/C++
-    code --force --install-extension ms-vscode.cpptools
-    code --force --install-extension twxs.cmake
+    # shellcheck disable=SC2013
+    for CODE_EXTENSION_ID in $(sed -e 's/#.*//' "${DOTFILES}/.config/Code/User/extensions.txt"); do
+        code --force --install-extension "${CODE_EXTENSION_ID}"
+    done
 
     if ( __is_linux ) then
        # Install tools that solely work on Ubuntu desktop. Note
