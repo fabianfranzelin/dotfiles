@@ -21,6 +21,9 @@ export XDG_STATE_HOME="$HOME/.local/state"
 # Directory of dotfiles for zsh
 export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
 
+# place comp dump in the cache
+export ZSH_COMPDUMP="${XDG_CACHE_HOME}/zsh/.zcompdump-$HOST"
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
