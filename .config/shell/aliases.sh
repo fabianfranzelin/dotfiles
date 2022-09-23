@@ -2,12 +2,19 @@
 
 # shellcheck disable=SC1090,SC2139
 
-alias reboot='systemctl reboot'
-alias shutdown='systemctl poweroff'
-MY_LOGIN_SESSION=$(loginctl session-status | head -n 1 | awk '{print $1}')
-alias logout="loginctl terminate-session ${MY_LOGIN_SESSION}"
+if ( is_linux ) then
+   # these aliases require systemd running, hence it just works on
+   # native Linux
+   alias reboot='systemctl reboot'
+   alias shutdown='systemctl poweroff'
+   MY_LOGIN_SESSION=$(loginctl session-status | head -n 1 | awk '{print $1}')
+   alias logout="loginctl terminate-session ${MY_LOGIN_SESSION}"
 
-alias cp='cp -i -P'
+   # Seahorse
+   alias gnome_keyring_daemon="gnome-keyring-daemon --replace --components=pkcs11,secrets,ssh && seahorse"
+fi
+
+   alias cp='cp -i -P'
 alias mv='mv -i'
 alias grep='grep --color=auto'
 
@@ -72,5 +79,3 @@ alias emacs_start="eds"
 alias emacs_restart="edr"
 alias ff='find_file'
 
-# Seahorse
-alias gnome_keyring_daemon="gnome-keyring-daemon --replace --components=pkcs11,secrets,ssh && seahorse"
