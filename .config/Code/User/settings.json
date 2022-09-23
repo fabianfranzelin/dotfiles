@@ -1,5 +1,8 @@
 {
   //------------------------------------------------------------------------//
+  // system settings
+  "http.proxy": "http://localhost:3128",
+  //------------------------------------------------------------------------//
   // window settings
   "window.title": "${activeEditorMedium}${separator}${rootName}",
   "window.titleBarStyle": "custom",

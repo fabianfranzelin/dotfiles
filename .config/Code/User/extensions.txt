@@ -1,0 +1,34 @@
+## editor utils
+davidhouchin.whitespace-plus
+pnp.polacode
+christian-kohler.path-intellisense
+streetsidesoftware.code-spell-checker
+
+## git
+donjayamanne.githistory
+eamodio.gitlens
+
+## markdown
+yzhang.markdown-all-in-one
+
+## toml
+bungcip.better-toml
+
+## csv
+mechatroner.rainbow-csv
+
+## yaml
+redhat.vscode-yaml
+
+## shell
+timonwong.shellcheck
+
+## python
+ms-python.python
+donjayamanne.python-extension-pack
+
+## C/C++
+ms-vscode.cpptools
+ms-vscode.cpptools-extension-pack
+twxs.cmake
+
