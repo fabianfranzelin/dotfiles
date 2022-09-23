@@ -39,7 +39,9 @@ HISTSIZE=10000
 # history-length in HISTFILE
 HISTFILESIZE=10000
 
-HISTFILE="${HOME}/.bash_history"
+mkdir -p "${XDG_CACHE_HOME}/bash"
+HISTFILE="${XDG_CACHE_HOME}/bash/.bash_history"
+
 # append to the history file, don't overwrite it
 shopt -s histappend
 
