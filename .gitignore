@@ -120,5 +120,8 @@ flycheck_*
 ### GIT ###
 /.config/git/config.workstation
 
-### NPMRC ###
+### NPM ###
 /.config/npm/npmrc
+/package.json
+/node_modules/
+/package-lock.json
