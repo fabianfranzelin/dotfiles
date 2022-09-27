@@ -1,0 +1,14 @@
+[user]
+    name = "Fabian Franzelin"
+    email = fabian.franzelin@gmail.com
+[credential]
+    # ----------------------------------
+    # For installation, run:
+    # sudo apt-get install libsecret-1-0 libsecret-1-dev
+    # cd /usr/share/doc/git/contrib/credential/libsecret
+    # sudo make
+    helper = /usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret
+[merge]
+    tool = meld
+[diff]
+    tool = meld
