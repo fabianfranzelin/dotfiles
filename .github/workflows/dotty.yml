@@ -4,7 +4,7 @@ on:
   pull_request:
 jobs:
   release:
-    if: github.ref == 'refs/heads/stable'
+    if: github.ref == 'refs/heads/nightly'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
