@@ -59,18 +59,3 @@ startup. Make sure that you ran
 #+end_src
 
 before you do so.
-
-* Local configurations
-
-** Keyboard shortcuts
-
-If you want to start Emacs via a keyboard shortcut, then do it
-according to your system settings. Since I use the Emacs daemon, the
-following command works nicely together with my Emacs settings
-
-#+begin_src shell
-  emacsclient -c -a emacs
-#+end_src
-
-It starts a new Emacs session if it is not already running. Otherwise,
-it creates a client session.
