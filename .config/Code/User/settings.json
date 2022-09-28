@@ -1,7 +1,7 @@
 {
   //------------------------------------------------------------------------//
   // system settings
-  "http.proxy": "${env:HTTP_PROXY}",
+  "http.proxy": "",
   //------------------------------------------------------------------------//
   // window settings
   "window.title": "${activeEditorMedium}${separator}${rootName}",
