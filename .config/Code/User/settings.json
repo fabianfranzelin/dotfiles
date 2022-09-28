@@ -1,7 +1,7 @@
 {
   //------------------------------------------------------------------------//
   // system settings
-  "http.proxy": "http://localhost:3128",
+  "http.proxy": "${env:HTTP_PROXY}",
   //------------------------------------------------------------------------//
   // window settings
   "window.title": "${activeEditorMedium}${separator}${rootName}",
