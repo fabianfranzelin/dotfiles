@@ -176,30 +176,34 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
 
        # Create xsessions entry for qtile according to
        # https://docs.qtile.org/en/latest/manual/install/index.html#starting-qtile
-       QTILE_DESKTOP_FILE_PATH="/usr/share/xsessions/qtile.desktop"
-       if [ ! -f "${QTILE_DESKTOP_FILE_PATH}" ]; then
-           echo "[Desktop Entry]
+       XSESSIONS_PATH="/usr/share/xsessions"
+       if [ -d "${XSESSIONS_PATH}" ]; then
+           QTILE_DESKTOP_FILE_PATH="${XSESSIONS_PATH}/qtile.desktop"
+           if [ ! -f "${QTILE_DESKTOP_FILE_PATH}" ]; then
+               echo "[Desktop Entry]
 Name=Qtile
 Comment=Qtile Session
 Exec=qtile start
 Type=Application
 Keywords=wm;tiling" | sudo tee "${QTILE_DESKTOP_FILE_PATH}"
-       else
-           echo -e "${__COLOR_ERR}The file '${QTILE_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
-       fi
+           else
+               echo -e "${__COLOR_ERR}The file '${QTILE_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
+           fi
 
-       CUSTOM_DESKTOP_FILE_PATH="/usr/share/xsessions/custom.desktop"
-       if [ ! -f "${CUSTOM_DESKTOP_FILE_PATH}" ]; then
-           echo "[Desktop Entry]
+           CUSTOM_DESKTOP_FILE_PATH="${XSESSIONS_PATH}/custom.desktop"
+           if [ ! -f "${CUSTOM_DESKTOP_FILE_PATH}" ]; then
+               echo "[Desktop Entry]
 Name=Qtile
 Comment=Qtile Session
 Exec=/etc/X11/Xsession
 Type=Application
 Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
+           else
+               echo -e "${__COLOR_ERR}The file '${CUSTOM_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
+           fi
        else
-           echo -e "${__COLOR_ERR}The file '${CUSTOM_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
+           echo -e "${__COLOR_INFO}INFO: skipping xsession configuration for qtile"
        fi
-
        sudo apt install -y \
             vlc \
             firefox \
