@@ -17,6 +17,8 @@ jobs:
           git config --global user.name "${GIT_USER_NAME}"
           git config --global user.email "${GIT_USER_EMAIL}"
           git fetch --all
+      - name: Install the dotfiles
+        run: ./configure -i
       - name: Deploy and tag
         run: |
           DATE=$(date --utc +%Y-%m-%d)
