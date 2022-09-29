@@ -251,8 +251,8 @@ fi
     if [ -f "${TARGET_GIT_CONFIG}" ]; then
         ln -s -f "${TARGET_GIT_CONFIG}" "config.workstation"
     else
-        echo -e "${__COLOR_ERR}Missing git configuration for $(hostname). Provide \"$(pwd)/${TARGET_GIT_CONFIG}\"${__COLOR_RESET}"
-        exit 1
+        echo -e "${__COLOR_INFO}No specific git configuration for $(hostname) available. Using the default one.${__COLOR_RESET}"
+        ln -s -f "config.default" "config.workstation"
     fi
 )
 
@@ -264,8 +264,8 @@ fi
     if [ -f "${TARGET_NPM_CONFIG}" ]; then
         ln -s -f "${TARGET_NPM_CONFIG}" "npmrc"
     else
-        echo -e "${__COLOR_ERR}Missing npm configuration for $(hostname). Provide \"$(pwd)/${TARGET_NPM_CONFIG}\"${__COLOR_RESET}"
-        exit 1
+        echo -e "${__COLOR_INFO}No specific npm configuration for $(hostname) available. Using the default one.${__COLOR_RESET}"
+        ln -s -f "npmrc.default" "npmrc"
     fi
 )
 
