@@ -55,7 +55,7 @@ Once you have Emacs installed, it configures it on its own at
 startup. Make sure that you ran
 
 #+begin_src shell
-  ./configure -i
+  ./configure -i -s
 #+end_src
 
 before you do so.
