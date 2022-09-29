@@ -1,5 +1,10 @@
 #+TITLE: =My dotfiles=
 
+
+[[https://img.shields.io/github/v/tag/fabianfranzelin/dotfiles?style=for-the-badge][https://github.com/fabianfranzelin/dotfiles/tags]]
+[[https://img.shields.io/github/last-commit/fabianfranzelin/dotfiles?style=for-the-badge][https://github.com/fabianfranzelin/dotfiles/commits]]
+[[https://img.shields.io/github/license/fabianfranzelin/dotfiles?style=for-the-badge][https://github.com/fabianfranzelin/dotfiles/blob/nightly/LICENSE]]
+
 * Welcome
 
 In this repository, I gather my system configurations that allow me to have
