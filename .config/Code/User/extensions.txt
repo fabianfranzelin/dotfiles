@@ -32,3 +32,6 @@ ms-vscode.cpptools
 ms-vscode.cpptools-extension-pack
 twxs.cmake
 
+
+## plantuml
+jebbs.plantuml
