@@ -17,6 +17,8 @@ DESCRIPTION
               Print this help message
        -i --install
               Install third-party dependencies
+       -s --stow
+              Run GNU stow and create symbolic links in your home folder
 "
 
 #------------------------------------------------------------------------------#
@@ -42,8 +44,11 @@ while [ "${#}" -gt 0 ]; do
         __ERRCODE=0
         ;;
     '-i'|'--install')
-        echo -e "${__COLOR_INFO}Install third-party dependencies${__COLOR_RESET}"
         INSTALL_DEPENDENCIES=1
+        shift # past argument
+        ;;
+    '-s'|'--stow')
+        STOW_FILES=1
         shift # past argument
         ;;
     *)
@@ -271,10 +276,10 @@ fi
 
 #------------------------------------------------------------------------------#
 # Setup all symlinks with GNU stow
-echo -e "${__COLOR_INFO}INFO: Setup symlinks with GNU stow.${__COLOR_RESET}"
-
-(
-    cd "${DOTFILES}"
-    stow . -t "${HOME}"
-)
-
+if [ -n "${STOW_FILES}" ]; then
+    echo -e "${__COLOR_INFO}INFO: Setup symbolic links with GNU stow.${__COLOR_RESET}"
+    (
+        cd "${DOTFILES}"
+        stow . -t "${HOME}"
+    )
+fi
