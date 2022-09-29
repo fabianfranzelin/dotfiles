@@ -11,5 +11,5 @@ DOTFILES="$(realpath "$(dirname "$(readlink -f "$0")")/../..")"
     emacsclient -e '(load-file "~/.config/emacs/init.el")' -a "echo 'Emacs is not currently running'"
 
     # Update configuration symlinks
-    ./configure
+    ./configure -s
 )
