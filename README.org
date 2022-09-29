@@ -13,7 +13,7 @@ distributions. Everything can be rolled out by calling the main
 configure script of the repository
 
 #+BEGIN_SRC shell
-  ./configure -i -s
+  ./configure -i
 #+END_SRC
 
 * License
