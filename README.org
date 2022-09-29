@@ -16,6 +16,3 @@ configure script of the repository
   ./configure -i
 #+END_SRC
 
-* License
-
-Released under the [[./LICENSE][MIT License]] unless otherwise specified by license files in subfolders.
