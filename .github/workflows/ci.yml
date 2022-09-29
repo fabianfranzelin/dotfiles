@@ -1,4 +1,4 @@
-name: Dotty
+name: Configure
 on:
   push:
   pull_request:
@@ -17,10 +17,7 @@ jobs:
           git config --global user.name "${GIT_USER_NAME}"
           git config --global user.email "${GIT_USER_EMAIL}"
           git fetch --all
-      - name: Install and configure
+      - name: Install third-party dependencies
         run: ./configure -i
-      - name: Deploy and tag
-        run: |
-          DATE=$(date --utc +%Y-%m-%d)
-          git tag --annotate "${DATE}" --message="Version ${DATE}"
-          git push --tags
+      - name: Setup symbolic links
+        run: rm ~/.bashrc ~/.profile && ./configure -s
