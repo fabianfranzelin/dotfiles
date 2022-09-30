@@ -22,5 +22,7 @@ jobs:
       - name: Deploy and tag
         run: |
           DATE=$(date --utc +%Y-%m-%d)
-          git tag --annotate "${DATE}" --message="Version ${DATE}"
-          git push -f --tags
+          if [ ! $(git tag -l "${DATE}") ]; then
+              git tag --annotate "${DATE}" --message="Version ${DATE}"
+              git push --tags
+          fi
