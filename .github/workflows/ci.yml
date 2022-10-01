@@ -19,8 +19,3 @@ jobs:
           git fetch --all
       - name: Configure dotfiles and install third-party dependencies
         run: rm ~/.bashrc ~/.profile && ./configure -i
-      - name: Deploy and tag
-        run: |
-          DATE=$(date --utc +%Y-%m-%d_%H-%M-%S)
-          git tag --annotate "${DATE}" --message="Version ${DATE}"
-          git push --tags

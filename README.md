@@ -1,6 +1,6 @@
 # My dotfiles
 
-[![Tags](https://img.shields.io/github/v/tag/fabianfranzelin/dotfiles?style=for-the-badge)](https://github.com/fabianfranzelin/dotfiles/tags) [![Last commit](https://img.shields.io/github/last-commit/fabianfranzelin/dotfiles?style=for-the-badge)](https://github.com/fabianfranzelin/dotfiles/commits) [![License](https://img.shields.io/github/license/fabianfranzelin/dotfiles?style=for-the-badge)](https://github.com/fabianfranzelin/dotfiles/blob/nightly/LICENSE)
+[![CI](https://github.com/fabianfranzelin/dotfiles/actions/workflows/ci.yml/badge.svg?branch=nightly)](https://github.com/fabianfranzelin/dotfiles/actions?query=workflow)[![Last commit](https://img.shields.io/github/last-commit/fabianfranzelin/dotfiles?style=for-the-badge)](https://github.com/fabianfranzelin/dotfiles/commits) [![License](https://img.shields.io/github/license/fabianfranzelin/dotfiles?style=for-the-badge)](https://github.com/fabianfranzelin/dotfiles/blob/nightly/LICENSE)
 
 In this repository, I gather my system configurations that allow me to have
 a consistent computing experience over multiple Linux machines.
