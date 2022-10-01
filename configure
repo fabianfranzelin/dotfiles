@@ -216,7 +216,7 @@ fi
 # install oh-my-zsh if required
 export ZSH="${HOME}/.cache/oh-my-zsh"
 if [[ ! -f "${ZSH}/oh-my-zsh.sh" ]]; then
-    sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
     # This script creates a .zshrc file in your home directory. We
     # won't need it, since we have a preconfigured one in this repo
     rm "${HOME}/.zshrc"
