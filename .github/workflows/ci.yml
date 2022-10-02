@@ -18,4 +18,13 @@ jobs:
           git config --global user.email "${GIT_USER_EMAIL}"
           git fetch --all
       - name: Configure dotfiles and install third-party dependencies
-        run: rm ~/.bashrc ~/.profile && ./configure -i
+        run: |
+          rm ~/.bashrc ~/.profile
+          ./configure -i
+      - name: Run Emacs
+        run: |
+          sudo apt install emacs
+          emacs --script "~/.config/emacs/early-init.el"
+          test $? -eq 0 || exit 1
+          emacs --script "~/.config/emacs/init.el"
+          test $? -eq 0 || exit 2
