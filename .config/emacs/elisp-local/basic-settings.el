@@ -124,39 +124,39 @@
   ;; or for treemacs users
   (doom-themes-treemacs-config)
   ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config))
+  (doom-themes-org-config)
 
-;; Currently disabled: it is just not the right way to do it :)
-;; (defun ff/load-theme (frame)
-;;   "Set theme depending on frame running in GUI or terminal.
+  ;; Currently disabled: it is just not the right way to do it :)
+  ;; (defun ff/load-theme (frame)
+  ;;   "Set theme depending on frame running in GUI or terminal.
 
-;; For details, check
-;; https://emacs.stackexchange.com/questions/24609/determine-graphical-display-on-startup-for-emacs-server-client
+  ;; For details, check
+  ;; https://emacs.stackexchange.com/questions/24609/determine-graphical-display-on-startup-for-emacs-server-client
 
-;; FRAME: frame to be checked"
-;;   (if (display-graphic-p frame)
-;;       ;; make this the default theme if X is available
-;;       (load-theme 'doom-vibrant t)
-;;     ;; when emacs is running in terminal mode, this theme works better
-;;     (load-theme 'doom-material t)))
+  ;; FRAME: frame to be checked"
+  ;;   (if (display-graphic-p frame)
+  ;;       ;; make this the default theme if X is available
+  ;;       (load-theme 'doom-vibrant t)
+  ;;     ;; when emacs is running in terminal mode, this theme works better
+  ;;     (load-theme 'doom-material t)))
 
-;; (with-eval-after-load 'doom-themes
-;;   ;; Run for already-existing frames
-;;   (mapc 'ff/load-theme (frame-list))
-;;   ;; Run when a new frame is created
-;;   (unless (daemonp)
-;;     (add-hook 'after-make-frame-functions 'ff/load-theme)))
+  ;; (with-eval-after-load 'doom-themes
+  ;;   ;; Run for already-existing frames
+  ;;   (mapc 'ff/load-theme (frame-list))
+  ;;   ;; Run when a new frame is created
+  ;;   (unless (daemonp)
+  ;;     (add-hook 'after-make-frame-functions 'ff/load-theme)))
 
-;; Add frame borders and window dividers
-(modify-all-frames-parameters
- '((right-divider-width . 0)
-   (internal-border-width . 0)))
-(dolist (face '(window-divider
-                window-divider-first-pixel
-                window-divider-last-pixel))
-  (face-spec-reset-face face)
-  (set-face-foreground face (face-attribute 'default :background)))
-(set-face-background 'fringe (face-attribute 'default :background))
+  ;; Add frame borders and window dividers
+  (modify-all-frames-parameters
+   '((right-divider-width . 0)
+     (internal-border-width . 0)))
+  (dolist (face '(window-divider
+                  window-divider-first-pixel
+                  window-divider-last-pixel))
+    (face-spec-reset-face face)
+    (set-face-foreground face (face-attribute 'default :background)))
+  (set-face-background 'fringe (face-attribute 'default :background)))
 
 ;; -------------------------------------------------------------------
 ;; Define font size and methods to adjust it on the fly
@@ -178,7 +178,7 @@ INCREMENT: Value of which the current font-size is changed"
 ;; Global key bindings
 ;; -------------------------------------------------------------------
 ;; Create a new frame
-(global-set-key "\C-n" 'make-frame)
+(global-set-key (kbd "C-n") 'make-frame)
 
 ;; Kill this buffer, instead of prompting for which one to kill
 (global-set-key (kbd "C-x k") 'kill-this-buffer)
@@ -720,7 +720,6 @@ FILE: filename"
   (treemacs-filewatch-mode t)
   (treemacs-fringe-indicator-mode nil)
   :config
-  ;; (add-to-list 'treemacs-pre-file-insert-predicates #'treemacs-is-file-git-ignored?)
   (push #'treemacs-custom-filter treemacs-ignored-file-predicates)
   :bind (("C-x t t" . treemacs)
          ("C-x t s" . ff/lsp-treemacs-symbols-toggle)))
