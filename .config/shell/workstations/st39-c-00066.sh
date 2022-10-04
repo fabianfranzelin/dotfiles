@@ -29,6 +29,10 @@ export AOS_BASE_HOME="${HOME}/workspace/aos_base"
 export AOS_BUILD_DIR="${AOS_BASE_HOME}/build"
 export AOS_INSTALL_DIR="${AOS_BASE_HOME}/install"
 
+# make sure that there is a conan cache folder available
+AOS_CONAN_CACHE="${HOME}/conan_download_cache"
+[ ! -d "${AOS_CONAN_CACHE}" ] && mkdir -p "${AOS_CONAN_CACHE}"
+
 #------------------------------------------------------------------------------#
 # PJ-Rec
 
