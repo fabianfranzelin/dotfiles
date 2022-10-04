@@ -7,6 +7,7 @@
 
 (use-package lsp-mode
   :commands lsp
+  :after (all-the-icons)
   :custom
   ((lsp-log-io nil) ;; if set to true can cause a performance hit
    (lsp-enable-symbol-highlighting t)

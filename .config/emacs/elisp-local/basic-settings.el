@@ -408,7 +408,7 @@ PROJECT-ROOT: Path to the root directory of the current project."
 ;; you’ll need to run `M-x all-the-icons-install-fonts` so that mode
 ;; line icons display correctly.
 (use-package all-the-icons
-  :if (display-graphic-p))
+  :defer t)
 
 (use-package which-key
   :diminish which-key-mode

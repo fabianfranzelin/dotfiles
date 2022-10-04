@@ -19,10 +19,6 @@
     tool = meld
 [diff]
     tool = meld
-[http]
-    proxy=http://localhost:3128
-[https]
-    proxy=http://localhost:3128
 [http "http://*.bosch.com/"]
     proxy =
 [http "https://*.bosch.com/"]
