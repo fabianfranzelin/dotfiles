@@ -296,6 +296,7 @@ SOURCE_FILENAME: filename to the puml file."
   :after (lsp-mode))
 
 (use-package dap-java
+  :after (dap-mode)
   :straight nil)
 
 ;; -------------------------------------------------------------------
