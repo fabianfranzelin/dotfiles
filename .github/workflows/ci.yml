@@ -23,7 +23,12 @@ jobs:
           ./configure -i
       - name: Run Emacs
         run: |
-          sudo apt install emacs
+          sudo add-apt-repository ppa:kelleyk/emacs
+          sudo apt update
+          sudo apt install emacs28
+          echo "------------------------------------------------"
+          emacs --version
+          echo "------------------------------------------------"
           emacs --script "~/.config/emacs/early-init.el"
           test $? -eq 0 || exit 1
           emacs --script "~/.config/emacs/init.el"
