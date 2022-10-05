@@ -94,7 +94,8 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          dmenu \
          rofi \
          vim \
-         git-lfs
+         git-lfs \
+         ccache
 
     # install dependencies for emacs
     sudo apt install -y \
