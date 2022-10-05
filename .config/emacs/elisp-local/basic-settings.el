@@ -11,8 +11,7 @@
   :unless (string-equal system-type "windows-nt")
   :custom
   ((exec-path-from-shell-shell-name "/bin/bash")
-   (exec-path-from-shell-variables '("PATH" "SSH_AUTH_SOCK"))
-   (exec-path-from-shell-arguments nil))
+   (exec-path-from-shell-variables '("PATH" "SSH_AUTH_SOCK")))
   :config
   (exec-path-from-shell-initialize))
 
