@@ -233,9 +233,18 @@ def init_widgets_list():
             text=" ",
             background=my_colors["violet"],
         ),
-        widget.Clock(
+        widget.Net(
             foreground=my_colors["dark-grey"],
             background=my_colors["violet"],
+            padding=5,
+        ),
+        widget.TextBox(
+            text=" ",
+            background=my_colors["cyan"],
+        ),
+        widget.Clock(
+            foreground=my_colors["dark-grey"],
+            background=my_colors["cyan"],
             format="%A, %B %d - %H:%M ",
         ),
     ]
