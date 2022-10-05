@@ -7,13 +7,11 @@
 
 ;; make sure that the path environment from shell is available in
 ;; emacs
-(use-package exec-path-from-shell
-  :unless (string-equal system-type "windows-nt")
-  :custom
-  ((exec-path-from-shell-shell-name "/bin/bash")
-   (exec-path-from-shell-variables '("PATH" "SSH_AUTH_SOCK")))
-  :config
-  (exec-path-from-shell-initialize))
+ (use-package exec-path-from-shell
+   :unless (string-equal system-type "windows-nt")
+   :config
+   (exec-path-from-shell-initialize)
+   (exec-path-from-shell-copy-env "SSH_AUTH_SOCK"))
 
 ;; set frame transparency and maximize frame by default
 (set-frame-parameter (selected-frame) 'alpha '(98 . 98))
