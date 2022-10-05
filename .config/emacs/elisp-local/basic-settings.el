@@ -9,9 +9,9 @@
 ;; emacs
  (use-package exec-path-from-shell
    :unless (string-equal system-type "windows-nt")
+   :custom (exec-path-from-shell-variables '("PATH" "MANPATH" "SSH_AUTH_SOCK" "HTTP_PROXY" "HTTPS_PROXY"))
    :config
-   (exec-path-from-shell-initialize)
-   (exec-path-from-shell-copy-env "SSH_AUTH_SOCK"))
+   (exec-path-from-shell-initialize))
 
 ;; set frame transparency and maximize frame by default
 (set-frame-parameter (selected-frame) 'alpha '(98 . 98))
