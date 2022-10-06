@@ -354,11 +354,15 @@ PROJECT-ROOT: Path to the root directory of the current project."
                               (project-find-dir "Find directory")
                               (ff/project-magit "Magit")
                               (project-dired "Dired")
-                              (ff/project-vterm "Vterm"))))
+                              (ff/project-vterm "Vterm")
+                              (affe-find "Find (Affe)")
+                              (affe-grep "Grep (Affe)"))))
   :bind (:map project-prefix-map
               ("p" . ff/project-switch-project)
               ("m" . ff/project-magit)
-              ("v" . ff/project-vterm)))
+              ("v" . ff/project-vterm)
+              ("a" . affe-find)
+              ("g" . affe-grep)))
 
 ;; -------------------------------------------------------------
 ;; Multiple cursors
@@ -788,6 +792,7 @@ TEXT: title"
 ;; package
 ;; -------------------------------------------------------------------
 (use-package envrc
+  :after (lsp-mode flycheck)
   :init (envrc-global-mode t))
 
 (provide 'basic-settings)
