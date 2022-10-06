@@ -72,7 +72,7 @@
   :init
   ;; install system dependencies
   (ff/ensure-python-package "isort" nil "isort")
-  :hook ((python-mode . py-isort-before-save)))
+  (add-hook 'before-save-hook 'py-isort-before-save))
 
 ;; enable sphinx doc strings support
 (use-package sphinx-doc

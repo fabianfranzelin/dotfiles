@@ -209,7 +209,6 @@ INCREMENT: Value of which the current font-size is changed"
 
 ;; Delete trailing white spaces only for lines that are touched. This
 ;; replaces the obvious, more intrusive, approach of
-;; (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (use-package ws-butler
   :hook ((prog-mode . ws-butler-mode)))
 
