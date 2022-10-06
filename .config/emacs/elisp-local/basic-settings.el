@@ -310,7 +310,7 @@ INCREMENT: Value of which the current font-size is changed"
 (defun ff/project-root ()
   "Provide path to project root directory."
   (interactive "P")
-  (cdr (project-current)))
+  (expand-file-name (project-root (project-current t))))
 
 (defun ff/tab-bar--names (&optional tabs frame)
   "Return the list of tabs sorted by name.
