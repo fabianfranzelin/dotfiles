@@ -246,12 +246,25 @@ INCREMENT: Value of which the current font-size is changed"
 ;; -------------------------------------------------------------------
 ;; Tab bar
 ;; -------------------------------------------------------------------
+(defun ff/tab-bar-list ()
+  "Provide string list of all tab names."
+  (interactive)
+  (mapcar #'(lambda (tab) (alist-get 'name tab))
+		  (tab-bar-tabs)))
+
+(defun ff/tab-bar-show-tab-list ()
+  "Show list of all tab names."
+  (interactive)
+  (message (string-join (ff/tab-bar-list) " ")))
+
 (defun ff/tab-bar-tab-exists (name)
-  (member name
-	  (mapcar #'(lambda (tab) (alist-get 'name tab))
-		  (tab-bar-tabs))))
+  "Check whether the given tab-name exists already.
+NAME: name of a tab"
+  (member name (ff/tab-bar-list)))
 
 (defun ff/tab-bar-new-tab (name)
+  "Create a new tab with the given name.
+NAME: name of a tab"
   (when (eq nil tab-bar-mode)
     (tab-bar-mode))
   (tab-bar-new-tab)
@@ -301,7 +314,8 @@ INCREMENT: Value of which the current font-size is changed"
          ("C-x t w" . tab-close)
          ("C-<prior>" . tab-previous)
          ("C-<next>" . tab-next)
-         ("C-x t h" . ff/tab-bar-quick-access/body)))
+         ("C-x t h" . ff/tab-bar-quick-access/body)
+         ("C-x t l" . ff/tab-bar-show-tab-list)))
 
 ;; -------------------------------------------------------------------
 ;; Project (built in project handling mode; similar to projectile)
