@@ -39,35 +39,6 @@
 (setq straight-use-package-by-default t)
 
 ;; -------------------------------------------------------------------
-;; Package Management - package.el
-
-;; (require 'package)
-;; (setq package-enable-at-startup nil)
-
-;; (setq package-archives '(("org" . "https://orgmode.org/elpa/") ;; will be deprecated soon
-;;                          ("melpa" . "https://melpa.org/packages/")
-;;                          ("elpa" . "https://elpa.gnu.org/packages/")))
-
-;; ;; Initialise packages
-;; (when (< emacs-major-version 27)
-;;   (package-initialize))
-
-;; (when (not package-archive-contents)
-;;   (package-refresh-contents t))
-
-;; (unless (package-installed-p 'use-package)
-;;   (package-install 'use-package))
-;; (require 'use-package)
-
-;; ;; ensure all packages to be installed
-;; (require 'use-package-ensure)
-;; (setq use-package-always-ensure t)
-
-;; ;; get latest signatures for elpa
-;; (setq package-check-signature nil)
-;; (use-package gnu-elpa-keyring-update)
-
-;; -------------------------------------------------------------------
 ;; define path of local lisp packages that are part of the dotfiles
 ;; repo
 (defvar emacs-config-home (expand-file-name ".config/emacs" (getenv "HOME"))
