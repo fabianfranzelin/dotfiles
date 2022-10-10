@@ -57,6 +57,8 @@ alias g='git'
 alias py='python'
 alias py2='python2'
 alias py3='python3'
+alias ipy3='ipython3'
+
 # Kubernetes
 alias k='kubectl --namespace=development-${USER}'
 alias kp='kubectl --namespace=production'
