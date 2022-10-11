@@ -102,6 +102,12 @@ ARG: position"
              ("TAB" . corfu-insert)
              ("C-f" . corfu-insert)))
 
+;; enable corfu in terminal mode
+(use-package corfu-terminal
+  :if (or (not (display-graphic-p)) (not (daemonp)))
+  :init
+  (corfu-terminal-mode t))
+
 ;; Optionally use the `orderless' completion style. See `+orderless-dispatch'
 ;; in the Consult wiki for an advanced Orderless style dispatcher.
 ;; Enable `partial-completion' for files to allow path expansion.
