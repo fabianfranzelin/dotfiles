@@ -104,9 +104,9 @@ ARG: position"
 
 ;; enable corfu in terminal mode
 (use-package corfu-terminal
-  :if (or (not (display-graphic-p)) (not (daemonp)))
   :init
-  (corfu-terminal-mode t))
+  (when (not (display-graphic-p))
+    (corfu-terminal-mode t)))
 
 ;; Optionally use the `orderless' completion style. See `+orderless-dispatch'
 ;; in the Consult wiki for an advanced Orderless style dispatcher.
