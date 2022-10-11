@@ -210,7 +210,8 @@ INCREMENT: Value of which the current font-size is changed"
 ;; Delete trailing white spaces only for lines that are touched. This
 ;; replaces the obvious, more intrusive, approach of
 (use-package ws-butler
-  :hook ((prog-mode . ws-butler-mode)))
+  :init
+  (ws-butler-global-mode t))
 
 ;; enable auto pair mode globally
 (electric-pair-mode t)
