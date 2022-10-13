@@ -685,7 +685,15 @@ PROJECT-ROOT: Path to the root directory of the current project."
 (use-package rg
   :init
   (ff/ensure-apt-package "ripgrep" "rg")
-  (rg-enable-menu))
+  (rg-enable-menu)
+  :config
+  (rg-define-search ff/rg-current-dir
+    "Search for thing at point in files matching the current file
+under the current directory."
+    :query ask
+    :format literal
+    :dir current
+    :menu ("Search" "a" "Current folder")))
 
 ;; -------------------------------------------------------------------
 ;; Gumshoe: jump back and forth through marked positions
