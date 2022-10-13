@@ -6,7 +6,7 @@
 
 .. list-table:: ${1:Caption}
    :align: left
-   :widths: ${2:Width of table columns}
+   :widths: ${2:Width of table columns (e.g. 1 1 1 1)}
    :header-rows: 1
 
    ${3:Content}
