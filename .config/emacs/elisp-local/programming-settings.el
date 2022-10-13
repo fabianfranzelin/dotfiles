@@ -310,10 +310,11 @@ SOURCE_FILENAME: filename to the puml file."
   (ff/ensure-npm-package "jsonlint" "jsonlint"))
 
 ;; -------------------------------------------------------------------
-;; Jinja2 mode for code generation
+;; Robot Framework
 ;; -------------------------------------------------------------------
-(use-package jinja2-mode
-  :mode ("\\.j2\\'" "\\.jinja2\\'"))
+
+(use-package robot-mode
+  :mode (("\\.robot" . robot-mode)))
 
 (provide 'programming-settings)
 

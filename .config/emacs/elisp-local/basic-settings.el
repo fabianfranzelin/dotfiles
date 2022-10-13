@@ -340,15 +340,15 @@ DIR: root directory of project"
   (file-name-nondirectory (directory-file-name (file-name-directory dir))))
 
 (defun ff/project-switch-project ()
-  "Switch to a workspace with the project name and start `magit-status'."
+  "Switch to a workspace with the project name."
   (interactive)
   (let* ((project-dir (project-prompt-project-dir))
          (project-name (ff/project-name project-dir)))
-  (when (not (member project-name (ff/tab-bar--names)))
-    (tab-bar-new-tab)
-    (tab-bar-rename-tab project-name))
-
-  (project-switch-project project-dir)))
+    (when (not (member project-name (ff/tab-bar--names)))
+      (tab-bar-new-tab)
+      (tab-bar-rename-tab project-name))
+    (tab-bar-switch-to-tab project-name)
+    (project-switch-project project-dir)))
 
 (defun ff/project-magit ()
   "Show the Git status of the current project."
@@ -372,7 +372,7 @@ PROJECT-ROOT: Path to the root directory of the current project."
                               (affe-find "Find (Affe)")
                               (affe-grep "Grep (Affe)"))))
   :bind (:map project-prefix-map
-              ("p" . ff/project-switch-project)
+              ("P" . ff/project-switch-project)
               ("m" . ff/project-magit)
               ("v" . ff/project-vterm)
               ("a" . affe-find)
