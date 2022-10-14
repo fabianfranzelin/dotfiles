@@ -1,12 +1,12 @@
 # -*- mode: snippet -*-
-# name: Product requirement (AOS)
-# key: req-sw
+# name: External requirement
+# key: req-ext
 # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 # --
 
 
-.. req-sw:: ${1:Title}
-   :id: REQ_SW_${2:ID}
+.. req-stk:: ${1:Title}
+   :id: ${2:ID}
    :da_status: draft
    :da_variant_implemented: AOS
    :da_cfr_index:
@@ -16,4 +16,4 @@
    :tags:
    :collapse: true
 
-   ${3:Content}
+   ${4:Content}
