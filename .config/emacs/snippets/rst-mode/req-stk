@@ -13,7 +13,6 @@
    :da_safety_integrity: N/A
    :da_security_relevance: not_relevant
    :da_verification_criteria: By test
-   :tags:
    :collapse: true
 
    ${4:Content}
