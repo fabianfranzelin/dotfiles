@@ -32,6 +32,9 @@ ms-vscode.cpptools
 ms-vscode.cpptools-extension-pack
 twxs.cmake
 
-
 ## plantuml
 jebbs.plantuml
+
+## containers
+ms-vscode-remote.remote-wsl
+ms-vscode-remote.remote-containers
