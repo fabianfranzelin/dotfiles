@@ -103,12 +103,7 @@
 ;; save desktop session automatically
 (use-package desktop
   :custom
-  ((desktop-load-locked-desktop t))
-  :init
-  (if (daemonp)
-      ;; delay desktop save mode until one frame is created
-      (add-hook 'after-make-frame-functions 'desktop-save-mode)
-    (desktop-save-mode)))
+  ((desktop-load-locked-desktop t)))
 
 ;; Color theme
 (use-package doom-themes
