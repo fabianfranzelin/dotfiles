@@ -115,6 +115,7 @@ __pycache__
 flycheck_*
 /.config/emacs/eln-cache/
 /.config/systemd/user/default.target.wants/*.service
+/.config/emacs/install.sh
 
 ### ZSH ###
 /.config/zsh/.zcompdump*
