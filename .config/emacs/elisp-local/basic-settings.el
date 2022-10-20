@@ -662,6 +662,7 @@ PROJECT-ROOT: Path to the root directory of the current project."
   (popper-reference-buffers '("\\*Messages\\*"
                               "Output\\*$"
                               "\\*Async Shell Command\\*"
+                              magit-process-mode
                               help-mode
                               helpful-mode
                               compilation-mode))
