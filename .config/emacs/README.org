@@ -20,16 +20,16 @@ Then, download and extract the latest Emacs version
 
 #+begin_src shell
   __EMACS_VERSION="28.2"
-  __OPT="${HOME}/.local/opt"
+  __OPT="${HOME}/.local/share"
   __EMACS_HOME="${__OPT}/emacs-${__EMACS_VERSION}"
-  mkdir -p "${__EMACS_HOME}"
+  mkdir -p "${__OPT}"
 
   if [ ! -f "${__EMACS_HOME}/bin/emacs" ]; then
   (
       cd "/tmp" || exit 1
       __EMACS_TAR_FILENAME="emacs-${__EMACS_VERSION}.tar.gz"
       wget "http://ftp.fau.de/gnu/emacs/${__EMACS_TAR_FILENAME}"
-      tar -xvf "${__EMACS_TAR_FILENAME}" -C "${__EMACS_HOME}"
+      tar -xvf "${__EMACS_TAR_FILENAME}" -C "${__EMACS_HOME}/.. "
   )
   fi
 #+end_src
