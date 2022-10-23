@@ -29,7 +29,7 @@ Then, download and extract the latest Emacs version
       cd "/tmp" || exit 1
       __EMACS_TAR_FILENAME="emacs-${__EMACS_VERSION}.tar.gz"
       wget "http://ftp.fau.de/gnu/emacs/${__EMACS_TAR_FILENAME}"
-      tar -xvf "${__EMACS_TAR_FILENAME}" -C "${__EMACS_HOME}/.. "
+      tar -xvf "${__EMACS_TAR_FILENAME}" -C "${__OPT}"
   )
   fi
 #+end_src
