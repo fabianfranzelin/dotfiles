@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# shellcheck disable=SC1090
+# shellcheck disable=SC1090,SC1091
 
 #------------------------------------------------------------------------------#
 # description of cmdline-parser
@@ -97,8 +97,24 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          git-lfs \
          ccache
 
-    # install dependencies for emacs
+    # ---------------------------------------------------------
+    # install Emacs. First, just the regular version.
     sudo apt install -y \
+         emacs
+
+    # now, install the newest version available by building and
+    # installing it manually
+    (
+        cd "${DOTFILES}/.config/emacs" || exit 1
+        emacs -Q --batch \
+              --eval "(require 'org)" \
+              --eval '(org-babel-tangle-file "README.org")'
+        ./install.sh
+    )
+
+    # install dependencies for Emacs
+    sudo apt install -y \
+         emacs \
          markdown \
          pandoc \
          graphviz \
