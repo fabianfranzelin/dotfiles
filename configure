@@ -106,10 +106,14 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
     # installing it manually
     (
         cd "${DOTFILES}/.config/emacs" || exit 1
+        # This creates the install script for Emacs
         emacs -Q --batch \
               --eval "(require 'org)" \
               --eval '(org-babel-tangle-file "README.org")'
+        # Actually install Emacs via update-alternatives
         ./install.sh
+        # Check if installation was successful
+        emacs -Q --version
     )
 
     # install dependencies for Emacs
