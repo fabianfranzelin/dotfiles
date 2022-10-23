@@ -1,5 +1,5 @@
 #+TITLE: Emacs Installation Instructions
-#+PROPERTY: header-args :tangle install.sh :tangle-mode o755 :shebang #!/usr/bin/env bash
+#+PROPERTY: header-args :tangle install.sh :shebang #!/usr/bin/env bash
 
 * Installation instructions
 
@@ -16,12 +16,22 @@ To do so, you need to install quite some third-party packages
        libgnutls28-dev libacl1-dev libmagickwand-dev
 #+end_src
 
-Then, clone the Emacs repository and checkout the current release branch of version 28.1
+Then, download and extract the latest Emacs version
 
 #+begin_src shell
-  __OPT="${HOME}/opt"
-  __EMACS_HOME="${__OPT}/emacs-28.2"
+  __EMACS_VERSION="28.2"
+  __OPT="${HOME}/.local/opt"
+  __EMACS_HOME="${__OPT}/emacs-${__EMACS_VERSION}"
   mkdir -p "${__EMACS_HOME}"
+
+  if [ ! -f "${__EMACS_HOME}/bin/emacs" ]; then
+  (
+      cd "/tmp" || exit 1
+      __EMACS_TAR_FILENAME="emacs-${__EMACS_VERSION}.tar.gz"
+      wget "http://ftp.fau.de/gnu/emacs/${__EMACS_TAR_FILENAME}"
+      tar -xvf "${__EMACS_TAR_FILENAME}" -C "${__EMACS_HOME}"
+  )
+  fi
 #+end_src
 
 To build Emacs, run
@@ -47,10 +57,10 @@ Finally, make the new version globally available in your system using
 update-alternatives.
 
 #+begin_src shell
-  sudo update-alternatives --install "/usr/bin/emacsclient" emacsclient "${__EMACS_HOME}/bin/emacsclient" 4
-  sudo update-alternatives --install "/usr/bin/emacs" emacs "${__EMACS_HOME}/bin/emacs" 4
-  sudo update-alternatives --config emacs
-  sudo update-alternatives --config emacsclient
+  sudo update-alternatives --install "/usr/bin/emacsclient" emacsclient "${__EMACS_HOME}/bin/emacsclient" 100
+  sudo update-alternatives --install "/usr/bin/emacs" emacs "${__EMACS_HOME}/bin/emacs" 100
+  sudo update-alternatives --auto emacs
+  sudo update-alternatives --auto emacsclient
 #+end_src
 
 Once you have Emacs installed, it configures it on its own at
