@@ -6,7 +6,7 @@
 Currently, I use version 28 of Emacs. Since it is not officially
 released yet, I have to build it myself.
 
-To do so, you need to install quite some third-party packages
+To do so, you need to install quite a few third-party packages
 
 #+begin_src shell
   sudo apt install libxpm-dev libgif-dev libjpeg-dev libpng-dev \
@@ -20,16 +20,20 @@ Then, download and extract the latest Emacs version
 
 #+begin_src shell
   __EMACS_VERSION="28.2"
-  __OPT="${HOME}/.local/share"
-  __EMACS_HOME="${__OPT}/emacs-${__EMACS_VERSION}"
-  mkdir -p "${__OPT}"
+  __XDG_DATA_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}"
+  __EMACS_HOME="${__XDG_DATA_HOME}/emacs-${__EMACS_VERSION}"
+  [ ! -d "${__XDG_DATA_HOME}" ] && mkdir -p "${__XDG_DATA_HOME}"
 
   if [ ! -f "${__EMACS_HOME}/bin/emacs" ]; then
   (
       cd "/tmp" || exit 1
       __EMACS_TAR_FILENAME="emacs-${__EMACS_VERSION}.tar.gz"
       wget "http://ftp.fau.de/gnu/emacs/${__EMACS_TAR_FILENAME}"
-      tar -xvf "${__EMACS_TAR_FILENAME}" -C "${__OPT}"
+      tar -xvf "${__EMACS_TAR_FILENAME}" -C "${__XDG_DATA_HOME}"
+      if [ ! -d "${__EMACS_HOME}" ]; then
+          echo "Target folder ${__EMACS_HOME} does not exist. Extracting Emacs package failed."
+          exit 1
+      fi
   )
   fi
 #+end_src
@@ -39,7 +43,7 @@ To build Emacs, run
 #+begin_src shell
     export CC=/usr/bin/gcc-10 CXX=/usr/bin/gcc-10
     (
-        cd "${__EMACS_HOME}" || exit
+        cd "${__EMACS_HOME}" || exit 1
         ./autogen.sh
         ./configure --with-modules --with-gnutls --with-rsvg \
                     --with-x --with-json \
