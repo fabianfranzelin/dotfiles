@@ -172,9 +172,6 @@ INCREMENT: Value of which the current font-size is changed"
 ;; -------------------------------------------------------------------
 ;; Global key bindings
 ;; -------------------------------------------------------------------
-;; Create a new frame
-(global-set-key (kbd "C-n") 'make-frame)
-
 ;; Kill this buffer, instead of prompting for which one to kill
 (global-set-key (kbd "C-x k") 'kill-this-buffer)
 

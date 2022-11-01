@@ -3,7 +3,7 @@
 [gc]
     autoDetach = false
 [lfs]
-    storage = ~/.cache/git/lfs
+    storage = "~/.cache/git/lfs"
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
