@@ -6,7 +6,8 @@ setxkbmap -option ctrl:swapcaps  # Swap left Ctrl and Caps Lock
 setxkbmap -option ctrl:nocaps    # Make Caps Lock a Ctrl key
 setxkbmap -layout de -option ctrl:nocaps # Switch to my default keyboard layout
 
-picom &
+# Not available in default repositories of Ubuntu.
+# picom &
 nm-applet &
 
 ### UNCOMMENT ONLY ONE OF THE FOLLOWING THREE OPTIONS! ###
@@ -19,4 +20,4 @@ nitrogen --set-zoom-fill \
          "$HOME/.local/share/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg" &
 
 # Emacs daemon
-systemctl start --user emacs &
+emacs --daemon &
