@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # Set default keyboard layout to German
+[ -f "${HOME}/.Xmodmap" ] && xmodmap "${HOME}/.Xmodmap"
 setxkbmap -layout de
 
 # Not available in default repositories of Ubuntu.
