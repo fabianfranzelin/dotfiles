@@ -173,7 +173,7 @@ INCREMENT: Value of which the current font-size is changed"
 ;; Global key bindings
 ;; -------------------------------------------------------------------
 ;; Kill this buffer, instead of prompting for which one to kill
-(global-set-key (kbd "C-x k") 'kill-this-buffer)
+(global-set-key (kbd "C-x k") #'(lambda() (interactive) (kill-buffer (current-buffer))))
 
 ;; make ESC quit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
