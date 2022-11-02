@@ -1,10 +1,7 @@
 #!/usr/bin/env bash
 
-# Set default keyboard layout to German and switch caps lock and left
-# ctrl
-setxkbmap -option ctrl:swapcaps  # Swap left Ctrl and Caps Lock
-setxkbmap -option ctrl:nocaps    # Make Caps Lock a Ctrl key
-setxkbmap -layout de -option ctrl:nocaps # Switch to my default keyboard layout
+# Set default keyboard layout to German
+setxkbmap -layout de
 
 # Not available in default repositories of Ubuntu.
 # picom &
