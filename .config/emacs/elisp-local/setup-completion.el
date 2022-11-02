@@ -57,12 +57,12 @@ ARG: position"
   :config
   (custom-set-faces '(vertico-current ((t (:background "#3a3f5a")))))
   :bind (:map vertico-map
-              ("C-j" . vertico-next)
-              ("C-k" . vertico-previous)
+              ("C-n" . vertico-next)
+              ("C-p" . vertico-previous)
               ("C-f" . vertico-exit)
               :map minibuffer-local-map
-              ("DEL" . ff/minibuffer-backward-kill)
-              ("C-l" . ff/minibuffer-go-to-root)))
+              ("C-l" . ff/minibuffer-backward-kill)
+              ("C-a" . ff/minibuffer-go-to-root)))
 
 ;; -------------------------------------------------------------------
 ;; Corfu, Cape and Orderless
@@ -98,7 +98,7 @@ ARG: position"
   (global-corfu-mode)
   :bind(:map corfu-map
              ("C-j" . corfu-next)
-             ("C-k" . corfu-previous)
+             ("C-p" . corfu-previous)
              ("TAB" . corfu-insert)
              ("C-f" . corfu-insert)))
 
@@ -250,11 +250,10 @@ ARG: position"
                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                  nil
                  (window-parameters (mode-line-format . none))))
-  :bind (("C-." . embark-act)
-         ("C-;" . embark-dwim)
+  :bind (("M-n" . embark-act)
          ("C-h B" . embark-bindings)
          :map minibuffer-local-map
-         ("C-." . embark-act)
+         ("M-n" . embark-act)
          :map embark-region-map
          ("U" . 0x0-dwim)
          :map embark-file-map
