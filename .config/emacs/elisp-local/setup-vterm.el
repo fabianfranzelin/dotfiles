@@ -144,6 +144,7 @@ _FILE-NAME is nil."
   :bind (("C-x j" . ff/start-vterm)
          :map vterm-mode-map
          ("C-y" . vterm-yank)
+         ("C-q" . vterm-send-next-key)
          ("C-x 2" . ff/open-vterm-below)
          ("C-x 3" . ff/open-vterm-right)
          ("C-c C-t" . vterm-copy-mode)
