@@ -2,7 +2,7 @@
 
 # Set default keyboard layout to German
 setxkbmap -layout de
-[ -f "${HOME}/.Xmodmap" ] && xmodmap "${HOME}/.Xmodmap"
+setxkbmap -option ctrl:nocaps
 
 # Not available in default repositories of Ubuntu.
 # picom &
