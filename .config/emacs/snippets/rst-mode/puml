@@ -6,3 +6,4 @@
 
 .. uml:: ${1:Relative path to your image}
    :caption: ${2:Caption}
+   :scale: ${3:Set Scale...}
