@@ -175,6 +175,16 @@ widget_defaults = dict(
 extension_defaults = widget_defaults.copy()
 
 
+def lower_left_triangle(bg_color, fg_color):
+    return widget.TextBox(
+        text="\u25E2",
+        padding=0,
+        fontsize=35,
+        background=bg_color,
+        foreground=fg_color,
+    )
+
+
 def init_widgets_list():
     """Create my widgets for the top toolbar.
 
@@ -218,9 +228,9 @@ def init_widgets_list():
             background=my_colors["violet"],
             mouse_callbacks={"Button1": lambda: qtile.cmd_spawn(my_term + " -e htop")},
         ),
-        widget.TextBox(
-            text=" ",
-            background=my_colors["cyan"],
+        lower_left_triangle(
+            bg_color=my_colors["violet"],
+            fg_color=my_colors["cyan"],
         ),
         widget.Memory(
             foreground=my_colors["dark-grey"],
@@ -229,18 +239,18 @@ def init_widgets_list():
             fmt="Mem: {}",
             padding=5,
         ),
-        widget.TextBox(
-            text=" ",
-            background=my_colors["violet"],
+        lower_left_triangle(
+            bg_color=my_colors["cyan"],
+            fg_color=my_colors["violet"],
         ),
         widget.Net(
             foreground=my_colors["dark-grey"],
             background=my_colors["violet"],
             padding=5,
         ),
-        widget.TextBox(
-            text=" ",
-            background=my_colors["cyan"],
+        lower_left_triangle(
+            bg_color=my_colors["violet"],
+            fg_color=my_colors["cyan"],
         ),
         widget.Clock(
             foreground=my_colors["dark-grey"],
