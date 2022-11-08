@@ -189,6 +189,11 @@ INCREMENT: Value of which the current font-size is changed"
 (global-set-key (kbd "C-S-P")    'windmove-up)
 (global-set-key (kbd "C-S-N")  'windmove-down)
 
+(global-set-key (kbd "C-x <left>")  'windmove-left)
+(global-set-key (kbd "C-x <right>") 'windmove-right)
+(global-set-key (kbd "C-x <up>")    'windmove-up)
+(global-set-key (kbd "C-x <down>")  'windmove-down)
+
 ;; highlight the marked region (C-SPC) and use commands (like
 ;; latex-environment) on current region.
 (transient-mark-mode t) ;; C-SPC - for selection

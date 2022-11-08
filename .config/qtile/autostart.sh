@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
 # Set default keyboard layout to German
-setxkbmap -layout de
-setxkbmap -option ctrl:nocaps
+setxkbmap -layout de -option ctrl:nocaps
 
 # Not available in default repositories of Ubuntu.
 # picom &
