@@ -250,10 +250,10 @@ ARG: position"
                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                  nil
                  (window-parameters (mode-line-format . none))))
-  :bind (("M-n" . embark-act)
-         ("C-h B" . embark-bindings)
+  :bind (("C-#" . embark-act)
+         ("C-h b" . embark-bindings)
          :map minibuffer-local-map
-         ("M-n" . embark-act)
+         ("C-#" . embark-act)
          :map embark-region-map
          ("U" . 0x0-dwim)
          :map embark-file-map

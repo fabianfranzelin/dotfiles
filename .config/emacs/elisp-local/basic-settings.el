@@ -222,6 +222,8 @@ INCREMENT: Value of which the current font-size is changed"
 
 ;; winner mode for for redo/undo window configurations
 (winner-mode 1)
+(global-set-key (kbd "C-c p") 'winner-undo)
+(global-set-key (kbd "C-c n") 'winner-redo)
 
 ;; package that allows to define nice user interfaces
 (use-package hydra)
@@ -465,14 +467,8 @@ PROJECT-ROOT: Path to the root directory of the current project."
 (use-package docker-tramp)
 
 ;; -------------------------------------------------------------------
-;; Buffer move & transpose frame
+;; Transpose frame
 ;; -------------------------------------------------------------------
-(use-package buffer-move
-  :bind (("C-c b <down>" . buf-move-down)
-         ("C-c b <up>" . buf-move-up)
-         ("C-c b <left>" . buf-move-left)
-         ("C-c b <right>" . buf-move-right)))
-
 (use-package transpose-frame
   :bind (("C-c b t" . transpose-frame)))
 
@@ -702,8 +698,8 @@ under the current directory."
   (global-gumshoe-mode)
   :bind (;; enable browser like key bindings to move forth and
          ;; back in bookmarks
-         ("M-<left>" . gumshoe-backtrack-back)
-         ("M-<right>" . gumshoe-backtrack-forward)))
+         ("M-n" . gumshoe-backtrack-back)
+         ("M-p" . gumshoe-backtrack-forward)))
 
 ;; -------------------------------------------------------------------
 ;; Treemacs
