@@ -184,12 +184,12 @@ INCREMENT: Value of which the current font-size is changed"
 (defvar scroll-lock-mode nil)
 
 ;; convenient setting to move between open buffers
-(global-set-key (kbd "C-x <left>")  'windmove-left)
-(global-set-key (kbd "C-x <right>") 'windmove-right)
-(global-set-key (kbd "C-x <up>")    'windmove-up)
-(global-set-key (kbd "C-x <down>")  'windmove-down)
+(global-set-key (kbd "C-S-B")  'windmove-left)
+(global-set-key (kbd "C-S-F") 'windmove-right)
+(global-set-key (kbd "C-S-P")    'windmove-up)
+(global-set-key (kbd "C-S-N")  'windmove-down)
 
-;; higlight the marked region (C-SPC) and use commands (like
+;; highlight the marked region (C-SPC) and use commands (like
 ;; latex-environment) on current region.
 (transient-mark-mode t) ;; C-SPC - for selection
 ;; for highlighting rectangles, use the (rectangle-mark-mode).
