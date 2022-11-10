@@ -184,10 +184,10 @@ INCREMENT: Value of which the current font-size is changed"
 (defvar scroll-lock-mode nil)
 
 ;; convenient setting to move between open buffers
-(global-set-key (kbd "C-S-B")  'windmove-left)
+(global-set-key (kbd "C-S-B") 'windmove-left)
 (global-set-key (kbd "C-S-F") 'windmove-right)
-(global-set-key (kbd "C-S-P")    'windmove-up)
-(global-set-key (kbd "C-S-N")  'windmove-down)
+(global-set-key (kbd "C-S-P") 'windmove-up)
+(global-set-key (kbd "C-S-N") 'windmove-down)
 
 (global-set-key (kbd "C-x <left>")  'windmove-left)
 (global-set-key (kbd "C-x <right>") 'windmove-right)
@@ -338,7 +338,7 @@ FRAME: frame"
 DIR: root directory of project"
   (file-name-nondirectory (directory-file-name (file-name-directory dir))))
 
-(defun ff/project-switch-project ()
+(defun ff/project-project-tab ()
   "Switch to a workspace with the project name."
   (interactive)
   (let* ((project-dir (project-prompt-project-dir))
@@ -346,7 +346,13 @@ DIR: root directory of project"
     (when (not (member project-name (ff/tab-bar--names)))
       (tab-bar-new-tab)
       (tab-bar-rename-tab project-name))
-    (tab-bar-switch-to-tab project-name)
+    (tab-bar-switch-to-tab project-name)))
+
+(defun ff/project-switch-project ()
+  "Switch to a workspace with the project name."
+  (interactive)
+  (ff/project-project-tab)
+  (let* ((project-dir (project-prompt-project-dir)))
     (project-switch-project project-dir)))
 
 (defun ff/project-magit ()
@@ -375,7 +381,8 @@ PROJECT-ROOT: Path to the root directory of the current project."
               ("m" . ff/project-magit)
               ("v" . ff/project-vterm)
               ("a" . affe-find)
-              ("g" . affe-grep)))
+              ("g" . affe-grep)
+              ("t" . ff/project-project-tab)))
 
 ;; -------------------------------------------------------------
 ;; Multiple cursors
