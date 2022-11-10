@@ -351,8 +351,12 @@ DIR: root directory of project"
 (defun ff/project-switch-project ()
   "Switch to a workspace with the project name."
   (interactive)
-  (ff/project-project-tab)
-  (let* ((project-dir (project-prompt-project-dir)))
+  (let* ((project-dir (project-prompt-project-dir))
+         (project-name (ff/project-name project-dir)))
+    (when (not (member project-name (ff/tab-bar--names)))
+      (tab-bar-new-tab)
+      (tab-bar-rename-tab project-name))
+    (tab-bar-switch-to-tab project-name)
     (project-switch-project project-dir)))
 
 (defun ff/project-magit ()
