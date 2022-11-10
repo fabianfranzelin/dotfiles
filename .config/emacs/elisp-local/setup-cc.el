@@ -209,6 +209,11 @@ REPLACE-STR: string that replaces all regex matches"
 
 (use-package cc-mode
   :after (clang-format+)
+  :mode (("\\.cpp$" . c++-mode)
+         ("\\.hpp$" . c++-mode)
+         ("\\.inl$" . c++-mode)
+         ("\\.c$" . c-mode)
+         ("\\.h$" . c-mode))
   :hook ((c++-mode . setup-cc-mode)
          (c-mode . setup-cc-mode))
   :custom (lsp-clients-clangd-args '("--header-insertion-decorators=0" "--clang-tidy"))
