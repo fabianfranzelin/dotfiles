@@ -247,11 +247,6 @@ REPLACE-STR: string that replaces all regex matches"
   :bind (:map c++-mode-map
          ("C-c l r c" . ff/container-host-compile-commands-mapping)))
 
-;; Major mode for editing QT Declarative (QML) code.
-;; https://github.com/coldnew/qml-mode
-(use-package qml-mode
-  :mode ("\\.qml$" . qml-mode))
-
 ;; dap debugging for c++
 (require 'dap-cpptools)
 (dap-cpptools-setup)

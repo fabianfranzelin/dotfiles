@@ -23,6 +23,10 @@
 ;; -------------------------------------------------------------------
 ;; Emacs lisp
 ;; -------------------------------------------------------------------
+
+(add-to-list 'auto-mode-alist '("\\.el\\'" . emacs-lisp-mode))
+(add-to-list 'auto-mode-alist '("\\.dir-locals\\.el$" . emacs-lisp-mode))
+
 ;; enable rainbow delimiters for emacs lisp
 (use-package rainbow-delimiters
   :hook ((emacs-lisp-mode . rainbow-delimiters-mode)))
@@ -312,7 +316,6 @@ SOURCE_FILENAME: filename to the puml file."
 ;; -------------------------------------------------------------------
 ;; Robot Framework
 ;; -------------------------------------------------------------------
-
 (use-package robot-mode
   :mode (("\\.robot" . robot-mode)))
 
