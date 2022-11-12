@@ -26,8 +26,6 @@
    (lsp-modeline-diagnostics-scope :workspace)
    ;; clangd is fast
    (lsp-idle-delay 0.0)
-   ;; be more ide-ish
-   (lsp-headerline-breadcrumb-enable t)
    ;; we use Corfu!
    (lsp-completion-provider :none))
   :init
@@ -50,15 +48,11 @@
    read-process-output-max (* 1024 1024) ;; 1mb
    ;; bigger number required for client-server communication
    gc-cons-threshold (* 100 1024 1024)
-   ;; disable plists parsing and use hasmaps
+   ;; disable plists parsing and use hash maps
    lsp-use-plists nil)
 
-  (lsp-enable-which-key-integration)
-  (lsp-headerline-breadcrumb-mode)
-
   ;; use lsp yaml schema validation
-  (setq lsp-yaml-schemas nil)
-  ;; to be specific, one could to it like
+  ;; one could to it like
   ;; (push '(/home/frf2lr/.emacs.d/yaml/runnable\.schema\.json . ["*.runnable.yaml"]) lsp-yaml-schemas)
 
   :hook ((lsp-completion-mode . my/lsp-mode-setup-completion)
