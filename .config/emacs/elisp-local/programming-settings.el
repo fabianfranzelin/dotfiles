@@ -71,6 +71,7 @@
 
 ;; Make sure that my preferred linter is installed
 (ff/ensure-apt-package "shellcheck" "shellcheck")
+(ff/ensure-npm-package "bash-language-server" "bash-language-server")
 
 ;; There is a keybinding defined in sh-mode that overwrites parts of
 ;; my configuration. I disable it here manually
@@ -86,6 +87,7 @@
   :init
   ;; install system dependencies
   (ff/ensure-python-package "yamllint" nil "yamllint")
+  (ff/ensure-npm-package "yaml-language-server" "yaml-language-server")
   :bind ((:map yaml-mode-map
                ("C-m" . newline-and-indent))))
 
@@ -95,6 +97,7 @@
 (use-package dockerfile-mode
   :mode (("Dockerfile\\'" . dockerfile-mode))
   :init
+  (ff/ensure-npm-package "dockerfile-language-server-nodejs" "docker-langserver")
   (put 'dockerfile-image-name 'safe-local-variable #'stringp))
 
 (use-package docker
@@ -206,10 +209,9 @@
          (before-save . tide-format-before-save)))
 
 (use-package typescript-mode
-  :after (dap-node)
-  :config
-  (setq typescript-indent-level 4)
-  (dap-node-setup))
+  :custom ((typescript-indent-level 4))
+  :init
+  (ff/ensure-npm-package "typescript-language-server" "typescript-language-server"))
 
 ;; note, for some reason the mode directive does not work here, so I
 ;; added the typescript mode explicitly to tsx files.
@@ -296,12 +298,6 @@ SOURCE_FILENAME: filename to the puml file."
 ;; -------------------------------------------------------------------
 ;; Java mode
 ;; -------------------------------------------------------------------
-(use-package lsp-java
-  :after (lsp-mode))
-
-(use-package dap-java
-  :after (dap-mode)
-  :straight nil)
 
 ;; -------------------------------------------------------------------
 ;; Json

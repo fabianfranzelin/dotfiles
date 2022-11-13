@@ -47,7 +47,7 @@ if ( __is_linux ) then
 fi
 
 # expand path to include local bin directory
-export PATH="${HOME}/opt/bin:${HOME}/.local/bin:/usr/lib/ccache:${PATH}"
+export PATH="${HOME}/opt/bin:${HOME}/.local/bin:${HOME}/.local/share/npm/bin:/usr/lib/ccache:${PATH}"
 
 # Fix for docker /dev/shm issue: https://github.com/docker/buildx/issues/418
 export DOCKER_BUILDKIT=0
