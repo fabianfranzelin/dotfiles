@@ -133,3 +133,4 @@ flycheck_*
 ### SSH ###
 /.ssh/known_hosts
 /.ssh/id_rsa
+/.local/bin/marksman

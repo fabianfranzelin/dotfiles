@@ -618,7 +618,6 @@ PROJECT-ROOT: Path to the root directory of the current project."
    (doom-modeline-persp-name nil)
    (doom-modeline-display-default-persp-name nil)
    (doom-modeline-persp-icon nil)
-   (doom-modeline-lsp t)
    (doom-modeline-buffer-file-name-style 'truncate-except-project)
    (doom-modeline-buffer-modification-icon t)
    (doom-modeline-major-mode-icon t)
@@ -718,44 +717,6 @@ under the current directory."
          ("M-p" . gumshoe-backtrack-forward)))
 
 ;; -------------------------------------------------------------------
-;; Treemacs
-;; -------------------------------------------------------------------
-(defun treemacs-custom-filter (file _)
-  "Custom filter function for files in treemacs.
-
-FILE: filename"
-  (or (s-ends-with? ".aux" file)
-      (s-ends-with? ".lint" file)))
-
-(defun ff/lsp-treemacs-symbols-toggle ()
-  "Toggle the lsp-treemacs-symbols buffer."
-  (interactive)
-  (if (get-buffer "*LSP Symbols List*")
-      (kill-buffer "*LSP Symbols List*")
-    (progn (lsp-treemacs-symbols)
-           (other-window -1))))
-
-(use-package treemacs
-  :after (lsp-mode)
-  :commands
-  (treemacs
-   treemacs-follow-mode
-   treemacs-filewatch-mode
-   treemacs-fringe-indicator-mode)
-  :custom
-  ((treemacs-width 40)
-   (treemacs-indentation 1)
-   (treemacs-space-between-root-nodes nil))
-  :init
-  (treemacs-follow-mode t)
-  (treemacs-filewatch-mode t)
-  (treemacs-fringe-indicator-mode nil)
-  :config
-  (push #'treemacs-custom-filter treemacs-ignored-file-predicates)
-  :bind (("C-x t t" . treemacs)
-         ("C-x t s" . ff/lsp-treemacs-symbols-toggle)))
-
-;; -------------------------------------------------------------------
 ;; Show number of lines in the left side of the buffer
 ;; -------------------------------------------------------------------
 (global-display-line-numbers-mode 1)
@@ -805,7 +766,6 @@ TEXT: title"
 ;; Code style checker
 ;; -------------------------------------------------------------------
 (use-package flycheck
-  :hook ((lsp-mode . flycheck-mode))
   :init (global-flycheck-mode))
 
 ;; -------------------------------------------------------------------
@@ -819,7 +779,7 @@ TEXT: title"
 ;; package
 ;; -------------------------------------------------------------------
 (use-package envrc
-  :after (lsp-mode flycheck)
+  :after (flycheck)
   :init (envrc-global-mode t))
 
 (provide 'basic-settings)
