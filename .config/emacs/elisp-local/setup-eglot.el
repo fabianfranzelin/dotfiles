@@ -21,7 +21,8 @@
   (setq eglot-events-buffer-size 10)
   (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd")))
 
-;; (use-package realgud)
+(use-package realgud
+  :after (org))
 
 (provide 'setup-eglot)
 
