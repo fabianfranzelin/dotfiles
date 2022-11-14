@@ -56,8 +56,7 @@ REPLACE-STR: string that replaces all regex matches"
   (setq clang-format-executable "/usr/bin/clang-format"))
 
 ;; ----------------------------------------------------------------------------------
-;; Use package for CCLS and cc-mode
-
+;; Use package for cc-mode
 ;; adds font-lock highlighting for modern C++ upto C++17
 ;; https://github.com/ludwigpacifici/modern-cpp-font-lock
 (use-package modern-cpp-font-lock
@@ -70,13 +69,23 @@ REPLACE-STR: string that replaces all regex matches"
          ("\\.inl$" . c++-mode)
          ("\\.c$" . c-mode)
          ("\\.h$" . c-mode))
-  :custom (lsp-clients-clangd-args '("--header-insertion-decorators=0" "--clang-tidy"))
   :init
   ;; ensure system packages
   (ff/ensure-apt-package "clangd" "clangd")
   (ff/ensure-apt-package "clang" "clang")
-  :bind (:map c++-mode-map
-         ("C-c l r c" . ff/container-host-compile-commands-mapping)))
+  ;; configure style
+  (c-add-style "my-cc"
+               '("user"
+                 (c-basic-offset . 4)
+                 (indent-tabs-mode . nil)
+                 (c-offsets-alist . ((innamespace . 0)
+                                     (access-label . -)
+                                     (case-label . 0)
+                                     (member-init-intro . +)
+                                     (topmost-intro . 0)
+                                     (arglist-cont-nonempty . +)))))
+  (push '(c++-mode . "my-cc") c-default-style)
+  (push '(c-mode . "my-cc") c-default-style))
 
 ;; -----------------------------------------------------------------------------------
 ;; Cmake
