@@ -303,7 +303,8 @@ SOURCE_FILENAME: filename to the puml file."
 ;; Json
 ;; -------------------------------------------------------------------
 (use-package json-mode
-  :mode (("\\.json$" . json-mode))
+  :mode (("\\.json$" . json-mode)
+         ("\\.inst$" . json-mode))
   :init
   ;; ensure system packages
   (ff/ensure-apt-package "npm" "npm")
