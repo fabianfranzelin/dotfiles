@@ -29,6 +29,8 @@
   :init
   ;; install system dependencies
   (ff/ensure-python-package "python-lsp-server[all]" nil "pylsp")
+  (ff/ensure-python-package "pdb")
+  (ff/ensure-python-package "ipdb")
 
   ;; use ipython as default interpreter
   (setq python-shell-interpreter "ipython3"
