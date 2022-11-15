@@ -20,7 +20,7 @@
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 ;; The default is 800 kilobytes. Measured in bytes.
-(setq gc-cons-threshold (* 2 1000 1000))
+(setq gc-cons-threshold (* 50 1000 1000))
 
 ;; Profile emacs startup
 (add-hook 'emacs-startup-hook
@@ -200,9 +200,8 @@ INCREMENT: Value of which the current font-size is changed"
 ;; for highlighting rectangles, use the (rectangle-mark-mode).
 ;; C-x SPC - for selection; C-x SPC C-t for inserting stuff
 
-;; Indentation
-(setq-default indent-tabs-mode nil)    ; use only spaces and no tabs
-(setq-default tab-width 4)
+;; Indentation: use only spaces, no tabs
+(setq-default indent-tabs-mode nil)
 
 ;; Delete trailing white spaces only for lines that are touched. This
 ;; replaces the obvious, more intrusive, approach of
@@ -215,6 +214,21 @@ INCREMENT: Value of which the current font-size is changed"
 
 ;; save cursor position in files even when buffers are killed
 (save-place-mode)
+
+;; Show number of lines in the left side of the buffer
+(global-display-line-numbers-mode 1)
+
+(dolist (mode '(org-mode-hook
+                rst-mode-hook
+                term-mode-hook
+                vterm-mode-hook
+                treemacs-mode-hook
+                compilation-mode-hook
+                pdf-view-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+
+;; show column numbers on the modeline
+(column-number-mode 1)
 
 ;; Let kill operate on the whole line when no region is selected
 (use-package whole-line-or-region
@@ -235,6 +249,7 @@ INCREMENT: Value of which the current font-size is changed"
 
 ;; -------------------------------------------------------------
 ;; Better help
+;; -------------------------------------------------------------------
 (use-package helpful
   :bind (("C-h f" . helpful-callable)
          ("C-h v" . helpful-variable)
@@ -624,8 +639,6 @@ PROJECT-ROOT: Path to the root directory of the current project."
    (doom-modeline-buffer-encoding nil)
    (doom-modeline-vcs-max-length 48))
   :init
-  ;; show column numbers on the modeline
-  (column-number-mode 1)
   (doom-modeline-mode +1))
 
 ;; -------------------------------------------------------------------
@@ -640,21 +653,6 @@ PROJECT-ROOT: Path to the root directory of the current project."
   (super-save-mode t))
 
 ;; -------------------------------------------------------------------
-;; Insert Pairs of Matching Elements
-;; -------------------------------------------------------------------
-(use-package paren
-  :custom
-  ((show-paren-style 'mixed)	;; The entire expression
-   (blink-matching-paren t))
-  :init
-  (show-paren-mode 1)
-  :config
-  (set-face-background 'show-paren-match (face-background 'default))
-  (set-face-foreground 'show-paren-match "#def")
-  (set-face-attribute 'show-paren-match nil :weight 'extra-bold)
-  (set-face-attribute 'show-paren-match-expression nil :background "#363e4a"))
-
-;; -------------------------------------------------------------------
 ;; Save history during sessions
 ;; -------------------------------------------------------------------
 (use-package savehist
@@ -662,6 +660,7 @@ PROJECT-ROOT: Path to the root directory of the current project."
   (savehist-additional-variables '(extended-command-history kill-ring))
   :init
   (savehist-mode t))
+
 ;; -------------------------------------------------------------------
 ;; Popper - handle pop up buffers nicely
 ;; -------------------------------------------------------------------
@@ -715,20 +714,6 @@ under the current directory."
          ;; back in bookmarks
          ("M-n" . gumshoe-backtrack-back)
          ("M-p" . gumshoe-backtrack-forward)))
-
-;; -------------------------------------------------------------------
-;; Show number of lines in the left side of the buffer
-;; -------------------------------------------------------------------
-(global-display-line-numbers-mode 1)
-
-(dolist (mode '(org-mode-hook
-                rst-mode-hook
-                term-mode-hook
-                vterm-mode-hook
-                treemacs-mode-hook
-                compilation-mode-hook
-                pdf-view-mode-hook))
-  (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 ;; -------------------------------------------------------------------
 ;; Drag stuff around with M-up/down
