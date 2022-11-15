@@ -83,11 +83,6 @@ export PIP_VIRTUALENV_BASE="${WORKON_HOME}"
 export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
 
 #------------------------------------------------------------------------------#
-# make aliases available in eshell
-# mkdir -p "${XDG_CONFIG_HOME}/emacs/eshell"
-# alias | sed 's/^alias //' | sed -E "s/^([^=]+)='(.+?)'$/\1=\2/" | sed "s/'\\\\''/'/g" | sed "s/'\\\\$/'/;" | sed -E 's/^([^=]+)=(.+)$/alias \1 \2/' > "$HOME/.emacs.d/eshell/alias"
-
-#------------------------------------------------------------------------------#
 # Load specific settings per workstation
 [ "$(hostname)" = "ThinkPad" ] && . "${__SHELL_LIB}/workstations/ThinkPad.sh"
 [ "$(hostname)" = "ST39-C-00066" ] && . "${__SHELL_LIB}/workstations/st39-c-00066.sh"
