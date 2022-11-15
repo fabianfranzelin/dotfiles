@@ -475,7 +475,7 @@ PROJECT-ROOT: Path to the root directory of the current project."
 		        vc-ignore-dir-regexp
 		        tramp-file-name-regexp))
   (put 'temporary-file-directory 'standard-value '("/tmp"))
-  ;; Use remote PATH on tramp (handy for eshell).
+  ;; Use remote PATH on tramp
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
   (make-directory tramp-auto-save-directory t))
 
@@ -724,7 +724,6 @@ under the current directory."
 (dolist (mode '(org-mode-hook
                 rst-mode-hook
                 term-mode-hook
-                eshell-mode-hook
                 vterm-mode-hook
                 treemacs-mode-hook
                 compilation-mode-hook

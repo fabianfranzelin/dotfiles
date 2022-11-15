@@ -80,15 +80,11 @@
   :straight nil)
 
 ;; -------------------------------------------------------------------
-;; Eshell & Vterm
+;; Vterm
 ;; -------------------------------------------------------------------
 (use-package shell-loader
   :straight nil
   :custom (ff/shell-vertical-alignment t))
-
-(use-package setup-eshell
-  :straight nil
-  :after (shell-loader))
 
 (use-package setup-vterm
   :straight nil
