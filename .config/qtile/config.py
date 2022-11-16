@@ -176,6 +176,13 @@ extension_defaults = widget_defaults.copy()
 
 
 def lower_left_triangle(bg_color, fg_color):
+    """Add a left triangle symbol from unicode.
+
+    :param bg_color: background color
+    :param fg_color: foreground color
+
+    :returns: Textbox
+    """
     return widget.TextBox(
         text="\u25E2",
         padding=0,

@@ -25,26 +25,19 @@
   :mode (("\\.py$" . python-mode)
          ("SConstruct" . python-mode)
          ("SConscript" . python-mode))
-  :hook ((python-mode . annotate-pdb)
-         (python-mode . (lambda ()
-                          ;; debugging package for python using ptvsd
-                          (require 'dap-python)
-                          (lsp))))  ; or lsp-deferred
+  :hook ((python-mode . annotate-pdb))
   :init
   ;; install system dependencies
   (ff/ensure-python-package "python-lsp-server[all]" nil "pylsp")
+  (ff/ensure-python-package "pdb")
+  (ff/ensure-python-package "ipdb")
 
   ;; use ipython as default interpreter
   (setq python-shell-interpreter "ipython3"
         python-shell-interpreter-args "--simple-prompt -i"
         python-indent-offset 4
-        python-indent-guess-indent-offset nil
-        ;; default python interpreter for dap
-        dap-python-executable "python3")
+        python-indent-guess-indent-offset nil)
 
-  ;; both packages are required for debugging with dap
-  (ff/ensure-python-package "epc")
-  (ff/ensure-python-package "ptvsd" "4.2.0")
   (ff/ensure-python-package "pylint")
   (ff/ensure-python-package "mypy")
   (ff/ensure-python-package "flake8")

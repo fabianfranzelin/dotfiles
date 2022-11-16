@@ -20,7 +20,7 @@
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 ;; The default is 800 kilobytes. Measured in bytes.
-(setq gc-cons-threshold (* 2 1000 1000))
+(setq gc-cons-threshold (* 50 1000 1000))
 
 ;; Profile emacs startup
 (add-hook 'emacs-startup-hook
@@ -200,9 +200,8 @@ INCREMENT: Value of which the current font-size is changed"
 ;; for highlighting rectangles, use the (rectangle-mark-mode).
 ;; C-x SPC - for selection; C-x SPC C-t for inserting stuff
 
-;; Indentation
-(setq-default indent-tabs-mode nil)    ; use only spaces and no tabs
-(setq-default tab-width 4)
+;; Indentation: use only spaces, no tabs
+(setq-default indent-tabs-mode nil)
 
 ;; Delete trailing white spaces only for lines that are touched. This
 ;; replaces the obvious, more intrusive, approach of
@@ -215,6 +214,21 @@ INCREMENT: Value of which the current font-size is changed"
 
 ;; save cursor position in files even when buffers are killed
 (save-place-mode)
+
+;; Show number of lines in the left side of the buffer
+(global-display-line-numbers-mode 1)
+
+(dolist (mode '(org-mode-hook
+                rst-mode-hook
+                term-mode-hook
+                vterm-mode-hook
+                treemacs-mode-hook
+                compilation-mode-hook
+                pdf-view-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+
+;; show column numbers on the modeline
+(column-number-mode 1)
 
 ;; Let kill operate on the whole line when no region is selected
 (use-package whole-line-or-region
@@ -235,6 +249,7 @@ INCREMENT: Value of which the current font-size is changed"
 
 ;; -------------------------------------------------------------
 ;; Better help
+;; -------------------------------------------------------------------
 (use-package helpful
   :bind (("C-h f" . helpful-callable)
          ("C-h v" . helpful-variable)
@@ -475,7 +490,7 @@ PROJECT-ROOT: Path to the root directory of the current project."
 		        vc-ignore-dir-regexp
 		        tramp-file-name-regexp))
   (put 'temporary-file-directory 'standard-value '("/tmp"))
-  ;; Use remote PATH on tramp (handy for eshell).
+  ;; Use remote PATH on tramp
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
   (make-directory tramp-auto-save-directory t))
 
@@ -618,15 +633,12 @@ PROJECT-ROOT: Path to the root directory of the current project."
    (doom-modeline-persp-name nil)
    (doom-modeline-display-default-persp-name nil)
    (doom-modeline-persp-icon nil)
-   (doom-modeline-lsp t)
    (doom-modeline-buffer-file-name-style 'truncate-except-project)
    (doom-modeline-buffer-modification-icon t)
    (doom-modeline-major-mode-icon t)
    (doom-modeline-buffer-encoding nil)
    (doom-modeline-vcs-max-length 48))
   :init
-  ;; show column numbers on the modeline
-  (column-number-mode 1)
   (doom-modeline-mode +1))
 
 ;; -------------------------------------------------------------------
@@ -641,21 +653,6 @@ PROJECT-ROOT: Path to the root directory of the current project."
   (super-save-mode t))
 
 ;; -------------------------------------------------------------------
-;; Insert Pairs of Matching Elements
-;; -------------------------------------------------------------------
-(use-package paren
-  :custom
-  ((show-paren-style 'mixed)	;; The entire expression
-   (blink-matching-paren t))
-  :init
-  (show-paren-mode 1)
-  :config
-  (set-face-background 'show-paren-match (face-background 'default))
-  (set-face-foreground 'show-paren-match "#def")
-  (set-face-attribute 'show-paren-match nil :weight 'extra-bold)
-  (set-face-attribute 'show-paren-match-expression nil :background "#363e4a"))
-
-;; -------------------------------------------------------------------
 ;; Save history during sessions
 ;; -------------------------------------------------------------------
 (use-package savehist
@@ -663,6 +660,7 @@ PROJECT-ROOT: Path to the root directory of the current project."
   (savehist-additional-variables '(extended-command-history kill-ring))
   :init
   (savehist-mode t))
+
 ;; -------------------------------------------------------------------
 ;; Popper - handle pop up buffers nicely
 ;; -------------------------------------------------------------------
@@ -718,59 +716,6 @@ under the current directory."
          ("M-p" . gumshoe-backtrack-forward)))
 
 ;; -------------------------------------------------------------------
-;; Treemacs
-;; -------------------------------------------------------------------
-(defun treemacs-custom-filter (file _)
-  "Custom filter function for files in treemacs.
-
-FILE: filename"
-  (or (s-ends-with? ".aux" file)
-      (s-ends-with? ".lint" file)))
-
-(defun ff/lsp-treemacs-symbols-toggle ()
-  "Toggle the lsp-treemacs-symbols buffer."
-  (interactive)
-  (if (get-buffer "*LSP Symbols List*")
-      (kill-buffer "*LSP Symbols List*")
-    (progn (lsp-treemacs-symbols)
-           (other-window -1))))
-
-(use-package treemacs
-  :after (lsp-mode)
-  :commands
-  (treemacs
-   treemacs-follow-mode
-   treemacs-filewatch-mode
-   treemacs-fringe-indicator-mode)
-  :custom
-  ((treemacs-width 40)
-   (treemacs-indentation 1)
-   (treemacs-space-between-root-nodes nil))
-  :init
-  (treemacs-follow-mode t)
-  (treemacs-filewatch-mode t)
-  (treemacs-fringe-indicator-mode nil)
-  :config
-  (push #'treemacs-custom-filter treemacs-ignored-file-predicates)
-  :bind (("C-x t t" . treemacs)
-         ("C-x t s" . ff/lsp-treemacs-symbols-toggle)))
-
-;; -------------------------------------------------------------------
-;; Show number of lines in the left side of the buffer
-;; -------------------------------------------------------------------
-(global-display-line-numbers-mode 1)
-
-(dolist (mode '(org-mode-hook
-                rst-mode-hook
-                term-mode-hook
-                eshell-mode-hook
-                vterm-mode-hook
-                treemacs-mode-hook
-                compilation-mode-hook
-                pdf-view-mode-hook))
-  (add-hook mode (lambda () (display-line-numbers-mode 0))))
-
-;; -------------------------------------------------------------------
 ;; Drag stuff around with M-up/down
 ;; -------------------------------------------------------------------
 (use-package drag-stuff
@@ -805,7 +750,6 @@ TEXT: title"
 ;; Code style checker
 ;; -------------------------------------------------------------------
 (use-package flycheck
-  :hook ((lsp-mode . flycheck-mode))
   :init (global-flycheck-mode))
 
 ;; -------------------------------------------------------------------
@@ -819,7 +763,7 @@ TEXT: title"
 ;; package
 ;; -------------------------------------------------------------------
 (use-package envrc
-  :after (lsp-mode flycheck)
+  :after (flycheck)
   :init (envrc-global-mode t))
 
 (provide 'basic-settings)

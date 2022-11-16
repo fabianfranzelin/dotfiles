@@ -114,8 +114,9 @@ ARG: position"
 ;; You may prefer to use `initials' instead of `partial-completion'.
 (use-package orderless
   :custom
-  (completion-styles '(orderless))
-  (completion-category-overrides '((file (styles basic partial-completion))))
+  (completion-styles '(orderless flex))
+  (completion-category-overrides '((file (styles basic partial-completion))
+                                   (eglot (styles . (orderless flex)))))
   :config
   (setq completion-category-defaults nil))
 

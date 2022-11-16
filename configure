@@ -38,17 +38,17 @@ __SHELL_LIB="${DOTFILES}/.config/shell"
 
 while [ "${#}" -gt 0 ]; do
     case "${1}" in
-    '-h'|'--help')
-        __ERRCODE=0
-        ;;
-    '-i'|'--install')
-        INSTALL_DEPENDENCIES=1
-        shift # past argument
-        ;;
-    *)
-        echo -e "${__COLOR_ERR}Unknown value ${1}${__COLOR_RESET}"
-        __ERRCODE=1
-        ;;
+        '-h'|'--help')
+            __ERRCODE=0
+            ;;
+        '-i'|'--install')
+            INSTALL_DEPENDENCIES=1
+            shift # past argument
+            ;;
+        *)
+            echo -e "${__COLOR_ERR}Unknown value ${1}${__COLOR_RESET}"
+            __ERRCODE=1
+            ;;
     esac
 
     if [ -n "${__ERRCODE}" ]; then
@@ -87,6 +87,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          gnome-keyring \
          openjdk-17-jdk \
          zip \
+         wget \
          unzip \
          stow \
          compton \
@@ -155,6 +156,28 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
             cmake_language_server \
             "python-lsp-server[all]"
 
+    # additional npm dependencies
+    if ( __is_linux ) then
+       # Quickfix required here: Apt is not the best way to install npm
+       if [ ! "$(command -v npm)" ]; then
+           sudo apt install -y npm
+           sudo apt remove -y nodejs
+       fi
+
+       sudo npm install -g n
+       sudo n stable
+       sudo npm install npm@latest
+       sudo npm install nodejs@latest
+
+       # install lsp servers
+       npm install -g \
+           yaml-language-server \
+           bash-language-server \
+           typescript \
+           typescript-language-server \
+           dockerfile-language-server-nodejs
+    fi
+
     #------------------------------------------------------------------------------#
     # install dependencies for vscode
     if ( __is_linux ) then
@@ -176,17 +199,6 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
        # Install tools that solely work on Ubuntu desktop. Note
        # that this is not working for Docker or WSL.
        echo -e "${__COLOR_INFO}INFO: Install GTK tools${__COLOR_RESET}"
-
-       # Quickfix required here: Apt is not the best way to install npm
-       if [ ! "$(command -v npm)" ]; then
-           sudo apt install -y npm
-           sudo apt remove -y nodejs
-       fi
-
-       sudo npm install -g n
-       sudo n stable
-       sudo npm install npm@latest
-       sudo npm install nodejs@latest
 
        # Install Qtile window manager
        python3 -m pip install --upgrade xcffib
