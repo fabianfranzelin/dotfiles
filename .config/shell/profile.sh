@@ -47,7 +47,7 @@ if ( __is_linux ) then
 fi
 
 # expand path to include local bin directory
-export PATH="${HOME}/opt/bin:${HOME}/.local/bin:/usr/lib/ccache:${PATH}"
+export PATH="${HOME}/opt/bin:${HOME}/.local/bin:${HOME}/.local/share/npm/bin:/usr/lib/ccache:${PATH}"
 
 # Fix for docker /dev/shm issue: https://github.com/docker/buildx/issues/418
 export DOCKER_BUILDKIT=0
@@ -81,11 +81,6 @@ export PIP_VIRTUALENV_BASE="${WORKON_HOME}"
 #------------------------------------------------------------------------------#
 # NPM
 export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
-
-#------------------------------------------------------------------------------#
-# make aliases available in eshell
-# mkdir -p "${XDG_CONFIG_HOME}/emacs/eshell"
-# alias | sed 's/^alias //' | sed -E "s/^([^=]+)='(.+?)'$/\1=\2/" | sed "s/'\\\\''/'/g" | sed "s/'\\\\$/'/;" | sed -E 's/^([^=]+)=(.+)$/alias \1 \2/' > "$HOME/.emacs.d/eshell/alias"
 
 #------------------------------------------------------------------------------#
 # Load specific settings per workstation
