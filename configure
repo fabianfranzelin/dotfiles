@@ -96,7 +96,8 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          rofi \
          vim \
          git-lfs \
-         ccache
+         ccache \
+         gnuplot
 
     # ---------------------------------------------------------
     # install Emacs. First, just the regular version.
@@ -154,7 +155,8 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
             yamllint \
             mdformat \
             cmake_language_server \
-            "python-lsp-server[all]"
+            "python-lsp-server[all]" \
+            esbonio
 
     # additional npm dependencies
     if ( __is_linux ) then

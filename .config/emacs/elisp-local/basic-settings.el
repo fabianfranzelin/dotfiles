@@ -712,8 +712,8 @@ under the current directory."
   (global-gumshoe-mode)
   :bind (;; enable browser like key bindings to move forth and
          ;; back in bookmarks
-         ("M-n" . gumshoe-backtrack-back)
-         ("M-p" . gumshoe-backtrack-forward)))
+         ("M-p" . gumshoe-backtrack-back)
+         ("M-n" . gumshoe-backtrack-forward)))
 
 ;; -------------------------------------------------------------------
 ;; Drag stuff around with M-up/down
