@@ -97,6 +97,11 @@ build/
 *.db
 
 /.local/share/npm/
+/.local/bin/marksman
+/.local/share/fonts/
+/.local/share/certificates/
+/.local/share/Trash/
+
 /.config/znt/
 /.config/configstore/
 
@@ -133,4 +138,3 @@ flycheck_*
 ### SSH ###
 /.ssh/known_hosts
 /.ssh/id_rsa
-/.local/bin/marksman

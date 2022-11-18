@@ -22,6 +22,9 @@ export ALL_proxy="http://127.0.0.1:3128"
 export all_proxy="http://127.0.0.1:3128"
 export ftp_proxy="http://127.0.0.1:3128"
 
+# Make X server available
+export DISPLAY="`grep nameserver /etc/resolv.conf | sed 's/nameserver //'`:0"
+
 # .bashrc
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
