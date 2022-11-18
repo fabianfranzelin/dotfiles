@@ -138,3 +138,4 @@ flycheck_*
 ### SSH ###
 /.ssh/known_hosts
 /.ssh/id_rsa
+/.local/share/emacs-28.2/
