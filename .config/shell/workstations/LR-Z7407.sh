@@ -5,9 +5,8 @@
 # Load specific settings for WSL
 
 #------------------------------------------------------------------------------#
-# load credentials
+# Dotfiles setup
 export __SHELL_LIB="${XDG_CONFIG_HOME}/shell"
-[ -f "${__SHELL_LIB}/workstations/b_credentials.sh" ] && . "${__SHELL_LIB}/workstations/b_credentials.sh"
 
 #------------------------------------------------------------------------------#
 # WSL specific stuff

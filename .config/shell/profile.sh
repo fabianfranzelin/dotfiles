@@ -83,6 +83,10 @@ export PIP_VIRTUALENV_BASE="${WORKON_HOME}"
 export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
 
 #------------------------------------------------------------------------------#
+# Load credentials
+[ -f "${__SHELL_LIB}/b_credentials.sh" ] && . "${__SHELL_LIB}/b_credentials.sh"
+
+#------------------------------------------------------------------------------#
 # Load specific settings per workstation
 [ "$(hostname)" = "ThinkPad" ] && . "${__SHELL_LIB}/workstations/ThinkPad.sh"
 [ "$(hostname)" = "ST39-C-00066" ] && . "${__SHELL_LIB}/workstations/st39-c-00066.sh"

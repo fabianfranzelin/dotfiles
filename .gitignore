@@ -115,6 +115,7 @@ __pycache__
 # Sensitive information
 /.ssh/id_rsa
 .config/shell/workstations/b_credentials.sh
+.config/shell/b_credentials.sh
 
 ### Emacs ###
 flycheck_*
