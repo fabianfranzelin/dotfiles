@@ -26,6 +26,9 @@ export AOS_BASE_HOME="${HOME}/workspace/aos_base"
 export AOS_BUILD_DIR="${AOS_BASE_HOME}/build"
 export AOS_INSTALL_DIR="${AOS_BASE_HOME}/install"
 
+# QNX
+export SWT_GTK3=0 export
+
 # make sure that there is a conan cache folder is not available
 AOS_CONAN_CACHE="${HOME}/conan_download_cache"
 [ -d "${AOS_CONAN_CACHE}" ] && echo "${__COLOR_WARN}WARN: HOME/conan_download_cache exists. Docker setup for AOS will not work if this folder is not removed.${__COLOR_RESET}"
