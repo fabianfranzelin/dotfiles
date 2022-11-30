@@ -180,6 +180,14 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
            dockerfile-language-server-nodejs
     fi
 
+    # -------------------------------------------------
+    # Docker setup
+    if command -v docker > /dev/null
+    then
+        sudo usermod -a -G docker "${USER}"
+        sudo chmod 660 "/var/run/docker.sock"
+    fi
+
     #------------------------------------------------------------------------------#
     # install dependencies for vscode
     if ( __is_linux ) then
