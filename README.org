@@ -1,0 +1,26 @@
+#+TITLE: dotfiles
+#+AUTHOR: Fabian Franzelin
+#+EMAIL: fabian.franzelin@gmail.com
+#+CREATOR: Fabian franzelin
+#+LANGUAGE: en
+#+OPTIONS: auto-id:t H:4 broken_links:mark email:t ^:{}
+#+KEYWORDS: dotfiles linux emacs configuration
+
+#+html: <a href="https://github.com/fabianfranzelin/dotfiles/actions/workflows/ci.yml/badge.svg?branch=nightly" />https://github.com/fabianfranzelin/dotfiles/actions?query=workflow</a>
+#+html: <a href="https://img.shields.io/github/last-commit/fabianfranzelin/dotfiles" />https://github.com/fabianfranzelin/dotfiles/commits</a>
+#+html: <a href="https://img.shields.io/github/license/fabianfranzelin/dotfiles" />https://github.com/fabianfranzelin/dotfiles/blob/nightly/LICENSE</a>
+#+html: <a href="https://www.gnu.org/software/emacs/"><img src="https://img.shields.io/badge/Emacs-28.2-blueviolet.svg?style=flat-square&logo=GNU%20Emacs&logoColor=white" /></a>
+
+In this repository, I gather my system configurations that allow me to have
+a consistent computing experience over multiple Linux machines.
+
+It configures three main tools: [[https://www.gnu.org/software/emacs/][GNU Emacs]], [[https://zsh.sourceforge.io/][ZSH]], and [[http://docs.qtile.org/en/stable/][Qtile]].
+
+I use [[https://www.gnu.org/software/stow/][GNU Stow]] to install my configuration files on my Linux
+distributions. Everything can be rolled out by calling the main
+configure script of the repository
+
+
+#+begin_src shell
+./configure -i
+#+end_src
