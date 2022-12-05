@@ -1,3 +1,5 @@
+#!/usr/bin/env sh
+
 restart_gnome_keyring() {
     sudo gnome-keyring-daemon -r --components=pkcs11,secrets,ssh
 }

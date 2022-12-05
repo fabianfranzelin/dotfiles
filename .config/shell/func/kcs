@@ -1,3 +1,0 @@
-kcs() {
-  kubectl config use-context dol_master@sunnyvale
-}

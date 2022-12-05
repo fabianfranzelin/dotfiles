@@ -1,3 +1,0 @@
-kdb() {
-  helm delete adcloud --kube-context kubernetes-admin@broom --namespace development-${USER}
-}

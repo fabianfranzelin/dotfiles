@@ -1,3 +1,0 @@
-kda() {
- helm delete adcloud --kube-context kubernetes-dol-master@abstatt --namespace development-${USER}
-}

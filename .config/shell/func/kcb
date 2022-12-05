@@ -1,3 +1,0 @@
-kcb() {
- kubectl config use-context kubernetes-admin@broom
-}
