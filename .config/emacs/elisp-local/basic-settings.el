@@ -84,7 +84,19 @@
 (add-to-list 'recentf-exclude no-littering-etc-directory)
 
 ;; Turn on syntax colouring in all modes supporting it
-(global-font-lock-mode t)
+(use-package tree-sitter
+  :hook ((python-mode . tree-sitter-hl-mode)
+         (c-mode . tree-sitter-hl-mode)
+         (c++-mode . tree-sitter-hl-mode)
+         (typescript-mode . tree-sitter-hl-mode)
+         (sh-mode . tree-sitter-hl-mode)
+         (java-mode . tree-sitter-hl-mode)
+         (json-mode . tree-sitter-hl-mode)
+         (yaml-mode . tree-sitter-hl-mode))
+  :init (global-tree-sitter-mode))
+
+;; support for various languages for tree sitter
+(use-package tree-sitter-langs)
 
 ;; I want the current user name, the emacs version and the name of the
 ;; file I'm editing to be displayed in the title-bar.
