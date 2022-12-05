@@ -1,3 +1,5 @@
+#!/usr/bin/env sh
+
 dt_run_container() {
     ./.devcontainer/run_container.py \
         -t venv \

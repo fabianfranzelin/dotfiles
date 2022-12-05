@@ -1,3 +1,5 @@
+#!/usr/bin/env sh
+
 ka() {
  kubectl apply -f "${1}"
 }

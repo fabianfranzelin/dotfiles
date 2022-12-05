@@ -1,3 +1,5 @@
+#!/usr/bin/env sh
+
 dor() {
       docker run -it \
              -e "DEBIAN_FRONTEND=noninteractive" \

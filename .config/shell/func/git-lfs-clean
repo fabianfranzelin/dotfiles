@@ -1,3 +1,5 @@
+#!/usr/bin/env sh
+
 git-lfs-clean() {
     git lfs uninstall
     git rm --cached -r .

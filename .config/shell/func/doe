@@ -1,3 +1,5 @@
+#!/usr/bin/env sh
+
 doe() {
       docker exec -it \
              -e "DEBIAN_FRONTEND=noninteractive" \

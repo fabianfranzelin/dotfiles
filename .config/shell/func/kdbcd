@@ -1,3 +1,0 @@
-kdbcd() {
- helm delete cluster-deployment --kube-context kubernetes-admin@broom --namespace development-${USER}
-}

@@ -1,8 +1,7 @@
 #!/usr/bin/env sh
 
 # disabling warnings about unused variables
-# shellcheck disable=SC2034
-# shellcheck disable=SC1090
+# shellcheck disable=SC2034,SC1090
 
 . "${__SHELL_LIB}/faq.sh"
 

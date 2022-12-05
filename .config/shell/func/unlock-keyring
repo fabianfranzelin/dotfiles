@@ -1,3 +1,5 @@
+#!/usr/bin/env sh
+
 # Linux unlock gnome keyring
 function unlock-keyring ()
 {

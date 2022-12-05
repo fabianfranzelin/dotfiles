@@ -1,3 +1,5 @@
+#!/usr/bin/env sh
+
 aos_run_container() {
     docker run -it --rm \
            --net host \
