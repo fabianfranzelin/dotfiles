@@ -4,6 +4,7 @@
   extra_styling = False
   always_on_top = True
   title_transmit_bg_color = "#a9a1e1"
+  suppress_multiple_term_dialog = True
   title_font = Noto Sans 9
 [keybindings]
 [profiles]
