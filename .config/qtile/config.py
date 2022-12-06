@@ -29,6 +29,7 @@
 
 import subprocess
 from pathlib import Path
+from typing import Any, List
 
 from libqtile import bar, hook, layout, qtile, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
@@ -175,7 +176,7 @@ widget_defaults = dict(
 extension_defaults = widget_defaults.copy()
 
 
-def lower_left_triangle(bg_color, fg_color):
+def lower_left_triangle(bg_color: str, fg_color: str) -> Any:
     """Add a left triangle symbol from unicode.
 
     :param bg_color: background color
@@ -192,7 +193,7 @@ def lower_left_triangle(bg_color, fg_color):
     )
 
 
-def init_widgets_list():
+def init_widgets_list() -> List[Any]:
     """Create my widgets for the top toolbar.
 
     :returns: List of widgets
@@ -233,7 +234,7 @@ def init_widgets_list():
         widget.CPU(
             foreground=my_colors["dark-grey"],
             background=my_colors["violet"],
-            mouse_callbacks={"Button1": lambda: qtile.cmd_spawn(my_term + " -e htop")},
+            mouse_callbacks={"Button1": lambda: qtile.cmd_spawn(my_term + " -e htop")},  # type: ignore
         ),
         lower_left_triangle(
             bg_color=my_colors["violet"],
@@ -242,7 +243,7 @@ def init_widgets_list():
         widget.Memory(
             foreground=my_colors["dark-grey"],
             background=my_colors["cyan"],
-            mouse_callbacks={"Button1": lambda: qtile.cmd_spawn(my_term + " -e htop")},
+            mouse_callbacks={"Button1": lambda: qtile.cmd_spawn(my_term + " -e htop")},  # type: ignore
             fmt="Mem: {}",
             padding=5,
         ),
@@ -286,7 +287,7 @@ mouse = [
     Click([mod], "Button2", lazy.window.bring_to_front()),
 ]
 
-dgroups_app_rules = []  # type: list
+dgroups_app_rules: List[Any] = []
 follow_mouse_focus = False
 bring_front_click = False
 cursor_warp = False
@@ -323,7 +324,7 @@ auto_minimize = True
 
 
 @hook.subscribe.startup_once
-def startup_once():
+def startup_once() -> None:
     """Execute some applications at startup once when machine is booted."""
     subprocess.Popen(  # pylint: disable=consider-using-with
         [Path("~/.config/qtile/autostart.sh").expanduser()]
@@ -331,7 +332,7 @@ def startup_once():
 
 
 @hook.subscribe.startup
-def startup():
+def startup() -> None:
     """Execute some applications at startup of qtile."""
     subprocess.Popen(  # pylint: disable=consider-using-with
         [Path("~/.config/qtile/startup.sh").expanduser()]
