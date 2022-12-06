@@ -37,6 +37,8 @@ setopt append_history
 setopt share_history
 # immediately append to history file, not just when a term is killed
 setopt inc_append_history
+# do not save duplicated command
+setopt hist_save_no_dups
 # make history compatible with bash
 unsetopt extendedhistory
 
