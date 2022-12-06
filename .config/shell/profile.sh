@@ -53,6 +53,17 @@ export PATH="${HOME}/opt/bin:${HOME}/.local/bin:${HOME}/.local/share/npm/bin:/us
 export DOCKER_BUILDKIT=0
 
 #------------------------------------------------------------------------------#
+# history
+
+# history-length in terminal
+HISTSIZE=10000
+# history-length in HISTFILE
+HISTFILESIZE=10000
+
+[ ! -d "${XDG_CACHE_HOME}/shell" ] && mkdir -p "${XDG_CACHE_HOME}/shell"
+HISTFILE="${XDG_CACHE_HOME}/shell/.history"
+
+#------------------------------------------------------------------------------#
 # Export the path to Java so that tools pick it up correctly
 JAVA_HOME="$(dirname "$(dirname "$(readlink "$(readlink "$(command -v java)")")")")"
 export JAVA_HOME

@@ -31,23 +31,14 @@ autoload colors && colors
 autoload -U bashcompinit
 bashcompinit
 
-#------------------------------------------------------------------------------#
-# history
-
-# history-length in terminal
-HISTSIZE=10000
-# history-length in HISTFILE
-SAVEHIST=10000
-
-# put the history file to the xdg cache
-[ ! -d "${XDG_CACHE_HOME}/zsh" ] && mkdir -p "${XDG_CACHE_HOME}/zsh"
-HISTFILE="${XDG_CACHE_HOME}/zsh/.zsh_history"
 # append to the history file, don't overwrite it
 setopt append_history
 # share history across terminals
 setopt share_history
 # immediately append to history file, not just when a term is killed
 setopt inc_append_history
+# make history compatible with bash
+unsetopt extendedhistory
 
 #------------------------------------------------------------------------------#
 # keybindings
