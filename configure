@@ -101,8 +101,12 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
 
     # ---------------------------------------------------------
     # install Emacs. First, just the regular version.
-    sudo apt install -y \
-         emacs
+    if command -v emacs &> /dev/null
+    then
+        echo "Install default Emacs from package sources."
+        sudo apt install -y \
+             emacs
+    fi
 
     # now, install the newest version available by building and
     # installing it manually
@@ -114,8 +118,6 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
               --eval '(org-babel-tangle-file "README.org")'
         # Actually install Emacs via update-alternatives
         ./install.sh || exit 1
-        # Check if installation was successful
-        emacs -Q --version
     )
 
     # install dependencies for Emacs
