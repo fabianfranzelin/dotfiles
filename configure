@@ -122,7 +122,6 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
 
     # install dependencies for Emacs
     sudo apt install -y \
-         emacs \
          markdown \
          pandoc \
          graphviz \
@@ -136,7 +135,6 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          clang \
          ripgrep \
          fd-find \
-         ccls \
          shellcheck
 
     # emacs pdf-tools dependencies
