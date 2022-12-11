@@ -101,7 +101,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
 
     # ---------------------------------------------------------
     # install Emacs. First, just the regular version.
-    if command -v emacs &> /dev/null
+    if ! command -v emacs &> /dev/null
     then
         echo "Install default Emacs from package sources."
         sudo apt install -y \
