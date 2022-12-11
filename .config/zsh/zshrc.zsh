@@ -31,9 +31,6 @@ if [ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]; 
     . "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# shellcheck source=gear.zsh
-. "${ZDOTDIR}/gear.zsh"
-
 # use oh-my-zsh init
 # shellcheck source=oh-my-zsh.sh
 . "${ZDOTDIR}/oh-my-zsh.sh"
@@ -42,6 +39,9 @@ fi
 if [ -f "${ZDOTDIR}/.p10k.zsh" ]; then
     . "${ZDOTDIR}/.p10k.zsh"
 fi
+
+# shellcheck source=gear.zsh
+. "${ZDOTDIR}/gear.zsh"
 
 # ----------------------------------------------------
 # vterm setup
