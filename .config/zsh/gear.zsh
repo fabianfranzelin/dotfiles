@@ -39,7 +39,8 @@ setopt share_history
 setopt inc_append_history
 # do not save duplicated command
 setopt hist_save_no_dups
-# make history compatible with bash
+# make history compatible with bash. This disables the znt-history
+# widget, hence, I need to enable it manually once more
 unsetopt extendedhistory
 
 #------------------------------------------------------------------------------#
@@ -56,11 +57,6 @@ unsetopt extendedhistory
 
 # default: emacs
 bindkey -e
-# default: vi
-#bindkey -v
-# default: custom (minimal)
-#bindkey -N custom .safe
-#bindkey -A custom main
 
 # - NAVIGATING / JUMPING -
 # right
@@ -95,3 +91,8 @@ bindkey '^r' history-incremental-search-backward
 bindkey '^[[A' up-line-or-history
 # down
 bindkey '^[[B' down-line-or-history
+
+# load zsh history widget
+autoload znt-history-widget
+zle -N znt-history-widget
+bindkey "^R" znt-history-widget
