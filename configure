@@ -156,6 +156,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
             mdformat \
             cmake_language_server \
             "python-lsp-server[all]" \
+            pylsp-mypy \
             esbonio
 
     # additional npm dependencies
