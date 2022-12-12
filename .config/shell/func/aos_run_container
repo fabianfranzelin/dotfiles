@@ -16,10 +16,10 @@ aos_run_container() {
            -v "${HOME}/.conan:/tmp/user/.conan" \
            -v "/var/tmp/conan_download_cache:/var/tmp/conan_download_cache" \
            -v "/var/tmp/ccache:/var/tmp/ccache" \
-           -v "${HOME}/.bash_history:/tmp/user/.bash_history" \
+           -v "${HOME}/.cache/shell/.history:/tmp/user/.bash_history" \
            -v "/var/run/docker.sock:/var/run/docker.sock" \
-           -v "$HOME/.qnx:/tmp/user/.qnx" \
-           -v "$HOME/.flexlmrc:/tmp/user/.flexlmrc" \
+           -v "${HOME}/.qnx:/tmp/user/.qnx" \
+           -v "${HOME}/.flexlmrc:/tmp/user/.flexlmrc" \
            -v "/tmp/.X11-unix:/tmp/.X11-unix" \
            -v "${XAUTHORITY}:/tmp/user/.Xauthority" \
            -v "${HOME}/.ssh:/tmp/user/.ssh" \
