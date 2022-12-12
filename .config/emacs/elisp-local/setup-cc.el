@@ -15,8 +15,8 @@
 ;; Get to work with Docker mounted workspaces: Usually, the docker
 ;; container I am running does not contain a
 
-(defvar cc-container-workspace "/workspace"
-  "Location where the workspace is mounted in the container.")
+(defvar ff/cc-build-folder-container "/workspace"
+  "Location of the build folder inside the container.")
 
 (defun ff/search-replace (file-path regex-str replace-str)
   "Replace content in file.
@@ -33,10 +33,20 @@ REPLACE-STR: string that replaces all regex matches"
 (defun ff/container-host-compile-commands-mapping ()
   "Adjusts the compile commands json of CMake to match the host system and not the containers."
   (interactive)
-  (ff/search-replace (expand-file-name "compile_commands.json" (concat (ff/project-root) "build"))
-                     cc-container-workspace
-                     (ff/project-root)))
-
+  (let* ((workspace-folder (file-name-directory ff/cc-build-folder-container))
+         (build-folder (file-name-nondirectory ff/cc-build-folder-container))
+         (compile-commands-file-path (expand-file-name "compile_commands.json" (concat (ff/project-root) build-folder)))
+         (build-folder-host (expand-file-name build-folder (ff/project-root))))
+    ;; replace the build folder
+    (message "Replacing %s by %s" ff/cc-build-folder-container build-folder-host)
+    (ff/search-replace compile-commands-file-path
+                       ff/cc-build-folder-container
+                       build-folder-host)
+    ;; replace the workspace folder
+    (message "Replacing %s by %s" workspace-folder (ff/project-root))
+    (ff/search-replace compile-commands-file-path
+                       workspace-folder
+                       (ff/project-root))))
 
 (defun ff/clang-format-buffer-smart ()
   "Reformat buffer if .clang-format exists in the project.el root."
@@ -71,7 +81,7 @@ REPLACE-STR: string that replaces all regex matches"
          ("\\.h$" . c-mode))
   :init
   ;; ensure system packages
-  (ff/ensure-apt-package "clangd" "clangd")
+  (ff/ensure-apt-package "clangd-12" "clangd-12")
   (ff/ensure-apt-package "clang" "clang")
   ;; configure style
   (c-add-style "my-cc"
