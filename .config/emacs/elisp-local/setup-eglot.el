@@ -22,7 +22,7 @@
   (setq eglot-events-buffer-size 10)
   ;; C++
   (add-to-list 'eglot-server-programs
-               `((c++-mode c-mode) "clangd"))
+               `((c++-mode c-mode) "clangd-12"))
   ;; Sphinx, rst-mode
   (defclass eglot-esbonio (eglot-lsp-server) ()
     :documentation "Esbonio Language Server.")

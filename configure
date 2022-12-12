@@ -131,7 +131,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          aspell aspell-de aspell-en \
          clang-format \
          clang-tidy \
-         clangd \
+         clangd-12 \
          clang \
          ripgrep \
          fd-find \
