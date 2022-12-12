@@ -4,6 +4,13 @@
 ;; all the configuration for C/C++ projects
 ;; https://github.com/MaskRay/Config/blob/master/home/.config/doom/modules/private/my-cc/config.el
 
+;; To specify a non-default build folder, place a .clangd file in your
+;; projects root directory with the following content
+
+;; CompileFlags:
+;;   CompilationDatabase: ./<your specific build folder>
+
+
 ;;; Code:
 
 ;; -----------------------------------------------------------------------------------
