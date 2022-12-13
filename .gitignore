@@ -101,9 +101,11 @@ build/
 /.local/share/fonts/
 /.local/share/certificates/
 /.local/share/Trash/
+/.local/share/emacs-28.2/
 
 /.config/znt/
 /.config/configstore/
+/.config/pulse/
 
 # Python
 __pycache__
@@ -139,4 +141,3 @@ flycheck_*
 ### SSH ###
 /.ssh/known_hosts
 /.ssh/id_rsa
-/.local/share/emacs-28.2/
