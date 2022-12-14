@@ -106,6 +106,8 @@ build/
 /.config/znt/
 /.config/configstore/
 /.config/pulse/
+/.config/htop/
+/.config/wslu/
 
 # Python
 __pycache__
