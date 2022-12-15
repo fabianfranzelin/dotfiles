@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: Subsubsection title
 # key: subsub
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 # --
 
 .. _sec_${1:$(yas-rst-mode-labels yas-text)}:
