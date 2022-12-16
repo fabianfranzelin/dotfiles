@@ -3,6 +3,4 @@ strict-ssl=false
 loglevel=warn
 prefix=${XDG_DATA_HOME}/npm
 cache=${XDG_CACHE_HOME}/npm
-registry=https://rb-artifactory.bosch.com:443/artifactory/api/npm/npm-repo/
-//rb-artifactory.bosch.com/artifactory/api/npm/npm-repo/:username=${BOSCH_USER}
-//rb-artifactory.bosch.com/artifactory/api/npm/npm-repo/:_password="${BOSCH_PASSWORD_NPM}"
+registry=http://registry.npmjs.org

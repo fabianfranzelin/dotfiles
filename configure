@@ -140,7 +140,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
     # emacs pdf-tools dependencies
     sudo apt install -y \
          libpng-dev \
-	     zlib1g-dev \
+	 zlib1g-dev \
          libpoppler-glib-dev \
          libpoppler-private-dev \
          imagemagick
