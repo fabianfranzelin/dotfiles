@@ -20,6 +20,9 @@
          "*vterm")))
 
 (defun ff/vterm-buffer-name (&optional postfix)
+  "Create a defined buffer name for vterm.
+
+POSTFIX postfix string to append to vterm buffer name"
   (let ((prefix (ff/vterm-buffer-name-prefix)))
     (if (equal postfix nil)
         (concat prefix "*")
@@ -37,7 +40,7 @@ EVENT:"
   "Execute string COMMAND in a new vterm.
 
 Interactively, prompt for COMMAND with the current buffer's file
-name supplied. When called from Dired, supply the name of the
+name supplied.  When called from Dired, supply the name of the
 file at point.
 
 Like `async-shell-command`, but run in a vterm for full terminal features.
@@ -104,47 +107,39 @@ DIR: Path to the root directory of the current project."
      #'ff/run-in-vterm-kill)))
 
 ;; Account for https://github.com/akermu/emacs-libvterm/issues/518
-(defun vterm-send-password ()
-  "Send password to vterm safely."
-  (interactive)
-  (comint-send-invisible "Enter password: ")
-  (vterm-send-string "\n")
-  (clear-this-command-keys))
-
 (defun ff/save-shell-buffer (desktop-dirname)
-  ;; we only need to save the current working directory
+  "Save the current working directory.
+
+DESKTOP-DIRNAME directory to be saved"
   default-directory)
 
 (defun ff/create-shell-buffer (_file-name buffer-name misc)
-  "MISC is the value returned by `ff/save-shell-buffer'.
-_FILE-NAME is nil."
+  "Create Shell buffer.
+
+_FILE-NAME is nil.
+BUFFER-NAME nil
+MISC is the value returned by `ff/save-shell-buffer'."
   ;; create a vterm buffer in directory MISC
   (ff/start-vterm-in-dir misc))
 
 (use-package vterm
   :commands vterm
-  :hook ((vterm-mode . ff/term-exec-hook)
+ :hook ((vterm-mode . ff/term-exec-hook)
          ;; save all vterm-mode buffers
          (vterm-mode . (lambda () (setq-local desktop-save-buffer #'ff/save-shell-buffer))))
+  :custom ((vterm-shell "/bin/zsh")
+           (vterm-max-scrollback 100000)
+           (explicit-shell-file-name "/bin/zsh")
+           (vterm-always-compile-module t))
   :init
   ;; ensure system packages
   (ff/ensure-apt-package "cmake" "cmake")
   (ff/ensure-apt-package "libtool-bin" "libtool")
   (ff/ensure-apt-package "zsh" "zsh")
-
-  :config
-  (setq vterm-shell "/bin/zsh")
-  (setq vterm-max-scrollback 100000)
-  (setq explicit-shell-file-name "/bin/zsh")
-
-  (define-key vterm-mode-map [return] #'vterm-send-return)
-  (define-key vterm-mode-map (kbd "<C-backspace>")
-    (lambda () (interactive) (vterm-send-key (kbd "C-w"))))
-
   :bind (("C-x j" . ff/start-vterm)
          :map vterm-mode-map
-         ("C-y" . vterm-yank)
          ("C-q" . vterm-send-next-key)
+         ("C-y" . vterm-yank)
          ("C-x 2" . ff/open-vterm-below)
          ("C-x 3" . ff/open-vterm-right)
          ("C-c C-t" . vterm-copy-mode)
