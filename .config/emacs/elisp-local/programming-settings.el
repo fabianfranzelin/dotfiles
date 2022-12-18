@@ -127,7 +127,6 @@
                             container " "
                             "\"/bin/bash\"")))
       (with-current-buffer (vterm (ff/vterm-buffer-name))
-        (set-process-sentinel vterm--process #'ff/run-in-vterm-kill)
         (vterm-send-string command)
         (vterm-send-return))))
 
