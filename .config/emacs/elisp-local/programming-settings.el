@@ -315,6 +315,13 @@ SOURCE_FILENAME: filename to the puml file."
 (use-package robot-mode
   :mode (("\\.robot" . robot-mode)))
 
+;; -------------------------------------------------------------------
+;; Graphviz mode
+;; -------------------------------------------------------------------
+(use-package graphviz-dot-mode
+  :custom
+  ((graphviz-dot-indent-width 4)))
+
 (provide 'programming-settings)
 
 ;;; programming-settings.el ends here
