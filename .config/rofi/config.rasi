@@ -1,5 +1,7 @@
 configuration {
- modi: "window,drun,ssh,combi";
- combi-modi: "window,drun,ssh";
- }
-@theme "~/.config/rofi/themes/ff-center.rasi"
+    show-icons:   false;
+    sidebar-mode: false;
+    modi:         "window,drun,ssh,combi";
+    combi-modi:   "window,drun,ssh";
+}
+@theme "themes/ff-center.rasi"
