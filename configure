@@ -178,7 +178,8 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
            bash-language-server \
            typescript \
            typescript-language-server \
-           dockerfile-language-server-nodejs
+           dockerfile-language-server-nodejs \
+           jsonlint
     fi
 
     # -------------------------------------------------
