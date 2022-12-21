@@ -256,6 +256,9 @@ INCREMENT: Value of which the current font-size is changed"
 (global-set-key (kbd "C-c p") 'winner-undo)
 (global-set-key (kbd "C-c n") 'winner-redo)
 
+;; enable visual line mode to truncate long line
+(visual-line-mode t)
+
 ;; package that allows to define nice user interfaces
 (use-package hydra)
 
