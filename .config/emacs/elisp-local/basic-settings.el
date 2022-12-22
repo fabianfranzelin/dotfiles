@@ -523,7 +523,7 @@ PROJECT-ROOT: Path to the root directory of the current project."
   :straight nil
   :after (org-download async)
   :custom
-  ((dired-auto-revert-buffer t) ; Auto update when buffer is revisited
+  ((dired-auto-revert-buffer nil) ; Auto update when buffer is revisited
    (dired-dwim-target t)
    (dired-recursive-deletes 'always)
    (dired-recursive-copies 'always)
