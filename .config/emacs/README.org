@@ -212,7 +212,7 @@ If a branch name is given, install Emacs from Savannah main repository
       download
   elif [[ ${__EMACS_VERSION} =~ ^[0-9]+$ ]]
   then
-      echo "Looks like a tag version of the Emac git repository."
+      echo "Looks like a tag version of the Emacs Savannah git repository."
       clone
   else
       echo "Unknown version tag. Only versions like 28.2 and 29 are supported."
