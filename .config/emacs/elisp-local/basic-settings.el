@@ -259,9 +259,6 @@ INCREMENT: Value of which the current font-size is changed"
 ;; enable visual line mode to truncate long line
 (visual-line-mode t)
 
-;; package that allows to define nice user interfaces
-(use-package hydra)
-
 ;; -------------------------------------------------------------
 ;; Better help
 ;; -------------------------------------------------------------------
@@ -327,12 +324,6 @@ NAME: name of a tab"
    #'(lambda ()
        (find-file "~/workspace/org/aos.org"))))
 
-(defhydra ff/tab-bar-quick-access (:color teal)
-  "My tab-bar helpers"
-  ("t" ff/tab-bar-run-todos "Todos")
-  ("c" ff/tab-bar-run-notes "Notes (CRE)")
-  ("n" ff/tab-bar-run-aos "Notes (AOS)"))
-
 (use-package tab-bar
   :custom
   ;; Don't turn on tab-bar-mode when tabs are created
@@ -344,7 +335,9 @@ NAME: name of a tab"
          ("C-x t w" . tab-close)
          ("C-<prior>" . tab-previous)
          ("C-<next>" . tab-next)
-         ("C-x t h" . ff/tab-bar-quick-access/body)
+         ("C-x t h t" . ff/tab-bar-run-todos)
+         ("C-x t h c" . ff/tab-bar-run-notes)
+         ("C-x t h n" . ff/tab-bar-run-aos)
          ("C-x t l" . ff/tab-bar-show-tab-list)))
 
 ;; -------------------------------------------------------------------
@@ -465,26 +458,21 @@ PROJECT-ROOT: Path to the root directory of the current project."
 ;; NOTE: The first time you load your configuration on a new machine,
 ;; you’ll need to run `M-x all-the-icons-install-fonts` so that mode
 ;; line icons display correctly.
-(use-package all-the-icons
-  :defer t)
+(use-package all-the-icons)
 
 (use-package which-key
-  :diminish which-key-mode
   :custom ((which-key-idle-delay 1))
   :init (which-key-mode 1))
 
 ;; -------------------------------------------------------------
 ;; center the text for the corresponding modes; writing documentation
 ;; is easier with this setting.
-(defun ff/visual-fill-center-text ()
-  (setq visual-fill-column-width 120
-        visual-fill-column-center-text t)
-  (visual-fill-column-mode 1))
-
 (use-package visual-fill-column
-  :hook ((org-mode . ff/visual-fill-center-text)
-         (rst-mode . ff/visual-fill-center-text)
-         (LaTeX-mode . ff/visual-fill-center-text)))
+  :custom ((visual-fill-column-width 120)
+           (visual-fill-column-center-text t))
+  :hook ((org-mode . visual-fill-column-mode)
+         (rst-mode . visual-fill-column-mode)
+         (LaTeX-mode . visual-fill-column-mode)))
 
 ;; -------------------------------------------------------------------
 ;; Tramp
