@@ -50,8 +50,6 @@
    ;; interactive R session
    (ess-ask-for-ess-directory nil)))
 
-(use-package ess-smart-underscore)
-
 ;; -------------------------------------------------------------------
 ;; Latex
 ;; -------------------------------------------------------------------

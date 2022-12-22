@@ -10,19 +10,6 @@
    ;; Show word based diff
    (magit-diff-refine-hunk 'all)))
 
-(use-package git-gutter
-  :hook ((text-mode . git-gutter-mode)
-         (prog-mode . git-gutter-mode))
-  :custom ((git-gutter:update-interval 2)
-           (git-gutter:modified-sign "≡")
-           (git-gutter:added-sign "≡")
-           (git-gutter:deleted-sign "≡"))
-  :config
-  ;; These characters are used in terminal mode
-  (set-face-foreground 'git-gutter:added "LightGreen")
-  (set-face-foreground 'git-gutter:modified "LightGoldenrod")
-  (set-face-foreground 'git-gutter:deleted "LightCoral"))
-
 (use-package magit-lfs)
 
 ;; -------------------------------------------------------------------
