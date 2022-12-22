@@ -102,6 +102,7 @@ build/
 /.local/share/certificates/
 /.local/share/Trash/
 /.local/share/emacs-28.2/
+/.local/share/emacs-29/
 
 /.config/znt/
 /.config/configstore/
