@@ -9,7 +9,7 @@ development on the Emacs master branch.
 
 ** My little helpers
 
-Lets start off with some basic stuff and exit the script as soon as an
+Let's start off with some basic stuff and exit the script as soon as an
 error occurs.
 
 #+begin_src shell
@@ -41,7 +41,7 @@ It downloads and extracts Emacs.
   }
   #+end_src
 
-The following code allows you to checkout a specific version of Emacs
+The following code allows you to clone a specific version of Emacs
 that is tagged in the Savannah repository. Usually, when they create a
 release branch I use this function to download it.
 
@@ -125,7 +125,7 @@ Finally, we check whether the right Emacs version is installed or not
   }
 #+end_src
 
-and if the target directory, where Emacs should be installed does
+and if the target directory, where Emacs should be installed, does
 already exist or not.
 
 #+begin_src shell
@@ -177,7 +177,7 @@ Emacs version. The default one is currently 28.2.
   done
   #+end_src
 
-Then we setup a few variables that define the home directory of the
+Then we set up a few variables that define the home directory of the
 Emacs installation.
 
 #+begin_src shell
