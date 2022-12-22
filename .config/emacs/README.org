@@ -121,7 +121,7 @@ Finally, we check whether the right Emacs version is installed or not
 #+begin_src shell
   is_expected_emacs_version_installed() {
       __EMACS_VERSION_OUTPUT=$(emacs -Q --version | grep "${__EMACS_VERSION}")
-      test "${__EMACS_VERSION_OUTPUT}" = "GNU Emacs ${__EMACS_VERSION}"
+      [[ "${__EMACS_VERSION_OUTPUT}" =~ "GNU Emacs ${__EMACS_VERSION}"* ]]
   }
 #+end_src
 

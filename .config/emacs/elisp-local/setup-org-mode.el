@@ -19,6 +19,7 @@
    (org-babel-python-command "/usr/bin/python3")))
 
 (with-eval-after-load 'org
+  (require 'org-indent)
   (require 'org-habit)
   (add-to-list 'org-modules 'org-habit)
   (setq org-habit-graph-column 60)
