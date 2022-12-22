@@ -478,6 +478,7 @@ PROJECT-ROOT: Path to the root directory of the current project."
 ;; Tramp
 ;; -------------------------------------------------------------------
 (use-package tramp
+  :straight nil
   :custom
   ((tramp-terminal-type "dumb")
    (tramp-default-method "ssh")
@@ -497,8 +498,10 @@ PROJECT-ROOT: Path to the root directory of the current project."
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
   (make-directory tramp-auto-save-directory t))
 
+;; docker-tramp is part of Emacs 29 core
 ;; multihop example: /ssh:frf2lr@ws|docker:vscode@c8416d9f4da6:/
-(use-package docker-tramp)
+(when (< emacs-major-version 29)
+  (use-package docker-tramp))
 
 ;; -------------------------------------------------------------------
 ;; Transpose frame
