@@ -48,7 +48,7 @@
 (tool-bar-mode -1) ; disbale tool bar
 
 ;; no splash screen
-(setq inhibit-splash-screen t)
+(setq inhibit-startup-screen t)
 
 ;; revert Dired and other buffers
 (setq global-auto-revert-non-file-buffers t)
@@ -120,16 +120,13 @@
 ;; Color theme
 (use-package doom-themes
   :custom
-  ((doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
-   (doom-themes-enable-bold t)    ; if nil, bold is universally disabled
+  ((doom-themes-enable-bold t)    ; if nil, bold is universally disabled
    (doom-themes-enable-italic t)) ; if nil, italics is universally disabled
   :config
   ;; Global settings (defaults)
   (load-theme 'doom-palenight t)
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
-  ;; or for treemacs users
-  (doom-themes-treemacs-config)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config)
 
@@ -232,9 +229,9 @@ INCREMENT: Value of which the current font-size is changed"
 
 (dolist (mode '(org-mode-hook
                 rst-mode-hook
+                markdown-mode-hook
                 term-mode-hook
                 vterm-mode-hook
-                treemacs-mode-hook
                 compilation-mode-hook
                 pdf-view-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
@@ -413,6 +410,9 @@ PROJECT-ROOT: Path to the root directory of the current project."
 
 ;; -------------------------------------------------------------
 ;; present a nice dashboard on startup
+
+(use-package page-break-lines)
+
 (use-package dashboard
   :after (all-the-icons page-break-lines)
   :custom
