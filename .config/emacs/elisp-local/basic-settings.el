@@ -412,26 +412,7 @@ PROJECT-ROOT: Path to the root directory of the current project."
               ("t" . ff/project-project-tab)))
 
 ;; -------------------------------------------------------------
-;; Multiple cursors
-(use-package multiple-cursors
-  :bind (;; Do what I mean with currently selected word
-         ("C-c m j" . mc/mark-all-dwim)
-         ;; Mark lines, then create cursors
-         ("C-c m c" . mc/edit-lines)
-         ;; Expand region
-         ("C-c m l" . mc/expand-region)
-         ;; Select region first, then create cursors
-         ("C-c m /" . mc/mark-all-like-this)
-         ("C-c m ," . mc/mark-previous-like-this)
-         ("C-c m ." . mc/mark-next-like-this)
-         ;; Skip this match and move to next one
-         ("C-c m <" . mc/skip-to-previous-like-this)
-         ("C-c m >" . mc/skip-to-next-like-this)))
-
-;; -------------------------------------------------------------
 ;; present a nice dashboard on startup
-(use-package page-break-lines)
-
 (use-package dashboard
   :after (all-the-icons page-break-lines)
   :custom
@@ -467,12 +448,12 @@ PROJECT-ROOT: Path to the root directory of the current project."
 ;; -------------------------------------------------------------
 ;; center the text for the corresponding modes; writing documentation
 ;; is easier with this setting.
-(use-package visual-fill-column
-  :custom ((visual-fill-column-width 120)
-           (visual-fill-column-center-text t))
-  :hook ((org-mode . visual-fill-column-mode)
-         (rst-mode . visual-fill-column-mode)
-         (LaTeX-mode . visual-fill-column-mode)))
+(use-package olivetti
+  :custom ((olivetti-body-width 0.66))
+  :hook ((org-mode . olivetti-mode)
+         (rst-mode . olivetti-mode)
+         (markdown-mode . olivetti-mode)
+         (LaTeX-mode . olivetti-mode)))
 
 ;; -------------------------------------------------------------------
 ;; Tramp
