@@ -139,11 +139,6 @@
 ;; -------------------------------------------------------------------
 ;; markdown mode
 ;; -------------------------------------------------------------------
-(defun ff/configure-markdown-mode ()
-  "Configure text mode."
-  (interactive)
-  (set-fill-column 100))
-
 (defun ff/run-mdformat ()
   "Run mdformat on current buffer."
   (interactive)
@@ -162,9 +157,7 @@
   (ff/ensure-apt-package "pandoc" "pandoc")
   (ff/ensure-python-package "mdformat" nil "mdformat")
 
-  :hook ((markdown-mode . visual-line-mode)
-         (markdown-mode . flyspell-mode)
-         (markdown-mode . ff/configure-markdown-mode))
+  :hook ((markdown-mode . flyspell-mode))
   :bind (:map markdown-mode-map
          ("C-c C-f" . ff/run-mdformat)))
 
@@ -177,14 +170,8 @@
   :init
   (set-default 'truncate-lines t))
 
-;; C-c C-e r r (org-rst-export-to-rst)
-;;    Export as a text file written in reStructured syntax.
-;; C-c C-e r R (org-rst-export-as-rst)
-;;    Export as a temporary buffer. Do not create a file.
-(use-package ox-rst)
-
 (defun ff/configure-rst-mode ()
-  "Configure text mode."
+  "Configure rst mode."
   (interactive)
   (set (make-local-variable 'completion-at-point-functions)
        '(cape-dabbrev
@@ -295,6 +282,7 @@ SOURCE_FILENAME: filename to the puml file."
 ;; -------------------------------------------------------------------
 ;; Java mode
 ;; -------------------------------------------------------------------
+;; nothing to be done. Everything is currently handled by Eglot.
 
 ;; -------------------------------------------------------------------
 ;; Json

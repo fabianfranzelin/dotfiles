@@ -17,9 +17,9 @@
          (cmake-mode . eglot-ensure)
          (dockerfile-mode . eglot-ensure)
          (rst-mode . eglot-ensure))
+  :custom ((eglot-events-buffer-size 10))
   :config
   (setq read-process-output-max (* 1024 1024))
-  (setq eglot-events-buffer-size 10)
 
   ;; Python
   (add-to-list 'eglot-server-programs

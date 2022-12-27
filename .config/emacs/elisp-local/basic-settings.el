@@ -50,9 +50,6 @@
 ;; no splash screen
 (setq inhibit-startup-screen t)
 
-;; revert Dired and other buffers
-(setq global-auto-revert-non-file-buffers t)
-
 ;; revert buffers when the underlying file has changed
 (global-auto-revert-mode 1)
 
@@ -92,8 +89,7 @@
          (sh-mode . tree-sitter-hl-mode)
          (java-mode . tree-sitter-hl-mode)
          (json-mode . tree-sitter-hl-mode)
-         (yaml-mode . tree-sitter-hl-mode))
-  :init (global-tree-sitter-mode))
+         (yaml-mode . tree-sitter-hl-mode)))
 
 ;; support for various languages for tree sitter
 (use-package tree-sitter-langs)
@@ -129,28 +125,6 @@
   (doom-themes-visual-bell-config)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config)
-
-  ;; Currently disabled: it is just not the right way to do it :)
-  ;; (defun ff/load-theme (frame)
-  ;;   "Set theme depending on frame running in GUI or terminal.
-
-  ;; For details, check
-  ;; https://emacs.stackexchange.com/questions/24609/determine-graphical-display-on-startup-for-emacs-server-client
-
-  ;; FRAME: frame to be checked"
-  ;;   (if (display-graphic-p frame)
-  ;;       ;; make this the default theme if X is available
-  ;;       (load-theme 'doom-vibrant t)
-  ;;     ;; when emacs is running in terminal mode, this theme works better
-  ;;     (load-theme 'doom-material t)))
-
-  ;; (with-eval-after-load 'doom-themes
-  ;;   ;; Run for already-existing frames
-  ;;   (mapc 'ff/load-theme (frame-list))
-  ;;   ;; Run when a new frame is created
-  ;;   (unless (daemonp)
-  ;;     (add-hook 'after-make-frame-functions 'ff/load-theme)))
-
   ;; Add frame borders and window dividers
   (modify-all-frames-parameters
    '((right-divider-width . 0)
@@ -626,7 +600,7 @@ PROJECT-ROOT: Path to the root directory of the current project."
    (doom-modeline-buffer-encoding nil)
    (doom-modeline-vcs-max-length 48))
   :init
-  (doom-modeline-mode +1))
+  (doom-modeline-mode 1))
 
 ;; -------------------------------------------------------------------
 ;; Auto-saving changed files when they lose focus
@@ -660,9 +634,9 @@ PROJECT-ROOT: Path to the root directory of the current project."
                               help-mode
                               helpful-mode
                               compilation-mode))
-  :init
   ;; group poppers by project.el projects
-  (setq popper-group-function #'popper-group-by-project)
+  (popper-group-function #'popper-group-by-project)
+  :init
   (popper-mode t)
   (popper-echo-mode t)
   :bind (("C-*" . popper-toggle-latest)
@@ -696,7 +670,7 @@ under the current directory."
    (gumshoe-show-footprints-p nil))
   :init
   ;; Enabing global-gumshoe-mode will initiate tracking
-  (global-gumshoe-mode)
+  (global-gumshoe-mode t)
   :bind (;; enable browser like key bindings to move forth and
          ;; back in bookmarks
          ("M-p" . gumshoe-backtrack-back)
@@ -706,7 +680,8 @@ under the current directory."
 ;; Drag stuff around with M-up/down
 ;; -------------------------------------------------------------------
 (use-package drag-stuff
-  :config (drag-stuff-global-mode t)
+  :config
+  (drag-stuff-global-mode t)
   :bind (("M-<up>" . drag-stuff-up)
          ("M-<down>" . drag-stuff-down)))
 
