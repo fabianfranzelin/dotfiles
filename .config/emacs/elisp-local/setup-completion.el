@@ -81,19 +81,17 @@ ARG: position"
   ;; (corfu-echo-documentation nil) ;; Disable documentation in the echo area
   (corfu-scroll-margin 5)        ;; Use scroll margin
   (corfu-auto-prefix 2)
-  :init
+  ;; Enable indentation+completion using the TAB key.
+  ;; `completion-at-point' is often bound to M-TAB.
+  (tab-always-indent 'complete)
   ;; TAB cycle if there are only few candidates
-  (setq completion-cycle-threshold 3)
+  (completion-cycle-threshold 3)
 
   ;; Emacs 28: Hide commands in M-x which do not apply to the current mode.
   ;; Corfu commands are hidden, since they are not supposed to be used via M-x.
-  (setq read-extended-command-predicate
-        #'command-completion-default-include-p)
-
-  ;; Enable indentation+completion using the TAB key.
-  ;; `completion-at-point' is often bound to M-TAB.
-  (setq tab-always-indent 'complete)
-
+  (read-extended-command-predicate
+   #'command-completion-default-include-p)
+  :init
   ;; Recommended: Enable Corfu globally.
   (global-corfu-mode)
   :bind(:map corfu-map
@@ -235,13 +233,10 @@ ARG: position"
                          (file-remote-p file 'host) ":" (file-remote-p file 'localname))
                (concat "/sudo:root@localhost:" file))))
 
-;; highlight symbol and replace
-(use-package highlight-symbol)
 ;; dev/null for online pages
 (use-package 0x0)
 
 (use-package embark
-  :after (highlight-symbol)
   :init
   ;; Optionally replace the key help with a completing-read interface
   (setq prefix-help-command #'embark-prefix-help-command)
@@ -258,9 +253,7 @@ ARG: position"
          :map embark-region-map
          ("U" . 0x0-dwim)
          :map embark-file-map
-         ("S" . sudo-find-file)
-         :map embark-symbol-map
-         ("h" . highlight-symbol)))
+         ("S" . sudo-find-file)))
 
 ;; Nice which key integration that allows to list the which-key
 ;; options via C-h. See
@@ -303,7 +296,6 @@ targets."
 
 (advice-add #'embark-completing-read-prompter
             :around #'embark-hide-which-key-indicator)
-
 
 (use-package embark-consult
   :after (embark consult)
