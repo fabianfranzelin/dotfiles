@@ -3,7 +3,7 @@
 
 * Installation instructions
 
-Currently, I use version 28.2 of Emacs. Here I describe on how to
+Currently, I use version 29.0.60 of Emacs. Here I describe on how to
 build it by yourself, which is what I do to keep up with current
 development on the Emacs master branch.
 
@@ -140,7 +140,7 @@ Here, we combine the little helper functions from the previous section
 to install various versions of Emacs.
 
 First, we use a command line argument parser to get the user defined
-Emacs version. The default one is currently 28.2.
+Emacs version. The default one is currently 29.0.60.
 
 #+begin_src shell
   usage()
@@ -153,7 +153,7 @@ Emacs version. The default one is currently 28.2.
   }
 
   # Emacs version to be installed
-  __EMACS_VERSION="28.2"
+  __EMACS_VERSION="29"
 
   # Loop through arguments and process them
   while [ $# -gt 0 ]; do
