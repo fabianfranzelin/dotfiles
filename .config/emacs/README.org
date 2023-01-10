@@ -48,10 +48,19 @@ release branch I use this function to download it.
 #+begin_src shell
   clone() {
       (
-        git clone https://git.savannah.gnu.org/git/emacs.git "${__EMACS_HOME}"
-        cd "${__EMACS_HOME}" || exit 1
-        git checkout emacs-"${__EMACS_VERSION}"
-    )
+          git clone https://git.savannah.gnu.org/git/emacs.git "${__EMACS_HOME}"
+          cd "${__EMACS_HOME}" || exit 1
+          git checkout emacs-"${__EMACS_VERSION}"
+      )
+  }
+
+  pull() {
+      (
+          cd "${__EMACS_HOME}" || exit 1
+          git reset --hard HEAD
+          git checkout emacs-"${__EMACS_VERSION}"
+          git pull
+      )
   }
 #+end_src
 
@@ -186,38 +195,61 @@ Emacs installation.
   [ ! -d "${__XDG_DATA_HOME}" ] && mkdir -p "${__XDG_DATA_HOME}"
 #+end_src
 
-Check if the Emacs version that should be installed is already installed.
-
-#+begin_src shell
-  if ( is_expected_emacs_version_installed )
-  then
-      echo "Emacs ${__EMACS_VERSION} is already installed. Nothing to be done here."
-      exit 0
-  fi
-
-  if ( exists_target_directory )
-  then
-      echo "Target directory of Emacs sources does already exist."
-      echo "Delete ${__EMACS_HOME} before you can continue here."
-      exit 1
-  fi
-#+end_src
-
-If a branch name is given, install Emacs from Savannah main repository
+Check if the given Emacs version is an official release. If so,
+install it from one of the official release servers.
 
 #+begin_src shell
   if [[ ${__EMACS_VERSION} =~ ^[0-9]+\.[0-9]+$ ]]
   then
       echo "Looks like an official Emacs version."
+
+      if ( is_expected_emacs_version_installed )
+      then
+          echo "Emacs ${__EMACS_VERSION} is already installed. Nothing to be done here."
+          exit 0
+      fi
+
+      if ( exists_target_directory )
+      then
+          echo "Target directory of Emacs sources does already exist."
+          echo "Delete ${__EMACS_HOME} before you can continue here."
+          exit 1
+      fi
+
       download
-  elif [[ ${__EMACS_VERSION} =~ ^[0-9]+$ ]]
+  fi
+#+end_src
+
+If it is no official version, check for a release tag on the Savannah
+repository and check it out.
+
+#+begin_src shell
+  if [[ ${__EMACS_VERSION} =~ ^[0-9]+$ ]]
   then
       echo "Looks like a tag version of the Emacs Savannah git repository."
-      clone
-  else
+
+      if [[ ! -d ${__EMACS_HOME} ]]
+      then
+          clone
+      elif [[ -d "${__EMACS_HOME}/.git" ]]
+      then
+          pull
+      else
+          echo "The target directory ${__EMACS_HOME} already exists but it is not a git repository."
+          echo "Please remove it otherwise I can't continue."
+      fi
+  fi
+#+end_src
+
+If no Emacs version was found for the given tag, just stop here.
+
+#+begin_src shell
+  if [[ ! -d "${__EMACS_HOME}" ]]
+  then
       echo "Unknown version tag. Only versions like 28.2 and 29 are supported."
       exit 1
   fi
+
 #+end_src
 
 Once we have the source code locally available, all that is left to do
