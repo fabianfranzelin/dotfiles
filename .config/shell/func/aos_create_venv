@@ -1,0 +1,35 @@
+#!/usr/bin/env sh
+
+aos_create_venv() {
+    (
+        cd "${HOME}/workspace/aos_base" || exit 1
+        VIRTUALENV_NAME="aos_base"
+        VIRTUALENV_ACTIVATE_FILEPATH="${HOME}/.virtualenvs/${VIRTUALENV_NAME}/bin/activate"
+
+        if [ ! -f "${VIRTUALENV_ACTIVATE_FILEPATH}" ]; then
+            echo "Create virtualenv ${VIRTUALENV_NAME}"
+            python3 -m venv "${HOME}/.virtualenvs/${VIRTUALENV_NAME}"
+        fi
+
+        echo "Activate virtualenv"
+
+        # shellcheck disable=SC1090
+        . "${VIRTUALENV_ACTIVATE_FILEPATH}"
+        python3 -m pip install --upgrade pip wheel setuptools pbr
+        python3 -m pip install -r "./_tools/docker/aos_user_osd6/requirements.in"
+        python3 -m pip install -r "./_tools/docker/aos_dev_osd6/requirements.in"
+
+        # this is the minimum version required by fmt
+        python3 -m pip install conan==1.54.0
+
+        # for some reason, these packages are required to import rosbag
+        python3 -m pip install --upgrade pycryptodomex gnupg rospkg
+
+        # for some other reason empy is also missing
+        python3 -m pip install --upgrade empy
+
+        # install dependencies for the manifest manipulation tool
+        python3 -m pip install argcomplete
+        deactivate
+    )
+}
