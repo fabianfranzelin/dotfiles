@@ -20,7 +20,7 @@ aos_create_venv() {
         python3 -m pip install -r "./_tools/docker/aos_dev_osd6/requirements.in"
 
         # this is the minimum version required by fmt
-        python3 -m pip install conan==1.54.0
+        python3 -m pip install conan==1.43.0 markupsafe=2.0
 
         # for some reason, these packages are required to import rosbag
         python3 -m pip install --upgrade pycryptodomex gnupg rospkg
@@ -29,7 +29,14 @@ aos_create_venv() {
         python3 -m pip install --upgrade empy
 
         # install dependencies for the manifest manipulation tool
-        python3 -m pip install argcomplete
+        python3 -m pip install --upgrade argcomplete
+
+        # install stuff for sphinx builds
+        python3 -m pip install --upgrade git+https://github.boschdevcloud.com/FRF2LR/py_sphinx_docs.git
+
+        # other stuff that helps working
+        python3 -m pip install --upgrade ipdb ipython
+
         deactivate
     )
 }
