@@ -42,27 +42,43 @@ ARG: position"
                (delete-char -1))))
     (delete-char -1)))
 
-(defun ff/minibuffer-go-to-root (arg)
-  "Delete the complete minibuffer content and go the the root folder.
+(defun ff/minibuffer-move-beginning-of-line (arg)
+  "Change default behavior of move to beginning of line.
+
+Delete the complete minibuffer content and go the the root folder
+when completing file names.  If not, move point to beginning of
+line.
+
 ARG: position"
   (interactive "p")
-  (when minibuffer-completing-file-name
-    (delete-minibuffer-contents)
-    (insert (substitute-in-file-name "/"))))
+  (cond (minibuffer-completing-file-name
+         (delete-minibuffer-contents)
+         (insert (substitute-in-file-name "/")))
+        (t
+         (move-beginning-of-line 0))))
 
 (use-package vertico
-  :custom (vertico-cycle t)
+  :custom
+  ((vertico-count 10)
+   (vertico-cycle t))
   :init
-  (vertico-mode)
+  (vertico-mode t)
+
+  ;; Enable recursive minibuffers
+  (setq enable-recursive-minibuffers t)
   :config
   (custom-set-faces '(vertico-current ((t (:background "#3a3f5a")))))
-  :bind (:map vertico-map
-              ("C-n" . vertico-next)
-              ("C-p" . vertico-previous)
-              ("C-f" . vertico-exit)
+  :bind (:map vertico-map              ("C-f" . vertico-exit)
               :map minibuffer-local-map
               ("C-l" . ff/minibuffer-backward-kill)
-              ("C-a" . ff/minibuffer-go-to-root)))
+              ("C-a" . ff/minibuffer-move-beginning-of-line)))
+
+;; Save history during sessions
+(use-package savehist
+  :custom
+  (savehist-additional-variables '(extended-command-history kill-ring))
+  :init
+  (savehist-mode t))
 
 ;; -------------------------------------------------------------------
 ;; Corfu, Cape and Orderless

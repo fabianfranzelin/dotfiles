@@ -75,6 +75,7 @@
 ;; enable recentf-mode but ignore files that where opened with docker
 ;; tramp
 (recentf-mode t)
+(add-to-list 'recentf-exclude "^/ssh:.*")
 (add-to-list 'recentf-exclude "^/docker:.*")
 ;; make sure that recentf is not littering emacs user home
 (add-to-list 'recentf-exclude no-littering-var-directory)
@@ -165,6 +166,9 @@ INCREMENT: Value of which the current font-size is changed"
 (defun do-nothing () "Does simply nothing." (interactive))
 (global-set-key (kbd "<Scroll_Lock>") 'do-nothing)
 (defvar scroll-lock-mode nil)
+
+;; enable smooth scrolling mode
+(pixel-scroll-precision-mode t)
 
 ;; convenient setting to move between open buffers
 (global-set-key (kbd "C-S-B") 'windmove-left)
@@ -612,15 +616,6 @@ PROJECT-ROOT: Path to the root directory of the current project."
   ((super-save-auto-save-when-idle nil))
   :init
   (super-save-mode t))
-
-;; -------------------------------------------------------------------
-;; Save history during sessions
-;; -------------------------------------------------------------------
-(use-package savehist
-  :custom
-  (savehist-additional-variables '(extended-command-history kill-ring))
-  :init
-  (savehist-mode t))
 
 ;; -------------------------------------------------------------------
 ;; Popper - handle pop up buffers nicely
