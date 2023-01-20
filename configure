@@ -149,7 +149,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
     python3 -m pip install --upgrade \
             virtualenv \
             epc \
-            "ptvsd==4.2" \
+            ptvsd \
             black \
             isort \
             yamllint \
