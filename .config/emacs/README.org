@@ -31,10 +31,10 @@ It downloads and extracts Emacs.
           cd "${__TMP_DIR}" || exit 1
           __EMACS_TAR_FILENAME="emacs-${__EMACS_VERSION}.tar.gz"
           wget "http://ftp.halifax.rwth-aachen.de/gnu/emacs/${__EMACS_TAR_FILENAME}"
-          tar -xvf "${__EMACS_TAR_FILENAME}" -C "${__XDG_DATA_HOME}"
-          if [ ! -d "${__EMACS_HOME}" ]
+          tar -xvf "${__EMACS_TAR_FILENAME}" -C "${__XDG_CACHE_HOME}"
+          if [ ! -d "${__EMACS_SRC}" ]
           then
-              echo "Target folder ${__EMACS_HOME} does not exist. Extracting Emacs package failed."
+              echo "Source folder ${__EMACS_SRC} does not exist. Extracting Emacs package failed."
               exit 1
           fi
       )
@@ -48,15 +48,15 @@ release branch I use this function to download it.
 #+begin_src shell
   clone() {
       (
-          git clone https://git.savannah.gnu.org/git/emacs.git "${__EMACS_HOME}"
-          cd "${__EMACS_HOME}" || exit 1
-          git checkout emacs-"${__EMACS_VERSION}"
+          git clone https://git.savannah.gnu.org/git/emacs.git "${__EMACS_SRC}"
+          cd "${__EMACS_SRC}" || exit 1
+          git checkout emacs-"${__EMACS_SRC}"
       )
   }
 
   pull() {
       (
-          cd "${__EMACS_HOME}" || exit 1
+          cd "${__EMACS_SRC}" || exit 1
           git reset --hard HEAD
           git checkout emacs-"${__EMACS_VERSION}"
           git pull
@@ -67,40 +67,47 @@ release branch I use this function to download it.
 Then, I install all the required third party dependencies and build Emacs
 
 #+begin_src shell
-  build() {
-      (
-          echo "Install dependencies for building Emacs ${__EMACS_VERSION}"
+    build() {
+        (
+            echo "Install dependencies for building Emacs ${__EMACS_VERSION}"
 
-          sudo apt install libxpm-dev libgif-dev libjpeg-dev libpng-dev \
-               libtiff-dev libx11-dev libncurses5-dev automake autoconf \
-               texinfo libgtk2.0-dev libgtk-3-dev gcc-10 g++-10 libgccjit0 \
-               libgccjit-10-dev libgccjit-9-dev libjansson4 \
-               libjansson-dev libgnutls28-dev libacl1-dev libmagickwand-dev \
-               libxml2-dev
+            sudo apt install libxpm-dev libgif-dev libjpeg-dev libpng-dev \
+                 libtiff-dev libx11-dev libncurses5-dev automake autoconf \
+                 texinfo libgtk2.0-dev libgtk-3-dev gcc-10 g++-10 libgccjit0 \
+                 libgccjit-10-dev libgccjit-9-dev libjansson4 \
+                 libjansson-dev libgnutls28-dev libacl1-dev libmagickwand-dev \
+                 libxml2-dev
 
-          echo "Compile and install Emacs ${__EMACS_VERSION}"
+            if [ -d "${__EMACS_BUILD}" ]
+            then
+                echo "Remove existing Emacs installation ${__EMACS_BUILD}."
+                rm -rf "${__EMACS_BUILD}"
+            fi
 
-          export CC=/usr/bin/gcc-10 CXX=/usr/bin/gcc-10
-          cd "${__EMACS_HOME}" || exit 1
-          ./autogen.sh
-          ./configure --prefix "${__EMACS_HOME}" --bindir "${__EMACS_HOME}/bin" \
-                      CFLAGS="-O3 -mtune=native -march=native -fomit-frame-pointer" \
-                      --with-modules \
-                      --with-gnutls \
-                      --with-rsvg \
-                      --with-x \
-                      --with-json \
-                      --with-mailutils \
-                      --with-native-compilation \
-                      --with-imagemagick \
-                      --with-jpeg --with-png --with-rsvg --with-tiff \
-                      --with-wide-int \
-                      --with-xft \
-                      --with-xml2 \
-                      --with-xpm
-          make -j"$(nproc)"
-      )
-  }
+            echo "Compile and install Emacs ${__EMACS_VERSION}"
+
+            export CC=/usr/bin/gcc-10 CXX=/usr/bin/gcc-10
+            cd "${__EMACS_SRC}" || exit 1
+            ./autogen.sh
+            ./configure --prefix "${__EMACS_BUILD}" \
+                        --bindir "${__EMACS_BUILD}/bin" \
+                        CFLAGS="-O3 -mtune=native -march=native -fomit-frame-pointer" \
+                        --with-modules \
+                        --with-gnutls \
+                        --with-rsvg \
+                        --with-x \
+                        --with-json \
+                        --with-mailutils \
+                        --with-native-compilation \
+                        --with-imagemagick \
+                        --with-jpeg --with-png --with-rsvg --with-tiff \
+                        --with-wide-int \
+                        --with-xft \
+                        --with-xml2 \
+                        --with-xpm
+            make -j"$(nproc)"
+        )
+    }
 #+end_src
 
 Finally, I make the new version globally available in your system
@@ -111,12 +118,12 @@ using update-alternatives.
       echo "Install Emacs and make it globally available with update-alternatives."
 
       (
-          cd "${__EMACS_HOME}" || exit 1
+          cd "${__EMACS_SRC}" || exit 1
           make install
       )
 
-      sudo update-alternatives --install "/usr/bin/emacsclient" emacsclient "${__EMACS_HOME}/bin/emacsclient" 100
-      sudo update-alternatives --install "/usr/bin/emacs" emacs "${__EMACS_HOME}/bin/emacs" 100
+      sudo update-alternatives --install "/usr/bin/emacsclient" emacsclient "${__EMACS_BUILD}/bin/emacsclient" 100
+      sudo update-alternatives --install "/usr/bin/emacs" emacs "${__EMACS_BUILD}/bin/emacs" 100
       sudo update-alternatives --auto emacs
       sudo update-alternatives --auto emacsclient
   }
@@ -138,8 +145,8 @@ and if the target directory, where Emacs should be installed, does
 already exist or not.
 
 #+begin_src shell
-  exists_target_directory() {
-      test -r "${__EMACS_HOME}"
+  exists_src_directory() {
+      test -r "${__EMACS_SRC}"
   }
 #+end_src
 
@@ -186,13 +193,16 @@ Emacs version. The default one is currently 29.0.60.
   done
   #+end_src
 
-Then we set up a few variables that define the home directory of the
-Emacs installation.
+Then we set up a few variables that define the home directory of the Emacs installation.
 
 #+begin_src shell
   __XDG_DATA_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}"
-  __EMACS_HOME="${__XDG_DATA_HOME}/emacs-${__EMACS_VERSION}"
+  __XDG_CACHE_HOME="${XDG_CACHE_HOME:-${HOME}/.cache}"
+  __EMACS_SRC="${__XDG_CACHE_HOME}/emacs-${__EMACS_VERSION}"
+  __EMACS_BUILD="${__XDG_DATA_HOME}/emacs-${__EMACS_VERSION}"
   [ ! -d "${__XDG_DATA_HOME}" ] && mkdir -p "${__XDG_DATA_HOME}"
+  [ ! -d "${__XDG_CACHE_HOME}" ] && mkdir -p "${__XDG_CACHE_HOME}"
+
 #+end_src
 
 Check if the given Emacs version is an official release. If so,
@@ -209,10 +219,10 @@ install it from one of the official release servers.
           exit 0
       fi
 
-      if ( exists_target_directory )
+      if ( exists_src_directory )
       then
-          echo "Target directory of Emacs sources does already exist."
-          echo "Delete ${__EMACS_HOME} before you can continue here."
+          echo "Source directory of Emacs does already exist."
+          echo "Delete ${__EMACS_SRC} before you can continue."
           exit 1
       fi
 
@@ -228,16 +238,15 @@ repository and check it out.
   then
       echo "Looks like a tag version of the Emacs Savannah git repository."
 
-      if [[ ! -d ${__EMACS_HOME} ]]
+      if [[ ! -d ${__EMACS_SRC} ]]
       then
           clone
-      elif [[ -d "${__EMACS_HOME}/.git" ]]
+      elif [[ -d "${__EMACS_SRC}/.git" ]]
       then
           pull
-          rm -rf "${__EMACS_HOME}/bin"
       else
-          echo "The target directory ${__EMACS_HOME} already exists but it is not a git repository."
-          echo "Please remove it otherwise I can't continue."
+          echo "The source directory ${__EMACS_SRC} already exists but it is not a git repository."
+          echo "Please remove it before you can continute."
       fi
   fi
 #+end_src
@@ -245,7 +254,7 @@ repository and check it out.
 If no Emacs version was found for the given tag, just stop here.
 
 #+begin_src shell
-  if [[ ! -d "${__EMACS_HOME}" ]]
+  if [[ ! -d "${__EMACS_SRC}" ]]
   then
       echo "Unknown version tag. Only versions like 28.2 and 29 are supported."
       exit 1
