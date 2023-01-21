@@ -141,12 +141,12 @@ Finally, we check whether the right Emacs version is installed or not
   }
 #+end_src
 
-and if the target directory, where Emacs should be installed, does
-already exist or not.
+and if the build directory, where Emacs should be installed to, does
+exist or not.
 
 #+begin_src shell
-  exists_src_directory() {
-      test -r "${__EMACS_SRC}"
+  exists_build_directory() {
+      test -r "${__EMACS_BUILD}"
   }
 #+end_src
 
