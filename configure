@@ -73,7 +73,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
     sudo apt remove python3-venv -y
 
     # Update python setuptools to latest release from pypi
-    python3 -m pip install --upgrade \
+    python3 -m pip install --user --upgrade \
             setuptools \
             pip \
             wheel
@@ -146,7 +146,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          imagemagick
 
     # additional python dependencies
-    python3 -m pip install --upgrade \
+    python3 -m pip install --user --upgrade \
             virtualenv \
             epc \
             ptvsd \
@@ -213,10 +213,10 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
        echo -e "${__COLOR_INFO}INFO: Install GTK tools${__COLOR_RESET}"
 
        # Install Qtile window manager
-       python3 -m pip install --upgrade xcffib
-       python3 -m pip install --upgrade --no-cache-dir cairocffi
+       python3 -m pip install --user --upgrade xcffib
+       python3 -m pip install --user --upgrade --no-cache-dir cairocffi
        sudo apt install -y libpangocairo-1.0-0
-       python3 -m pip install --upgrade qtile
+       python3 -m pip install --user --upgrade qtile
 
        # Create xsessions entry for qtile according to
        # https://docs.qtile.org/en/latest/manual/install/index.html#starting-qtile

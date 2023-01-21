@@ -234,6 +234,7 @@ repository and check it out.
       elif [[ -d "${__EMACS_HOME}/.git" ]]
       then
           pull
+          rm -rf "${__EMACS_HOME}/bin"
       else
           echo "The target directory ${__EMACS_HOME} already exists but it is not a git repository."
           echo "Please remove it otherwise I can't continue."
