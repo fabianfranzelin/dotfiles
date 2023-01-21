@@ -374,10 +374,7 @@ PROJECT-ROOT: Path to the root directory of the current project."
   ((project-switch-commands '((project-find-file "Find file")
                               (project-find-dir "Find directory")
                               (ff/project-magit "Magit")
-                              (project-dired "Dired")
-                              (ff/project-vterm "Vterm")
-                              (affe-find "Find (Affe)")
-                              (affe-grep "Grep (Affe)"))))
+                              (project-dired "Dired"))))
   :bind (:map project-prefix-map
               ("P" . ff/project-switch-project)
               ("m" . ff/project-magit)
