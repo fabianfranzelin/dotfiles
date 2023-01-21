@@ -50,7 +50,7 @@ release branch I use this function to download it.
       (
           git clone https://git.savannah.gnu.org/git/emacs.git "${__EMACS_SRC}"
           cd "${__EMACS_SRC}" || exit 1
-          git checkout emacs-"${__EMACS_SRC}"
+          git checkout emacs-"${__EMACS_VERSION}"
       )
   }
 
