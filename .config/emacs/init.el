@@ -11,6 +11,13 @@
       inhibit-startup-echo-area-message (getenv "USER"))
 
 ;; -------------------------------------------------------------------
+;; Daemon settings
+;; -------------------------------------------------------------------
+(require 'server)
+(unless (server-running-p)
+  (server-start))
+
+;; -------------------------------------------------------------------
 ;; Package Management - straight.el
 
 ;; set actual repository user from github, so that pull straight works
@@ -47,10 +54,8 @@
   "Load path for local Emacs configurations.")
 (add-to-list 'load-path local-load-path)
 
-
 ;; -------------------------------------------------------------------
 ;; Before we do anything, set up the no littering package
-
 (use-package no-littering
   :init
   ;; write auto-save files not into the local folder but into the
@@ -67,11 +72,13 @@
   :straight nil)
 
 ;; -------------------------------------------------------------------
-;; Daemon settings
+;; Org-mode
 ;; -------------------------------------------------------------------
-(require 'server)
-(unless (server-running-p)
-  (server-start))
+(use-package setup-org-mode
+  :straight nil)
+
+;; (use-package setup-org-roam
+;;   :straight nil)
 
 ;; -------------------------------------------------------------------
 ;; Basic settings
@@ -119,15 +126,6 @@
 ;; -------------------------------------------------------------------
 (use-package programming-settings
   :straight nil)
-
-;; -------------------------------------------------------------------
-;; Org-mode
-;; -------------------------------------------------------------------
-(use-package setup-org-mode
-  :straight nil)
-
-;; (use-package setup-org-roam
-;;   :straight nil)
 
 (provide 'init)
 ;;; init.el ends here
