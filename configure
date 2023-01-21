@@ -213,7 +213,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
        echo -e "${__COLOR_INFO}INFO: Install GTK tools${__COLOR_RESET}"
 
        # Install Qtile window manager
-       python3 -m pip install --user --upgrade xcffib
+       python3 -m pip install --user --upgrade --use-pep517 xcffib
        python3 -m pip install --user --upgrade --no-cache-dir cairocffi
        sudo apt install -y libpangocairo-1.0-0
        python3 -m pip install --user --upgrade qtile
