@@ -1,4 +1,4 @@
-;;; setup-spellcheck.el --- Spellchecker setup
+;;; ff-spellcheck.el --- Spellchecker setup
 
 ;;; Commentary:
 ;; Initialize generic spell checker for any type of files.
@@ -153,6 +153,6 @@ handled appropriately."
 (autoload 'flyspell-mode "flyspell" "On-the-fly spelling checking" t)
 (autoload 'global-flyspell-mode "flyspell" "On-the-fly spelling" t)
 
-(provide 'setup-spellcheck)
+(provide 'ff-spellcheck)
 
-;;; setup-spellcheck.el ends here
+;;; ff-spellcheck.el ends here

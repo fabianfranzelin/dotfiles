@@ -1,4 +1,4 @@
-;;; package --- Set up Org-Mode
+;;; ff-organize-life --- Set up Org-Mode
 ;;; Commentary:
 ;;; Sets up org-mode for Emacs
 
@@ -80,7 +80,6 @@
 ;; -------------------------------------------------------------------
 ;; org-present
 ;; -------------------------------------------------------------------
-
 (defun dw/org-present-prepare-slide ()
   (org-overview)
   (org-show-entry)
@@ -124,9 +123,9 @@
          (org-present-mode . visual-line-mode)
          (org-present-mode-quit . dw/org-present-quit-hook))
   :bind (:map org-present-mode-keymap
-              ("C-c C-j" . dw/org-present-next)
-              ("C-c C-k" . dw/org-present-prev)))
+              ("C-c C-f" . dw/org-present-next)
+              ("C-c C-b" . dw/org-present-prev)))
 
-(provide 'setup-org-mode)
+(provide 'ff-organize-life)
 
-;;; setup-org-mode.el ends here
+;;; ff-organize-life.el ends here

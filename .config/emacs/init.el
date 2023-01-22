@@ -50,9 +50,9 @@
 ;; repo
 (defvar emacs-config-home (expand-file-name ".config/emacs" (getenv "HOME"))
   "Location of the Emacs configuration.")
-(defvar local-load-path (expand-file-name "elisp-local" emacs-config-home)
+(defvar local-lisp-path (expand-file-name "lisp" emacs-config-home)
   "Load path for local Emacs configurations.")
-(add-to-list 'load-path local-load-path)
+(add-to-list 'load-path local-lisp-path)
 
 ;; -------------------------------------------------------------------
 ;; Before we do anything, set up the no littering package
@@ -68,64 +68,17 @@
   (load custom-file t))
 
 ;; -------------------------------------------------------------------
-(use-package helpers
-  :straight nil)
-
+(require 'ff-ensure-system-packages)
+(require 'ff-core)
+(require 'ff-vertico-completion)
+(require 'ff-setup-vterm)
+(require 'ff-magit-version-control)
+(require 'ff-programming-settings)
+(require 'ff-organize-life)
+(require 'ff-write-documents)
+(require 'ff-setup-gui)
+(require 'ff-spellcheck)
 ;; -------------------------------------------------------------------
-;; Basic settings
-;; -------------------------------------------------------------------
-(use-package basic-settings
-  :straight nil)
-
-;; -------------------------------------------------------------------
-;; Org-mode
-;; -------------------------------------------------------------------
-(use-package setup-org-mode
-  :straight nil)
-
-;; (use-package setup-org-roam
-;;   :straight nil)
-
-;; -------------------------------------------------------------------
-;; Vterm
-;; -------------------------------------------------------------------
-(use-package shell-loader
-  :straight nil
-  :custom (ff/shell-vertical-alignment t))
-
-(use-package setup-vterm
-  :straight nil
-  :after (shell-loader))
-
-;; -------------------------------------------------------------------
-;; Spell checker: Language tool and ispell/aspell
-;; -------------------------------------------------------------------
-(use-package setup-spellcheck
-  :straight nil)
-
-;; -------------------------------------------------------------------
-;; Git - magit
-;; -------------------------------------------------------------------
-(use-package setup-magit
-  :straight nil)
-
-;; -------------------------------------------------------------------
-;; Completion system: Vertico
-;; ------------------------------------------------------------------
-(use-package setup-completion
-  :straight nil)
-
-;; -------------------------------------------------------------------
-;; Lsp-client
-;; -------------------------------------------------------------------
-(use-package setup-eglot
-  :straight nil)
-
-;; -------------------------------------------------------------------
-;; Adjusting modes for programming
-;; -------------------------------------------------------------------
-(use-package programming-settings
-  :straight nil)
 
 (provide 'init)
 ;;; init.el ends here

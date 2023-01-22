@@ -1,4 +1,4 @@
-;;; package --- Setup shell loader package
+;;; ff-shell-loader --- Setup shell loader package
 ;;; Commentary:
 
 ;;; The shell loader package is designed to open all available shells
@@ -13,6 +13,18 @@
   "When non-nil, the terminals are aligned in a vertical manner on the right."
   :type 'boolean
   :group 'shell-loader)
+
+(defun ff/is-buffer-visible (buffer-name)
+  "Check whether a buffer is visible or not.
+BUFFER-NAME: string name of the buffer"
+  (cond ((eq buffer-name (window-buffer (selected-window)))
+         ;; Visible and focused
+         t)
+        ((get-buffer-window buffer-name)
+         ;; Visible and unfocused
+         t)
+        (t
+         nil)))
 
 (defun ff/toggle-shell-vertical-alignment ()
   "Toggle whether the alignment of shells is vertical or horizontal."
@@ -35,6 +47,16 @@ PREFIX: start string of buffer name"
     (dolist (name (mapcar #'buffer-name (buffer-list)))
       (if (string-match prefix name)
           (add-to-list 'filtered-buffers name)))
+    ;; sort the buffers
+    (cl-sort filtered-buffers 'string-lessp :key 'downcase)))
+
+(defun ff/load-visible-buffers (buffer-list)
+  "Filter all buffers that begin with the given prefix.
+BUFFER-LIST: string list of buffer names"
+  (let (filtered-buffers '())
+    (dolist (next-buffer buffer-list)
+      (if (ff/is-buffer-visible next-buffer)
+          (add-to-list 'filtered-buffers next-buffer)))
     ;; sort the buffers
     (cl-sort filtered-buffers 'string-lessp :key 'downcase)))
 
@@ -108,6 +130,6 @@ PREFIX: start string of buffer name"
          (ff/split-shell-window)))
   (balance-windows))
 
-(provide 'shell-loader)
+(provide 'ff-shell-loader)
 
-;;; shell-loader.el ends here
+;;; ff-shell-loader.el ends here

@@ -1,4 +1,4 @@
-;;; setup-cc.el --- C/C++ setup
+;;; ff-programming-cc.el --- C/C++ setup
 
 ;;; Commentary:
 ;; all the configuration for C/C++ projects
@@ -124,6 +124,6 @@ REPLACE-STR: string that replaces all regex matches"
   :config
   (autoload 'cmake-font-lock-activate "cmake-font-lock" nil t))
 
-(provide 'setup-cc)
+(provide 'ff-programming-cc)
 
-;;; setup-cc.el ends here
+;;; ff-programming-cc.el ends here
