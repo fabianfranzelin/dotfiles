@@ -95,6 +95,18 @@ SOURCE_FILENAME: filename to the puml file."
   ;; run actual plantuml preview with 4=new frame setting
   (plantuml-preview 0))
 
+(require 'url)
+(defun ff/plantuml-download (url jar-path)
+  "Download and install zip archives.
+
+URL: download URL
+JAR-PATH: expected binary file in the extracted folder."
+  (let* ((jar-path-dir (file-name-directory jar-path)))
+    (unless (file-directory-p jar-path-dir) (make-directory jar-path-dir t))
+    (unless  (file-exists-p jar-path)
+      (message (concat "[plantuml] Downloading to " jar-path))
+      (url-copy-file url jar-path))))
+
 (use-package plantuml-mode
   :mode (("\\.puml" . plantuml-mode)
          ("\\.iuml" . plantuml-mode)
@@ -105,21 +117,18 @@ SOURCE_FILENAME: filename to the puml file."
   (ff/ensure-apt-package "unzip" "unzip")
 
   ;; Consider using (plantuml-download-jar) as alternative
-  (defvar plantuml-version "1.2022.8" "Version number of plantuml binary")
-  (defvar plantuml-name (concat "plantuml-jar-asl-" plantuml-version) "Name of plantuml executable")
+  (defvar plantuml-version "1.2023.0"
+    "Version number of plantuml binary")
+  (defvar plantuml-name (concat "plantuml-" plantuml-version ".jar")
+    "Name of plantuml executable")
   (defvar plantuml-url
-    (concat "https://sourceforge.net/projects/plantuml/files/" plantuml-version "/" plantuml-name ".zip/download")
-    "URL to download plantuml from sourceforge.")
-  (defvar plantuml-root (expand-file-name "plantuml" no-littering-var-directory))
-  (defvar plantuml-extract-to (expand-file-name plantuml-name plantuml-root)
-    "Destination of plantuml binaries")
-  (defvar plantuml-expected-binary (expand-file-name "plantuml.jar" plantuml-extract-to)
+    (concat "https://github.com/plantuml/plantuml/releases/download/v" plantuml-version "/" plantuml-name)
+    "URL to download plantuml from github.")
+  (defvar plantuml-path (expand-file-name "plantuml" no-littering-var-directory)
+    "Directory where the plantuml jar file should be stored")
+  (defvar plantuml-expected-binary (expand-file-name plantuml-name plantuml-path)
     "Path to java archive of plantuml.")
-  (ff/download-and-extract-zip-archive plantuml-url
-                                       plantuml-name
-                                       plantuml-extract-to
-                                       plantuml-expected-binary
-                                       "plantuml")
+  (ff/plantuml-download plantuml-url plantuml-expected-binary)
   :config
   ;; Sample jar configuration
   (setq plantuml-jar-path plantuml-expected-binary

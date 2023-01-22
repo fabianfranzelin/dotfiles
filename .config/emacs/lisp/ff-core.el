@@ -111,6 +111,9 @@
 (global-set-key (kbd "C-c p") 'winner-undo)
 (global-set-key (kbd "C-c n") 'winner-redo)
 
+;; highlight current line
+(global-set-key (kbd "C-c h") 'global-hl-line-mode)
+
 ;; -------------------------------------------------------------
 ;; Core packages
 ;; -------------------------------------------------------------
@@ -119,21 +122,7 @@
 (use-package exec-path-from-shell
    :unless (string-equal system-type "windows-nt")
    :custom (exec-path-from-shell-variables '("PATH" "MANPATH" "SSH_AUTH_SOCK" "HTTP_PROXY" "HTTPS_PROXY"))
-   :config
-   (exec-path-from-shell-initialize))
-
-;; this is required for several, non-officially supported binaries
-;; like plantuml and languagetool
-(defun ff/download-and-extract-zip-archive (url name extract-to expected-binary-file package-name)
-  "Download and install zip archives."
-  (let* ((temporary-file (concat temporary-file-directory name ".zip")))
-    (unless (file-directory-p extract-to) (make-directory extract-to t))
-    (unless  (file-exists-p expected-binary-file)
-      (unless (file-exists-p temporary-file)
-        (message (concat "[" package-name "] Downloading " name " to " temporary-file))
-        (url-copy-file url temporary-file))
-      (message (concat "[" package-name "] Decompress " name " to " extract-to))
-      (call-process-shell-command (concat "unzip " temporary-file " -d " extract-to) nil 0))))
+   :config (exec-path-from-shell-initialize))
 
 ;; Turn on syntax colouring in all modes supporting it
 (use-package tree-sitter
