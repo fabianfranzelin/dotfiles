@@ -533,8 +533,12 @@ under the current directory."
 ;; Gumshoe: jump back and forth through marked positions
 ;; -------------------------------------------------------------------
 (use-package gumshoe
+  :straight (gumshoe :type git
+                     :host github
+                     :repo "Overdr0ne/gumshoe"
+                     :branch "master")
   :custom
-  ((gumshoe-slot-schema '(time buffer position line))
+  ((gumshoe-slot-schema '(buffer line))
    (gumshoe-idle-time 0.2)
    (gumshoe-log-len 50)
    (gumshoe-show-footprints-p nil))
