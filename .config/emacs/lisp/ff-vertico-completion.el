@@ -75,10 +75,7 @@ ARG: position"
 
 ;; Save history during sessions
 (use-package savehist
-  :custom
-  (savehist-additional-variables '(extended-command-history kill-ring))
-  :init
-  (savehist-mode t))
+  :init (savehist-mode t))
 
 ;; -------------------------------------------------------------------
 ;; Corfu, Cape and Orderless
