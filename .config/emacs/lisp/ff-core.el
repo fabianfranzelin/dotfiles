@@ -487,10 +487,8 @@ PROJECT-ROOT: Path to the root directory of the current project."
 (setq auto-save-default nil)
 
 (use-package super-save
-  :custom
-  ((super-save-auto-save-when-idle nil))
-  :init
-  (super-save-mode t))
+  :custom ((super-save-auto-save-when-idle nil))
+  :init (super-save-mode t))
 
 ;; -------------------------------------------------------------------
 ;; Popper - handle pop up buffers nicely
@@ -500,6 +498,7 @@ PROJECT-ROOT: Path to the root directory of the current project."
   (popper-reference-buffers '("\\*Messages\\*"
                               "Output\\*$"
                               "\\*Async Shell Command\\*"
+                              "\\*Dogears List\\*"
                               magit-process-mode
                               help-mode
                               helpful-mode
@@ -530,33 +529,29 @@ under the current directory."
     :menu ("Search" "a" "Current folder")))
 
 ;; -------------------------------------------------------------------
-;; Gumshoe: jump back and forth through marked positions
+;; Dogears: automatically bookmarks positions in buffers
 ;; -------------------------------------------------------------------
-(use-package gumshoe
-  :straight (gumshoe :type git
-                     :host github
-                     :repo "Overdr0ne/gumshoe"
-                     :branch "master")
+(use-package dogears
   :custom
-  ((gumshoe-slot-schema '(buffer line))
-   (gumshoe-idle-time 0.2)
-   (gumshoe-log-len 50)
-   (gumshoe-show-footprints-p nil))
+  ((dogears-idle 0.5)
+   (dogears-limit 50))
   :init
-  ;; Enabing global-gumshoe-mode will initiate tracking
-  (global-gumshoe-mode t)
-  :bind (;; enable browser like key bindings to move forth and
-         ;; back in bookmarks
-         ("M-p" . global-gumshoe-backtracking-mode-back)
-         ("M-n" . global-gumshoe-backtracking-mode-forward)))
+  (dogears-mode t)
+  ;; These bindings are optional, of course:
+  :bind (:map global-map
+              ("M-g d" . dogears-go)
+              ("M-g M-b" . dogears-back)
+              ("M-g M-f" . dogears-forward)
+              ("M-g M-d" . dogears-list)))
 
 ;; -------------------------------------------------------------------
 ;; Drag stuff around with M-up/down
 ;; -------------------------------------------------------------------
 (use-package drag-stuff
-  :config
-  (drag-stuff-global-mode t)
-  :bind (("M-<up>" . drag-stuff-up)
+  :config (drag-stuff-global-mode t)
+  :bind (("M-p" . drag-stuff-up)
+         ("M-<up>" . drag-stuff-up)
+         ("M-n" . drag-stuff-down)
          ("M-<down>" . drag-stuff-down)))
 
 ;; -------------------------------------------------------------------
