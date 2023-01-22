@@ -9,6 +9,25 @@
 ;; Static spell check with languagetool
 ;; --------------------------------------------------------
 
+;; this is required for several, non-officially supported binaries
+(require 'url)
+(defun ff/download-and-extract-zip-archive (url name extract-to expected-binary-file package-name)
+  "Download and install zip archives.
+
+URL: download URL
+NAME: file name (without extension)
+EXTRACT-TO: path where archive should be extracted
+EXPECTED-BINARY-FILE: expected binary file in the extracted folder
+PACKAGE-NAME: log message context"
+  (let* ((temporary-file (concat temporary-file-directory name ".zip")))
+    (unless (file-directory-p extract-to) (make-directory extract-to t))
+    (unless  (file-exists-p expected-binary-file)
+      (unless (file-exists-p temporary-file)
+        (message (concat "[" package-name "] Downloading " name " to " temporary-file))
+        (url-copy-file url temporary-file))
+      (message (concat "[" package-name "] Decompress " name " to " extract-to))
+      (call-process-shell-command (concat "unzip " temporary-file " -d " extract-to) nil 0))))
+
 (use-package languagetool
   :commands (languagetool-check
              languagetool-clear-suggestions
@@ -23,7 +42,7 @@
   (ff/ensure-apt-package "unzip" "unzip")
 
   ;; Create directory for languagetool binaries
-  (defvar langtool-version "5.9")
+  (defvar langtool-version "6.0" "Version of language tool")
   (defvar langtool-name (concat "LanguageTool-" langtool-version))
   (defvar langtool-url (concat "https://languagetool.org/download/" langtool-name ".zip"))
   (defvar langtool-extract-to (expand-file-name "language-tool" no-littering-var-directory))
