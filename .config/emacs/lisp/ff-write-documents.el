@@ -69,7 +69,7 @@
          (rst-mode . ff/configure-rst-mode)))
 
 ;; -------------------------------------------------------------------
-;; Plantuml mode
+;; Plantuml & Graphviz mode
 ;; -------------------------------------------------------------------
 (defun ff/plantuml-create-svg (source_filename)
   "Create SVG from current puml file.
@@ -114,7 +114,6 @@ JAR-PATH: expected binary file in the extracted folder."
   :init
   ;; install system dependencies
   (ff/ensure-apt-package "graphviz" "dot")
-  (ff/ensure-apt-package "unzip" "unzip")
 
   ;; Consider using (plantuml-download-jar) as alternative
   (defvar plantuml-version "1.2023.0"
@@ -146,12 +145,10 @@ JAR-PATH: expected binary file in the extracted folder."
   :after (plantuml-mode flycheck)
   :commands (flycheck-plantuml-setup))
 
-;; -------------------------------------------------------------------
 ;; Graphviz mode
-;; -------------------------------------------------------------------
 (use-package graphviz-dot-mode
-  :custom
-  ((graphviz-dot-indent-width 4)))
+  :custom ((graphviz-dot-indent-width 4))
+  :init (ff/ensure-apt-package "graphviz" "dot"))
 
 ;; -------------------------------------------------------------------
 ;; Latex
