@@ -1,4 +1,4 @@
-;;; setup-magit.el --- Magit setup
+;;; ff-magit-version-control.el --- Magit setup
 
 ;;; Commentary:
 ;; Configuration for magit
@@ -47,6 +47,6 @@
   ;; (setq vdiff-magit-stage-is-2way nil)
   )
 
-(provide 'setup-magit)
+(provide 'ff-magit-version-control)
 
-;;; setup-magit.el ends here
+;;; ff-magit-version-control.el ends here

@@ -1,10 +1,12 @@
-;;; package --- Set up vterm
+;;; ff-setup-vterm --- Set up vterm
 ;;; Commentary:
 ;;; Sets up vterm config for Emacs.  Note that the features listed
 ;;; here, require a shell integration that is done in vterm.sh in the
 ;;; same repository.
 
 ;;; Code:
+
+(require 'ff-shell-loader)
 
 (defun ff/vterm-buffer-name-prefix ()
   "Create a prefix string for the name of a vterm buffer."
@@ -145,6 +147,6 @@ MISC is the value returned by `ff/save-shell-buffer'."
   ;; read
   (add-to-list 'desktop-buffer-mode-handlers '(vterm-mode . ff/create-shell-buffer)))
 
-(provide 'setup-vterm)
+(provide 'ff-setup-vterm)
 
-;;; setup-vterm.el ends here
+;;; ff-setup-vterm.el ends here

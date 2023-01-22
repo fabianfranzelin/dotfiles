@@ -1,4 +1,4 @@
-;;; package --- Set up completion system with Vertico, etc.
+;;; ff-vertico-completion --- Set up completion system with Vertico, etc.
 ;;; Commentary:
 ;;; Sets up completion system for Emacs
 ;;; https://github.com/daviwil/dotfiles/blob/master/Emacs.org#completion-system
@@ -319,6 +319,6 @@ targets."
   ;; auto-updating embark collect buffer
   :hook ((embark-collect-mode . consult-preview-at-point-mode)))
 
-(provide 'setup-completion)
+(provide 'ff-vertico-completion)
 
-;;; setup-completion.el ends here
+;;; ff-vertico-completion.el ends here

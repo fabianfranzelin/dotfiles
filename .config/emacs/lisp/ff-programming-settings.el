@@ -1,4 +1,4 @@
-;;; programming-settings.el --- Setup all programming settings
+;;; ff-programming-settings.el --- Setup all programming settings
 
 ;;; Commentary:
 ;; Configuration for all programming settings
@@ -6,24 +6,66 @@
 ;;; Code:
 
 ;; -------------------------------------------------------------------
-;; Simple text
+;; LSP Client Eglot
 ;; -------------------------------------------------------------------
-(defun ff/configure-text-mode ()
-  "Configure text mode."
-  (interactive)
-  (set (make-local-variable 'completion-at-point-functions)
-       '(cape-dabbrev
-         cape-ispell)))
+(use-package eglot
+  :hook ((c++-mode . eglot-ensure)
+         (c-mode . eglot-ensure)
+         (java-mode . eglot-ensure)
+         (python-mode . eglot-ensure)
+         (typescript-mode . eglot-ensure)
+         (json-mode . eglot-ensure)
+         (yaml-mode . eglot-ensure)
+         (sh-mode . eglot-ensure)
+         (cmake-mode . eglot-ensure)
+         (dockerfile-mode . eglot-ensure)
+         (rst-mode . eglot-ensure))
+  :custom ((eglot-events-buffer-size 10))
+  :config
+  (setq read-process-output-max (* 1024 1024))
 
-(use-package text-mode
-  :straight nil
-  :after (cape)
-  :hook ((text-mode . ff/configure-text-mode)))
+  ;; Python
+  (add-to-list 'eglot-server-programs
+               `(python-mode "python3" "-m" "pylsp"))
+
+  ;; C++
+  (add-to-list 'eglot-server-programs
+               `((c++-mode c-mode) "clangd-12"))
+
+  ;; Sphinx, rst-mode
+  (defclass eglot-esbonio (eglot-lsp-server) ()
+    :documentation "Esbonio Language Server.")
+  (add-to-list 'eglot-server-programs
+               `(rst-mode . (eglot-esbonio
+                             ,(executable-find "python3")
+                             "-m" "esbonio")))
+
+  :bind (("C-c l w s" . eglot)
+         ("C-c l w r" . eglot-reconnect)
+         ("C-c l w k" . eglot-shutdown)
+         ("C-c l f" . eglot-format)
+         ("C-c l a" . eglot-code-actions)
+         ("C-c l i" . eglot-code-action-organize-imports)
+         ("C-c l r" . eglot-rename)
+         ("C-c l d" . flymake-show-buffer-diagnostics)
+         ("C-h ." . eldoc)
+         ("C-c l e" . eglot-stderr-buffer)))
+
+;; -------------------------------------------------------------------
+;; Additionally to flymake, use flycheck as well for certain modes
+(use-package flycheck
+  :init (global-flycheck-mode))
+
+;; -------------------------------------------------------------------
+;; Deugger
+;; -------------------------------------------------------------------
+(use-package realgud
+  :after (org)
+  :custom ((realgud:pdb-command-name "python3 -m pdb")))
 
 ;; -------------------------------------------------------------------
 ;; Emacs lisp
 ;; -------------------------------------------------------------------
-
 (add-to-list 'auto-mode-alist '("\\.el\\'" . emacs-lisp-mode))
 (add-to-list 'auto-mode-alist '("\\.dir-locals\\.el$" . emacs-lisp-mode))
 
@@ -34,8 +76,7 @@
 ;; -------------------------------------------------------------------
 ;; C/C++
 ;; -------------------------------------------------------------------
-(use-package setup-cc
-  :straight nil)
+(require 'ff-programming-cc)
 
 ;; -------------------------------------------------------------------
 ;; CRAN R
@@ -51,16 +92,9 @@
    (ess-ask-for-ess-directory nil)))
 
 ;; -------------------------------------------------------------------
-;; Latex
-;; -------------------------------------------------------------------
-(use-package setup-latex
-  :straight nil)
-
-;; -------------------------------------------------------------------
 ;; Python
 ;; -------------------------------------------------------------------
-(use-package setup-python
-  :straight nil)
+(require 'ff-programming-python)
 
 ;; -------------------------------------------------------------------
 ;; Shell
@@ -87,7 +121,7 @@
   (ff/ensure-python-package "yamllint" nil "yamllint")
   (ff/ensure-npm-package "yaml-language-server" "yaml-language-server")
   :bind ((:map yaml-mode-map
-               ("C-m" . newline-and-indent))))
+               ("C-j" . newline-and-indent))))
 
 ;; -------------------------------------------------------------------
 ;; dockerfile mode
@@ -137,53 +171,6 @@
   :bind ("C-x d" . docker))
 
 ;; -------------------------------------------------------------------
-;; markdown mode
-;; -------------------------------------------------------------------
-(defun ff/run-mdformat ()
-  "Run mdformat on current buffer."
-  (interactive)
-  (when (string-match-p ".md\\'" (buffer-file-name))
-    (shell-command (concat "mdformat " (buffer-file-name)))))
-
-(use-package markdown-mode
-  :commands markdown-mode
-  :custom
-  ;; The default command for markdown (~markdown~), doesn't support tables
-  ;; (e.g. GitHub flavored markdown). Pandoc does, so let's use that.
-  ((markdown-command "pandoc --from markdown --to html")
-   (markdown-command-needs-filename t))
-  :init
-  (ff/ensure-apt-package "markdown" "markdown")
-  (ff/ensure-apt-package "pandoc" "pandoc")
-  (ff/ensure-python-package "mdformat" nil "mdformat")
-
-  :hook ((markdown-mode . flyspell-mode))
-  :bind (:map markdown-mode-map
-         ("C-c C-f" . ff/run-mdformat)))
-
-;; -------------------------------------------------------------------
-;; RST mode
-;; -------------------------------------------------------------------
-(use-package poly-rst
-  :mode (("\\.rst$" . poly-rst-mode)
-         ("\\.rest$" . poly-rst-mode))
-  :init
-  (set-default 'truncate-lines t))
-
-(defun ff/configure-rst-mode ()
-  "Configure rst mode."
-  (interactive)
-  (set (make-local-variable 'completion-at-point-functions)
-       '(cape-dabbrev
-         cape-ispell)))
-
-(use-package rst
-  :mode (("\\.rst$" . rst-mode)
-         ("\\.rest$" . rst-mode))
-  :hook ((rst-mode . pyvenv-mode) ;; enable support of virtualenvironments
-         (text-mode . ff/configure-rst-mode)))
-
-;; -------------------------------------------------------------------
 ;; Typescript
 ;; -------------------------------------------------------------------
 (use-package tide
@@ -202,76 +189,6 @@
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
 (add-to-list 'auto-mode-alist '("\\.js\\'" . typescript-mode))
-
-;; -------------------------------------------------------------------
-;; Plantuml mode
-;; -------------------------------------------------------------------
-(defun ff/plantuml-create-svg (source_filename)
-  "Create SVG from current puml file.
-SOURCE_FILENAME: filename to the puml file."
-  (interactive)
-  (message (concat "Converting " source_filename))
-  (call-process-shell-command (concat
-                               "java"
-                               " -jar"
-                               " " plantuml-jar-path
-                               " " source_filename
-                               " -DRELATIVE_INCLUDE=\".\""
-                               " -Djava.awt.headless=true"
-                               " -tsvg -charset utf-8"))
-  (message "Conversion succeeded."))
-
-(defun ff/plantum-preview ()
-  "First, delete the preview window if present, then compile puml file."
-  (interactive)
-  ;; delete current preview window if visible
-  (let (current-buffer (buffer-name))
-    (when (ff/is-buffer-visible plantuml-preview-buffer)
-      (delete-window (get-buffer-window plantuml-preview-buffer)))
-    ;; run actual plantuml preview with 4=new frame setting
-    (plantuml-preview 0)))
-
-(use-package plantuml-mode
-  :mode (("\\.puml" . plantuml-mode)
-         ("\\.iuml" . plantuml-mode)
-         ("\\.uml" . plantuml-mode))
-  :init
-  ;; install system dependencies
-  (ff/ensure-apt-package "graphviz" "dot")
-  (ff/ensure-apt-package "unzip" "unzip")
-
-  ;; Consider using (plantuml-download-jar) as alternative
-  (defvar plantuml-version "1.2022.8" "Version number of plantuml binary")
-  (defvar plantuml-name (concat "plantuml-jar-asl-" plantuml-version) "Name of plantuml executable")
-  (defvar plantuml-url
-    (concat "https://sourceforge.net/projects/plantuml/files/" plantuml-version "/" plantuml-name ".zip/download")
-    "URL to download plantuml from sourceforge.")
-  (defvar plantuml-root (expand-file-name "plantuml" no-littering-var-directory))
-  (defvar plantuml-extract-to (expand-file-name plantuml-name plantuml-root)
-    "Destination of plantuml binaries")
-  (defvar plantuml-expected-binary (expand-file-name "plantuml.jar" plantuml-extract-to)
-    "Path to java archive of plantuml.")
-  (ff/download-and-extract-zip-archive plantuml-url
-                                       plantuml-name
-                                       plantuml-extract-to
-                                       plantuml-expected-binary
-                                       "plantuml")
-  :config
-  ;; Sample jar configuration
-  (setq plantuml-jar-path plantuml-expected-binary
-        plantuml-jar-args (list "-charset" "UTF-8" "-DRELATIVE_INCLUDE=." "-Djava.awt.headless=true")
-        plantuml-default-exec-mode 'jar
-        plantuml-indent-level 4)
-  ;; remap preview to personal function; for some reason, bind does
-  ;; not accept it
-  (define-key plantuml-mode-map [remap plantuml-preview] 'ff/plantum-preview)
-  :bind (:map plantuml-mode-map
-              ("C-M-i" . plantuml-complete-symbol)
-              ("C-c C-e" . (lambda() (interactive) (ff/plantuml-create-svg (buffer-file-name))))))
-
-(use-package flycheck-plantuml
-  :after (plantuml-mode flycheck)
-  :commands (flycheck-plantuml-setup))
 
 ;; -------------------------------------------------------------------
 ;; Groovy mode for Jenkins
@@ -302,12 +219,13 @@ SOURCE_FILENAME: filename to the puml file."
   :mode (("\\.robot" . robot-mode)))
 
 ;; -------------------------------------------------------------------
-;; Graphviz mode
+;; Direnv: I am using the buffer local version and not the direnv
+;; package
 ;; -------------------------------------------------------------------
-(use-package graphviz-dot-mode
-  :custom
-  ((graphviz-dot-indent-width 4)))
+(use-package envrc
+  :after (flycheck)
+  :init (envrc-global-mode t))
 
-(provide 'programming-settings)
+(provide 'ff-programming-settings)
 
-;;; programming-settings.el ends here
+;;; ff-programming-settings.el ends here

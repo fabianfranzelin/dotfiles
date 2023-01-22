@@ -1,4 +1,4 @@
-;;; setup-python.el --- Python setup
+;;; ff-programming-python.el --- Python setup
 
 ;;; Commentary:
 ;; all the configuration for Python projects
@@ -73,6 +73,6 @@
   :bind (:map python-mode-map
               ("C-c C-d" . sphinx-doc)))
 
-(provide 'setup-python)
+(provide 'ff-programming-python)
 
-;;; setup-python.el ends here
+;;; ff-programming-python.el ends here

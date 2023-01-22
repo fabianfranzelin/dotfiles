@@ -1,35 +1,12 @@
-;;; basic-settings.el --- Setup all basic settings
+;;; ff-core.el --- Setup all basic settings
 
 ;;; Commentary:
 ;; Configuration for basic settings
 
 ;;; Code:
 
-;; make sure that the path environment from shell is available in
-;; emacs
- (use-package exec-path-from-shell
-   :unless (string-equal system-type "windows-nt")
-   :custom (exec-path-from-shell-variables '("PATH" "MANPATH" "SSH_AUTH_SOCK" "HTTP_PROXY" "HTTPS_PROXY"))
-   :config
-   (exec-path-from-shell-initialize))
-
-;; set frame transparency and maximize frame by default
-(set-frame-parameter (selected-frame) 'alpha '(98 . 98))
-(add-to-list 'default-frame-alist '(alpha . (98 . 98)))
-(set-frame-parameter (selected-frame) 'fullscreen 'maximized)
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
-
 ;; The default is 800 kilobytes. Measured in bytes.
 (setq gc-cons-threshold (* 50 1000 1000))
-
-;; Profile emacs startup
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            (message "*** Emacs loaded in %s with %d garbage collections."
-                     (format "%.2f seconds"
-                             (float-time
-                              (time-subtract after-init-time before-init-time)))
-                     gcs-done)))
 
 ;; enables local variables per default
 (setq enable-local-variables t)
@@ -41,14 +18,6 @@
 
 ;; disable lockfiles
 (setq create-lockfiles nil)
-
-;; disable scrollbar
-(scroll-bar-mode -1) ; disbale scrollbar
-(menu-bar-mode -1) ; disable menu bar
-(tool-bar-mode -1) ; disbale tool bar
-
-;; no splash screen
-(setq inhibit-startup-screen t)
 
 ;; revert buffers when the underlying file has changed
 (global-auto-revert-mode 1)
@@ -81,26 +50,6 @@
 (add-to-list 'recentf-exclude no-littering-var-directory)
 (add-to-list 'recentf-exclude no-littering-etc-directory)
 
-;; Turn on syntax colouring in all modes supporting it
-(use-package tree-sitter
-  :hook ((python-mode . tree-sitter-hl-mode)
-         (c-mode . tree-sitter-hl-mode)
-         (c++-mode . tree-sitter-hl-mode)
-         (typescript-mode . tree-sitter-hl-mode)
-         (sh-mode . tree-sitter-hl-mode)
-         (java-mode . tree-sitter-hl-mode)
-         (json-mode . tree-sitter-hl-mode)
-         (yaml-mode . tree-sitter-hl-mode)))
-
-;; support for various languages for tree sitter
-(use-package tree-sitter-langs)
-
-;; I want the current user name, the emacs version and the name of the
-;; file I'm editing to be displayed in the title-bar.
-(setq frame-title-format
-      (list (getenv "USER") "@Emacs " emacs-version ": "
-            '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
-
 ;; set unicode encoding
 (prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
@@ -114,44 +63,23 @@
   :custom
   ((desktop-load-locked-desktop t)))
 
-;; Color theme
-(use-package doom-themes
-  :custom
-  ((doom-themes-enable-bold t)    ; if nil, bold is universally disabled
-   (doom-themes-enable-italic t)) ; if nil, italics is universally disabled
-  :config
-  ;; Global settings (defaults)
-  (load-theme 'doom-palenight t)
-  ;; Enable flashing mode-line on errors
-  (doom-themes-visual-bell-config)
-  ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config)
-  ;; Add frame borders and window dividers
-  (modify-all-frames-parameters
-   '((right-divider-width . 0)
-     (internal-border-width . 0)))
-  (dolist (face '(window-divider
-                  window-divider-first-pixel
-                  window-divider-last-pixel))
-    (face-spec-reset-face face)
-    (set-face-foreground face (face-attribute 'default :background)))
-  (set-face-background 'fringe (face-attribute 'default :background)))
+;; enable smooth scrolling mode
+(pixel-scroll-precision-mode t)
 
-;; -------------------------------------------------------------------
-;; Define font size and methods to adjust it on the fly
-(set-face-attribute 'default nil :height 110) ;; default = 110
+;; highlight the marked region (C-SPC) and use commands (like
+;; latex-environment) on current region.
+(transient-mark-mode t) ;; C-SPC - for selection
+;; for highlighting rectangles, use the (rectangle-mark-mode).
+;; C-x SPC - for selection; C-x SPC C-t for inserting stuff
 
-;; define functions that increase and decrease the font-size for the
-;; whole frame globally
-(defun ff/adjust-font-size-per-frame (increment)
-  "Adjust the font size for all buffers in the current frame.
-INCREMENT: Value of which the current font-size is changed"
-  (interactive "P")
-  (let ((current-height (face-attribute 'default :height)))
-    (set-face-attribute 'default nil :height (+ current-height increment))))
+;; Indentation: use only spaces, no tabs
+(setq-default indent-tabs-mode nil)
 
-(global-set-key (kbd "C-c +") #'(lambda() (interactive) (ff/adjust-font-size-per-frame 10)))
-(global-set-key (kbd "C-c -") #'(lambda() (interactive) (ff/adjust-font-size-per-frame -10)))
+;; enable auto pair mode globally
+(electric-pair-mode t)
+
+;; save cursor position in files even when buffers are killed
+(save-place-mode)
 
 ;; -------------------------------------------------------------------
 ;; Global key bindings
@@ -167,9 +95,6 @@ INCREMENT: Value of which the current font-size is changed"
 (global-set-key (kbd "<Scroll_Lock>") 'do-nothing)
 (defvar scroll-lock-mode nil)
 
-;; enable smooth scrolling mode
-(pixel-scroll-precision-mode t)
-
 ;; convenient setting to move between open buffers
 (global-set-key (kbd "C-S-B") 'windmove-left)
 (global-set-key (kbd "C-S-F") 'windmove-right)
@@ -181,58 +106,62 @@ INCREMENT: Value of which the current font-size is changed"
 (global-set-key (kbd "C-x <up>")    'windmove-up)
 (global-set-key (kbd "C-x <down>")  'windmove-down)
 
-;; highlight the marked region (C-SPC) and use commands (like
-;; latex-environment) on current region.
-(transient-mark-mode t) ;; C-SPC - for selection
-;; for highlighting rectangles, use the (rectangle-mark-mode).
-;; C-x SPC - for selection; C-x SPC C-t for inserting stuff
-
-;; Indentation: use only spaces, no tabs
-(setq-default indent-tabs-mode nil)
-
-;; Delete trailing white spaces only for lines that are touched. This
-;; replaces the obvious, more intrusive, approach of
-(use-package ws-butler
-  :init
-  (ws-butler-global-mode t))
-
-;; enable auto pair mode globally
-(electric-pair-mode t)
-
-;; save cursor position in files even when buffers are killed
-(save-place-mode)
-
-;; Show number of lines in the left side of the buffer
-(global-display-line-numbers-mode 1)
-
-(dolist (mode '(org-mode-hook
-                rst-mode-hook
-                markdown-mode-hook
-                term-mode-hook
-                vterm-mode-hook
-                compilation-mode-hook
-                pdf-view-mode-hook))
-  (add-hook mode (lambda () (display-line-numbers-mode 0))))
-
-;; show column numbers on the modeline
-(column-number-mode 1)
-
-;; Let kill operate on the whole line when no region is selected
-(use-package whole-line-or-region
-  :init (whole-line-or-region-global-mode))
-
-;; volatile highlights - temporarily highlight changes from pasting
-;; etc
-(use-package volatile-highlights
-  :init (volatile-highlights-mode t))
-
 ;; winner mode for for redo/undo window configurations
 (winner-mode 1)
 (global-set-key (kbd "C-c p") 'winner-undo)
 (global-set-key (kbd "C-c n") 'winner-redo)
 
-;; enable visual line mode to truncate long line
-(visual-line-mode t)
+;; -------------------------------------------------------------
+;; Core packages
+;; -------------------------------------------------------------
+
+;; make sure that the path environment from shell is available
+(use-package exec-path-from-shell
+   :unless (string-equal system-type "windows-nt")
+   :custom (exec-path-from-shell-variables '("PATH" "MANPATH" "SSH_AUTH_SOCK" "HTTP_PROXY" "HTTPS_PROXY"))
+   :config
+   (exec-path-from-shell-initialize))
+
+;; this is required for several, non-officially supported binaries
+;; like plantuml and languagetool
+(defun ff/download-and-extract-zip-archive (url name extract-to expected-binary-file package-name)
+  "Download and install zip archives."
+  (let* ((temporary-file (concat temporary-file-directory name ".zip")))
+    (unless (file-directory-p extract-to) (make-directory extract-to t))
+    (unless  (file-exists-p expected-binary-file)
+      (unless (file-exists-p temporary-file)
+        (message (concat "[" package-name "] Downloading " name " to " temporary-file))
+        (url-copy-file url temporary-file))
+      (message (concat "[" package-name "] Decompress " name " to " extract-to))
+      (call-process-shell-command (concat "unzip " temporary-file " -d " extract-to) nil 0))))
+
+;; Turn on syntax colouring in all modes supporting it
+(use-package tree-sitter
+  :hook ((python-mode . tree-sitter-hl-mode)
+         (c-mode . tree-sitter-hl-mode)
+         (c++-mode . tree-sitter-hl-mode)
+         (typescript-mode . tree-sitter-hl-mode)
+         (sh-mode . tree-sitter-hl-mode)
+         (java-mode . tree-sitter-hl-mode)
+         (json-mode . tree-sitter-hl-mode)
+         (yaml-mode . tree-sitter-hl-mode)))
+
+;; support for various languages for tree sitter
+(use-package tree-sitter-langs)
+
+;; Let kill operate on the whole line when no region is selected
+(use-package whole-line-or-region
+  :init (whole-line-or-region-global-mode t))
+
+;; volatile highlights - temporarily highlight changes from pasting
+(use-package volatile-highlights
+  :init (volatile-highlights-mode t))
+
+;; -------------------------------------------------------------
+;; Delete trailing white spaces only for lines that are touched. This
+;; replaces the obvious, more intrusive, approach of
+(use-package ws-butler
+  :init (ws-butler-global-mode t))
 
 ;; -------------------------------------------------------------
 ;; Better help
@@ -382,33 +311,6 @@ PROJECT-ROOT: Path to the root directory of the current project."
               ("a" . affe-find)
               ("g" . affe-grep)
               ("t" . ff/project-project-tab)))
-
-;; -------------------------------------------------------------
-;; present a nice dashboard on startup
-
-(use-package page-break-lines)
-
-(use-package dashboard
-  :after (all-the-icons page-break-lines)
-  :custom
-  (;; Content is not centered by default. To center, set
-   (dashboard-center-content t)
-   ;; To disable shortcut "jump" indicators for each section, set
-   (dashboard-show-shortcuts t)
-   (dashboard-items '((projects . 5)
-                      (agenda . 5)
-                      (recents  . 5)))
-   (dashboard-set-heading-icons t)
-   (dashboard-set-file-icons t)
-   (dashboard-set-init-info t)
-   (dashboard-week-agenda t)
-   (dashboard-filter-agenda-entry 'dashboard-no-filter-agenda)
-   ;; Show dashboard for newly created frames
-   (initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
-   ;; set the project backend to project.el
-   (dashboard-projects-backend `project-el))
-  :config
-  (dashboard-setup-startup-hook))
 
 ;; -------------------------------------------------------------
 ;; NOTE: The first time you load your configuration on a new machine,
@@ -580,30 +482,6 @@ PROJECT-ROOT: Path to the root directory of the current project."
                "firefox" '(file)))))
 
 ;; -------------------------------------------------------------------
-;; Use doom modeline
-;; -------------------------------------------------------------------
-(use-package doom-modeline
-  :custom
-  ((doom-modeline-height 15)
-   (doom-modeline-bar-width 6)
-   (doom-modeline-modal-icon t)
-   (doom-modeline-lsp t)
-   (doom-modeline-github nil)
-   (doom-modeline-mu4e nil)
-   (doom-modeline-irc nil)
-   (doom-modeline-minor-modes nil)
-   (doom-modeline-persp-name nil)
-   (doom-modeline-display-default-persp-name nil)
-   (doom-modeline-persp-icon nil)
-   (doom-modeline-buffer-file-name-style 'truncate-except-project)
-   (doom-modeline-buffer-modification-icon t)
-   (doom-modeline-major-mode-icon t)
-   (doom-modeline-buffer-encoding nil)
-   (doom-modeline-vcs-max-length 48))
-  :init
-  (doom-modeline-mode 1))
-
-;; -------------------------------------------------------------------
 ;; Auto-saving changed files when they lose focus
 ;; -------------------------------------------------------------------
 (setq auto-save-default nil)
@@ -701,25 +579,11 @@ TEXT: title"
   :after (yasnippet))
 
 ;; -------------------------------------------------------------------
-;; Code style checker
-;; -------------------------------------------------------------------
-(use-package flycheck
-  :init (global-flycheck-mode))
-
-;; -------------------------------------------------------------------
 ;; Ace window: select windows based on numbers
 ;; -------------------------------------------------------------------
 (use-package ace-window
   :bind (("M-o" . ace-window)))
 
-;; -------------------------------------------------------------------
-;; Direnv: I am using the buffer local version and not the direnv
-;; package
-;; -------------------------------------------------------------------
-(use-package envrc
-  :after (flycheck)
-  :init (envrc-global-mode t))
+(provide 'ff-core)
 
-(provide 'basic-settings)
-
-;;; basic-settings.el ends here
+;;; ff-core.el ends here
