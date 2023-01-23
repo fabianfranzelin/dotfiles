@@ -24,13 +24,6 @@
   (add-to-list 'org-modules 'org-habit)
   (setq org-habit-graph-column 60)
 
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((emacs-lisp . t)
-     (python . t)))
-
-  (push '("conf-unix" . conf-unix) org-src-lang-modes)
-
   ;; This is needed as of Org 9.2
   (require 'org-tempo)
 
@@ -43,8 +36,8 @@
    'org-babel-load-languages
    '((emacs-lisp . t)
      (python . t)
-     (shell . t))))
-
+     (shell . t)))
+    (push '("conf-unix" . conf-unix) org-src-lang-modes))
 
 ;; Allow drag and drop into Dired. For details, see enables
 ;; https://github.com/abo-abo/org-download
