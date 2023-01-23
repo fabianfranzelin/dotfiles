@@ -121,19 +121,16 @@
 ;; make sure that the path environment from shell is available
 (use-package exec-path-from-shell
    :unless (string-equal system-type "windows-nt")
-   :custom (exec-path-from-shell-variables '("PATH" "MANPATH" "SSH_AUTH_SOCK" "HTTP_PROXY" "HTTPS_PROXY"))
+   :custom (exec-path-from-shell-variables '("PATH"
+                                             "MANPATH"
+                                             "SSH_AUTH_SOCK"
+                                             "HTTP_PROXY"
+                                             "HTTPS_PROXY"))
    :config (exec-path-from-shell-initialize))
 
 ;; Turn on syntax colouring in all modes supporting it
 (use-package tree-sitter
-  :hook ((python-mode . tree-sitter-hl-mode)
-         (c-mode . tree-sitter-hl-mode)
-         (c++-mode . tree-sitter-hl-mode)
-         (typescript-mode . tree-sitter-hl-mode)
-         (sh-mode . tree-sitter-hl-mode)
-         (java-mode . tree-sitter-hl-mode)
-         (json-mode . tree-sitter-hl-mode)
-         (yaml-mode . tree-sitter-hl-mode)))
+  :init (global-tree-sitter-mode t))
 
 ;; support for various languages for tree sitter
 (use-package tree-sitter-langs)
@@ -302,10 +299,7 @@ PROJECT-ROOT: Path to the root directory of the current project."
               ("t" . ff/project-project-tab)))
 
 ;; -------------------------------------------------------------
-;; NOTE: The first time you load your configuration on a new machine,
-;; you’ll need to run `M-x all-the-icons-install-fonts` so that mode
-;; line icons display correctly.
-(use-package all-the-icons)
+;; Show available keybindings
 
 (use-package which-key
   :custom ((which-key-idle-delay 1))
@@ -389,8 +383,7 @@ PROJECT-ROOT: Path to the root directory of the current project."
          (dired-mode . org-download-enable))
   :bind (("C-x C-j" . dired-jump)
          :map dired-mode-map
-         ("<backspace>" . dired-up-directory)
-         ("l" . dired-up-directory) ;; backspace does not work in terminal-mode
+         ("l" . dired-up-directory)
          ("TAB" . dired-find-file)))
 
 (use-package dired-rainbow
@@ -417,6 +410,11 @@ PROJECT-ROOT: Path to the root directory of the current project."
   (dired-rainbow-define vc "#0074d9" ("git" "gitignore" "gitattributes" "gitmodules"))
   (dired-rainbow-define-chmod executable-unix "#38c172" "-.*x.*"))
 
+;; NOTE: The first time you load your configuration on a new machine,
+;; you’ll need to run `M-x all-the-icons-install-fonts` so that mode
+;; line icons display correctly.
+(use-package all-the-icons)
+
 (use-package all-the-icons-dired
   :after (dired)
   :hook ((dired-mode . all-the-icons-dired-mode)))
@@ -430,18 +428,14 @@ PROJECT-ROOT: Path to the root directory of the current project."
 ;; Undo tree - make undos more powerful
 ;; -------------------------------------------------------------------
 (use-package undo-tree
-  :init
-  (global-undo-tree-mode)
-  :config
-  ;; increase undo limit
-  (setq undo-limit 8000000))
+  :init (global-undo-tree-mode)
+  :config (setq undo-limit 8000000))
 
 ;; -------------------------------------------------------------------
 ;; Credential management
 ;; -------------------------------------------------------------------
 (use-package auth-source-pass
-  :config
-  (auth-source-pass-enable))
+  :config (auth-source-pass-enable))
 
 ;; -------------------------------------------------------------------
 ;; Open files externally
