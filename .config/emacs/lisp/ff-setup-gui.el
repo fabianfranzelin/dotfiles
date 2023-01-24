@@ -115,7 +115,7 @@ INCREMENT: Value of which the current font-size is changed"
 (column-number-mode 1)
 
 ;; enable visual line mode to truncate long line
-(visual-line-mode t)
+(global-visual-line-mode t)
 
 ;; -------------------------------------------------------------
 ;; present a nice dashboard on startup
