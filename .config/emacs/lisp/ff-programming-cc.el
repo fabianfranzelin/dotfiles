@@ -25,6 +25,12 @@
 (defvar ff/cc-build-folder-container "/workspace"
   "Location of the build folder inside the container.")
 
+(defvar ff/cc-conan-cache-container nil
+  "Location of the conan cache folder inside the container.")
+
+(defvar ff/cc-conan-cache-host nil
+  "Location of the conan cache folder on the host.")
+
 (defun ff/search-replace (file-path regex-str replace-str)
   "Replace content in file.
 FILE-PATH: file to be changed
@@ -53,7 +59,13 @@ REPLACE-STR: string that replaces all regex matches"
     (message "Replacing %s by %s" workspace-folder (ff/project-root))
     (ff/search-replace compile-commands-file-path
                        workspace-folder
-                       (ff/project-root))))
+                       (ff/project-root))
+    (when (and ff/cc-conan-cache-container ff/cc-conan-cache-host)
+      (let ((conan-cache-host (expand-file-name ".conan" (getenv "HOME"))))
+        (message "Replacing %s by %s" ff/cc-conan-cache-container conan-cache-host)
+        (ff/search-replace compile-commands-file-path
+                           ff/cc-conan-cache-container
+                           ff/cc-conan-cache-host)))))
 
 (defun ff/clang-format-buffer-smart ()
   "Reformat buffer if .clang-format exists in the project.el root."
