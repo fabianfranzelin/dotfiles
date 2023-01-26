@@ -424,6 +424,9 @@ PROJECT-ROOT: Path to the root directory of the current project."
   :bind (:map dired-mode-map
               ("H" . dired-hide-dotfiles-mode)))
 
+(use-package dired-hacks
+  :hook ((dired-mode . dired-collapse-mode)))
+
 ;; -------------------------------------------------------------------
 ;; Undo tree - make undos more powerful
 ;; -------------------------------------------------------------------
