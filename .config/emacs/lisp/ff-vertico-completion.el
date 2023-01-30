@@ -186,34 +186,55 @@ ARG: position"
 ;; Consult
 ;; -------------------------------------------------------------------
 (use-package consult
-  :after (vertico)
-  :defines consult-buffer-sources
   ;; Enable automatic preview at point in the *Completions* buffer. This is
   ;; relevant when you use the default completion UI.
   :hook ((completion-list-mode . consult-preview-at-point-mode))
-  :config
-  (setq consult-project-root-function #'ff/project-root
-        completion-in-region-function #'consult-completion-in-region)
+
+  :init
+  ;; Optionally configure the register formatting. This improves the register
+  ;; preview for `consult-register', `consult-register-load',
+  ;; `consult-register-store' and the Emacs built-ins.
+  (setq register-preview-delay 0.5
+        register-preview-function #'consult-register-format)
+
+  ;; Optionally tweak the register preview window.
+  ;; This adds thin lines, sorting and hides the mode line of the window.
+  (advice-add #'register-preview :override #'consult-register-window)
 
   ;; Use Consult to select xref locations with preview
   (setq xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
 
-  ;; Use `consult-completion-in-region' if Vertico is enabled.
-  ;; Otherwise use the default `completion--in-region' function.
-  (setq completion-in-region-function
-        (lambda (&rest args)
-          (apply (if vertico-mode
-                     #'consult-completion-in-region
-                   #'completion--in-region)
-                 args)))
-
   :bind (("C-s" . consult-line)
-         ("C-x b" . consult-buffer)
          ("C-c i" . consult-imenu)
-         ("C-M-j" . persp-switch-to-buffer*)
          ("M-y" . consult-yank-replace)
-         ("M-g g" . consult-goto-line)
+         ;; C-x bindings (ctl-x-map)
+         ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
+         ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+         ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
+         ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
+         ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
+         ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
+         ;; M-g bindings (goto-map)
+         ("M-g e" . consult-compile-error)
+         ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
+         ;; ("M-g g" . consult-goto-line)             ;; orig. goto-line
+         ;; ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
+         ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
+         ("M-g m" . consult-mark)
+         ("M-g k" . consult-global-mark)
+         ("M-g i" . consult-imenu)
+         ("M-g I" . consult-imenu-multi)
+         ;; M-s bindings (search-map)
+         ("M-s d" . consult-find)
+         ("M-s D" . consult-locate)
+         ("M-s g" . consult-grep)
+         ("M-s G" . consult-git-grep)
+         ("M-s r" . consult-ripgrep)
+         ("M-s l" . consult-line)
+         ("M-s L" . consult-line-multi)
+         ("M-s k" . consult-keep-lines)
+         ("M-s u" . consult-focus-lines)
          :map minibuffer-local-map
          ("M-y" . yank-pop)
          ("C-s" . consult-history)))
@@ -259,10 +280,10 @@ ARG: position"
                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                  nil
                  (window-parameters (mode-line-format . none))))
-  :bind (("C-#" . embark-act)
+  :bind (("C-." . embark-act)
          ("C-h b" . embark-bindings)
          :map minibuffer-local-map
-         ("C-#" . embark-act)
+         ("C-." . embark-act)
          :map embark-region-map
          ("U" . 0x0-dwim)
          :map embark-file-map
