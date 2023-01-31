@@ -1,6 +1,3 @@
-# save history of commands
-set history save on
-
 # allow local gdb configurations
 set auto-load safe-path /
 
