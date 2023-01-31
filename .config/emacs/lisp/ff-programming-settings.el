@@ -61,7 +61,8 @@
 ;; -------------------------------------------------------------------
 (use-package realgud
   :after (org)
-  :custom ((realgud:pdb-command-name "python3 -m pdb")))
+  :custom ((realgud:pdb-command-name "python3 -m pdb")
+           (realgud-save-mode nil)))
 
 ;; -------------------------------------------------------------------
 ;; Emacs lisp
