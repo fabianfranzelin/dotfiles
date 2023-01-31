@@ -144,3 +144,6 @@ flycheck_*
 ### SSH ###
 /.ssh/known_hosts
 /.ssh/id_rsa
+
+### GDB ###
+/.config/gdb/.gdb_history
