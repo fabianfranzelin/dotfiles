@@ -114,6 +114,9 @@
 ;; highlight current line
 (global-set-key (kbd "C-c h") 'global-hl-line-mode)
 
+;; newline and indent
+(global-set-key (kbd "C-j") 'default-indent-new-line)
+
 ;; -------------------------------------------------------------
 ;; Core packages
 ;; -------------------------------------------------------------
