@@ -102,10 +102,7 @@ INCREMENT: Value of which the current font-size is changed"
 ;; Show number of lines in the left side of the buffer
 (global-display-line-numbers-mode 1)
 
-(dolist (mode '(org-mode-hook
-                rst-mode-hook
-                markdown-mode-hook
-                term-mode-hook
+(dolist (mode '(term-mode-hook
                 vterm-mode-hook
                 compilation-mode-hook
                 pdf-view-mode-hook))
