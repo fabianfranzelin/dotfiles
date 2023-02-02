@@ -77,6 +77,7 @@
 
 ;; enable auto pair mode globally
 (electric-pair-mode t)
+(electric-indent-mode nil)
 
 ;; save cursor position in files even when buffers are killed
 (save-place-mode)
@@ -115,7 +116,7 @@
 (global-set-key (kbd "C-c h") 'global-hl-line-mode)
 
 ;; newline and indent
-(global-set-key (kbd "C-j") 'default-indent-new-line)
+(global-set-key (kbd "C-j") 'newline-and-indent)
 
 ;; -------------------------------------------------------------
 ;; Core packages
