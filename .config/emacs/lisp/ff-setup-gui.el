@@ -114,6 +114,9 @@ INCREMENT: Value of which the current font-size is changed"
 ;; enable visual line mode to truncate long line
 (global-visual-line-mode t)
 
+(dolist (mode '(proced-mode-hook))
+  (add-hook mode (lambda () (visual-line-mode 0))))
+
 ;; -------------------------------------------------------------
 ;; present a nice dashboard on startup
 
