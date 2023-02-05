@@ -118,7 +118,7 @@ Then, I install all the required third party dependencies and build Emacs
                       --with-xml2 \
                       --with-xpm \
                       --with-dbus \
-                      --with-pgtk
+                      --with-x
           make -j"$(nproc)"
       )
   }
