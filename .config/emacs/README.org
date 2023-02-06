@@ -119,7 +119,7 @@ Then, I install all the required third party dependencies and build Emacs
                       --with-xpm \
                       --with-dbus \
                       --with-x \
-                      --with-x-toolkit=gtk2
+                      --with-x-toolkit=gtk3
           make -j"$(nproc)"
       )
   }
