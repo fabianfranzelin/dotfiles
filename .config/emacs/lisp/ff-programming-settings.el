@@ -168,8 +168,7 @@
   (transient-append-suffix
     'docker-container-shells
     "b"
-    '("v" "vterm" ff/docker-container-vterm-selection))
-  :bind ("C-x d" . docker))
+    '("v" "vterm" ff/docker-container-vterm-selection)))
 
 ;; -------------------------------------------------------------------
 ;; Typescript
