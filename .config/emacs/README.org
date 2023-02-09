@@ -92,6 +92,18 @@ Then, I install all the required third party dependencies and build Emacs
               libncurses-dev \
               texinfo
 
+          # Install tree-sitter
+          # https://git.savannah.gnu.org/cgit/emacs.git/tree/admin/notes/tree-sitter/starter-guide?h=feature/tree-sitter
+          (
+              cd "${XDG_CACHE_HOME}"
+              TREE_SITTER_DIR="tree-sitter"
+              rm -rf "${TREE_SITTER_DIR}"
+              git clone https://github.com/tree-sitter/tree-sitter.git "${TREE_SITTER_DIR}"
+              cd "${TREE_SITTER_DIR}"
+              make -j"$(nproc)"
+              sudo make install
+          )
+
           if [ -d "${__EMACS_BUILD}" ]
           then
               echo "Remove existing Emacs installation ${__EMACS_BUILD}."
@@ -119,7 +131,8 @@ Then, I install all the required third party dependencies and build Emacs
                       --with-xpm \
                       --with-dbus \
                       --with-x \
-                      --with-x-toolkit=gtk3
+                      --with-x-toolkit=gtk3 \
+                      --with-tree-sitter
           make -j"$(nproc)"
       )
   }

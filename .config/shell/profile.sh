@@ -52,6 +52,8 @@ export PATH="${HOME}/opt/bin:${HOME}/.local/bin:${HOME}/.local/share/npm/bin:/us
 # Fix for docker /dev/shm issue: https://github.com/docker/buildx/issues/418
 export DOCKER_BUILDKIT=0
 
+# Add some default directories to LD_LIBRARY_PATH
+export LD_LIBRARY_PATH="/usr/local/lib:${LD_LIBRARY_PATH}"
 #------------------------------------------------------------------------------#
 # history
 
@@ -81,8 +83,8 @@ export POSTGRES_PORT=2345
 #------------------------------------------------------------------------------#
 # SGpp
 export SGPP_HOME="${HOME}/workspace/SGpp_ff"
-export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${SGPP_HOME}/lib/sgpp"
-export PYTHONPATH="${PYTHONPATH}:${SGPP_HOME}/lib"
+export LD_LIBRARY_PATH="${SGPP_HOME}/lib/sgpp:${LD_LIBRARY_PATH}"
+export PYTHONPATH="${SGPP_HOME}/lib:${PYTHONPATH}"
 
 #------------------------------------------------------------------------------#
 # Virtual environments for python
