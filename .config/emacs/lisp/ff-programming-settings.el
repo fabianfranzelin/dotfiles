@@ -28,9 +28,11 @@
   (add-to-list 'eglot-server-programs
                `(python-mode "python3" "-m" "pylsp"))
 
-  ;; C++
+  ;; C/C++
   (add-to-list 'eglot-server-programs
-               `((c++-mode c-mode) "clangd-12"))
+               `(c-mode "clangd-12"))
+  (add-to-list 'eglot-server-programs
+               `(c++-mode "clangd-12"))
 
   ;; Sphinx, rst-mode
   (defclass eglot-esbonio (eglot-lsp-server) ()
