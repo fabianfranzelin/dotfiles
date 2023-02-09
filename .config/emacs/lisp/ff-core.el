@@ -132,12 +132,17 @@
                                              "HTTPS_PROXY"))
    :config (exec-path-from-shell-initialize))
 
-;; Turn on syntax colouring in all modes supporting it
-(use-package tree-sitter
-  :init (global-tree-sitter-mode t))
+;; ;; use built-in tree-sitter
+;; (require 'treesit)
 
-;; support for various languages for tree sitter
-(use-package tree-sitter-langs)
+;; ;; auto download and management of ts-modes
+;; (use-package treesit-auto
+;;   :custom
+;;   (treesit-auto-install t)
+;;   :config
+;;   (add-to-list 'treesit-extra-load-path (expand-file-name ".cache/emacs/tree-sitter" (getenv "HOME")))
+;;   (add-to-list 'treesit-auto-fallback-alist '(bash-ts-mode . sh-mode))
+;;   (global-treesit-auto-mode))
 
 ;; Let kill operate on the whole line when no region is selected
 (use-package whole-line-or-region
@@ -375,6 +380,8 @@ PROJECT-ROOT: Path to the root directory of the current project."
    (delete-by-moving-to-trash t)
    (dired-listing-switches "-agho --group-directories-first")
    (dired-hide-details-hide-symlink-targets nil))
+  :init
+  (require 'dired-x)
   :config
   (autoload 'dired-omit-mode "dired-x")
   ;; enable async copy

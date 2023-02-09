@@ -113,8 +113,9 @@ REPLACE-STR: string that replaces all regex matches"
                                      (member-init-intro . +)
                                      (topmost-intro . 0)
                                      (arglist-cont-nonempty . +)))))
-  (push '(c++-mode . "my-cc") c-default-style)
-  (push '(c-mode . "my-cc") c-default-style))
+
+  (add-to-list 'c-default-style `(c++-mode . "user"))
+  (add-to-list 'c-default-style `(c-mode . "user")))
 
 ;; -----------------------------------------------------------------------------------
 ;; Cmake
