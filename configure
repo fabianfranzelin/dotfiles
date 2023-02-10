@@ -36,6 +36,11 @@ __SHELL_LIB="${DOTFILES}/.config/shell"
 . "${__SHELL_LIB}/faq.sh"
 
 #------------------------------------------------------------------------------#
+# make sure that default environment variables are set correctly
+
+export LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH}
+
+#------------------------------------------------------------------------------#
 # cmdline-parser
 
 while [ "${#}" -gt 0 ]; do
@@ -115,27 +120,6 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          dos2unix
 
     # ---------------------------------------------------------
-    # install Emacs. First, just the regular version.
-    if ! command -v emacs &> /dev/null
-    then
-        echo "Install default Emacs from package sources."
-        sudo apt-get install -y \
-             emacs
-    fi
-
-    if [ -z "${SKIP_EMACS_BUILD}" ]; then
-        (
-            # now, install the newest version available by building and
-            # installing it manually
-            cd "${DOTFILES}/.config/emacs" || exit 1
-            # This creates the install script for Emacs
-            emacs -Q --batch \
-                  --eval "(require 'org)" \
-                  --eval '(org-babel-tangle-file "README.org")'
-            # Actually install Emacs via update-alternatives
-            ./install.sh || exit 1
-        )
-    fi
     # install dependencies for Emacs
     sudo apt-get install -y \
          markdown \
@@ -181,6 +165,28 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
             robotframework-tidy \
             ipython \
             gitpython
+
+   # install Emacs. First, just the regular version.
+    if ! command -v emacs &> /dev/null
+    then
+        echo "Install default Emacs from package sources."
+        sudo apt-get install -y \
+             emacs
+    fi
+
+    if [ -z "${SKIP_EMACS_BUILD}" ]; then
+        (
+            # now, install the newest version available by building and
+            # installing it manually
+            cd "${DOTFILES}/.config/emacs" || exit 1
+            # This creates the install script for Emacs
+            emacs -Q --batch \
+                  --eval "(require 'org)" \
+                  --eval '(org-babel-tangle-file "README.org")'
+            # Actually install Emacs via update-alternatives
+            ./install.sh || exit 1
+        )
+    fi
 
     # additional npm dependencies
     if ( __is_linux ) then
@@ -239,14 +245,14 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
     # Install Qtile window manager
     if [ -z "${SKIP_QTILE_INSTALL}" ]; then
         echo -e "${__COLOR_INFO}INFO: Install Qtile desktop manager${__COLOR_RESET}"
-        QTILE_PYTHON_HOME="${XDG_CACHE_HOME}/qtile/python"
+        QTILE_PYTHON_HOME="${HOME}/.cache/qtile/python"
         QTILE_PYTHON_FILEPATH="${QTILE_PYTHON_HOME}/bin/python3"
 
         # Install the right Python version for qtile (>=3.10)
         if [ ! -f "${QTILE_PYTHON_FILEPATH}" ]; then
             (
                 # Install Python
-                TMP_PYTHON_SRC=$(mktemp)
+                TMP_PYTHON_SRC=$(mktemp -d)
                 cd "${TMP_PYTHON_SRC}" || exit 1
                 QTILE_PYTHON_VERSION="3.10.12"
                 wget http://www.python.org/ftp/python/${QTILE_PYTHON_VERSION}/Python-${QTILE_PYTHON_VERSION}.tgz
@@ -255,7 +261,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
 
                 mkdir -p "${QTILE_PYTHON_HOME}"
                 ./configure --prefix="${QTILE_PYTHON_HOME}"
-                make -j${nproc}
+                make -j"$(nproc)"
                 make install
             )
         fi

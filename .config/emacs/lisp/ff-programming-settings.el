@@ -11,14 +11,15 @@
 (use-package eglot
   :hook ((c++-mode . eglot-ensure)
          (c-mode . eglot-ensure)
-         (java-mode . eglot-ensure)
-         (python-mode . eglot-ensure)
-         (typescript-mode . eglot-ensure)
-         (json-mode . eglot-ensure)
-         (yaml-mode . eglot-ensure)
+         (java-ts-mode . eglot-ensure)
+         (python-ts-mode . eglot-ensure)
+         (typescript-ts-mode . eglot-ensure)
+         (json-ts-mode . eglot-ensure)
+         (yaml-ts-mode . eglot-ensure)
+         (bash-ts-mode . eglot-ensure)
          (sh-mode . eglot-ensure)
-         (cmake-mode . eglot-ensure)
-         (dockerfile-mode . eglot-ensure)
+         (cmake-ts-mode . eglot-ensure)
+         (dockerfile-ts-mode . eglot-ensure)
          (rst-mode . eglot-ensure))
   :custom ((eglot-events-buffer-size 10))
   :config
@@ -122,23 +123,17 @@
 ;; -------------------------------------------------------------------
 ;; yaml mode
 ;; -------------------------------------------------------------------
-(use-package yaml-mode
-  :mode (("\\.yml$" . yaml-mode)
-         ("\\.yaml$" . yaml-mode))
-  :init
-  ;; install system dependencies
-  (ff/ensure-python-package "yamllint" nil "yamllint")
-  (ff/ensure-npm-package "yaml-language-server" "yaml-language-server")
-  :bind ((:map yaml-mode-map
-               ("C-j" . newline-and-indent))))
+(ff/ensure-python-package "yamllint" nil "yamllint")
+(ff/ensure-npm-package "yaml-language-server" "yaml-language-server")
+
+(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.yaml$" . yaml-ts-mode))
 
 ;; -------------------------------------------------------------------
-;; dockerfile mode
+;; Dockerfile
 ;; -------------------------------------------------------------------
-(use-package dockerfile-mode
-  :mode (("Dockerfile\\'" . dockerfile-mode))
-  :init
-  (ff/ensure-npm-package "dockerfile-language-server-nodejs" "docker-langserver"))
+(ff/ensure-npm-package "dockerfile-language-server-nodejs" "docker-langserver")
+(add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-ts-mode))
 
 (use-package docker
   :after (setup-vterm)
@@ -178,23 +173,18 @@
     '("v" "vterm" ff/docker-container-vterm-selection)))
 
 ;; -------------------------------------------------------------------
-;; Typescript
+;; Typescript, TSX and Javascript
 ;; -------------------------------------------------------------------
 (use-package tide
-  :hook ((typescript-mode . tide-setup)
-         (typescript-mode . tide-hl-identifier-mode)
+  :hook ((typescript-ts-mode . tide-setup)
+         (typescript-ts-mode . tide-hl-identifier-mode)
          (before-save . tide-format-before-save)))
 
-(use-package typescript-mode
-  :custom ((typescript-indent-level 4))
-  :init
-  (ff/ensure-npm-package "typescript-language-server" "typescript-language-server"))
+(ff/ensure-npm-package "typescript-language-server" "typescript-language-server")
 
-;; note, for some reason the mode directive does not work here, so I
-;; added the typescript mode explicitly to tsx files.
-(add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
-(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
-(add-to-list 'auto-mode-alist '("\\.js\\'" . typescript-mode))
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js-ts-mode))
 
 ;; -------------------------------------------------------------------
 ;; Groovy mode for Jenkins
@@ -210,12 +200,12 @@
 ;; -------------------------------------------------------------------
 ;; Json
 ;; -------------------------------------------------------------------
-(use-package json-mode
-  :mode (("\\.json$" . json-mode)
-         ("\\.inst$" . json-mode))
-  :init
-  ;; ensure system packages
-  (ff/ensure-npm-package "jsonlint" "jsonlint"))
+;; ensure system packages
+(ff/ensure-apt-package "npm" "npm")
+(ff/ensure-npm-package "jsonlint" "jsonlint")
+
+(add-to-list 'auto-mode-alist '("\\.json$" . json-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.inst$" . json-ts-mode))
 
 ;; -------------------------------------------------------------------
 ;; Robot Framework

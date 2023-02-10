@@ -113,13 +113,11 @@ REPLACE-STR: string that replaces all regex matches"
   (add-to-list 'c-default-style `(c-mode . "user")))
 
 ;; -----------------------------------------------------------------------------------
-;; Cmake
-(use-package cmake-mode
-  :init
-  ;; install system dependencies
-  (ff/ensure-python-package "cmake_language_server" nil "cmake_language_server")
-  :mode (("\\.cmake$" . cmake-mode)
-         ("CMakeLists.txt" . cmake-mode)))
+;; CMake
+
+(ff/ensure-python-package "cmake_language_server" nil "cmake_language_server")
+(add-to-list 'auto-mode-alist '("\\.cmake$" . cmake-ts-mode))
+(add-to-list 'auto-mode-alist '("CMakeLists.txt" . cmake-ts-mode))
 
 (provide 'ff-programming-cc)
 
