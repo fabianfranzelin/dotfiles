@@ -218,7 +218,9 @@
 ;; Robot Framework
 ;; -------------------------------------------------------------------
 (use-package robot-mode
-  :mode (("\\.robot" . robot-mode)))
+  :mode (("\\.robot" . robot-mode))
+  :init
+  (ff/ensure-python-package "robotframework-tidy" nil "robotidy"))
 
 ;; -------------------------------------------------------------------
 ;; Direnv: I am using the buffer local version and not the direnv
