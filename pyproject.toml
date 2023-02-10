@@ -31,8 +31,6 @@ max-line-length = 130
 disable = [
   "no-member",
   "invalid-name",
-  "bad-whitespace",
-  "bad-continuation",
   "fixme",
   "too-few-public-methods",
 ]

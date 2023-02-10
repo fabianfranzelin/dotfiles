@@ -3,49 +3,37 @@
 ;;; Commentary:
 ;; all the configuration for Python projects
 
-
-;;; how to configure .dir-locals.el for flycheck
-;;
-;; ((python-mode . ((pyvenv-workon . <name>)
-;;                  (flycheck-add-next-checker . ('python-pylint 'python-mypy))
-;;                  (flycheck-disabled-checkers . 'python-flake8))))
-
 ;;; Code:
 
-;; pdb debugger
-(defun annotate-pdb ()
-  "Colors the background if pdb is active."
-  (interactive)
-  (highlight-lines-matching-regexp "import ipdb")
-  (highlight-lines-matching-regexp "ipdb.set_trace()")
-  (highlight-lines-matching-regexp "import pdb")
-  (highlight-lines-matching-regexp "pdb.set_trace()"))
+;; Python mode setup
 
-(use-package python-mode
-  :mode (("\\.py$" . python-mode)
-         ("SConstruct" . python-mode)
-         ("SConscript" . python-mode))
-  :hook ((python-mode . annotate-pdb)
-         (python-mode . hs-minor-mode))
-  :init
-  ;; install system dependencies
-  (ff/ensure-python-package "python-lsp-server[all]" nil "pylsp")
-  (ff/ensure-python-package "ipython" nil "ipython")
-  (ff/ensure-python-package "pdb")
-  (ff/ensure-python-package "ipdb")
+;; install system dependencies
+(ff/ensure-python-package "python-lsp-server[all]" nil "pylsp")
+(ff/ensure-python-package "ipython" nil "ipython")
+(ff/ensure-python-package "pdb")
+(ff/ensure-python-package "ipdb")
+(ff/ensure-python-package "pylint")
+(ff/ensure-python-package "mypy")
+(ff/ensure-python-package "flake8")
 
-  ;; use ipython as default interpreter
-  (setq python-shell-interpreter "ipython3"
-        python-shell-interpreter-args "--simple-prompt -i"
-        python-indent-offset 4
-        python-indent-guess-indent-offset nil)
+;; use tree-sitter as default and overwrite python-mode
+(add-to-list 'major-mode-remap-alist '(python-mode python-ts-mode))
 
-  (ff/ensure-python-package "pylint")
-  (ff/ensure-python-package "mypy")
-  (ff/ensure-python-package "flake8")
-  :config
-  ;; delete output buffer on buffer execution
-  (setq py-shell-switch-buffers-on-execute nil))
+;; use my personal hooks
+(add-hook 'python-ts-mode-hook #'hs-minor-mode)
+
+(add-to-list 'auto-mode-alist '("\\.py\\'" . python-ts-mode))
+(add-to-list 'auto-mode-alist '("SConstruct" . python-ts-mode))
+(add-to-list 'auto-mode-alist '("SConstript" . python-ts-mode))
+
+;; use ipython as default interpreter
+(setq python-shell-interpreter "ipython3"
+      python-shell-interpreter-args "--simple-prompt -i"
+      python-indent-offset 4
+      python-indent-guess-indent-offset nil)
+
+;; delete output buffer on buffer execution
+(setq py-shell-switch-buffers-on-execute nil)
 
 ;; install black and black-macchiato with pip3 install --user -U
 ;; black-macchiato black if black is not available as executable in
@@ -55,7 +43,7 @@
   :init
   ;; install system dependencies
   (ff/ensure-python-package "black" nil "black")
-  :hook ((python-mode . python-black-on-save-mode)))
+  :hook ((python-ts-mode . python-black-on-save-mode)))
 
 ;; supports virtual environments. To be set with pyvenv-workon
 (use-package pyvenv
@@ -72,7 +60,7 @@
 ;; enable sphinx doc strings support
 ;; C-c M-d sphinx-doc
 (use-package sphinx-doc
-  :hook ((python-mode . sphinx-doc-mode)))
+  :hook ((python-ts-mode . sphinx-doc-mode)))
 
 (provide 'ff-programming-python)
 

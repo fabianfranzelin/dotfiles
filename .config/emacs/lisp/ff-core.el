@@ -150,14 +150,64 @@
 
 ;; make sure that the path environment from shell is available
 (use-package exec-path-from-shell
-   :unless (string-equal system-type "windows-nt")
-   :custom (exec-path-from-shell-variables '("PATH"
-                                             "MANPATH"
-                                             "SSH_AUTH_SOCK"
-                                             "HTTP_PROXY"
-                                             "HTTPS_PROXY"))
-   :config (exec-path-from-shell-initialize))
+  :unless (string-equal system-type "windows-nt")
+  :custom (exec-path-from-shell-variables '("PATH"
+                                            "MANPATH"
+                                            "SSH_AUTH_SOCK"
+                                            "HTTP_PROXY"
+                                            "HTTPS_PROXY"))
+  :config (exec-path-from-shell-initialize))
 
+;; use built-in tree-sitter
+(use-package treesit
+  :straight nil
+  :preface
+  (defun ff/setup-install-grammars ()
+    "Install Tree-sitter grammars if they are absent."
+    (interactive)
+    (dolist (grammar
+             '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+               (cmake "https://github.com/uyha/tree-sitter-cmake")
+               (css "https://github.com/tree-sitter/tree-sitter-css")
+               (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+               (html "https://github.com/tree-sitter/tree-sitter-html")
+               (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+               (json "https://github.com/tree-sitter/tree-sitter-json")
+               (make "https://github.com/alemuller/tree-sitter-make")
+               (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+               (python "https://github.com/tree-sitter/tree-sitter-python")
+               (toml "https://github.com/tree-sitter/tree-sitter-toml")
+               (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+               (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+               (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
+      (add-to-list 'treesit-language-source-alist grammar)
+      ;; Only install `grammar' if we don't already have it
+      ;; installed. However, if you want to *update* a grammar then
+      ;; this obviously prevents that from happening.
+      (unless (treesit-language-available-p (car grammar))
+        (treesit-install-language-grammar (car grammar)))))
+  :config
+  (ff/setup-install-grammars)
+  (add-to-list 'treesit-extra-load-path (expand-file-name ".cache/emacs/tree-sitter" (getenv "HOME"))))
+
+(use-package combobulate
+  :preface
+  ;; You can customize Combobulate's key prefix here.
+  ;; Note that you may have to restart Emacs for this to take effect!
+  (setq combobulate-key-prefix "C-c o")
+
+  ;; Optional, but recommended.
+  ;;
+  ;; You can manually enable Combobulate with `M-x
+  ;; combobulate-mode'.
+  :hook ((python-ts-mode . combobulate-mode)
+         (js-ts-mode . combobulate-mode)
+         (css-ts-mode . combobulate-mode)
+         (yaml-ts-mode . combobulate-mode)
+         (typescript-ts-mode . combobulate-mode)
+         (tsx-ts-mode . combobulate-mode)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Let kill operate on the whole line when no region is selected
 (use-package whole-line-or-region
   :init (whole-line-or-region-global-mode t))
@@ -437,7 +487,7 @@ TEXT: title"
 
 (use-package yasnippet
   :custom
-  ((yas-wrap-around-region t))
+  (yas-wrap-around-region t)
   :init
   ;; add pesonal snippets directory
   (add-to-list 'yas-snippet-dirs (expand-file-name "snippets/" emacs-config-home))
@@ -448,7 +498,27 @@ TEXT: title"
   :bind (("C-c C-y" . yas-insert-snippet)))
 
 (use-package yasnippet-snippets
-  :after (yasnippet))
+  :after (yasnippet)
+  :config
+  ;; make snippets available in ts-modes when not already available
+  (mapcar (lambda (element)
+      (let* ((key (car element))
+             (value (cdr element))
+             (source (expand-file-name key yasnippet-snippets-dir))
+             (target (expand-file-name value yasnippet-snippets-dir)))
+        (unless (file-exists-p target)
+          (f-symlink source target))))
+      '(("python-mode" . "python-ts-mode")
+        ("dockerfile-mode" . "dockerfile-ts-mode")
+        ("sh-mode" . "bash-ts-mode")
+        ("c++-mode" . "c++-ts-mode")
+        ("c-mode" . "c-ts-mode")
+        ("cmake-mode" . "cmake-ts-mode")
+        ("css-mode" . "css-ts-mode")
+        ("java-mode" . "java-ts-mode")
+        ("js-mode" . "js-ts-mode")
+        ("typescript-mode" . "typescript-ts-mode")
+        ("yaml-mode" . "yaml-ts-mode"))))
 
 ;; -------------------------------------------------------------------
 ;; Ace window: select windows based on numbers
