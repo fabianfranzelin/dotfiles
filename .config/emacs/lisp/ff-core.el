@@ -132,18 +132,6 @@
                                              "HTTPS_PROXY"))
    :config (exec-path-from-shell-initialize))
 
-;; ;; use built-in tree-sitter
-;; (require 'treesit)
-
-;; ;; auto download and management of ts-modes
-;; (use-package treesit-auto
-;;   :custom
-;;   (treesit-auto-install t)
-;;   :config
-;;   (add-to-list 'treesit-extra-load-path (expand-file-name ".cache/emacs/tree-sitter" (getenv "HOME")))
-;;   (add-to-list 'treesit-auto-fallback-alist '(bash-ts-mode . sh-mode))
-;;   (global-treesit-auto-mode))
-
 ;; Let kill operate on the whole line when no region is selected
 (use-package whole-line-or-region
   :init (whole-line-or-region-global-mode t))
