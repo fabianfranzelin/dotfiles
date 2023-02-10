@@ -25,7 +25,7 @@ def main() -> None:
     path = pathlib.Path("/tmp")
     print(path)
 
-    a = np.array([10, 20])  # type: ignore
+    a = np.array([10, 20])
     print(np.dot(a, a.T))  # type: ignore
 
 
