@@ -95,6 +95,7 @@ $RECYCLE.BIN/
 build/
 .vscode/
 *.db
+*.idx
 
 /.local/share/npm/
 /.local/bin/marksman
