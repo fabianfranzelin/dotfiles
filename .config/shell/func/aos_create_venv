@@ -16,8 +16,8 @@ aos_create_venv() {
         # shellcheck disable=SC1090
         . "${VIRTUALENV_ACTIVATE_FILEPATH}"
         python3 -m pip install --upgrade pip wheel setuptools pbr
-        python3 -m pip install -r "./_tools/docker/aos_user_osd6/requirements.in"
-        python3 -m pip install -r "./_tools/docker/aos_dev_osd6/requirements.in"
+        python3 -m pip install -r "./_tools/docker/aos_user_osd6/requirements.txt"
+        python3 -m pip install -r "./_tools/docker/aos_dev_osd6/requirements.txt"
 
         # this is the minimum version required by fmt
         python3 -m pip install conan==1.43.0 markupsafe=2.0
