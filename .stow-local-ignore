@@ -10,6 +10,7 @@ fonts
 ^/.*\.md
 LICENSE
 ^/.*\.bak
+examples
 
 .dir-locals.el
 .gitignore

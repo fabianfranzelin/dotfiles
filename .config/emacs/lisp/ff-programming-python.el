@@ -68,10 +68,9 @@
   (add-hook 'before-save-hook 'py-isort-before-save))
 
 ;; enable sphinx doc strings support
+;; C-c M-d sphinx-doc
 (use-package sphinx-doc
-  :hook ((python-mode . sphinx-doc-mode))
-  :bind (:map python-mode-map
-              ("C-c C-d" . sphinx-doc)))
+  :hook ((python-mode . sphinx-doc-mode)))
 
 (provide 'ff-programming-python)
 
