@@ -42,7 +42,7 @@
 (mouse-wheel-mode t)
 
 ;; enable recentf-mode but ignore files that where opened with docker
-;; tramp
+;; tramp and ssh
 (recentf-mode t)
 (add-to-list 'recentf-exclude "^/ssh:.*")
 (add-to-list 'recentf-exclude "^/docker:.*")
