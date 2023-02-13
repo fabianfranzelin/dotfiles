@@ -1,7 +1,7 @@
 ;;; Directory Local Variables
 ;;; For more information see (info "(emacs) Directory Variables")
 
-((nil . ((tags-table-list . '("./examples/cc-project"))))
+((c++-mode . ((tags-table-list . '("./examples/cc-project"))))
  (python-mode . ((eval . (pyvenv-deactivate))
                  (flycheck-add-next-checker . ('python-pylint 'python-mypy))
                  (eval . (add-to-list 'flycheck-disabled-checkers 'python-flake8))
