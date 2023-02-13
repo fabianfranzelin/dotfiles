@@ -26,6 +26,8 @@ export AOS_BASE_HOME="${HOME}/workspace/aos_base"
 export AOS_BUILD_DIR="${AOS_BASE_HOME}/build"
 export AOS_INSTALL_DIR="${AOS_BASE_HOME}/install"
 
+export ENVIRONMENT_NAME="Classic-with-Bosch-BCN-Services"
+
 # QNX
 export SWT_GTK3=0
 export FLEXLM_TIMEOUT=3000000
