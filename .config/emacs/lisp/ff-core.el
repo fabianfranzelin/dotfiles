@@ -421,6 +421,10 @@ PROJECT-ROOT: Path to the root directory of the current project."
 (use-package dired-hacks
   :hook ((dired-mode . dired-collapse-mode)))
 
+(use-package dired-rsync
+  :bind (:map dired-mode-map
+              ("C" . dired-rsync)))
+
 ;; -------------------------------------------------------------------
 ;; Undo tree - make undos more powerful
 ;; -------------------------------------------------------------------
