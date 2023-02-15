@@ -350,11 +350,6 @@ PROJECT-ROOT: Path to the root directory of the current project."
 ;; -------------------------------------------------------------------
 ;; Set up dired with async
 ;; -------------------------------------------------------------------
-
-;; generic package to allow concurrency for certain tasks in
-;; Emacs. Currently only used for dired.
-(use-package async)
-
 ;; rename buffer content: C-x C-q, C-c C-c to apply and C-c ESC to cancel
 ;; copy path of file: 0 w in dired buffer
 (use-package dired
@@ -436,6 +431,10 @@ PROJECT-ROOT: Path to the root directory of the current project."
 ;; -------------------------------------------------------------------
 ;; Credential management
 ;; -------------------------------------------------------------------
+(use-package auth-source
+  :config
+  (setq auth-sources '("~/.authinfo.gpg" "~/.netrc")))
+
 (use-package auth-source-pass
   :config (auth-source-pass-enable))
 
