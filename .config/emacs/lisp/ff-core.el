@@ -287,6 +287,7 @@ PROJECT-ROOT: Path to the root directory of the current project."
                               (project-find-dir "Find directory")
                               (ff/project-magit "Magit")
                               (project-dired "Dired"))))
+   ;; (project-vc-extra-root-markers '(".clangd" ".project.el")))
   :bind (:map project-prefix-map
               ("P" . ff/project-switch-project)
               ("m" . ff/project-magit)
