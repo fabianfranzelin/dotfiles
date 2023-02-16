@@ -272,7 +272,7 @@ DIR: root directory of project"
 (defun ff/project-magit ()
   "Show the Git status of the current project."
   (interactive)
-  (magit-status (project-root (project-current t))))
+  (magit-status (locate-dominating-file (project-root (project-current t)) ".git")))
 
 (defun ff/project-vterm ()
   "Start a new vterm in project root.
@@ -286,8 +286,9 @@ PROJECT-ROOT: Path to the root directory of the current project."
   ((project-switch-commands '((project-find-file "Find file")
                               (project-find-dir "Find directory")
                               (ff/project-magit "Magit")
-                              (project-dired "Dired"))))
-   ;; (project-vc-extra-root-markers '(".clangd" ".project.el")))
+                              (project-dired "Dired")))
+   (project-vc-extra-root-markers '(".clangd" ".project"))
+   (project-vc-ignores '("build/" "install/" ".*cache/")))
   :bind (:map project-prefix-map
               ("P" . ff/project-switch-project)
               ("m" . ff/project-magit)
