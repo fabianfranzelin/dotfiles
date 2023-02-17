@@ -1,14 +1,37 @@
+#include <cstdint>
+#include <cstdlib>
 #include <iostream>
 
-int f(int a)
+bool bitwise_comparison(std::uint8_t* a, std::uint8_t* b, size_t length)
 {
-    return a * 10;
+    bool ans = true;
+    for (size_t i = 0; i < length; i++)
+    {
+        if (a[i] != b[i])
+        {
+            std::cout << "(" << i << ") entry differs" << std::endl;
+            ans = false;
+        }
+    }
+    return ans;
 }
 
 int main(int argc, char* argv[])
 {
-  std::cout << "Hello world" << std::endl;
-  int a = 10;
-  std::cout << "f(" << a << ") = " << f(a) << std::endl;
-  return 0;
+    size_t length = 10;
+    auto a = (std::uint8_t*)malloc(length * sizeof(std::uint8_t));
+    auto b = (std::uint8_t*)malloc(length * sizeof(std::uint8_t));
+
+    for (size_t i = 0; i < length; i++)
+    {
+        a[i] = 0;
+        b[i] = 0;
+    }
+
+    a[5] = 10;
+
+    bitwise_comparison(a, b, length);
+    free(a);
+    free(b);
+    return 0;
 }
