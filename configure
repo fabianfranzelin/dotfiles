@@ -38,7 +38,8 @@ __SHELL_LIB="${DOTFILES}/.config/shell"
 while [ "${#}" -gt 0 ]; do
     case "${1}" in
         '-h'|'--help')
-            __ERRCODE=0
+            echo -e "${__COLOR_INFO}${usage}${__COLOR_RESET}"
+            exit 0
             ;;
         '-i'|'--install')
             INSTALL_DEPENDENCIES=1
@@ -46,14 +47,10 @@ while [ "${#}" -gt 0 ]; do
             ;;
         *)
             echo -e "${__COLOR_ERR}Unknown value ${1}${__COLOR_RESET}"
-            __ERRCODE=1
+            echo -e "${__COLOR_INFO}${usage}${__COLOR_RESET}"
+            exit 1
             ;;
     esac
-
-    if [ -n "${__ERRCODE}" ]; then
-        echo -e "${__COLOR_INFO}${usage}${__COLOR_RESET}"
-        exit ${__ERRCODE}
-    fi
 done
 
 #------------------------------------------------------------------------------#
