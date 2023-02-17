@@ -10,8 +10,7 @@ USAGE
     ${0} [OPTION]...
 
 DESCRIPTION
-       Creates the custom folder and uses drafts for non-existing files.
-       The whole script is interactive and no file will be removed without permission.
+       Configures and installs the system.
 
        -h --help
               Print this help message
