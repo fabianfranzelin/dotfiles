@@ -20,7 +20,7 @@ aos_create_venv() {
         python3 -m pip install -r "./_tools/docker/aos_dev_osd6/requirements.txt"
 
         # this is the minimum version required by fmt
-        python3 -m pip install markupsafe=2.0
+        python3 -m pip install markupsafe==2.0
         pipx install poetry==1.2.1
 
         # for some reason, these packages are required to import rosbag
