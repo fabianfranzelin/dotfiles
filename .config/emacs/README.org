@@ -120,7 +120,7 @@ Then, I install all the required third party dependencies and build Emacs
                       --with-dbus \
                       --with-x \
                       --with-x-toolkit=gtk3 \
-                      --without-treesitter
+                      --without-tree-sitter
           make -j"$(nproc)"
       )
   }
