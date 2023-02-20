@@ -437,12 +437,14 @@ PROJECT-ROOT: Path to the root directory of the current project."
 ;; -------------------------------------------------------------------
 ;; Credential management
 ;; -------------------------------------------------------------------
-(use-package auth-source
-  :config
-  (setq auth-sources '("~/.authinfo.gpg" "~/.netrc")))
+(require 'auth-source-pass)
+(auth-source-pass-enable)
 
-(use-package auth-source-pass
-  :config (auth-source-pass-enable))
+(require 'auth-source)
+(add-to-list 'auth-sources '(password-store))
+(customize-variable 'auth-sources)
+
+(use-package password-store)
 
 ;; -------------------------------------------------------------------
 ;; Open files externally
