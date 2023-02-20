@@ -190,13 +190,6 @@ NAME: name of a tab"
     (ff/tab-bar-new-tab name))
   (funcall func))
 
-(defun ff/tab-bar-run-todos ()
-  (interactive)
-  (ff/tab-bar-switch-or-create
-   "org"
-   #'(lambda ()
-       (find-file "~/workspace/org/todos.org"))))
-
 (defun ff/tab-bar-run-notes ()
   (interactive)
   (ff/tab-bar-switch-or-create
@@ -204,12 +197,19 @@ NAME: name of a tab"
    #'(lambda ()
        (find-file "~/workspace/org/notes.org"))))
 
-(defun ff/tab-bar-run-aos ()
+(defun ff/tab-bar-run-aos-architecture ()
   (interactive)
   (ff/tab-bar-switch-or-create
    "org"
    #'(lambda ()
-       (find-file "~/workspace/org/aos.org"))))
+       (find-file "~/workspace/org/todos_aos_architecture.org"))))
+
+(defun ff/tab-bar-run-aos-defect-handling ()
+  (interactive)
+  (ff/tab-bar-switch-or-create
+   "org"
+   #'(lambda ()
+       (find-file "~/workspace/org/todos_aos_defect_handling_feature.org"))))
 
 (use-package tab-bar
   :custom
@@ -222,9 +222,9 @@ NAME: name of a tab"
          ("C-x t w" . tab-close)
          ("C-<prior>" . tab-previous)
          ("C-<next>" . tab-next)
-         ("C-x t h t" . ff/tab-bar-run-todos)
-         ("C-x t h c" . ff/tab-bar-run-notes)
-         ("C-x t h n" . ff/tab-bar-run-aos)
+         ("C-x t h a" . ff/tab-bar-run-aos-architecture)
+         ("C-x t h d" . ff/tab-bar-run-aos-defect-handling)
+         ("C-x t h n" . ff/tab-bar-run-notes)
          ("C-x t l" . ff/tab-bar-show-tab-list)))
 
 ;; -------------------------------------------------------------------
