@@ -16,6 +16,9 @@
 (menu-bar-mode -1) ; disable menu bar
 (tool-bar-mode -1) ; disbale tool bar
 
+;; set cursor style to filled bar
+(setq-default cursor-type 'box)
+
 ;; no splash screen
 (setq inhibit-startup-screen t)
 
