@@ -49,13 +49,6 @@
 ;; -------------------------------------------------------------------
 ;; RST mode
 ;; -------------------------------------------------------------------
-(use-package poly-rst
-  :mode (("\\.rst$" . poly-rst-mode)
-         ("\\.rest$" . poly-rst-mode)
-         ("\\.inc$" . poly-rst-mode))
-  :init
-  (set-default 'truncate-lines t))
-
 (defun ff/configure-rst-mode ()
   "Configure rst mode."
   (interactive)
