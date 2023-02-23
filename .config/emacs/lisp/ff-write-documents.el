@@ -51,7 +51,8 @@
 ;; -------------------------------------------------------------------
 (use-package poly-rst
   :mode (("\\.rst$" . poly-rst-mode)
-         ("\\.rest$" . poly-rst-mode))
+         ("\\.rest$" . poly-rst-mode)
+         ("\\.inc$" . poly-rst-mode))
   :init
   (set-default 'truncate-lines t))
 
@@ -64,7 +65,8 @@
 
 (use-package rst
   :mode (("\\.rst$" . rst-mode)
-         ("\\.rest$" . rst-mode))
+         ("\\.rest$" . rst-mode)
+         ("\\.inc$" . rst-mode))
   :hook ((rst-mode . pyvenv-mode) ;; enable support of virtualenvironments
          (rst-mode . ff/configure-rst-mode)))
 
