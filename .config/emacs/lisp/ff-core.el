@@ -442,7 +442,6 @@ PROJECT-ROOT: Path to the root directory of the current project."
 
 (require 'auth-source)
 (add-to-list 'auth-sources '(password-store))
-(customize-variable 'auth-sources)
 
 (use-package password-store)
 
