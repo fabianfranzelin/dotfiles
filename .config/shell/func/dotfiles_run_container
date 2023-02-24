@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+
+dotfiles_run_container() {
+    docker run -it --rm \
+           --net host \
+           -e http_proxy \
+           -e https_proxy \
+           -e DISPLAY \
+           -v "${HOME}/workspace/dotfiles:/tmp/user/dotfiles" \
+           -v "/tmp/.X11-unix:/tmp/.X11-unix" \
+           -v "${XAUTHORITY}:/tmp/user/.Xauthority" \
+           -v "${HOME}/.ssh:/tmp/user/.ssh" \
+           -e "DEBIAN_FRONTEND=noninteractive" \
+           --group-add sudo \
+           --shm-size 4g \
+           --workdir /tmp/user/dotfiles \
+           ubuntu:22.04
+}
