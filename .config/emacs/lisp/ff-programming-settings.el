@@ -226,9 +226,7 @@
 ;; Direnv: I am using the buffer local version and not the direnv
 ;; package
 ;; -------------------------------------------------------------------
-(use-package envrc
-  :after (flycheck)
-  :init (envrc-global-mode t))
+(use-package envrc)
 
 (provide 'ff-programming-settings)
 
