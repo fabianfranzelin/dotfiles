@@ -217,6 +217,22 @@
 ;; -------------------------------------------------------------------
 ;; Robot Framework
 ;; -------------------------------------------------------------------
+(defcustom ff/robotidy-config nil "Path to robotidy configuation file.")
+
+(defun ff/robotidy-formatter ()
+  "Formats the selected text with robotidy.
+CONFIG-FILE: path to config file of robotidy."
+  (interactive)
+  (cond ((null ff/robotidy-config)
+         (call-process "robotidy" (buffer-file-name) nil t)
+         (shell-command (concat "robotidy " (buffer-file-name))
+         (message "Done without config on %s" (buffer-file-name)))
+        ((file-exists-p config-file)
+         (call-process "robotidy" (buffer-file-name) nil t "--config" config-file)
+         (message "Done with config"))
+        (t
+         (message "[ROBOTIDY] Config file %s does not exist." config-file))))
+
 (use-package robot-mode
   :mode (("\\.robot" . robot-mode))
   :init
