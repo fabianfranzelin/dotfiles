@@ -226,14 +226,14 @@
 CONFIG-FILE: path to config file of robotidy."
   (interactive)
   (cond ((not ff/robotidy-config)
-         (call-process "robotidy" (buffer-file-name) nil t)
-         (shell-command (concat "robotidy " (buffer-file-name))
+         (call-process "robotidy" nil nil t (buffer-file-name))
          (message "Done without config on %s" (buffer-file-name)))
         ((file-exists-p (eval ff/robotidy-config))
-         (call-process "robotidy" (buffer-file-name) nil t "--config" config-file)
-         (message "Done with config"))
+         (call-process "robotidy" (buffer-file-name) nil t "--config" (eval ff/robotidy-config))
+         (shell-command (concat "robotidy " (buffer-file-name) "--config " ff/robotidy-config))
+         (message "Done with config on %s" (buffer-file-name)))
         (t
-         (message "[ROBOTIDY] Config file %s does not exist." config-file)))))
+         (message "[ROBOTIDY] Config file %s does not exist." ff/robotidy-config))))
 
 (use-package robot-mode
   :mode (("\\.robot" . robot-mode))
