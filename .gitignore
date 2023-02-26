@@ -105,6 +105,7 @@ build/
 /.local/share/emacs-28.2/
 /.local/share/emacs-29/
 /.local/share/direnv/
+/.local/share/man/
 
 /.config/znt/
 /.config/configstore/

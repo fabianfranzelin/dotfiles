@@ -25,10 +25,12 @@
   :mode (("\\.py$" . python-mode)
          ("SConstruct" . python-mode)
          ("SConscript" . python-mode))
-  :hook ((python-mode . annotate-pdb))
+  :hook ((python-mode . annotate-pdb)
+         (python-mode . hs-minor-mode))
   :init
   ;; install system dependencies
   (ff/ensure-python-package "python-lsp-server[all]" nil "pylsp")
+  (ff/ensure-python-package "ipython" nil "ipython")
   (ff/ensure-python-package "pdb")
   (ff/ensure-python-package "ipdb")
 
