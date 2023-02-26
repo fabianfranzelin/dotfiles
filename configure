@@ -153,8 +153,10 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
             cmake_language_server \
             "python-lsp-server[all]" \
             pylsp-mypy \
+            python-lsp-black \
             esbonio \
-            robotframework-tidy
+            robotframework-tidy \
+            ipython
 
     # additional npm dependencies
     if ( __is_linux ) then

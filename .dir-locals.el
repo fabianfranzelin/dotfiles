@@ -10,7 +10,16 @@
                                                                          :fuzzy t)
                                                         :pylint (:enabled t)
                                                         :mypy (:enabled t)
-                                                        :pycodestyle (:enabled :json-false)))))))
+                                                        :pydocstyle (:enabled t
+                                                                              :convention "google")
+                                                        :black (:enabled t
+                                                                         :cache_config t)
+                                                        :pycodestyle (:enabled :json-false)
+                                                        :maccabe (:enabled :json-false)
+                                                        :pyflakes (:enabled :json-false)
+                                                        :ruff (:enabled :json-false)
+                                                        :yapf (:enabled :json-false)
+                                                        :autopep8 (:enabled :json-false)))))))
  (sh-mode . ((flycheck-add-next-checker . '(sh-shellcheck sh-zsh))
              (eval . (add-to-list 'flycheck-disabled-checkers 'sh-posix-dash))
              (eval . (add-to-list 'flycheck-disabled-checkers 'sh-posix-bash))
