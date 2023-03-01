@@ -226,19 +226,20 @@
 CONFIG-FILE: path to config file of robotidy."
   (interactive)
   (cond ((not ff/robotidy-config)
-         (call-process "robotidy" nil nil t (buffer-file-name))
-         (message "Done without config on %s" (buffer-file-name)))
+         (call-process "robotidy" nil "*robotidy*" t (buffer-file-name))
+         (revert-buffer :ignore-auto :noconfirm))
         ((file-exists-p (eval ff/robotidy-config))
-         (call-process "robotidy" (buffer-file-name) nil t "--config" (eval ff/robotidy-config))
-         (shell-command (concat "robotidy " (buffer-file-name) "--config " ff/robotidy-config))
-         (message "Done with config on %s" (buffer-file-name)))
+         (call-process "robotidy" nil "*robotidy*" t (buffer-file-name) "--config" ff/robotidy-config)
+         (revert-buffer :ignore-auto :noconfirm))
         (t
          (message "[ROBOTIDY] Config file %s does not exist." ff/robotidy-config))))
 
 (use-package robot-mode
   :mode (("\\.robot" . robot-mode))
   :init
-  (ff/ensure-python-package "robotframework-tidy" nil "robotidy"))
+  (ff/ensure-python-package "robotframework-tidy" nil "robotidy")
+  :hook ((robot-mode . (lambda ()
+                         (add-hook 'after-save-hook 'ff/robotidy-formatter nil t)))))
 
 ;; -------------------------------------------------------------------
 ;; Direnv: I am using the buffer local version and not the direnv
