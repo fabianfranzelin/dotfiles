@@ -122,6 +122,7 @@ Then, I install all the required third party dependencies and build Emacs
                       --with-x-toolkit=gtk3 \
 		      --with-native-compilation=aot \
                       --without-tree-sitter
+	  make clean
           make -j"$(nproc)"
       )
   }
