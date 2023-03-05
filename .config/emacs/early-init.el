@@ -43,7 +43,10 @@
   ;; Silence compiler warnings as they can be pretty disruptive
   (setq native-comp-async-report-warnings-errors nil)
   ;; Make native compilation happens asynchronously
-  (setq native-comp-deferred-compilation t))
+  (setq native-comp-deferred-compilation t)
+  ;; init compilation deny list to fix a bug in straight.
+  ;; It will be redefined later, if required
+  (setq native-comp-deferred-compilation-deny-list nil))
 
 ;; -------------------------------------------------------------------
 ;;; UI configuration
