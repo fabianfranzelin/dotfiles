@@ -60,4 +60,5 @@
 ;; Make the initial buffer load faster by setting its mode to fundamental-mode
 (customize-set-variable 'initial-major-mode 'fundamental-mode)
 
+(provide 'early-init)
 ;;; early-init.el ends here

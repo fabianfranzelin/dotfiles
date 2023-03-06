@@ -26,7 +26,6 @@ jobs:
           echo "------------------------------------------------"
           emacs --version
           echo "------------------------------------------------"
-          emacs --script "~/.config/emacs/early-init.el"
+          printf "%s\n%s\n%s\n" "(add-to-list 'load-path \"~/.config/emacs\")" "(require 'early-init)" "(require 'init)" | tee "test.el"
+          emacs --script "test.el"
           test $? -eq 0 || exit 1
-          emacs --script "~/.config/emacs/init.el"
-          test $? -eq 0 || exit 2

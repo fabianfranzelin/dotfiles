@@ -106,12 +106,14 @@ build/
 /.local/share/emacs-29/
 /.local/share/direnv/
 /.local/share/man/
+/.local/share/CMakeTools/
 
 /.config/znt/
 /.config/configstore/
 /.config/pulse/
 /.config/htop/
 /.config/wslu/
+/.config/QtProject.conf
 
 # Python
 __pycache__
