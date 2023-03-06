@@ -129,6 +129,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          clang-tidy \
          clangd-12 \
          clang \
+         valgrind \
          ripgrep \
          fd-find \
          shellcheck

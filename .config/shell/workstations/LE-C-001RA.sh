@@ -23,6 +23,7 @@ export ftp_proxy="http://127.0.0.1:3128"
 
 # Make X server available
 export DISPLAY="`grep nameserver /etc/resolv.conf | sed 's/nameserver //'`:0"
+export LIBGL_ALWAYS_INDIRECT=1
 
 # .bashrc
 # set variable identifying the chroot you work in (used in the prompt below)
