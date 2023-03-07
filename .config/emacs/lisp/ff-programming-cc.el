@@ -86,11 +86,6 @@ REPLACE-STR: string that replaces all regex matches"
 
 ;; ----------------------------------------------------------------------------------
 ;; Use package for cc-mode
-;; adds font-lock highlighting for modern C++ upto C++17
-;; https://github.com/ludwigpacifici/modern-cpp-font-lock
-(use-package modern-cpp-font-lock
-  :hook ((c++-mode . modern-c++-font-lock-mode)))
-
 (use-package cc-mode
   :after (clang-format+)
   :mode (("\\.cpp$" . c++-mode)
@@ -129,13 +124,6 @@ REPLACE-STR: string that replaces all regex matches"
 
   :mode (("\\.cmake$" . cmake-mode)
          ("CMakeLists.txt" . cmake-mode)))
-
-;; cmake-font-lock: emacs font lock rules for CMake
-;; https://github.com/Lindydancer/cmake-font-lock
-(use-package cmake-font-lock
-  :hook ((cmake-mode . cmake-font-lock-activate))
-  :config
-  (autoload 'cmake-font-lock-activate "cmake-font-lock" nil t))
 
 (provide 'ff-programming-cc)
 
