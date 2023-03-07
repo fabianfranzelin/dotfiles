@@ -24,10 +24,6 @@
   :config
   (setq read-process-output-max (* 1024 1024))
 
-  ;; Python
-  (add-to-list 'eglot-server-programs
-               `(python-mode "python3" "-m" "pylsp"))
-
   ;; C/C++
   (add-to-list 'eglot-server-programs
                `(c-mode "clangd-12"))
