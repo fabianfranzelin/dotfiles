@@ -48,7 +48,9 @@
          ("C-c l d" . flymake-show-buffer-diagnostics)
          ("C-h ." . eldoc)
          ("C-c l e" . eglot-stderr-buffer)
-         ("C-c l c" . eglot-workspace-configuration)))
+         ("C-c l c" . eglot-show-workspace-configuration)))
+
+(use-package consult-eglot)
 
 ;; -------------------------------------------------------------------
 ;; Additionally to flymake, use flycheck as well for certain modes
