@@ -180,6 +180,10 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
            typescript-language-server \
            dockerfile-language-server-nodejs \
            jsonlint
+
+       # install other npm packages
+       npm install -g \
+           yarn
     fi
 
     # -------------------------------------------------
