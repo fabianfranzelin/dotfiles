@@ -95,6 +95,11 @@ export PIP_VIRTUALENV_BASE="${WORKON_HOME}"
 # NPM
 export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
 
+# NVM
+export NVM_DIR="$HOME/.config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
 #------------------------------------------------------------------------------#
 # Load credentials
 [ -f "${__SHELL_LIB}/b_credentials.sh" ] && . "${__SHELL_LIB}/b_credentials.sh"
