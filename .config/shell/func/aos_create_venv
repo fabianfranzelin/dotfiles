@@ -56,9 +56,6 @@ aos_create_venv() {
         deactivate
 
         # install yarn
-        yarn config list
-        yarn config set https-proxy $HTTPS_PROXY
-        yarn config set http-proxy $HTTP_PROXY
-        yarn config set proxy $HTTP_PROXY
+        npm install -g yarn
     )
 }
