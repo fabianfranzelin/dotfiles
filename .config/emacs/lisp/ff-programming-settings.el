@@ -213,7 +213,6 @@
          ("\\.inst$" . json-mode))
   :init
   ;; ensure system packages
-  (ff/ensure-apt-package "npm" "npm")
   (ff/ensure-npm-package "jsonlint" "jsonlint"))
 
 ;; -------------------------------------------------------------------
