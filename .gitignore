@@ -142,6 +142,7 @@ flycheck_*
 
 ### NPM ###
 /.config/npm/npmrc
+/.config/nvm/
 /package.json
 /node_modules/
 /package-lock.json
