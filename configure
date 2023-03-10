@@ -4,7 +4,6 @@
 
 #------------------------------------------------------------------------------#
 # description of cmdline-parser
-
 usage="
 USAGE
     ${0} [OPTION]...
@@ -16,6 +15,8 @@ DESCRIPTION
               Print this help message
        -i --install
               Install third-party dependencies
+       --skip-emacs-build
+              Skip building Emacs from source
 "
 
 #------------------------------------------------------------------------------#
@@ -45,6 +46,10 @@ while [ "${#}" -gt 0 ]; do
             INSTALL_DEPENDENCIES=1
             shift # past argument
             ;;
+        '--skip-emacs-build')
+            SKIP_EMACS_BUILD=1
+            shift # past argument
+            ;;
         *)
             echo -e "${__COLOR_ERR}Unknown value ${1}${__COLOR_RESET}"
             echo -e "${__COLOR_INFO}${usage}${__COLOR_RESET}"
@@ -69,7 +74,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
     sudo apt remove python3-venv -y
 
     # Update python setuptools to latest release from pypi
-    python3 -m pip install --user --upgrade \
+    python3 -m pip install --upgrade \
             setuptools \
             pip \
             wheel
@@ -104,18 +109,19 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
              emacs
     fi
 
-    # now, install the newest version available by building and
-    # installing it manually
-    (
-        cd "${DOTFILES}/.config/emacs" || exit 1
-        # This creates the install script for Emacs
-        emacs -Q --batch \
-              --eval "(require 'org)" \
-              --eval '(org-babel-tangle-file "README.org")'
-        # Actually install Emacs via update-alternatives
-        ./install.sh -v 29 || exit 1
-    )
-
+    if [ -z "${SKIP_EMACS_BUILD}" ]; then
+        (
+            # now, install the newest version available by building and
+            # installing it manually
+            cd "${DOTFILES}/.config/emacs" || exit 1
+            # This creates the install script for Emacs
+            emacs -Q --batch \
+                  --eval "(require 'org)" \
+                  --eval '(org-babel-tangle-file "README.org")'
+            # Actually install Emacs via update-alternatives
+            ./install.sh -v 29 || exit 1
+        )
+    fi
     # install dependencies for Emacs
     sudo apt install -y \
          markdown \
@@ -143,7 +149,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          imagemagick
 
     # additional python dependencies
-    python3 -m pip install --user --upgrade \
+    python3 -m pip install --upgrade \
             virtualenv \
             epc \
             ptvsd \
@@ -161,29 +167,30 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
 
     # additional npm dependencies
     if ( __is_linux ) then
-       # Quickfix required here: Apt is not the best way to install npm
-       if [ ! "$(command -v npm)" ]; then
-           sudo apt install -y npm
-           sudo apt remove -y nodejs
+       if [ ! -d "${HOME}/.config/nvm" ]
+       then
+           # use nvm to install node, npm, etc. See
+           # https://github.com/nvm-sh/nvm for details.
+           wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+           echo -e "${__COLOR_WARN}NVM was freshly installed. Rerun the script to install npm dependencies.${__COLOR_RESET}"
+       else
+           # nvm is available. Install v14 as default
+           nvm install 14
+           nvm use 14
+
+           # install lsp servers, linters, etc.
+           npm install -g \
+               yaml-language-server \
+               bash-language-server \
+               typescript \
+               typescript-language-server \
+               dockerfile-language-server-nodejs \
+               jsonlint
+
+           # install other npm packages
+           npm install -g \
+               yarn
        fi
-
-       sudo npm install -g n
-       sudo n stable
-       sudo npm install npm@latest
-       sudo npm install nodejs@latest
-
-       # install lsp servers
-       npm install -g \
-           yaml-language-server \
-           bash-language-server \
-           typescript \
-           typescript-language-server \
-           dockerfile-language-server-nodejs \
-           jsonlint
-
-       # install other npm packages
-       npm install -g \
-           yarn
     fi
 
     # -------------------------------------------------
@@ -217,10 +224,10 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
        echo -e "${__COLOR_INFO}INFO: Install GTK tools${__COLOR_RESET}"
 
        # Install Qtile window manager
-       python3 -m pip install --user --upgrade --use-pep517 xcffib
-       python3 -m pip install --user --upgrade --no-cache-dir cairocffi
+       python3 -m pip install --upgrade --use-pep517 xcffib
+       python3 -m pip install --upgrade --no-cache-dir cairocffi
        sudo apt install -y libpangocairo-1.0-0
-       python3 -m pip install --user --upgrade qtile
+       python3 -m pip install --upgrade qtile
 
        # Create xsessions entry for qtile according to
        # https://docs.qtile.org/en/latest/manual/install/index.html#starting-qtile

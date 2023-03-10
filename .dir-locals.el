@@ -1,9 +1,9 @@
 ;;; Directory Local Variables
 ;;; For more information see (info "(emacs) Directory Variables")
 
-((c++-mode . ((tags-table-list . '("./examples/cc-project"))))
- (python-mode . ((eval . (pyvenv-deactivate))
-                 (flycheck-add-next-checker . ('python-pylint 'python-mypy))
+((nil . ((eval . (pyvenv-deactivate))))
+ (c++-mode . ((tags-table-list . '("./examples/cc-project"))))
+ (python-mode . ((flycheck-add-next-checker . ('python-pylint 'python-mypy))
                  (eval . (add-to-list 'flycheck-disabled-checkers 'python-flake8))
                  (eglot-workspace-configuration
                   . (:pylsp (:plugins (:jedi_completion (:include_params t

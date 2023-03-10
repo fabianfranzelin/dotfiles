@@ -96,9 +96,9 @@ export PIP_VIRTUALENV_BASE="${WORKON_HOME}"
 export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
 
 # NVM
-export NVM_DIR="$HOME/.config/nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+export NVM_DIR="${HOME}/.config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 #------------------------------------------------------------------------------#
 # Load credentials
@@ -106,7 +106,5 @@ export NVM_DIR="$HOME/.config/nvm"
 
 #------------------------------------------------------------------------------#
 # Load specific settings per workstation
-[ "$(hostname)" = "ThinkPad" ] && . "${__SHELL_LIB}/workstations/ThinkPad.sh"
-[ "$(hostname)" = "ST39-C-00066" ] && . "${__SHELL_LIB}/workstations/st39-c-00066.sh"
-[ "$(hostname)" = "LR-Z7407" ] && . "${__SHELL_LIB}/workstations/LR-Z7407.sh"
-[ "$(hostname)" = "LE-C-001RA" ] && . "${__SHELL_LIB}/workstations/LE-C-001RA.sh"
+__HOST_SETTINGS="${__SHELL_LIB}/workstations/$(hostname).sh"
+[ -f "${__HOST_SETTINGS}" ] && . "${__HOST_SETTINGS}"
