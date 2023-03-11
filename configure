@@ -172,25 +172,32 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
            # use nvm to install node, npm, etc. See
            # https://github.com/nvm-sh/nvm for details.
            wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-           echo -e "${__COLOR_WARN}NVM was freshly installed. Rerun the script to install npm dependencies.${__COLOR_RESET}"
-       else
-           # nvm is available. Install v14 as default
-           nvm install 14
-           nvm use 14
-
-           # install lsp servers, linters, etc.
-           npm install -g \
-               yaml-language-server \
-               bash-language-server \
-               typescript \
-               typescript-language-server \
-               dockerfile-language-server-nodejs \
-               jsonlint
-
-           # install other npm packages
-           npm install -g \
-               yarn
        fi
+       # load nvm paths
+       export NVM_DIR="${HOME}/.config/nvm"
+       if [ -s "$NVM_DIR/nvm.sh" ]
+       then
+           . "$NVM_DIR/nvm.sh"  # This loads nvm
+       else
+           echo -e "${__COLOR_ERR}NVM installation has failed.${__COLOR_RESET}"
+           exit 1
+       fi
+       # nvm is available. Install v14 as default
+       nvm install 14
+       nvm use 14
+
+       # install lsp servers, linters, etc.
+       npm install -g \
+           yaml-language-server \
+           bash-language-server \
+           typescript \
+           typescript-language-server \
+           dockerfile-language-server-nodejs \
+           jsonlint
+
+       # install other npm packages
+       npm install -g \
+           yarn
     fi
 
     # -------------------------------------------------
