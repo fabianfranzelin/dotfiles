@@ -4,6 +4,9 @@
 
 ;;; Code:
 
+;; run async command without displaying the output
+(add-to-list 'display-buffer-alist '("*Async Shell Command*". (display-buffer-no-window. nil)))
+
 (defun ff/python-interpreter-version ()
   "Provide version of python interpreter."
   (let* ((python-command (if (boundp 'python-shell-interpreter)
