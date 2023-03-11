@@ -175,14 +175,11 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
        fi
        # load nvm paths
        export NVM_DIR="${HOME}/.config/nvm"
-       if [ -s "$NVM_DIR/nvm.sh" ]
-       then
-           . "$NVM_DIR/nvm.sh"  # This loads nvm
-       else
-           echo -e "${__COLOR_ERR}NVM installation has failed.${__COLOR_RESET}"
-           exit 1
-       fi
-       # nvm is available. Install v14 as default
+       [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+       export NVM_DIR="${HOME}/.nvm"
+       [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+       # install npm v14 as default
        nvm install 14
        nvm use 14
 
