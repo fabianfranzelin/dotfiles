@@ -246,7 +246,7 @@ Exec=qtile start
 Type=Application
 Keywords=wm;tiling" | sudo tee "${QTILE_DESKTOP_FILE_PATH}"
            else
-               echo -e "${__COLOR_ERR}The file '${QTILE_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
+               echo -e "${__COLOR_WARN}The file '${QTILE_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
            fi
 
            CUSTOM_DESKTOP_FILE_PATH="${XSESSIONS_PATH}/custom.desktop"
@@ -258,7 +258,7 @@ Exec=/etc/X11/Xsession
 Type=Application
 Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
            else
-               echo -e "${__COLOR_ERR}The file '${CUSTOM_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
+               echo -e "${__COLOR_WARN}The file '${CUSTOM_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
            fi
        else
            echo -e "${__COLOR_INFO}INFO: skipping xsession configuration for qtile"
