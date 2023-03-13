@@ -21,14 +21,6 @@
          (dockerfile-mode . eglot-ensure)
          (rst-mode . eglot-ensure))
   :custom ((eglot-events-buffer-size 10))
-  :init
-  ;; ensure that system packages are available
-  (ff/ensure-apt-package "clangd-12" "clangd-12")
-  (ff/ensure-apt-package "clang" "clang")
-  (ff/ensure-python-package "python-lsp-server[all]" nil "pylsp")
-  (ff/ensure-python-package "esbonio")
-  (ff/ensure-python-package "cmake_language_server" nil "cmake_language_server")
-  (ff/ensure-npm-package "dockerfile-language-server-nodejs" "docker-langserver")
   :config
   (setq read-process-output-max (* 1024 1024))
 
