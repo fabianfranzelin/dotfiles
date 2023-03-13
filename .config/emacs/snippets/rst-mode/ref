@@ -4,4 +4,4 @@
 # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 # --
 
-:ref:\`${1:Description} <${2:Label}>\`
+:ref:\`$0 <${1:Label}>\`
