@@ -1,18 +1,20 @@
 # -*- mode: snippet -*-
-# name: External requirement
+# name: Stakeholder requirement (AOS)
 # key: req-ext
 # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 # --
 
-
 .. req-stk:: ${1:Title}
-   :id: ${2:ID}
-   :da_status: draft
-   :da_variant_implemented: AOS
-   :da_cfr_index:
-   :da_safety_integrity: N/A
-   :da_security_relevance: not_relevant
-   :da_verification_criteria: By test
-   :collapse: true
+   :id: REQ_STK_AOS_${2:ID}
+   :da_status: agreed
+   :da_status_stakeholder: agreed
+   :comment_bosch_to_stakeholder:
+   :req_stk_is_derived_by:
+   :da_safety_integrity: QM
+   :da_safety_relevance:
+   :da_safety_comment:
+   :da_security_relevance: no
+   :da_impact:
+   :tags:
 
-   ${4:Content}
+   $0

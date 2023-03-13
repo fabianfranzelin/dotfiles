@@ -9,10 +9,16 @@
    :id: REQ_SW_${2:ID}
    :da_status: draft
    :da_variant_implemented: AOS
+   :da_general_comment:
    :da_cfr_index:
-   :da_safety_integrity: N/A
-   :da_security_relevance: not_relevant
+   :da_safety_integrity: QM
+   :da_safety_relevance:
+   :da_safety_comment:
+   :da_security_relevance: no
    :da_verification_criteria: By test
+   :derives:
+   :tags:
+   :rb_tracker08:
    :collapse: true
 
-   ${3:Content}
+   $0
