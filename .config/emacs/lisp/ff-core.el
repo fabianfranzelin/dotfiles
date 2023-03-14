@@ -574,6 +574,16 @@ TEXT: title"
 (use-package ace-window
   :bind (("M-o" . ace-window)))
 
+;; -------------------------------------------------------------------
+;; Avy: Jump in buffer with three key strokes
+;; -------------------------------------------------------------------
+(use-package avy
+  :custom
+  ((avy-timeout 0.1))
+  :bind (("M-g f" . avy-goto-line)
+         ("M-g w" . avy-goto-word-1)
+         ("M-g c" . avy-goto-char-timer)))
+
 (provide 'ff-core)
 
 ;;; ff-core.el ends here
