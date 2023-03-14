@@ -70,12 +70,12 @@
 ;; -------------------------------------------------------------------
 (use-package fancy-compilation
   :init
-  (fancy-compilation-mode 1)
-  :config
   ;; use background of my current theme
   (defface fancy-compilation-default-face
     (list (list t :background "282c34" :inherit 'ansi-color-grey))
-    "Face used to render black color."))
+    "Face used to render black color.")
+  ;; enable minor mode
+  (fancy-compilation-mode 1))
 
 ;; -------------------------------------------------------------------
 ;; Emacs lisp
