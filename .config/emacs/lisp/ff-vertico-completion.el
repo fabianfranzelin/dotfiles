@@ -183,6 +183,23 @@ ARG: position"
   (add-to-list 'completion-at-point-functions #'cape-symbol))
 
 ;; -------------------------------------------------------------------
+;; Prescient: improve predictions for vertico and corfu
+;; -------------------------------------------------------------------
+(use-package prescient
+  :config
+  ;; Save recency and frequency rankings to disk, which let them
+  ;; become better over time.
+  (prescient-persist-mode 1))
+
+(use-package vertico-prescient
+  :init
+  (vertico-prescient-mode 1))
+
+(use-package corfu-prescient
+  :init
+  (corfu-prescient-mode 1))
+
+;; -------------------------------------------------------------------
 ;; Consult
 ;; -------------------------------------------------------------------
 (use-package consult
