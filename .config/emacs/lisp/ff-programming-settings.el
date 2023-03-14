@@ -58,12 +58,24 @@
   :init (global-flycheck-mode))
 
 ;; -------------------------------------------------------------------
-;; Deugger
+;; Debugger
 ;; -------------------------------------------------------------------
 (use-package realgud
   :after (org)
   :custom ((realgud:pdb-command-name "python3 -m pdb")
            (realgud-safe-mode nil)))
+
+;; -------------------------------------------------------------------
+;; Colorful compilation buffer
+;; -------------------------------------------------------------------
+(use-package fancy-compilation
+  :init
+  (fancy-compilation-mode 1)
+  :config
+  ;; use background of my current theme
+  (defface fancy-compilation-default-face
+    (list (list t :background "282c34" :inherit 'ansi-color-grey))
+    "Face used to render black color."))
 
 ;; -------------------------------------------------------------------
 ;; Emacs lisp
