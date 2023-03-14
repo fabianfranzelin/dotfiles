@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: Software component (AOS)
+# key: comp-sw
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# --
+
+
+.. comp-sw:: ${1:Title}
+   :id: COMP_SW_${2:ID}
+   :tags:
+   :collapse: True
+   :implements:
+
+   $0
