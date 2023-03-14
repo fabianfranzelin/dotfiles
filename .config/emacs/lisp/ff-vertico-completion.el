@@ -73,12 +73,29 @@ ARG: position"
               ("C-l" . ff/minibuffer-backward-kill)
               ("C-a" . ff/minibuffer-move-beginning-of-line)))
 
+;; -------------------------------------------------------------------
+;; Prescient: improve predictions for vertico and corfu
+;; -------------------------------------------------------------------
+(use-package prescient
+  :config
+  ;; Save recency and frequency rankings to disk, which let them
+  ;; become better over time.
+  (prescient-persist-mode 1))
+
+(use-package vertico-prescient
+  :init
+  (vertico-prescient-mode 1))
+
+(use-package corfu-prescient
+  :init
+  (corfu-prescient-mode 1))
+
 ;; Save history during sessions
 (use-package savehist
   :init (savehist-mode t))
 
 ;; -------------------------------------------------------------------
-;; Corfu, Cape and Orderless
+;; Corfu and Cape
 ;; -------------------------------------------------------------------
 (use-package corfu
   ;; Optional customizations
@@ -118,18 +135,6 @@ ARG: position"
   :init
   (when (not (display-graphic-p))
     (corfu-terminal-mode t)))
-
-;; Optionally use the `orderless' completion style. See `+orderless-dispatch'
-;; in the Consult wiki for an advanced Orderless style dispatcher.
-;; Enable `partial-completion' for files to allow path expansion.
-;; You may prefer to use `initials' instead of `partial-completion'.
-(use-package orderless
-  :custom
-  (completion-styles '(orderless flex))
-  (completion-category-overrides '((file (styles basic partial-completion))
-                                   (eglot (styles . (orderless flex)))))
-  :config
-  (setq completion-category-defaults nil))
 
 (use-package affe
   ;; search also in hidden and ignoreg files by git
@@ -181,23 +186,6 @@ ARG: position"
   ;; (add-to-list 'completion-at-point-functions #'cape-dict)
   ;; (add-to-list 'completion-at-point-functions #'cape-line)
   (add-to-list 'completion-at-point-functions #'cape-symbol))
-
-;; -------------------------------------------------------------------
-;; Prescient: improve predictions for vertico and corfu
-;; -------------------------------------------------------------------
-(use-package prescient
-  :config
-  ;; Save recency and frequency rankings to disk, which let them
-  ;; become better over time.
-  (prescient-persist-mode 1))
-
-(use-package vertico-prescient
-  :init
-  (vertico-prescient-mode 1))
-
-(use-package corfu-prescient
-  :init
-  (corfu-prescient-mode 1))
 
 ;; -------------------------------------------------------------------
 ;; Consult
