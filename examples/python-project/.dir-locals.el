@@ -1,11 +1,10 @@
 ;;; Directory Local Variables
 ;;; For more information see (info "(emacs) Directory Variables")
 
-((nil . ((pyvenv-workon . nil)))
- (c++-mode . ((tags-table-list . '("./examples/cc-project"))))
- (python-mode . ((flycheck-add-next-checker . ('python-pylint 'python-mypy))
-                 (eval . (add-to-list 'flycheck-disabled-checkers 'python-flake8))
-                 (eglot-workspace-configuration
+((nil . ((compile-multi-config . ((t
+                                   ("pytest:run" . "python3 -m pytest .")
+                                   ("main:run" . "python3 __main__.py"))))))
+ (python-mode . ((eglot-workspace-configuration
                   . (:pylsp (:plugins (:jedi_completion (:include_params t
                                                                          :fuzzy t)
                                                         :pylint (:enabled t)
@@ -19,8 +18,4 @@
                                                         :pyflakes (:enabled :json-false)
                                                         :ruff (:enabled :json-false)
                                                         :yapf (:enabled :json-false)
-                                                        :autopep8 (:enabled :json-false)))))))
- (sh-mode . ((flycheck-add-next-checker . '(sh-shellcheck sh-zsh))
-             (eval . (add-to-list 'flycheck-disabled-checkers 'sh-posix-dash))
-             (eval . (add-to-list 'flycheck-disabled-checkers 'sh-posix-bash))
-             (eval . (add-to-list 'flycheck-disabled-checkers 'sh-bash)))))
+                                                        :autopep8 (:enabled :json-false))))))))
