@@ -227,19 +227,14 @@ def init_widgets_list() -> List[Any]:
         ),
         widget.Systray(padding=5),
         widget.Sep(linewidth=0, padding=6),
-        widget.TextBox(
-            text=" ",
-            background=my_colors["violet"],
-        ),
+        widget.TextBox(text=" ", background=my_colors["violet"]),
         widget.CPU(
             foreground=my_colors["dark-grey"],
             background=my_colors["violet"],
             mouse_callbacks={"Button1": lambda: qtile.cmd_spawn(my_term + " -e htop")},  # type: ignore
         ),
-        lower_left_triangle(
-            bg_color=my_colors["violet"],
-            fg_color=my_colors["cyan"],
-        ),
+        widget.TextBox(" ", background=my_colors["violet"]),
+        widget.TextBox(" ", background=my_colors["cyan"]),
         widget.Memory(
             foreground=my_colors["dark-grey"],
             background=my_colors["cyan"],
@@ -247,19 +242,15 @@ def init_widgets_list() -> List[Any]:
             fmt="Mem: {}",
             padding=5,
         ),
-        lower_left_triangle(
-            bg_color=my_colors["cyan"],
-            fg_color=my_colors["violet"],
-        ),
+        widget.TextBox(" ", background=my_colors["cyan"]),
+        widget.TextBox(" ", background=my_colors["violet"]),
         widget.Net(
             foreground=my_colors["dark-grey"],
             background=my_colors["violet"],
             padding=5,
         ),
-        lower_left_triangle(
-            bg_color=my_colors["violet"],
-            fg_color=my_colors["cyan"],
-        ),
+        widget.TextBox(" ", background=my_colors["violet"]),
+        widget.TextBox(" ", background=my_colors["cyan"]),
         widget.Clock(
             foreground=my_colors["dark-grey"],
             background=my_colors["cyan"],
