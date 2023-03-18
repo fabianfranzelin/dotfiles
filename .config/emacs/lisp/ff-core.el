@@ -281,6 +281,19 @@ PROJECT-ROOT: Path to the root directory of the current project."
   (interactive)
   (ff/start-vterm-in-dir (project-root (project-current t))))
 
+;; define multiple compile targets
+(straight-use-package
+ '(compile-multi
+   :host github
+   :repo "mohkale/compile-multi"))
+
+(defun ff/compile-multi ()
+  "Cache the current compile command and restore it after calling compile-multi."
+  (interactive)
+  (let (current-compile-command compile-command)
+    (call-interactively 'compile-multi)
+    (setq compile-command current-compile-command)))
+
 (use-package project
   :custom
   ((project-switch-commands '((project-find-file "Find file")
@@ -295,7 +308,8 @@ PROJECT-ROOT: Path to the root directory of the current project."
               ("v" . ff/project-vterm)
               ("a" . affe-find)
               ("g" . affe-grep)
-              ("t" . ff/project-project-tab)))
+              ("t" . ff/project-project-tab)
+              ("C" . ff/compile-multi)))
 
 ;; -------------------------------------------------------------
 ;; Show available keybindings
