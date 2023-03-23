@@ -1,0 +1,18 @@
+# -*- mode: snippet -*-
+# name: Test (AOS)
+# key: test
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# --
+
+.. test:: ${1:Title}
+   :id: TC_${2:ID}
+   :tests:
+   :tags:
+   :test_case_summary:
+     | ${3:Steps}
+   :test_case_precondition:
+     | ${4:Preconditions}
+   :test_case_steps:
+     | ${5:Steps}
+   :test_case_pass_criteria:
+     | ${6:Pass criteria}

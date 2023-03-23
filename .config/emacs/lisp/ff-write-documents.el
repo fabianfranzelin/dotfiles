@@ -72,15 +72,14 @@
   "Create SVG from current puml file.
 SOURCE_FILENAME: filename to the puml file."
   (interactive)
-  (message (concat "Converting " source_filename))
+  (message "Converting %s" source_filename)
   (call-process-shell-command (concat
-                               "java"
-                               " -jar"
-                               " " plantuml-jar-path
-                               " " source_filename
-                               " -DRELATIVE_INCLUDE=\".\""
-                               " -Djava.awt.headless=true"
-                               " -tsvg -charset utf-8"))
+                               "java "
+                               "-jar "
+                               plantuml-jar-path " "
+                               source_filename " "
+                               (string-join plantuml-jar-args " ") " "
+                               "-tsvg"))
   (message "Conversion succeeded."))
 
 (defun ff/plantum-preview ()
@@ -128,7 +127,7 @@ JAR-PATH: expected binary file in the extracted folder."
   :config
   ;; Sample jar configuration
   (setq plantuml-jar-path plantuml-expected-binary
-        plantuml-jar-args (list "-charset" "UTF-8" "-DRELATIVE_INCLUDE=." "-Djava.awt.headless=true")
+        plantuml-jar-args (list "-charset" "UTF-8" "-DRELATIVE_INCLUDE=\".\"" "-Djava.awt.headless=true")
         plantuml-default-exec-mode 'jar
         plantuml-indent-level 4)
   ;; remap preview to personal function; for some reason, bind does
