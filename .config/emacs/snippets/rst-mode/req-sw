@@ -1,21 +1,19 @@
 # -*- mode: snippet -*-
-# name: Product requirement (AOS)
+# name: Software requirement (AOS)
 # key: req-sw
 # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 # --
-
 
 .. req-sw:: ${1:Title}
    :id: REQ_SW_${2:ID}
    :da_status: draft
    :da_variant_implemented: AOS
    :da_general_comment:
-   :da_cfr_index:
+   :da_cfr_index: low
    :da_safety_integrity: QM
-   :da_safety_relevance:
+   :da_safety_relevance: no
    :da_safety_comment:
    :da_security_relevance: no
-   :da_verification_criteria: By test
    :derives:
    :tags:
    :rb_tracker08:
