@@ -98,7 +98,8 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          vim \
          git-lfs \
          ccache \
-         gnuplot
+         gnuplot \
+         pass
 
     # ---------------------------------------------------------
     # install Emacs. First, just the regular version.
