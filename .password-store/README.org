@@ -1,0 +1,25 @@
+#+TITLE: How to set up pass
+
+* [[https://gist.github.com/flbuddymooreiv/a4f24da7e0c3552942ff][Create GPG key and init pass]]
+
+#+begin_src shell
+gpg --full-generate-key
+#+end_src
+
+#+begin_src shell
+gpg --list-keys
+
+/home/user/.gnupg/pubring.gpg
+------------------------------
+pub   4096R/68214821 2015-06-24
+uid                  First Middle Last Suffix <first.last@host.tld>
+sub   4096R/36A6F06D 2015-06-24
+
+user@host:~$ pass init 68214821
+mkdir: created directory ‘/home/user/.password-store/’
+Password store initialized for 68214821
+#+end_src
+
+#+begin_src shell
+pass init 68214821
+#+end_src
