@@ -11,6 +11,7 @@ fonts
 LICENSE
 ^/.*\.bak
 examples
+node_modules
 
 .dir-locals.el
 .gitignore
