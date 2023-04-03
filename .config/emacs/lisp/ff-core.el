@@ -457,7 +457,8 @@ PROJECT-ROOT: Path to the root directory of the current project."
 (require 'auth-source)
 (add-to-list 'auth-sources '(password-store))
 
-(use-package pass)
+(use-package pass
+  :custom ((pass-show-keybindings nil)))
 
 ;; -------------------------------------------------------------------
 ;; Open files externally
