@@ -457,6 +457,11 @@ PROJECT-ROOT: Path to the root directory of the current project."
 (require 'auth-source)
 (add-to-list 'auth-sources '(password-store))
 
+(defun ff/ssh-add-keys ()
+  "Add all known ssh-keys from pass."
+  (interactive)
+  (async-shell-command "ssh-add-keys"))
+
 (use-package pass
   :custom ((pass-show-keybindings nil)))
 
