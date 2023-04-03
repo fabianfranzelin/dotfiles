@@ -64,7 +64,7 @@ done
 
 #------------------------------------------------------------------------------#
 # install required packages
-if [ -n $"{LOAD_SUBMODULES}" ]; then
+if [ -n "${LOAD_SUBMODULES}" ]; then
     echo -e "${__COLOR_INFO}INFO: Load submodules${__COLOR_RESET}"
     git submodule init
     git submodule update --recursive
