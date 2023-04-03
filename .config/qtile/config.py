@@ -132,9 +132,8 @@ layouts = [
 # --------------------------------------------------------
 
 groups = [
-    Group("Emacs", layout="monadtall"),
-    Group("Code", layout="monadtall"),
-    Group("Stuff", layout="monadtall"),
+    Group("Dev", layout="monadtall"),
+    Group("Browse", layout="monadtall"),
 ]
 
 
