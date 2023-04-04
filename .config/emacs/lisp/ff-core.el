@@ -304,10 +304,10 @@ PROJECT-ROOT: Path to the root directory of the current project."
    (project-vc-ignores '("build/" "install/" ".*cache/")))
   :bind (:map project-prefix-map
               ("P" . ff/project-switch-project)
-              ("m" . ff/project-magit)
+              ("g" . ff/project-magit)
               ("v" . ff/project-vterm)
               ("a" . affe-find)
-              ("g" . affe-grep)
+              ("r" . affe-grep)
               ("t" . ff/project-project-tab)
               ("C" . ff/compile-multi)))
 
