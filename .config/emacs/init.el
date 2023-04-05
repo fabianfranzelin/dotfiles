@@ -73,6 +73,7 @@
 (require 'ff-vertico-completion)
 (require 'ff-setup-vterm)
 (require 'ff-magit-version-control)
+(require 'ff-project-management)
 (require 'ff-programming-settings)
 (require 'ff-organize-life)
 (require 'ff-write-documents)
