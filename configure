@@ -111,7 +111,8 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          git-lfs \
          ccache \
          gnuplot \
-         pass
+         pass \
+         gnupg
 
     # ---------------------------------------------------------
     # install Emacs. First, just the regular version.
