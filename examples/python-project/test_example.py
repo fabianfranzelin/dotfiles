@@ -14,3 +14,7 @@ def capital_case(x: str) -> str:
 def test_capital_case() -> None:
     """Some test case"""
     assert capital_case("semaphore") == "Semaphore"
+
+
+def test_failure() -> None:
+    assert False
