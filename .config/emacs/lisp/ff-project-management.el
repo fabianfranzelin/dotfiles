@@ -91,7 +91,7 @@ Executes COMMAND-LINE in buffer OUTPUT-BUFFER.  Name the process BUFFER-BASE-NAM
       (vterm-send-return))))
 
 ;; define make tasks
-(defun ff/run-command-recipe-make ()
+(defun run-command-recipe-ff/cc ()
   "Define Make recipes for run command package."
   (list
    ;; make
@@ -101,13 +101,15 @@ Executes COMMAND-LINE in buffer OUTPUT-BUFFER.  Name the process BUFFER-BASE-NAM
            :command-line "make"
            :working-dir build-dir))
    ;; cmake from current directory
-   (when-let* ((build-dir (locate-dominating-file default-directory "CMakeLists.txt")))
-     (list :command-name "build:cmake"
-           :command-line "mkdir -p build && cd build && cmake .."
-           :working-dir default-directory))))
+   (let ((cmake-lists-file (expand-file-name "CMakeLists.txt" default-directory)))
+     (message (format "%s" cmake-lists-file))
+     (when (f-file-p cmake-lists-file)
+       (list :command-name "build:cmake"
+             :command-line "mkdir -p build && cd build && cmake .."
+             :working-dir default-directory)))))
 
 ;; define Python targets
-(defun ff/run-command-recipe-python ()
+(defun run-command-recipe-ff/python ()
   "Define Python recipes for run command package."
   (list
    ;; pytest project
@@ -131,8 +133,8 @@ Executes COMMAND-LINE in buffer OUTPUT-BUFFER.  Name the process BUFFER-BASE-NAM
 (use-package run-command
   :custom ((run-command-default-runner #'run-command-runner-compile))
   :config
-  (add-to-list 'run-command-recipes #'ff/run-command-recipe-make)
-  (add-to-list 'run-command-recipes #'ff/run-command-recipe-python))
+  (add-to-list 'run-command-recipes #'run-command-recipe-ff/cc)
+  (add-to-list 'run-command-recipes #'run-command-recipe-ff/python))
 
 ;; -------------------------------------------------------------------
 ;; Project (built in project handling mode; similar to projectile)
