@@ -26,9 +26,9 @@
 
 POSTFIX postfix string to append to vterm buffer name"
   (let ((prefix (ff/vterm-buffer-name-prefix)))
-    (if (equal postfix nil)
-        (concat prefix "*")
-      (concat prefix "-" postfix "*"))))
+    (if postfix
+        (format "%s-%s*" prefix postfix)
+      (format "%s*" prefix))))
 
 (defun ff/run-in-vterm-kill (process event)
   "A process sentinel.  Kill PROCESS's buffer if it is live.
@@ -94,29 +94,29 @@ MISC is the value returned by `ff/save-shell-buffer'."
 (defun ff/show-all-vterm-windows ()
   "Show all vterm buffers."
   (interactive)
-  (setq buffer-names (ff/load-buffers "*vterm"))
-  (setq visible-buffers (ff/load-visible-buffers buffer-names))
-  (cond ((> (length visible-buffers) 0)
-         ;; close all windows
-         (ff/close-windows visible-buffers))
-        ((> (length buffer-names) 0)
-         ;; make hidden windows visible
-         (ff/open-windows buffer-names))
-        (t
-         (message "No running vterm sessions."))))
+  (let* ((buffer-names (ff/load-buffers "*vterm"))
+         (visible-buffers (ff/load-visible-buffers buffer-names)))
+    (cond ((> (length visible-buffers) 0)
+           ;; close all windows
+           (ff/close-windows visible-buffers))
+          ((> (length buffer-names) 0)
+           ;; make hidden windows visible
+           (ff/open-windows buffer-names))
+          (t
+           (message "No running vterm sessions.")))))
 
 (defun ff/hide-all-vterm-windows ()
   "Show all vterm buffers."
   (interactive)
-  (setq buffer-names (ff/load-buffers "*vterm"))
-  (setq visible-buffers (ff/load-visible-buffers buffer-names))
-  (if (> (length visible-buffers) 0)
-      ;; close all windows
-      (ff/close-windows visible-buffers)))
+  (let* ((buffer-names (ff/load-buffers "*vterm"))
+         (visible-buffers (ff/load-visible-buffers buffer-names)))
+    (if (> (length visible-buffers) 0)
+        ;; close all windows
+        (ff/close-windows visible-buffers))))
 
 (use-package vterm
   :commands vterm
- :hook ((vterm-mode . ff/term-exec-hook)
+  :hook ((vterm-mode . ff/term-exec-hook)
          ;; save all vterm-mode buffers
          (vterm-mode . (lambda () (setq-local desktop-save-buffer #'ff/save-shell-buffer))))
   :custom ((vterm-shell "/bin/zsh")

@@ -98,37 +98,37 @@ BUFFER-LIST: string list of buffer names"
 If none is available, START-CMD is executed in a new window.
 PREFIX: start string of buffer name
 START-CMD: list that is to be executed if no buffer with given prefix exists."
-  (setq buffer-names (ff/load-buffers prefix))
-  (setq visible-buffers (ff/load-visible-buffers buffer-names))
-  (cond ((= (length buffer-names) 0)
-         ;; no buffers available -> create a new one
-         (ff/make-windows-visible-with-prefix prefix)
-         ;; initiate whatever is given by the user
-         (eval start-cmd))
-        ((> (length visible-buffers) 0)
-         ;; close all windows
-         (ff/close-windows visible-buffers))
-        (t
-         ;; make hidden windows visible
-         (ff/open-windows buffer-names))))
+  (let* ((buffer-names (ff/load-buffers prefix))
+         (visible-buffers (ff/load-visible-buffers buffer-names)))
+    (cond ((= (length buffer-names) 0)
+           ;; no buffers available -> create a new one
+           (ff/make-windows-visible-with-prefix prefix)
+           ;; initiate whatever is given by the user
+           (eval start-cmd))
+          ((> (length visible-buffers) 0)
+           ;; close all windows
+           (ff/close-windows visible-buffers))
+          (t
+           ;; make hidden windows visible
+           (ff/open-windows buffer-names)))))
 
 (defun ff/make-windows-visible-with-prefix (prefix)
   "Toggle the visibility of buffers with the given prefix.
 If none is available, START-CMD is executed in a new window.
 PREFIX: start string of buffer name"
-  (setq buffer-names (ff/load-buffers prefix))
-  (setq visible-buffers (ff/load-visible-buffers buffer-names))
-  (cond ((= (length buffer-names) 0)
-         ;; no buffers available -> create a new one
-         (ff/split-main-window))
-        ((= (length visible-buffers) 0)
-         (ff/open-windows buffer-names)
-         (ff/split-shell-window))
-        ((> (length visible-buffers) 0)
-         ;; get the latest created vterm session
-         (select-window (get-buffer-window (car (reverse visible-buffers))))
-         (ff/split-shell-window)))
-  (balance-windows))
+  (let* ((buffer-names (ff/load-buffers prefix))
+         (visible-buffers (ff/load-visible-buffers buffer-names)))
+    (cond ((= (length buffer-names) 0)
+           ;; no buffers available -> create a new one
+           (ff/split-main-window))
+          ((= (length visible-buffers) 0)
+           (ff/open-windows buffer-names)
+           (ff/split-shell-window))
+          ((> (length visible-buffers) 0)
+           ;; get the latest created vterm session
+           (select-window (get-buffer-window (car (reverse visible-buffers))))
+           (ff/split-shell-window)))
+    (balance-windows)))
 
 (provide 'ff-shell-loader)
 
