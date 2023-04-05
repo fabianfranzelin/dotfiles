@@ -282,17 +282,27 @@ PROJECT-ROOT: Path to the root directory of the current project."
   (ff/start-vterm-in-dir (project-root (project-current t))))
 
 ;; define multiple compile targets
-(straight-use-package
- '(compile-multi
-   :host github
-   :repo "mohkale/compile-multi"))
+(defun ff/run-command-recipe-make ()
+  "Default recipes for run command package."
+  (list
+   (when-let* ((project-dir (locate-dominating-file default-directory "build"))
+               (build-dir (expand-file-name "build" project-dir)))
+     ;; call make
+     (list :command-name "build:make"
+           :command-line "make"
+           :display "Make"
+           :working-dir build-dir))
+   ;; cmake from current directory
+   (when-let* ((build-dir (locate-dominating-file default-directory "CMakeLists.txt")))
+     (list :command-name "build:cmake"
+           :command-line "mkdir -p build && cd build && cmake .."
+           :display "cmake"
+           :working-dir default-directory))))
 
-(defun ff/compile-multi ()
-  "Cache the current compile command and restore it after calling compile-multi."
-  (interactive)
-  (let (current-compile-command compile-command)
-    (call-interactively 'compile-multi)
-    (setq compile-command current-compile-command)))
+(use-package run-command
+  :custom ((run-command-default-runner #'run-command-runner-compile))
+  :config
+  (add-to-list 'run-command-recipes #'ff/run-command-recipe-make))
 
 (use-package project
   :custom
@@ -309,7 +319,7 @@ PROJECT-ROOT: Path to the root directory of the current project."
               ("a" . affe-find)
               ("r" . affe-grep)
               ("t" . ff/project-project-tab)
-              ("C" . ff/compile-multi)))
+              ("C" . run-command)))
 
 ;; -------------------------------------------------------------
 ;; Show available keybindings
