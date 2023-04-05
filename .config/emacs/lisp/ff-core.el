@@ -281,28 +281,63 @@ PROJECT-ROOT: Path to the root directory of the current project."
   (interactive)
   (ff/start-vterm-in-dir (project-root (project-current t))))
 
-;; define multiple compile targets
+;; --------------------------------------------------------------
+;; define make tasks
+(defun ff/run-command-runner-vterm (command-line buffer-base-name output-buffer)
+  "Command runner based on `vterm-mode'.
+
+Executes COMMAND-LINE in buffer OUTPUT-BUFFER.  Name the process BUFFER-BASE-NAME."
+  (require 'vterm)
+  (let ((vterm-buffer-name (ff/vterm-buffer-name (substring (buffer-name output-buffer) 7 -1))))
+    (with-current-buffer output-buffer
+      (rename-buffer vterm-buffer-name)
+      (vterm-mode)
+      (vterm-send-string command-line)
+      (vterm-send-return))))
+
+;; define make tasks
 (defun ff/run-command-recipe-make ()
-  "Default recipes for run command package."
+  "Define Make recipes for run command package."
   (list
+   ;; make
    (when-let* ((project-dir (locate-dominating-file default-directory "build"))
                (build-dir (expand-file-name "build" project-dir)))
-     ;; call make
      (list :command-name "build:make"
            :command-line "make"
-           :display "Make"
            :working-dir build-dir))
    ;; cmake from current directory
    (when-let* ((build-dir (locate-dominating-file default-directory "CMakeLists.txt")))
      (list :command-name "build:cmake"
            :command-line "mkdir -p build && cd build && cmake .."
-           :display "cmake"
            :working-dir default-directory))))
+
+;; define Python targets
+(defun ff/run-command-recipe-python ()
+  "Define Python recipes for run command package."
+  (list
+   ;; pytest project
+   (when-let* ((project-dir (locate-dominating-file default-directory ".git")))
+     (list :command-name "python:pytest (project)"
+           :command-line "python3 -m pytest"
+           :working-dir project-dir))
+   ;; pytest project vterm
+   (when-let* ((project-dir (locate-dominating-file default-directory ".git")))
+     (list :command-name "python:pytest (project, vterm)"
+           :command-line "python3 -m pytest -vvv -s --pdb"
+           :display "python:pytest (project, vterm)"
+           :working-dir project-dir
+           :runner 'ff/run-command-runner-vterm))
+   (when-let* ((main-dir (locate-dominating-file default-directory "__main__.py")))
+     (list :command-name "python:run main"
+           :command-line "python3 __main__.py"
+           :display "python:run main"
+           :working-dir main-dir))))
 
 (use-package run-command
   :custom ((run-command-default-runner #'run-command-runner-compile))
   :config
-  (add-to-list 'run-command-recipes #'ff/run-command-recipe-make))
+  (add-to-list 'run-command-recipes #'ff/run-command-recipe-make)
+  (add-to-list 'run-command-recipes #'ff/run-command-recipe-python))
 
 (use-package project
   :custom
@@ -520,6 +555,7 @@ PROJECT-ROOT: Path to the root directory of the current project."
                               "Output\\*$"
                               "\\*Async Shell Command\\*"
                               "\\*Dogears List\\*"
+                              "\\*Backtrace\\*"
                               magit-process-mode
                               help-mode
                               helpful-mode

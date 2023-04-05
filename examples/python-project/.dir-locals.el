@@ -1,10 +1,7 @@
 ;;; Directory Local Variables
 ;;; For more information see (info "(emacs) Directory Variables")
 
-((nil . ((compile-multi-config . ((t
-                                   ("pytest:run" . "python3 -m pytest .")
-                                   ("main:run" . "python3 __main__.py"))))))
- (python-mode . ((eglot-workspace-configuration
+((python-mode . ((eglot-workspace-configuration
                   . (:pylsp (:plugins (:jedi_completion (:include_params t
                                                                          :fuzzy t)
                                                         :pylint (:enabled t)
