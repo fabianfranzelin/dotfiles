@@ -162,9 +162,8 @@ DIR: root directory of project"
   (interactive)
   (let* ((project-dir (project-prompt-project-dir))
          (project-name (ff/project-name project-dir)))
-    (when (not (member project-name (ff/tab-bar--names)))
-      (tab-bar-new-tab)
-      (tab-bar-rename-tab project-name))
+    (unless (member project-name (ff/tab-bar--names))
+      (tab-bar-new-tab project-name))
     (tab-bar-switch-to-tab project-name)))
 
 (defun ff/project-switch-project ()
@@ -172,9 +171,8 @@ DIR: root directory of project"
   (interactive)
   (let* ((project-dir (project-prompt-project-dir))
          (project-name (ff/project-name project-dir)))
-    (when (not (member project-name (ff/tab-bar--names)))
-      (tab-bar-new-tab)
-      (tab-bar-rename-tab project-name))
+    (unless (member project-name (ff/tab-bar--names))
+      (tab-bar-new-tab project-name))
     (tab-bar-switch-to-tab project-name)
     (project-switch-project project-dir)))
 
