@@ -58,11 +58,6 @@
 ;; Iterate through CamelCase
 (global-subword-mode t)
 
-;; save desktop session automatically
-(use-package desktop
-  :custom
-  ((desktop-load-locked-desktop t)))
-
 ;; enable smooth scrolling mode
 (pixel-scroll-precision-mode t)
 
