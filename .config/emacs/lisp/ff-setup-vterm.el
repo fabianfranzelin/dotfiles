@@ -30,14 +30,6 @@ POSTFIX postfix string to append to vterm buffer name"
         (format "%s-%s*" prefix postfix)
       (format "%s*" prefix))))
 
-(defun ff/run-in-vterm-kill (process event)
-  "A process sentinel.  Kill PROCESS's buffer if it is live.
-PROCESS:
-EVENT:"
-  (let ((b (process-buffer process)))
-    (and (buffer-live-p b)
-         (kill-buffer-and-window))))
-
 (defun ff/start-vterm-in-dir (dir)
   "Start a new vterm in given directory.
 
@@ -68,19 +60,6 @@ DIR: Path to the root directory of the current project."
   (balance-windows)
   (other-window 1)
   (vterm (ff/vterm-buffer-name)))
-
-(defun ff/term-exec-hook ()
-  "Delete the buffer once the terminal session is terminated."
-  (let* ((buff (current-buffer))
-         (proc (get-buffer-process buff)))
-    (set-process-sentinel proc #'ff/run-in-vterm-kill)))
-
-;; Account for https://github.com/akermu/emacs-libvterm/issues/518
-(defun ff/save-shell-buffer (desktop-dirname)
-  "Save the current working directory.
-
-DESKTOP-DIRNAME directory to be saved"
-  default-directory)
 
 (defun ff/create-shell-buffer (_file-name buffer-name misc)
   "Create Shell buffer.
@@ -115,13 +94,8 @@ MISC is the value returned by `ff/save-shell-buffer'."
         (ff/close-windows visible-buffers))))
 
 (use-package vterm
-  :commands vterm
-  :hook ((vterm-mode . ff/term-exec-hook)
-         ;; save all vterm-mode buffers
-         (vterm-mode . (lambda () (setq-local desktop-save-buffer #'ff/save-shell-buffer))))
   :custom ((vterm-shell "/bin/zsh")
            (vterm-max-scrollback 100000)
-           (explicit-shell-file-name "/bin/zsh")
            (vterm-always-compile-module t)
            (vterm-kill-buffer-on-exit t))
   :init
@@ -129,6 +103,8 @@ MISC is the value returned by `ff/save-shell-buffer'."
   (ff/ensure-apt-package "cmake" "cmake")
   (ff/ensure-apt-package "libtool-bin" "libtool")
   (ff/ensure-apt-package "zsh" "zsh")
+  :config
+  (add-hook 'vterm-exit-functions (lambda(_ _) (kill-buffer-and-window)))
   :bind (("C-x j" . ff/start-vterm)
          :map vterm-mode-map
          ("C-q" . vterm-send-next-key)
@@ -141,11 +117,6 @@ MISC is the value returned by `ff/save-shell-buffer'."
                       (ff/start-vterm)
                       (ff/toggle-shell-vertical-alignment)
                       (ff/start-vterm)))))
-
-(with-eval-after-load 'desktop
-  ;; make sure that vterm buffers are restored when a desktop file is
-  ;; read
-  (add-to-list 'desktop-buffer-mode-handlers '(vterm-mode . ff/create-shell-buffer)))
 
 (provide 'ff-setup-vterm)
 
