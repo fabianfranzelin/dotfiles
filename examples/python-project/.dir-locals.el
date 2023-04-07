@@ -1,7 +1,15 @@
 ;;; Directory Local Variables
 ;;; For more information see (info "(emacs) Directory Variables")
 
-((python-mode . ((eglot-workspace-configuration
+((nil . ((eval . (defun run-command-recipe-ff/local ()
+                   (list
+                    (when-let* ((main-dir (locate-dominating-file default-directory "__main__.py")))
+                      (list :command-name "python:run main"
+                            :command-line "python3 __main__.py"
+                            :display "python:run main"
+                            :working-dir main-dir)))))
+         (eval . (add-to-list 'run-command-recipes #'run-command-recipe-ff/local))))
+ (python-mode . ((eglot-workspace-configuration
                   . (:pylsp (:plugins (:jedi_completion (:include_params t
                                                                          :fuzzy t)
                                                         :pylint (:enabled t)

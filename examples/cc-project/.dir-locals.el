@@ -1,7 +1,7 @@
 ;;; Directory Local Variables
 ;;; For more information see (info "(emacs) Directory Variables")
 
-((nil . ((compile-command . "cd ./build && make")
+((nil . ((compile-command . "cd ./examples/cc-project/build && make")
          (eval . (defun run-command-recipe-ff/local ()
                    (list
                     (when-let* ((project-dir (locate-dominating-file default-directory "build"))
