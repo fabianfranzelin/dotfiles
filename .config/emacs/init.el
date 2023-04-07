@@ -79,6 +79,7 @@
 (require 'ff-write-documents)
 (require 'ff-setup-gui)
 (require 'ff-spellcheck)
+(require 'ff-ai-assistant)
 ;; -------------------------------------------------------------------
 
 (provide 'init)
