@@ -123,12 +123,7 @@ Executes COMMAND-LINE in buffer OUTPUT-BUFFER.  Name the process BUFFER-BASE-NAM
            :command-line "python3 -m pytest -vvv -s --pdb"
            :display "python:pytest (project, vterm)"
            :working-dir project-dir
-           :runner 'ff/run-command-runner-vterm))
-   (when-let* ((main-dir (locate-dominating-file default-directory "__main__.py")))
-     (list :command-name "python:run main"
-           :command-line "python3 __main__.py"
-           :display "python:run main"
-           :working-dir main-dir))))
+           :runner 'ff/run-command-runner-vterm))))
 
 (use-package run-command
   :custom ((run-command-default-runner #'run-command-runner-compile))
@@ -194,7 +189,7 @@ PROJECT-ROOT: Path to the root directory of the current project."
                               (project-find-dir "Find directory")
                               (ff/project-magit "Magit")
                               (project-dired "Dired")))
-   (project-vc-extra-root-markers '(".clangd" ".project.el"))
+   (project-vc-extra-root-markers '(".project.el"))
    (project-vc-ignores '("build/" "install/" ".*cache/")))
   :bind (:map project-prefix-map
               ("P" . ff/project-switch-project)
