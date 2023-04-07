@@ -9,7 +9,9 @@
  '(gptel
    :type git
    :host github
-   :repo "karthink/gptel"))
+   :repo "karthink/gptel")
+ :config
+ (setq gptel-api-key (password-store-get "Tokens/OpenAI")))
 
 (provide 'ff-ai-assistant)
 
