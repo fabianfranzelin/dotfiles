@@ -9,9 +9,13 @@
  '(gptel
    :type git
    :host github
-   :repo "karthink/gptel")
- :config
- (setq gptel-api-key (password-store-get "Tokens/OpenAI")))
+   :repo "karthink/gptel"))
+
+(add-hook 'gptel-post-response-hook #'(lambda ()
+                                        (org-forward-element)
+                                        (org-end-of-line)))
+(setq gptel-api-key (password-store-get "Tokens/OpenAI")
+      gptel-default-mode 'org-mode)
 
 (provide 'ff-ai-assistant)
 
