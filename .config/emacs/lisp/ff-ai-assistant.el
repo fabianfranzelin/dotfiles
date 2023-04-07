@@ -18,7 +18,7 @@
                                           (org-forward-element)
                                           (org-end-of-line)))
   ;; load the api key from password store and use org-mode as default
-  (setq gptel-api-key (password-store-get "Tokens/OpenAI")
+  (setq gptel-api-key (password-store-get "tokens/openAI.com")
         gptel-default-mode 'org-mode))
 
 (provide 'ff-ai-assistant)

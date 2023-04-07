@@ -7,6 +7,8 @@
     # cd /usr/share/doc/git/contrib/credential/libsecret
     # sudo make
     helper = /usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret
+[credential "https://github.com"]
+    helper = !pass keys/fabianfranzelin@github.com
 [merge]
     tool = meld
 [diff]

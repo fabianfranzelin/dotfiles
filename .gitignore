@@ -150,8 +150,9 @@ flycheck_*
 ### SSH ###
 /.ssh/known_hosts
 /.ssh/id_rsa
+/.ssh/authorized_keys
 
-### SSH ###
+### GNUPG ###
 .gnupg/*
 !.gnupg/gpg.conf
 !.gnupg/gpg-agent.conf
