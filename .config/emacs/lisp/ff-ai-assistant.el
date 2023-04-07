@@ -5,17 +5,21 @@
 
 ;;; Code:
 
+;; What does this code do?
 (straight-use-package
  '(gptel
    :type git
    :host github
    :repo "karthink/gptel"))
 
-(add-hook 'gptel-post-response-hook #'(lambda ()
-                                        (org-forward-element)
-                                        (org-end-of-line)))
-(setq gptel-api-key (password-store-get "Tokens/OpenAI")
-      gptel-default-mode 'org-mode)
+(with-eval-after-load 'gptel
+  ;; move cursor to next heading when response is posted
+  (add-hook 'gptel-post-response-hook #'(lambda ()
+                                          (org-forward-element)
+                                          (org-end-of-line)))
+  ;; load the api key from password store and use org-mode as default
+  (setq gptel-api-key (password-store-get "Tokens/OpenAI")
+        gptel-default-mode 'org-mode))
 
 (provide 'ff-ai-assistant)
 
