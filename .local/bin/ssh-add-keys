@@ -4,12 +4,15 @@ for id in id_ed255195; do
     PRIVATE_KEY="${HOME}/.ssh/${id}"
     PUBLIC_KEY="${HOME}/.ssh/${id}.pub"
     PASS_SCRIPT="${HOME}/.ssh/${id}_pass"
-    pass "Keys/${id}/key" > "${PRIVATE_KEY}"
+    touch "${PRIVATE_KEY}"
     chmod 600 "${PRIVATE_KEY}"
-    pass "Keys/${id}/pub" > "${PUBLIC_KEY}"
+    pass "keys/${id}/key" > "${PRIVATE_KEY}"
+    touch "${PUBLIC_KEY}"
     chmod 644 "${PUBLIC_KEY}"
+    pass "keys/${id}/pub" > "${PUBLIC_KEY}"
     echo "#!/bin/bash
-pass Keys/${id}/password" > "${PASS_SCRIPT}"
+pass keys/${id}/password" > "${PASS_SCRIPT}"
     chmod +x "${PASS_SCRIPT}"
     SSH_ASKPASS="${PASS_SCRIPT}" ssh-add "${PRIVATE_KEY}" < /dev/null
+    rm -f "${PRIVATE_KEY}"
 done
