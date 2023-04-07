@@ -5,7 +5,11 @@
 
 ;;; Code:
 
-(use-package gptel)
+(straight-use-package
+ '(gptel
+   :type git
+   :host github
+   :repo "karthink/gptel"))
 
 (provide 'ff-ai-assistant)
 
