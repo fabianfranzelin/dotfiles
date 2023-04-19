@@ -294,8 +294,7 @@
 
 (require 'auth-source)
 ;; Do not allow unencrypted auth-sources. Use GPG
-(setq auth-sources (delete "~/.authinfo" auth-sources))
-(add-to-list 'auth-sources '(password-store))
+(setq auth-sources '(password-store "~/.password-store/authinfo.gpg"))
 
 (defun ff/ssh-add-keys ()
   "Add all known ssh-keys from pass."

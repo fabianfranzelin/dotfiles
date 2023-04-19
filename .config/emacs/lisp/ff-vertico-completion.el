@@ -270,7 +270,7 @@ ARG: position"
                          (file-remote-p file 'user) "@" (file-remote-p file 'host)
                          "|sudo:root@"
                          (file-remote-p file 'host) ":" (file-remote-p file 'localname))
-               (concat "/sudo:root@localhost:" file))))
+               (concat "/sudo:root@localhost:" (expand-file-name file)))))
 
 ;; dev/null for online pages
 (use-package 0x0)
