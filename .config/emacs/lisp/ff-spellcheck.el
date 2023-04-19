@@ -153,7 +153,7 @@ handled appropriately."
 
 (use-package flyspell-correct
   :after flyspell
-  :bind (:map flyspell-mode-map ("C-." . flyspell-correct-wrapper)))
+  :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
 
 (use-package flyspell-correct-popup
   :after flyspell-correct)
