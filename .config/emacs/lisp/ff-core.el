@@ -293,6 +293,8 @@
 (auth-source-pass-enable)
 
 (require 'auth-source)
+;; Do not allow unencrypted auth-sources. Use GPG
+(setq auth-sources (delete "~/.authinfo" auth-sources))
 (add-to-list 'auth-sources '(password-store))
 
 (defun ff/ssh-add-keys ()
