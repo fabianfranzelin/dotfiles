@@ -1,27 +1,29 @@
 [include]
     path = "~/.config/git/config.workstation"
-[gc]
-    autoDetach = false
-[lfs]
-    storage = "~/.cache/git/lfs"
-[filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
-[gc]
-    autoDetach = false
-[push]
-    default = simple
-    recurseSubmodules = check
-[pull]
-	rebase = false
 [core]
     trustctime = false
     autocrlf = input
     safecrlf = true
     editor = vim
+[gc]
+    autoDetach = false
+[merge]
+    tool = meld
+[diff]
+    tool = meld
+[push]
+    default = simple
+    recurseSubmodules = check
+[pull]
+    rebase = false
 [fetch]
     prune = true
+[lfs]
+    storage = "~/.cache/git/lfs"
+[filter "lfs"]
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
 [include]
     path = "~/.config/git/config.alias"
