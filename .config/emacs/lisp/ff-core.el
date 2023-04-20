@@ -174,11 +174,11 @@
   :custom
   ((tramp-terminal-type "dumb")
    (tramp-default-method "ssh")
-   (tramp-verbose 1)
    (tramp-use-ssh-controlmaster-options nil)
    (vc-handled-backends '(Git)))
   :config
-  (setq tramp-auto-save-directory (expand-file-name "tramp/backups" no-littering-var-directory)
+  (setq tramp-verbose 3
+        tramp-auto-save-directory (expand-file-name "tramp/backups" no-littering-var-directory)
         tramp-persistency-file-name (expand-file-name "tramp/persistency_data" no-littering-var-directory)
         ;; make sure vc stuff is not making tramp slower
         vc-ignore-dir-regexp
