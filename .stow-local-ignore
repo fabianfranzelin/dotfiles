@@ -12,6 +12,8 @@ LICENSE
 ^/.*\.bak
 examples
 node_modules
+package.json
+package-lock.json
 
 .dir-locals.el
 .gitignore
