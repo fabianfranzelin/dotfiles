@@ -149,7 +149,10 @@ handled appropriately."
          (htm-mode . flyspell-mode)
          (html-mode . flyspell-mode)
          (org-mode . flyspell-mode))
-  :bind (("C-c f" . ff/flyspell-toggle)))
+  :bind (("C-c f" . ff/flyspell-toggle)
+         ;; disable default key since it is used by embark
+         :map flyspell-mode-map
+         ("C-." . nil)))
 
 (use-package flyspell-correct
   :after flyspell

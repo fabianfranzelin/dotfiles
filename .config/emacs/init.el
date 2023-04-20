@@ -72,7 +72,6 @@
   (load custom-file t))
 
 ;; -------------------------------------------------------------------
-(require 'ff-ensure-system-packages)
 (require 'ff-core)
 (require 'ff-vertico-completion)
 (require 'ff-setup-vterm)
