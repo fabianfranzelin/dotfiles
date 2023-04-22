@@ -68,7 +68,8 @@ ARG: position"
   (setq enable-recursive-minibuffers t)
   :config
   (custom-set-faces '(vertico-current ((t (:background "#3a3f5a")))))
-  :bind (:map vertico-map              ("C-f" . vertico-exit)
+  :bind (:map vertico-map
+              ("C-f" . vertico-exit)
               :map minibuffer-local-map
               ("C-l" . ff/minibuffer-backward-kill)
               ("C-a" . ff/minibuffer-move-beginning-of-line)))
@@ -137,7 +138,7 @@ ARG: position"
     (corfu-terminal-mode t)))
 
 (use-package affe
-  ;; search also in hidden and ignoreg files by git
+  ;; search also in hidden and ignored files by git
   :custom ((affe-find-command
               (cond
                ((executable-find "rg") "rg --color=never --files -uu")

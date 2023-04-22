@@ -139,7 +139,7 @@ handled appropriately."
 	    (message "Flyspell off")
 	    (flyspell-mode -1))
     ;; else - flyspell is off, turn it on
-	(ff/flyspell-on-for-buffer-type)))
+    (ff/flyspell-on-for-buffer-type)))
 
 (use-package flyspell
   :hook ((prog-mode . flyspell-prog-mode)
