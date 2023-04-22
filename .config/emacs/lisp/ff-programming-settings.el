@@ -26,9 +26,9 @@
 
   ;; C/C++
   (add-to-list 'eglot-server-programs
-               `(c-mode "clangd-12"))
+               `(c-mode "clangd"))
   (add-to-list 'eglot-server-programs
-               `(c++-mode "clangd-12"))
+               `(c++-mode "clangd"))
 
   ;; Sphinx, rst-mode
   (defclass eglot-esbonio (eglot-lsp-server) ()
