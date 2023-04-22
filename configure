@@ -128,7 +128,8 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          ccache \
          gnuplot \
          pass \
-         gnupg
+         gnupg \
+         terminator
 
     # ---------------------------------------------------------
     # install Emacs. First, just the regular version.
