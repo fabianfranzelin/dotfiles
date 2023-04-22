@@ -164,7 +164,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          aspell aspell-de aspell-en \
          clang-format \
          clang-tidy \
-         clangd-12 \
+         clangd \
          clang \
          valgrind \
          ripgrep \
@@ -241,7 +241,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
     if ( __is_linux ) then
        # note that vscode is mounted from Windows in WSL and not
        # installed via apt. Ignore when code cannot be found
-       sudo apt install code || true
+       sudo apt install -y code || true
     fi
 
     # Install extensions if code is actually present in the path,
