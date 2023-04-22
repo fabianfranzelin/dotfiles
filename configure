@@ -300,36 +300,36 @@ Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
     else
        echo -e "${__COLOR_INFO}INFO: Skip installing GTK tools since we are running in WSL or Docker.${__COLOR_RESET}"
     fi
-fi
 
-#------------------------------------------------------------------------------#
-# install oh-my-zsh if required
-export ZSH="${HOME}/.cache/oh-my-zsh"
-if [[ ! -f "${ZSH}/oh-my-zsh.sh" ]]; then
-    sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-    # This script creates a .zshrc file in your home directory. We
-    # won't need it, since we have a preconfigured one in this repo
-    rm "${HOME}/.zshrc"
-fi
+    #------------------------------------------------------------------------------#
+    # install oh-my-zsh if required
+    export ZSH="${HOME}/.cache/oh-my-zsh"
+    if [[ ! -f "${ZSH}/oh-my-zsh.sh" ]]; then
+        sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+        # This script creates a .zshrc file in your home directory. We
+        # won't need it, since we have a preconfigured one in this repo
+        rm "${HOME}/.zshrc"
+    fi
 
-POWERLEVEL10K_HOME=${ZSH}/custom/themes/powerlevel10k
-if [[ ! -d "${POWERLEVEL10K_HOME}" ]]; then
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${POWERLEVEL10K_HOME}"
-fi
+    POWERLEVEL10K_HOME=${ZSH}/custom/themes/powerlevel10k
+    if [[ ! -d "${POWERLEVEL10K_HOME}" ]]; then
+        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${POWERLEVEL10K_HOME}"
+    fi
 
-ZSH_AUTOSUGGESTION_HOME=${ZSH}/custom/plugins/zsh-autosuggestions
-if [[ ! -d "${ZSH_AUTOSUGGESTION_HOME}" ]]; then
-    git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_AUTOSUGGESTION_HOME}"
-fi
+    ZSH_AUTOSUGGESTION_HOME=${ZSH}/custom/plugins/zsh-autosuggestions
+    if [[ ! -d "${ZSH_AUTOSUGGESTION_HOME}" ]]; then
+        git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_AUTOSUGGESTION_HOME}"
+    fi
 
-ZSH_SYNTAX_HIGHLIGHTING=${ZSH}/custom/plugins/zsh-syntax-highlighting
-if [[ ! -d "${ZSH_SYNTAX_HIGHLIGHTING}" ]]; then
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting "${ZSH_SYNTAX_HIGHLIGHTING}"
-fi
+    ZSH_SYNTAX_HIGHLIGHTING=${ZSH}/custom/plugins/zsh-syntax-highlighting
+    if [[ ! -d "${ZSH_SYNTAX_HIGHLIGHTING}" ]]; then
+        git clone https://github.com/zsh-users/zsh-syntax-highlighting "${ZSH_SYNTAX_HIGHLIGHTING}"
+    fi
 
-ZSH_YOU_SHOULD_USE=${ZSH}/custom/plugins/you-should-use
-if [[ ! -d "${ZSH_YOU_SHOULD_USE}" ]]; then
-    git clone https://github.com/MichaelAquilina/zsh-you-should-use "${ZSH_YOU_SHOULD_USE}"
+    ZSH_YOU_SHOULD_USE=${ZSH}/custom/plugins/you-should-use
+    if [[ ! -d "${ZSH_YOU_SHOULD_USE}" ]]; then
+        git clone https://github.com/MichaelAquilina/zsh-you-should-use "${ZSH_YOU_SHOULD_USE}"
+    fi
 fi
 
 #------------------------------------------------------------------------------#
@@ -357,4 +357,3 @@ fi
         ln -s -f "npmrc.default" "npmrc"
     fi
 )
-
