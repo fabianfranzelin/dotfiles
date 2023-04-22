@@ -95,7 +95,7 @@ REPLACE-STR: string that replaces all regex matches"
          ("\\.h$" . c-mode))
   :init
   ;; ensure system packages
-  (ff/ensure-apt-package "clangd-12" "clangd-12")
+  (ff/ensure-apt-package "clangd" "clangd")
   (ff/ensure-apt-package "clang" "clang")
   ;; configure style
   (c-add-style "my-cc"
