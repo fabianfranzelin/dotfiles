@@ -70,7 +70,7 @@ Then, I install all the required third party dependencies and build Emacs
   build() {
       (
           echo "Install dependencies for building Emacs ${__EMACS_VERSION}"
-          sudo apt install \
+          sudo apt install -y \
               gcc-10 \
               g++-10 \
               libgccjit0 \

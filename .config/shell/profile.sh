@@ -34,12 +34,6 @@ export LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;
 # Make sure `ls` collates dotfiles first (for dired)
 export LC_COLLATE="C"
 
-# Start gnome keyring
-if ( __is_linux ) then
-   eval "$(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)"
-   export SSH_AUTH_SOCK
-fi
-
 # expand path to include local bin directory
 export PATH="${HOME}/opt/bin:${HOME}/.local/bin:${HOME}/.local/share/npm/bin:/usr/lib/ccache:${PATH}"
 
