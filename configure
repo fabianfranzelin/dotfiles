@@ -17,6 +17,8 @@ DESCRIPTION
               Install third-party dependencies
        --skip-emacs-build
               Skip building Emacs from source
+       --skip-qtile-installation
+              Skip installation of qtile desktop mananger
 "
 
 #------------------------------------------------------------------------------#
@@ -52,6 +54,10 @@ while [ "${#}" -gt 0 ]; do
             ;;
         '--skip-emacs-build')
             SKIP_EMACS_BUILD=1
+            shift # past argument
+            ;;
+        '--skip-qtile-installation')
+            SKIP_QTILE_INSTALL=1
             shift # past argument
             ;;
         *)
@@ -242,6 +248,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
        # note that vscode is mounted from Windows in WSL and not
        # installed via apt. Ignore when code cannot be found
        sudo apt install -y code || true
+       sudo snap install -y --classic code || true
     fi
 
     # Install extensions if code is actually present in the path,
@@ -259,40 +266,43 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
        echo -e "${__COLOR_INFO}INFO: Install GTK tools${__COLOR_RESET}"
 
        # Install Qtile window manager
-       python3 -m pip install --upgrade --use-pep517 xcffib
-       python3 -m pip install --upgrade --no-cache-dir cairocffi
-       sudo apt install -y libpangocairo-1.0-0
-       python3 -m pip install --upgrade qtile
+       if [ -z "${SKIP_QTILE_INSTALL}" ]; then
+	   echo -e "${__COLOR_INFO}INFO: Install Qtile desktop manager${__COLOR_RESET}"
+	   python3 -m pip install --upgrade --use-pep517 xcffib
+	   python3 -m pip install --upgrade --no-cache-dir cairocffi
+	   sudo apt install -y libpangocairo-1.0-0
+	   python3 -m pip install --upgrade qtile
 
-       # Create xsessions entry for qtile according to
-       # https://docs.qtile.org/en/latest/manual/install/index.html#starting-qtile
-       XSESSIONS_PATH="/usr/share/xsessions"
-       if [ -d "${XSESSIONS_PATH}" ]; then
-           QTILE_DESKTOP_FILE_PATH="${XSESSIONS_PATH}/qtile.desktop"
-           if [ ! -f "${QTILE_DESKTOP_FILE_PATH}" ]; then
-               echo "[Desktop Entry]
+	   # Create xsessions entry for qtile according to
+	   # https://docs.qtile.org/en/latest/manual/install/index.html#starting-qtile
+	   XSESSIONS_PATH="/usr/share/xsessions"
+	   if [ -d "${XSESSIONS_PATH}" ]; then
+               QTILE_DESKTOP_FILE_PATH="${XSESSIONS_PATH}/qtile.desktop"
+               if [ ! -f "${QTILE_DESKTOP_FILE_PATH}" ]; then
+		   echo "[Desktop Entry]
 Name=Qtile
 Comment=Qtile Session
 Exec=qtile start
 Type=Application
 Keywords=wm;tiling" | sudo tee "${QTILE_DESKTOP_FILE_PATH}"
-           else
-               echo -e "${__COLOR_WARN}The file '${QTILE_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
-           fi
+               else
+		   echo -e "${__COLOR_WARN}The file '${QTILE_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
+               fi
 
-           CUSTOM_DESKTOP_FILE_PATH="${XSESSIONS_PATH}/custom.desktop"
-           if [ ! -f "${CUSTOM_DESKTOP_FILE_PATH}" ]; then
-               echo "[Desktop Entry]
+               CUSTOM_DESKTOP_FILE_PATH="${XSESSIONS_PATH}/custom.desktop"
+               if [ ! -f "${CUSTOM_DESKTOP_FILE_PATH}" ]; then
+		   echo "[Desktop Entry]
 Name=Qtile
 Comment=Qtile Session
 Exec=/etc/X11/Xsession
 Type=Application
 Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
-           else
-               echo -e "${__COLOR_WARN}The file '${CUSTOM_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
-           fi
-       else
-           echo -e "${__COLOR_INFO}INFO: skipping xsession configuration for qtile"
+               else
+		   echo -e "${__COLOR_WARN}The file '${CUSTOM_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
+               fi
+	   else
+               echo -e "${__COLOR_INFO}INFO: skipping xsession configuration for qtile"
+	   fi
        fi
        sudo apt install -y \
             vlc \
