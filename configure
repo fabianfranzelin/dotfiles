@@ -121,7 +121,8 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          gnupg \
          terminator \
 	 fzf \
-         htop
+         htop \
+         ssh
 
     # ---------------------------------------------------------
     # install Emacs. First, just the regular version.
