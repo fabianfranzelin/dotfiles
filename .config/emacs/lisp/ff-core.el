@@ -236,9 +236,11 @@
          ("l" . dired-up-directory)
          ("TAB" . dired-find-file)))
 
-(use-package dired-rainbow
+(use-package dired-hacks
   :after (dired)
   :config
+  (require 'dired-rainbow)
+
   (dired-rainbow-define-chmod directory "#6cb2eb" "d.*")
   (dired-rainbow-define html "#eb5286" ("css" "less" "sass" "scss" "htm" "html" "jhtm" "mht" "eml" "mustache" "xhtml"))
   (dired-rainbow-define xml "#f2d024" ("xml" "xsd" "xsl" "xslt" "wsdl" "bib" "json" "msg" "pgn" "rss" "yaml" "yml" "rdata"))
