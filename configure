@@ -120,7 +120,8 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          pass \
          gnupg \
          terminator \
-	 fzf
+	 fzf \
+         htop
 
     # ---------------------------------------------------------
     # install Emacs. First, just the regular version.
@@ -233,7 +234,10 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
        # note that vscode is mounted from Windows in WSL and not
        # installed via apt. Ignore when code cannot be found
        sudo apt install -y code || true
-       sudo snap install -y --classic code || true
+       if command -v snap > /dev/null
+       then
+           sudo snap install --classic code || true
+       fi
     fi
 
     # Install extensions if code is actually present in the path,
