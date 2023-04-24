@@ -77,22 +77,6 @@ if [ -n "${LOAD_SUBMODULES}" ]; then
 fi
 
 #------------------------------------------------------------------------------#
-# setup symbolic links first
-#------------------------------------------------------------------------------#
-# Setup all symlinks with GNU stow
-if ! command -v stow &> /dev/null
-then
-    echo "Install GNU stow."
-    sudo apt update && sudo apt install -y stow
-fi
-
-echo -e "${__COLOR_INFO}INFO: Setup symbolic links with GNU stow.${__COLOR_RESET}"
-(
-    cd "${DOTFILES}"
-    stow . -t "${HOME}"
-)
-
-#------------------------------------------------------------------------------#
 # install required packages
 if [ -n "${INSTALL_DEPENDENCIES}" ]; then
     echo -e "${__COLOR_INFO}INFO: Installing minimal required packages for setup...${__COLOR_RESET}"
@@ -135,7 +119,8 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          gnuplot \
          pass \
          gnupg \
-         terminator
+         terminator \
+	 fzf
 
     # ---------------------------------------------------------
     # install Emacs. First, just the regular version.
@@ -367,4 +352,20 @@ fi
         echo -e "${__COLOR_INFO}No specific npm configuration for $(hostname) available. Using the default one.${__COLOR_RESET}"
         ln -s -f "npmrc.default" "npmrc"
     fi
+)
+
+#------------------------------------------------------------------------------#
+# setup symbolic links
+#------------------------------------------------------------------------------#
+# Setup all symlinks with GNU stow
+if ! command -v stow &> /dev/null
+then
+    echo "Install GNU stow."
+    sudo apt update && sudo apt install -y stow
+fi
+
+echo -e "${__COLOR_INFO}INFO: Setup symbolic links with GNU stow.${__COLOR_RESET}"
+(
+    cd "${DOTFILES}"
+    stow . -t "${HOME}"
 )
