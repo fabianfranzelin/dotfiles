@@ -14,7 +14,7 @@
 
 (defun ff/get-openai-token ()
   "Load and return the OpenAI token."
-  (password-store-get "tokens/openAI.com"))
+  (password-store-get "tokens/fabian.franzelin@openAI.com"))
 
 (with-eval-after-load 'gptel
   ;; move cursor to next heading when response is posted
