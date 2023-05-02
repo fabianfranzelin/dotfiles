@@ -15,9 +15,9 @@
     # For WSL use
     # useHttpPath = true
     # helper = /mnt/c/Program\\ Files/Git/mingw64/libexec/git-core/git-credential-wincred.exe
-[credential "https://github.com/fabianfranzelin"]
+[credential "https://github.com"]
     helper = !pass keys/fabianfranzelin@github.com
-[credential "https://github.com/PACE-INT"]
+[credential "https://github.com/PACE-INT/pace.git"]
     helper = !pass keys/frf2lr@github.com
 [credential "https://github.boschdevcloud.com"]
     helper = !pass keys/frf2lr@github.boschdevcloud.com
