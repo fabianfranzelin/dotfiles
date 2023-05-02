@@ -42,6 +42,13 @@ export DOCKER_BUILDKIT=0
 
 # Add some default directories to LD_LIBRARY_PATH
 export LD_LIBRARY_PATH="/usr/local/lib:${LD_LIBRARY_PATH}"
+
+# Start ssh-agent
+if ! pgrep ssh-agent > /dev/null; then
+    eval "$(ssh-agent -s)" > /dev/null
+    export SSH_AUTH_SOCK
+fi
+
 #------------------------------------------------------------------------------#
 # history
 
