@@ -3,18 +3,30 @@
     email = fabian.franzelin@de.bosch.com
 [credential]
     # ----------------------------------
-    # helper = cache --timeout=8000000
-    # useHttpPath = true
+    helper = cache --timeout=8000000
+    useHttpPath = true
     # ----------------------------------
     # For installation, run:
     # sudo apt-get install libsecret-1-0 libsecret-1-dev
     # cd /usr/share/doc/git/contrib/credential/libsecret
     # sudo make
-    helper = /usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret
+    # helper = /usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret
     # ----------------------------------
     # For WSL use
     # useHttpPath = true
     # helper = /mnt/c/Program\\ Files/Git/mingw64/libexec/git-core/git-credential-wincred.exe
+[credential "https://github.com/fabianfranzelin"]
+    helper = !pass keys/fabianfranzelin@github.com
+[credential "https://github.com/PACE-INT"]
+    helper = !pass keys/frf2lr@github.com
+[credential "https://github.boschdevcloud.com"]
+    helper = !pass keys/frf2lr@github.boschdevcloud.com
+[credential "https://sourcecode01.de.bosch.com"]
+    helper = !pass keys/frf2lr@sourcecode01.de.bosch.com
+[credential "https://sourcecode.socialcoding.bosch.com"]
+    helper = !pass keys/frf2lr@sourcecode.socialcoding.bosch.com
+[credential "https://github.ford.com"]
+    helper = !pass keys/ffranzel@github.ford.com
 [merge]
     tool = meld
 [diff]

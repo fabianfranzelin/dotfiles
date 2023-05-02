@@ -1,6 +1,18 @@
 #!/usr/bin/env bash
 
-for id in id_ed255195; do
+IDS=""
+
+if [ "$(hostname)" = "ST39-C-00066" ] || [ $(hostname) = "LE-C-001RA" ]
+then
+    IDS="id_rsa id_ed25519"
+fi
+
+if [ "$(hostname)" = "ThinkPad" ]
+then
+    IDS="id_ed255195"
+fi
+
+for id in ${IDS}; do
     PRIVATE_KEY="${HOME}/.ssh/${id}"
     PUBLIC_KEY="${HOME}/.ssh/${id}.pub"
     PASS_SCRIPT="${HOME}/.ssh/${id}_pass"
