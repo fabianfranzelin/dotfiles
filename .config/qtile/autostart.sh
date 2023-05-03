@@ -15,6 +15,3 @@ nm-applet &
 # 3. Uncomment to set wallpaper with nitrogen
 nitrogen --set-zoom-fill \
          "$HOME/.local/share/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg" &
-
-# Emacs daemon
-emacs --daemon &
