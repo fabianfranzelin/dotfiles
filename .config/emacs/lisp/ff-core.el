@@ -299,6 +299,9 @@
 (require 'auth-source)
 ;; Do not allow unencrypted auth-sources. Use GPG
 (setq auth-sources '(password-store "~/.password-store/authinfo.gpg"))
+;; Use the Emacs minibuffer for GPG pinentry
+;; https://vxlabs.com/2021/03/21/gnupg-pinentry-via-the-emacs-minibuffer/
+(setq epa-pinentry-mode 'loopback)
 
 (defun ff/ssh-add-keys ()
   "Add all known ssh-keys from pass."
