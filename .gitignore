@@ -148,11 +148,10 @@ flycheck_*
 /package-lock.json
 
 ### SSH ###
-/.ssh/known_hosts
-/.ssh/id_rsa
-/.ssh/authorized_keys
+/.ssh/*
+!.ssh/config
 
 ### GNUPG ###
-.gnupg/*
-!.gnupg/gpg.conf
-!.gnupg/gpg-agent.conf
+/.gnupg/*
+!/.gnupg/gpg.conf
+!/.gnupg/gpg-agent.conf
