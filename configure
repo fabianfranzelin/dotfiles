@@ -214,7 +214,8 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
            typescript \
            typescript-language-server \
            dockerfile-language-server-nodejs \
-           jsonlint
+           jsonlint \
+           vscode-langservers-extracted
 
        # install other npm packages
        npm install -g \
