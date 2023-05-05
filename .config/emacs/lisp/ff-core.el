@@ -79,6 +79,14 @@
 ;; save cursor position in files even when buffers are killed
 (save-place-mode)
 
+;; Create backup files in cache
+(setq backup-directory-alist `(("." . ,(expand-file-name "saves" no-littering-var-directory))))
+(setq backup-by-copying nil)
+(setq delete-old-versions t
+      kept-new-versions 6
+      kept-old-versions 2
+      version-control t)
+
 ;; -------------------------------------------------------------------
 ;; Global key bindings
 ;; -------------------------------------------------------------------
