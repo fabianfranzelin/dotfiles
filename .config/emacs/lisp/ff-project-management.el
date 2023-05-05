@@ -125,11 +125,26 @@ Executes COMMAND-LINE in buffer OUTPUT-BUFFER.  Name the process BUFFER-BASE-NAM
            :working-dir project-dir
            :runner 'ff/run-command-runner-vterm))))
 
+;; define Conan targets
+(defun run-command-recipe-ff/conan ()
+  "Define Conan recipes for run command package."
+  (list
+   (when-let* ((project-dir (locate-dominating-file default-directory "conanfile.py")))
+     (list :command-name "conan:install"
+           :command-line "conan install . -if=install -pr=ubuntu2004_x86_64_gcc8_debug --build=missing"
+           :working-dir project-dir))
+   (when-let* ((project-dir (locate-dominating-file default-directory "conanfile.py"))
+               (build-dir (expand-file-name "install" project-dir)))
+     (list :command-name "conan:build"
+           :command-line "conan build . -if=install -bf=build"
+           :working-dir project-dir))))
+
 (use-package run-command
   :custom ((run-command-default-runner #'run-command-runner-compile))
   :config
   (add-to-list 'run-command-recipes #'run-command-recipe-ff/cc)
-  (add-to-list 'run-command-recipes #'run-command-recipe-ff/python))
+  (add-to-list 'run-command-recipes #'run-command-recipe-ff/python)
+  (add-to-list 'run-command-recipes #'run-command-recipe-ff/conan))
 
 ;; -------------------------------------------------------------------
 ;; Project (built in project handling mode; similar to projectile)
