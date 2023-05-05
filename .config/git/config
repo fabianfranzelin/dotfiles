@@ -2,8 +2,9 @@
     path = "~/.config/git/config.workstation"
 [core]
     trustctime = false
-    autocrlf = input
+    autocrlf = false
     safecrlf = true
+    eol = lf
     editor = vim
 [gc]
     autoDetach = false
