@@ -5,7 +5,6 @@
 
 ;;; Code:
 
-;; What does this code do?
 (straight-use-package
  '(gptel
    :type git
