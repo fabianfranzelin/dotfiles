@@ -61,7 +61,8 @@
 (global-subword-mode t)
 
 ;; enable smooth scrolling mode
-(pixel-scroll-precision-mode t)
+(when (>= emacs-major-version 29)
+  (pixel-scroll-precision-mode t))
 
 ;; highlight the marked region (C-SPC) and use commands (like
 ;; latex-environment) on current region.
