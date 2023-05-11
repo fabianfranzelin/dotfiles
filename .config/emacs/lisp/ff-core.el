@@ -270,15 +270,6 @@
   (dired-rainbow-define vc "#0074d9" ("git" "gitignore" "gitattributes" "gitmodules"))
   (dired-rainbow-define-chmod executable-unix "#38c172" "-.*x.*"))
 
-;; NOTE: The first time you load your configuration on a new machine,
-;; you’ll need to run `M-x all-the-icons-install-fonts` so that mode
-;; line icons display correctly.
-(use-package all-the-icons)
-
-(use-package all-the-icons-dired
-  :after (dired)
-  :hook ((dired-mode . all-the-icons-dired-mode)))
-
 (use-package dired-hide-dotfiles
   :after (dired)
   :bind (:map dired-mode-map

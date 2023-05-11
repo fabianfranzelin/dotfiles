@@ -38,6 +38,16 @@
                               (time-subtract after-init-time before-init-time)))
                      gcs-done)))
 
+;; NOTE: The first time you load your configuration on a new machine,
+;; you’ll need to run `M-x nerd-icons-install-fonts` so that mode
+;; line icons display correctly.
+(use-package nerd-icons
+  :custom ((nerd-icons-font-family "Symbols Nerd Fonts Mono")))
+
+(use-package nerd-icons-dired
+  :hook
+  ((dired-mode . nerd-icons-dired-mode)))
+
 ;; -------------------------------------------------------------------
 ;; Doom Color themes
 (use-package doom-themes
@@ -126,7 +136,7 @@ INCREMENT: Value of which the current font-size is changed"
 (use-package page-break-lines)
 
 (use-package dashboard
-  :after (all-the-icons page-break-lines)
+  :after (nerd-icons page-break-lines)
   :custom
   (;; Content is not centered by default. To center, set
    (dashboard-center-content t)
@@ -143,7 +153,8 @@ INCREMENT: Value of which the current font-size is changed"
    ;; Show dashboard for newly created frames
    (initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
    ;; set the project backend to project.el
-   (dashboard-projects-backend `project-el))
+   (dashboard-projects-backend `project-el)
+   (dashboard-icon-type `nerd-icons))
   :config
   (dashboard-setup-startup-hook))
 
