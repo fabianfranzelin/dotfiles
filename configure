@@ -122,7 +122,8 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          terminator \
 	 fzf \
          htop \
-         ssh
+         ssh \
+         dos2unix
 
     # ---------------------------------------------------------
     # install Emacs. First, just the regular version.
