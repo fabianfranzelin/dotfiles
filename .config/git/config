@@ -2,7 +2,7 @@
     path = "~/.config/git/config.workstation"
 [core]
     trustctime = false
-    autocrlf = false
+    autocrlf = true
     safecrlf = true
     eol = lf
     editor = vim
@@ -16,7 +16,7 @@
     default = simple
     recurseSubmodules = check
 [pull]
-    rebase = false
+    rebase = true
 [fetch]
     prune = true
 [lfs]
