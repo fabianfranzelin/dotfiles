@@ -287,6 +287,7 @@
 ;; Undo tree - make undos more powerful
 ;; -------------------------------------------------------------------
 (use-package undo-tree
+  :custom ((undo-tree-history-directory-alist `(("." . ,(expand-file-name "undo-tree-hist" no-littering-var-directory)))))
   :init (global-undo-tree-mode)
   :config (setq undo-limit 8000000))
 
