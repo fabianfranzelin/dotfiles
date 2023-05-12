@@ -287,13 +287,15 @@
 ;; Undo tree - make undos more powerful
 ;; -------------------------------------------------------------------
 (use-package undo-tree
-  ;; use no-littering-theme-backups once it works
-  :custom ((setq undo-tree-history-directory-alist `((,(concat "\\`" (file-name-as-directory temporary-file-directory)))
+  ;; use (no-littering-theme-backups) once it works
+  :custom ((undo-tree-history-directory-alist `((,(concat "\\`" (file-name-as-directory temporary-file-directory)))
                                                 ("\\`/tmp/" . nil)
                                                 ("\\`/dev/shm/" . nil)
                                                 ("." . ,(no-littering-expand-var-file-name "undo-tree-hist/")))))
-  :init (global-undo-tree-mode)
-  :config (setq undo-limit 8000000))
+  :init
+  (global-undo-tree-mode)
+  :config
+  (setq undo-limit 8000000))
 
 ;; -------------------------------------------------------------------
 ;; Credential management
