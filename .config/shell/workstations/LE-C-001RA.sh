@@ -33,6 +33,10 @@ fi
 
 alias init='wsl.exe -d wsl-vpnkit service wsl-vpnkit start; sudo service cntlm start; sudo service docker start'
 
+# Restart ssh-agent on each startup. I do not know why this is required in WSL
+pkill -9 ssh-agent && eval "$(ssh-agent -s)" > /dev/null
+export SSH_AUTH_SOCK
+
 #------------------------------------------------------------------------------#
 # AOS
 export AOS_BASE_HOME="${HOME}/workspace/aos_base"
