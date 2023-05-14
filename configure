@@ -97,7 +97,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
             pip \
             wheel
 
-    sudo apt install -y \
+    sudo apt-get install -y \
          xclip \
          apt-transport-https \
          python3-pyqt5 \
@@ -130,7 +130,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
     if ! command -v emacs &> /dev/null
     then
         echo "Install default Emacs from package sources."
-        sudo apt install -y \
+        sudo apt-get install -y \
              emacs
     fi
 
@@ -148,7 +148,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
         )
     fi
     # install dependencies for Emacs
-    sudo apt install -y \
+    sudo apt-get install -y \
          markdown \
          pandoc \
          graphviz \
@@ -166,7 +166,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          shellcheck
 
     # emacs pdf-tools dependencies
-    sudo apt install -y \
+    sudo apt-get install -y \
          libpng-dev \
 	 zlib1g-dev \
          libpoppler-glib-dev \
@@ -236,7 +236,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
     if ( __is_linux ) then
        # note that vscode is mounted from Windows in WSL and not
        # installed via apt. Ignore when code cannot be found
-       sudo apt install -y code || true
+       sudo apt-get install -y code || true
        if command -v snap > /dev/null
        then
            sudo snap install --classic code || true
@@ -262,7 +262,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
 	   echo -e "${__COLOR_INFO}INFO: Install Qtile desktop manager${__COLOR_RESET}"
 	   python3 -m pip install --upgrade --use-pep517 xcffib
 	   python3 -m pip install --upgrade --no-cache-dir cairocffi
-	   sudo apt install -y libpangocairo-1.0-0
+	   sudo apt-get install -y libpangocairo-1.0-0
 	   python3 -m pip install --upgrade qtile
 
 	   # Create xsessions entry for qtile according to
@@ -296,7 +296,7 @@ Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
                echo -e "${__COLOR_INFO}INFO: skipping xsession configuration for qtile"
 	   fi
        fi
-       sudo apt install -y \
+       sudo apt-get install -y \
             vlc \
             firefox \
             eog
@@ -368,7 +368,7 @@ fi
 if ! command -v stow &> /dev/null
 then
     echo "Install GNU stow."
-    sudo apt update && sudo apt install -y stow
+    sudo apt-get update && sudo apt-get install -y stow
 fi
 
 echo -e "${__COLOR_INFO}INFO: Setup symbolic links with GNU stow.${__COLOR_RESET}"

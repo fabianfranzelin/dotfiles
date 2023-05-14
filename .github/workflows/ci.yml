@@ -21,6 +21,7 @@ jobs:
       - name: Configure dotfiles and install third-party dependencies
         run: |
           rm ~/.bashrc ~/.profile
+          sudo apt-get update
           ./configure -i
       - name: Run Emacs
         run: |
