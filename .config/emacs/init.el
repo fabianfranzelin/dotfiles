@@ -62,14 +62,12 @@
 ;; Before we do anything, set up the no littering package
 (use-package no-littering
   :init
-  ;; write auto-save files not into the local folder but into the
-  ;; no-littering cache
-  (setq auto-save-file-name-transforms
-	    `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
-
-  ;; setup a new custom file and load it
+;; setup a new custom file and load it
   (setq custom-file (no-littering-expand-etc-file-name "custom.el"))
-  (load custom-file t))
+  (load custom-file t)
+  :config
+  ;; this sets the path right for undo-tree, auto-save and backup files
+  (no-littering-theme-backups))
 
 ;; -------------------------------------------------------------------
 (require 'ff-core)
