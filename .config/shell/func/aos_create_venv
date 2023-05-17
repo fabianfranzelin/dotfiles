@@ -16,42 +16,14 @@ aos_create_venv() {
         # shellcheck disable=SC1090
         . "${VIRTUALENV_ACTIVATE_FILEPATH}"
         python3 -m pip install --upgrade pip wheel setuptools pbr
-        python3 -m pip install -r "./_tools/docker/aos_user_osd6/requirements.txt"
-        python3 -m pip install -r "./_tools/docker/aos_dev_osd6/requirements.txt"
 
-        # this is the minimum version required by fmt
-        python3 -m pip install markupsafe==2.0
-        pipx install poetry==1.2.1
-
-        # for some reason, these packages are required to import rosbag
-        python3 -m pip install pycryptodomex gnupg rospkg
-
-        # for some other reason empy is also missing
-        python3 -m pip install empy
-
-        # install dependencies for the manifest manipulation tool
-        python3 -m pip install argcomplete
-
-        # install stuff for sphinx builds
-        python3 -m pip install git+https://github.boschdevcloud.com/FRF2LR/py_sphinx_docs.git
+        python3 -m pip install "_tools/aos_cli"
 
         # other stuff that helps working
         python3 -m pip install ipdb ipython
 
-        # language server in venv
-        python3 -m pip install \
-                virtualenv \
-                epc \
-                ptvsd \
-                black \
-                isort \
-                yamllint \
-                mdformat \
-                cmake_language_server \
-                "python-lsp-server[all]" \
-                pylsp-mypy \
-                esbonio \
-                robotframework-tidy
+        # install stuff for sphinx builds
+        python3 -m pip install git+https://github.boschdevcloud.com/FRF2LR/py_sphinx_docs.git
 
         deactivate
 

@@ -276,9 +276,6 @@
   :bind (:map dired-mode-map
               ("H" . dired-hide-dotfiles-mode)))
 
-(use-package dired-hacks
-  :hook ((dired-mode . dired-collapse-mode)))
-
 (use-package dired-rsync
   :bind (:map dired-mode-map
               ("C" . dired-rsync)))
