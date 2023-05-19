@@ -25,8 +25,8 @@ def main() -> None:
     path = pathlib.Path("/tmp")
     print(path)
 
-    a = np.array([10, 20])
-    print(np.dot(a, a.T))
+    a = np.array([10, 20])  # type: ignore
+    print(np.dot(a, a.T))  # type: ignore
 
 
 if __name__ == "__main__":
