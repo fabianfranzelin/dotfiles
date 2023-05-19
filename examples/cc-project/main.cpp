@@ -19,8 +19,8 @@ bool bitwise_comparison(std::uint8_t* a, std::uint8_t* b, size_t length)
 int main(int argc, char* argv[])
 {
     size_t length = 10;
-    auto a = (std::uint8_t*)malloc(length * sizeof(std::uint8_t));
-    auto b = (std::uint8_t*)malloc(length * sizeof(std::uint8_t));
+    std::uint8_t* a = (std::uint8_t*)malloc(length * sizeof(std::uint8_t));
+    std::uint8_t* b = (std::uint8_t*)malloc(length * sizeof(std::uint8_t));
 
     for (size_t i = 0; i < length; i++)
     {
