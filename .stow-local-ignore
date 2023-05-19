@@ -3,6 +3,7 @@
 \.build.yml
 \.files
 .mypy_cache
+.pytest_cache
 archive
 mail
 fonts
