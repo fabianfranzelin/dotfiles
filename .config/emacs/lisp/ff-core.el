@@ -215,8 +215,8 @@
 ;; -------------------------------------------------------------------
 ;; Set up dired with async
 ;; -------------------------------------------------------------------
-;; rename buffer content: C-x C-q, C-c C-c to apply and C-c ESC to cancel
-;; copy path of file: 0 w in dired buffer
+;; rename buffer content: C-x C-q, (wdired) C-c C-c to apply and C-c
+;; ESC to cancel copy path of file: 0 w in dired buffer
 (use-package dired
   :straight nil
   :after (org-download async)
@@ -297,7 +297,7 @@
 
 (require 'auth-source)
 ;; Do not allow unencrypted auth-sources. Use GPG
-(setq auth-sources '(password-store "~/.password-store/authinfo.gpg"))
+(setq auth-sources `(password-store ,(expand-file-name "~/.password-store/authinfo.gpg")))
 ;; Use the Emacs minibuffer for GPG pinentry
 ;; https://vxlabs.com/2021/03/21/gnupg-pinentry-via-the-emacs-minibuffer/
 (setq epa-pinentry-mode 'loopback)

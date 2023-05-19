@@ -63,13 +63,13 @@ ARG: position"
    (vertico-cycle t))
   :init
   (vertico-mode t)
-
   ;; Enable recursive minibuffers
   (setq enable-recursive-minibuffers t)
   :config
   (custom-set-faces '(vertico-current ((t (:background "#3a3f5a")))))
   :bind (:map vertico-map
               ("C-f" . vertico-exit)
+              ("C-j" . vertico-exit-input)
               :map minibuffer-local-map
               ("C-l" . ff/minibuffer-backward-kill)
               ("C-a" . ff/minibuffer-move-beginning-of-line)))
