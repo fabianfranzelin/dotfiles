@@ -138,8 +138,7 @@
 (use-package dockerfile-mode
   :mode (("Dockerfile\\'" . dockerfile-mode))
   :init
-  (ff/ensure-npm-package "dockerfile-language-server-nodejs" "docker-langserver")
-  (put 'dockerfile-image-name 'safe-local-variable #'stringp))
+  (ff/ensure-npm-package "dockerfile-language-server-nodejs" "docker-langserver"))
 
 (use-package docker
   :after (setup-vterm)
@@ -182,7 +181,6 @@
 ;; Typescript
 ;; -------------------------------------------------------------------
 (use-package tide
-  :after (typescript-mode)
   :hook ((typescript-mode . tide-setup)
          (typescript-mode . tide-hl-identifier-mode)
          (before-save . tide-format-before-save)))

@@ -78,9 +78,9 @@ REPLACE-STR: string that replaces all regex matches"
   ;; ensure system packages
   (ff/ensure-apt-package "clang-format" "clang-format")
 
-  :hook (((c-mode c++-mode) . clang-format+-mode))
+  :hook (((c-mode c++-mode) . clang-format+-mode)
          ((c-mode c++-mode) . (lambda ()
-                                (add-hook 'before-save-hook 'ff/clang-format-buffer-smart nil t)))
+                                (add-hook 'before-save-hook 'ff/clang-format-buffer-smart nil t))))
   :config
   (setq clang-format-executable "/usr/bin/clang-format"))
 
@@ -114,14 +114,10 @@ REPLACE-STR: string that replaces all regex matches"
 
 ;; -----------------------------------------------------------------------------------
 ;; Cmake
-
-;; cmake-mode: major mode for cmake files
-;; https://gitlab.kitware.com/cmake/cmake/blob/master/Auxiliary/cmake-mode.el
 (use-package cmake-mode
   :init
   ;; install system dependencies
   (ff/ensure-python-package "cmake_language_server" nil "cmake_language_server")
-
   :mode (("\\.cmake$" . cmake-mode)
          ("CMakeLists.txt" . cmake-mode)))
 
