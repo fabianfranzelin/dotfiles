@@ -16,18 +16,14 @@ aos_create_venv() {
         # shellcheck disable=SC1090
         . "${VIRTUALENV_ACTIVATE_FILEPATH}"
         python3 -m pip install --upgrade pip wheel setuptools pbr
-
+        # install command line tool
         python3 -m pip install "_tools/aos_cli"
+        # install stuff for sphinx builds
+        python3 -m pip install git+https://github.boschdevcloud.com/FRF2LR/py_sphinx_docs.git
 
         # other stuff that helps working
         python3 -m pip install ipdb ipython
 
-        # install stuff for sphinx builds
-        python3 -m pip install git+https://github.boschdevcloud.com/FRF2LR/py_sphinx_docs.git
-
         deactivate
-
-        # install yarn
-        npm install -g yarn
     )
 }
