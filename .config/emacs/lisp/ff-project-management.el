@@ -125,10 +125,7 @@ Executes COMMAND-LINE in buffer OUTPUT-BUFFER.  Name the process BUFFER-BASE-NAM
            :runner 'ff/run-command-runner-vterm))))
 
 (use-package run-command
-  :custom ((run-command-default-runner #'run-command-runner-compile))
-  :config
-  (add-to-list 'run-command-recipes #'run-command-recipe-ff/cc)
-  (add-to-list 'run-command-recipes #'run-command-recipe-ff/python))
+  :custom ((run-command-default-runner #'run-command-runner-compile)))
 
 ;; -------------------------------------------------------------------
 ;; Project (built in project handling mode; similar to projectile)
