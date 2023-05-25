@@ -1,7 +1,9 @@
 ;;; Directory Local Variables
 ;;; For more information see (info "(emacs) Directory Variables")
 
-((nil . ((pyvenv-workon . nil)))
+((nil . ((pyvenv-workon . nil)
+         (run-command-recipes . (list run-command-recipe-ff/cc
+                                      run-command-recipe-ff/python))))
  (python-mode . ((flycheck-add-next-checker . ('python-pylint 'python-mypy))
                  (eval . (add-to-list 'flycheck-disabled-checkers 'python-flake8))
                  (eglot-workspace-configuration
