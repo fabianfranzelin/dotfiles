@@ -4,6 +4,10 @@
 ((nil . ((pyvenv-workon . nil)
          (run-command-recipes . (list run-command-recipe-ff/cc
                                       run-command-recipe-ff/python))))
+ (yaml-mode . ((eglot-workspace-configuration
+                . (:yaml (:rules (:key-ordering nil
+                                                :line-length nil)
+                                 :schemas (:https://json.schemastore.org/github-action.json "/.github/workflows/.*"))))))
  (python-mode . ((flycheck-add-next-checker . ('python-pylint 'python-mypy))
                  (eval . (add-to-list 'flycheck-disabled-checkers 'python-flake8))
                  (eglot-workspace-configuration
