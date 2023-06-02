@@ -123,6 +123,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
 	 fzf \
          htop \
          ssh \
+         sshpass \
          dos2unix
 
     # ---------------------------------------------------------
