@@ -83,3 +83,6 @@ alias ff='find_file'
 
 # Set keyboard layout to German and disable Caps-Lock
 alias set_default_keyboard_layout='setxkbmap -layout de -option ctrl:nocaps'
+
+# SSH logins
+alias ssh_ws='sshpass -p "$(pass passwords/$(pass usernames/bosch)@login)" ssh ws'
