@@ -52,7 +52,7 @@ fi
 
 #------------------------------------------------------------------------------#
 # Proxy
-pass passwords/frf2lr@kinit | kinit > /dev/null
+pass passwords/$(pass usernames/bosch)@kinit | kinit > /dev/null
 
 #------------------------------------------------------------------------------#
 # AOS

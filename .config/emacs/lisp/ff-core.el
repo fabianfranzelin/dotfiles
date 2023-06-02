@@ -302,10 +302,10 @@
 ;; https://vxlabs.com/2021/03/21/gnupg-pinentry-via-the-emacs-minibuffer/
 (setq epa-pinentry-mode 'loopback)
 
-(defun ff/ssh-add-keys ()
+(defun ff/restart-ssh-agent ()
   "Add all known ssh-keys from pass."
   (interactive)
-  (async-shell-command "ssh-add-keys"))
+  (async-shell-command "pkill -9 ssh-agent && eval $(ssh-agent -s) && ssh-add-keys"))
 
 (use-package pass
   :custom ((pass-show-keybindings nil)))
