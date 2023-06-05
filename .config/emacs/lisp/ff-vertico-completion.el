@@ -211,6 +211,9 @@ ARG: position"
   (setq xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
 
+  ;; enable ssh as directory source
+  (add-to-list 'consult-dir-sources 'consult-dir--source-tramp-ssh t)
+
   :bind (("C-s" . consult-line)
          ("C-c i" . consult-imenu)
          ("M-y" . consult-yank-replace)
