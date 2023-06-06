@@ -26,8 +26,9 @@ export SWT_GTK3=0
 export FLEXLM_TIMEOUT=3000000
 
 # make sure that there is a conan cache folder is not available
-AOS_CONAN_CACHE="${HOME}/conan_download_cache"
-[ -d "${AOS_CONAN_CACHE}" ] && echo "${__COLOR_WARN}WARN: HOME/conan_download_cache exists. Docker setup for AOS will not work if this folder is not removed.${__COLOR_RESET}"
+export CONAN_USER_HOME="${HOME}/.aos_conan_download_cache"
+export AOS_WORKDIR="${HOME}/.aos_conan_download_cache"
+mkdir -p "${AOS_WORKDIR}"
 
 #------------------------------------------------------------------------------#
 # PJ-Rec
