@@ -31,7 +31,7 @@ if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
-alias init='wsl.exe -d wsl-vpnkit service wsl-vpnkit start; sudo service cntlm start; sudo service docker start'
+alias init='wsl.exe -d wsl-vpnkit service wsl-vpnkit start; sudo service cntlm start; sudo service docker start; load_tokens'
 
 # Restart ssh-agent on each startup. I do not know why this is required in WSL
 pkill -9 ssh-agent && eval "$(ssh-agent -s)" > /dev/null
@@ -57,35 +57,3 @@ export REQUESTS_CA_BUNDLE="${HOME}/.local/share/certificates/bosch/azure-bosch-c
 if [ -f "${HOME}/.forddat3/devcontainer" ]; then
     . "${HOME}/.forddat3/devcontainer"
 fi
-
-#------------------------------------------------------------------------------#
-# AOS
-export BOSCH_USER
-BOSCH_USER="$(pass usernames/bosch)"
-export BITBUCKET_TOKEN
-BITBUCKET_TOKEN="$(pass tokens/${BOSCH_USER}@sourcecode01.de.bosch.com)"
-export ARTIFACTORY_APIKEY
-ARTIFACTORY_APIKEY="$(pass tokens/${BOSCH_USER}@rb-artifactory.bosch.com)"
-export CONAN_LOGIN_USERNAME
-CONAN_LOGIN_USERNAME="${BOSCH_USER}"
-export CONAN_PASSWORD
-CONAN_PASSWORD="${ARTIFACTORY_APIKEY}"
-
-export RECOMPUTE_CONAN_PROFILE="ubuntu2004_x86_64_gcc8_debug"
-export DISABLE_RECOMPUTE_DEPENDENCY_CHECK=1
-
-#------------------------------------------------------------------------------#
-# PJ-Rec
-export ARTIFACTORY_USER
-ARTIFACTORY_USER="$(pass usernames/bosch)"
-export ARTIFACTORY_KEY
-ARTIFACTORY_KEY="$(pass tokens/${ARTIFACTORY_USER}@artifactory.boschdevcloud.com)"
-export ARTIFACTORY_KEY_RB
-ARTIFACTORY_KEY_RB="${ARTIFACTORY_APIKEY}"
-
-#------------------------------------------------------------------------------#
-# One-parking
-export ARTIFACTORY_API_KEY
-ARTIFACTORY_API_KEY="${ARTIFACTORY_APIKEY}"
-export BDC_428_ARTIFACTORY_API_KEY
-BDC_428_ARTIFACTORY_API_KEY="${ARTIFACTORY_KEY}"
