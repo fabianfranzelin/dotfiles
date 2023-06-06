@@ -39,13 +39,14 @@ export SSH_AUTH_SOCK
 
 #------------------------------------------------------------------------------#
 # AOS
-export AOS_BASE_HOME="${HOME}/workspace/aos_base"
+export AOS_BASE_HOME="${HOME}/workspace/aos"
 export AOS_BUILD_DIR="${AOS_BASE_HOME}/build"
 export AOS_INSTALL_DIR="${AOS_BASE_HOME}/install"
 
-# make sure that there is a conan cache folder available
-AOS_CONAN_CACHE="${HOME}/conan_download_cache"
-[ -d "${AOS_CONAN_CACHE}" ] && echo "${__COLOR_WARN}WARN: HOME/conan_download_cache exists. Docker setup for AOS will not work if this folder is not removed.${__COLOR_RESET}"
+# make sure that there is a conan cache folder is not available
+export CONAN_USER_HOME="${HOME}/.aos_conan_download_cache"
+export AOS_WORKDIR="${HOME}/.aos_conan_download_cache"
+mkdir -p "${AOS_WORKDIR}"
 
 #------------------------------------------------------------------------------#
 # Azure DevOps
