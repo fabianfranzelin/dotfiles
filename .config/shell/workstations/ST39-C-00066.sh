@@ -9,9 +9,9 @@
 export __SHELL_LIB="${XDG_CONFIG_HOME}/shell"
 
 #------------------------------------------------------------------------------#
-# proxy
-
+# authentication and tokens
 pass passwords/$(pass usernames/bosch)@login | kinit > /dev/null
+load_tokens
 
 #------------------------------------------------------------------------------#
 # AOS
@@ -42,35 +42,3 @@ export REQUESTS_CA_BUNDLE="${HOME}/.local/share/certificates/bosch/azure-bosch-c
 if [ -f "${HOME}/.forddat3/devcontainer" ]; then
     . "${HOME}/.forddat3/devcontainer"
 fi
-
-#------------------------------------------------------------------------------#
-# AOS
-export BOSCH_USER
-BOSCH_USER="$(pass usernames/bosch)"
-export BITBUCKET_TOKEN
-BITBUCKET_TOKEN="$(pass tokens/${BOSCH_USER}@sourcecode01.de.bosch.com)"
-export ARTIFACTORY_APIKEY
-ARTIFACTORY_APIKEY="$(pass tokens/${BOSCH_USER}@rb-artifactory.bosch.com)"
-export CONAN_LOGIN_USERNAME
-CONAN_LOGIN_USERNAME="${BOSCH_USER}"
-export CONAN_PASSWORD
-CONAN_PASSWORD="${ARTIFACTORY_APIKEY}"
-
-export RECOMPUTE_CONAN_PROFILE="ubuntu2004_x86_64_gcc8_debug"
-export DISABLE_RECOMPUTE_DEPENDENCY_CHECK=1
-
-#------------------------------------------------------------------------------#
-# PJ-Rec
-export ARTIFACTORY_USER
-ARTIFACTORY_USER="$(pass usernames/bosch)"
-export ARTIFACTORY_KEY
-ARTIFACTORY_KEY="$(pass tokens/${ARTIFACTORY_USER}@artifactory.boschdevcloud.com)"
-export ARTIFACTORY_KEY_RB
-ARTIFACTORY_KEY_RB="${ARTIFACTORY_APIKEY}"
-
-#------------------------------------------------------------------------------#
-# One-parking
-export ARTIFACTORY_API_KEY
-ARTIFACTORY_API_KEY="${ARTIFACTORY_APIKEY}"
-export BDC_428_ARTIFACTORY_API_KEY
-BDC_428_ARTIFACTORY_API_KEY="${ARTIFACTORY_KEY}"
