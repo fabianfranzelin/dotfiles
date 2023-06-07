@@ -11,7 +11,7 @@ export __SHELL_LIB="${XDG_CONFIG_HOME}/shell"
 #------------------------------------------------------------------------------#
 # authentication and tokens
 pass passwords/$(pass usernames/bosch)@login | kinit > /dev/null
-load_tokens
+source load-tokens
 
 #------------------------------------------------------------------------------#
 # AOS
