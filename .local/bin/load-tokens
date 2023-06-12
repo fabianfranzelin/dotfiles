@@ -13,7 +13,6 @@ CONAN_LOGIN_USERNAME="${BOSCH_USER}"
 export CONAN_PASSWORD
 CONAN_PASSWORD="${ARTIFACTORY_APIKEY}"
 
-export RECOMPUTE_CONAN_PROFILE="ubuntu2004_x86_64_gcc8_debug"
 export DISABLE_RECOMPUTE_DEPENDENCY_CHECK=1
 
 #------------------------------------------------------------------------------#
