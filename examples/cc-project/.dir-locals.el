@@ -10,7 +10,17 @@
                           (list :command-name "cc:run main"
                                 :command-line "./main"
                                 :working-dir build-dir))))))
-         (eval . (add-to-list 'run-command-recipes #'run-command-recipe-ff/local))))
+         (eval . (add-to-list 'run-command-recipes #'run-command-recipe-ff/local))
+         ;; add some environment variables before compilation starts
+         (eval . (add-hook 'compilation-mode-hook
+                           (lambda ()
+                             (let* ((github-user (password-store-get "usernames/public@github"))
+                                    (env-variables `(("GITHUB_USER" . ,github-user))))
+                               (mapcar (lambda (element)
+                                         (let ((name (car element))
+                                               (value (cdr element)))
+                                           (add-to-list 'compilation-environment (format "%s=%s" name value))))
+                                       env-variables)))))))
  (c++-mode . ((eval . (setq-local ff/cc-build-folder-container nil))
               (eval . (setq-local ff/cc-conan-cache-container nil))
               (eval . (setq-local ff/cc-conan-cache-host nil)))))
