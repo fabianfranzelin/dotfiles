@@ -189,7 +189,8 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
             python-lsp-black \
             esbonio \
             robotframework-tidy \
-            ipython
+            ipython \
+            gitpython
 
     # additional npm dependencies
     if ( __is_linux ) then
