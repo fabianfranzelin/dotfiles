@@ -11,8 +11,8 @@
   :hook (;; clocking
          (org-timer-set . org-clock-in))
   :custom
-  ((org-directory "~/workspace/org")
-   (org-agenda-files '("~/workspace/org"))
+  ((org-directory "~/workspace/org/content")
+   (org-agenda-files '("~/workspace/org/content"))
    (org-agenda-file-regexp "\\`todos_[^.].*\\.org\\'")
    (org-agenda-start-with-log-mode t)
    (org-log-done 'time)

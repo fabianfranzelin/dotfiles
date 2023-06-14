@@ -114,6 +114,7 @@ build/
 /.config/htop/
 /.config/wslu/
 /.config/QtProject.conf
+/.config/emacs/elpa/
 
 # Python
 __pycache__
