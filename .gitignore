@@ -116,14 +116,18 @@ build/
 /.config/QtProject.conf
 /.config/emacs/elpa/
 
-# Python
+### Docs ###
+/docs/public/
+/docs/.packages/
+
+### Python ###
 __pycache__
 .mypy_cache
 
-# CRAN R
+### CRAN R ###
 /.Rhistory
 
-# Sensitive information
+### Sensitive information ###
 /.ssh/id_rsa
 .config/shell/workstations/b_credentials.sh
 .config/shell/b_credentials.sh

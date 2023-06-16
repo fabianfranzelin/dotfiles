@@ -4,6 +4,7 @@
 \.files
 .mypy_cache
 .pytest_cache
+docs
 archive
 mail
 fonts
