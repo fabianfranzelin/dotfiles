@@ -3,33 +3,6 @@
 
 """Push documentation to Github pages."""
 
-__copyright__ = """
-=============================================================================
-C O P Y R I G H T
-----------------------------------------------------------------------------
-Copyright (c) 2019-2021 by Robert Bosch GmbH. All rights reserved.
-
-The reproduction, distribution and utilization of this file as
-well as the communication of its contents to others without express
-authorization is prohibited. Offenders will be held liable for the
-payment of damages. All rights reserved in the event of the grant
-of a patent, utility model or design.
-============================================================================
-P R O J E C T   I N F O R M A T I O N
-----------------------------------------------------------------------------
-     Projectname:
-============================================================================
-N O T E S
-----------------------------------------------------------------------------
-Notes: This source code will NOT be used for/on embedded targets
-============================================================================
-I N I T I A L   A U T H O R   I D E N T I T Y
-----------------------------------------------------------------------------
-      Name: Fabian Franzelin
-Department: XC-AD/ESB4
-============================================================================
-"""
-
 import datetime
 import os
 import shutil
