@@ -20,6 +20,7 @@ package-lock.json
 .dir-locals.el
 .gitignore
 .github
+.gitattributes
 configure
 pyproject.toml
 
