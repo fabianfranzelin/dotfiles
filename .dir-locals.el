@@ -2,7 +2,14 @@
 ;;; For more information see (info "(emacs) Directory Variables")
 
 ((nil . ((pyvenv-workon . nil)
-         (run-command-recipes . (list run-command-recipe-ff/cc
+         (eval . (defun run-command-recipe-ff/local ()
+                   (list
+                    (when-let* ((project-dir (locate-dominating-file default-directory "configure")))
+                      (list :command-name "sh:configure"
+                            :command-line "./configure"
+                            :working-dir project-dir)))))
+         (run-command-recipes . (list run-command-recipe-ff/local
+                                      run-command-recipe-ff/cc
                                       run-command-recipe-ff/python))))
  (yaml-mode . ((eglot-workspace-configuration
                 . (:yaml (:rules (:key-ordering nil
