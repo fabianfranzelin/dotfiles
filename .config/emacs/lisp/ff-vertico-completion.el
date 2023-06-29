@@ -273,9 +273,6 @@ ARG: position"
                          (file-remote-p file 'host) ":" (file-remote-p file 'localname))
                (concat "/sudo:root@localhost:" (expand-file-name file)))))
 
-;; dev/null for online pages
-(use-package 0x0)
-
 (use-package embark
   :init
   ;; Optionally replace the key help with a completing-read interface
@@ -290,8 +287,6 @@ ARG: position"
          ("C-h b" . embark-bindings)
          :map minibuffer-local-map
          ("C-." . embark-act)
-         :map embark-region-map
-         ("U" . 0x0-dwim)
          :map embark-file-map
          ("S" . sudo-find-file)))
 
