@@ -143,7 +143,7 @@ INCREMENT: Value of which the current font-size is changed"
    ;; To disable shortcut "jump" indicators for each section, set
    (dashboard-show-shortcuts t)
    (dashboard-items '((projects . 5)
-                      (agenda . 5)
+                      (agenda . 10)
                       (recents  . 5)))
    (dashboard-set-heading-icons t)
    (dashboard-set-file-icons t)
@@ -154,9 +154,43 @@ INCREMENT: Value of which the current font-size is changed"
    (initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
    ;; set the project backend to project.el
    (dashboard-projects-backend `project-el)
-   (dashboard-icon-type `nerd-icons))
+   (dashboard-icon-type `nerd-icons)
+   ;; filter agenda entries
+   (dashboard-match-agenda-entry "TODO=\"TODO\"|TODO=\"IN-PROGRESS\""))
   :config
   (dashboard-setup-startup-hook))
+
+;; overwrite the agenda entry format so that the category gets
+;; extracted from the title of the org file using my own function
+;; instead of the builtin.
+;;
+;; Advice: Try to replace this by using
+;; flet https://www.emacswiki.org/emacs/LocalFunctions
+;; advices https://www.gnu.org/software/emacs/manual/html_node/elisp/Advising-Functions.html
+(defun dashboard-agenda-entry-format ()
+  "Format agenda entry to show it on dashboard.
+Also,it set text properties that latter are used to sort entries and perform different actions."
+  (let* ((scheduled-time (org-get-scheduled-time (point)))
+         (deadline-time (org-get-deadline-time (point)))
+         (entry-timestamp (dashboard-agenda--entry-timestamp (point)))
+         (entry-time (or scheduled-time deadline-time entry-timestamp))
+         (item (org-agenda-format-item
+                (dashboard-agenda--formatted-time)
+                (dashboard-agenda--formatted-headline)
+                (org-outline-level)
+                (vulpea-agenda-category)
+                (dashboard-agenda--formatted-tags)))
+         (todo-state (org-get-todo-state))
+         (item-priority (org-get-priority (org-get-heading t t t t)))
+         (todo-index (and todo-state
+                          (length (member todo-state org-todo-keywords-1))))
+         (entry-data (list 'dashboard-agenda-file (buffer-file-name)
+                           'dashboard-agenda-loc (point)
+                           'dashboard-agenda-priority item-priority
+                           'dashboard-agenda-todo-index todo-index
+                           'dashboard-agenda-time entry-time)))
+    (add-text-properties 0 (length item) entry-data item)
+    item))
 
 (provide 'ff-setup-gui)
 
