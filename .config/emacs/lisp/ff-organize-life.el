@@ -11,9 +11,9 @@
   :hook (;; clocking
          (org-timer-set . org-clock-in))
   :custom
-  ((org-directory "~/workspace/org/content")
-   (org-agenda-files '("~/workspace/org/content"))
-   (org-agenda-file-regexp "\\`todos_[^.].*\\.org\\'")
+  ((org-directory "~/workspace/org")
+   (org-agenda-files `(,(expand-file-name "notes" org-directory)
+                       ,(expand-file-name "daily" org-directory)))
    (org-agenda-start-with-log-mode t)
    (org-log-done 'time)
    (org-log-into-drawer t)
@@ -42,7 +42,11 @@
 
 ;; Allow drag and drop into Dired. For details, see enables
 ;; https://github.com/abo-abo/org-download
-(use-package org-download)
+(use-package org-download
+  :after org
+  :bind (:map org-mode-map
+              (("s-Y" . org-download-screenshot)
+               ("s-y" . org-download-yank))))
 
 ;; -------------------------------------------------------------------
 ;; Org modern: nice fonts, colors, etc.
@@ -119,6 +123,88 @@
   :bind (:map org-present-mode-keymap
               ("C-c C-f" . dw/org-present-next)
               ("C-c C-b" . dw/org-present-prev)))
+
+;; -------------------------------------------------------------------
+;; Org-roam: Taking notes
+;; -------------------------------------------------------------------
+(use-package org-roam
+  :after org
+  :custom ((org-roam-directory (expand-file-name "notes" org-directory))
+           (org-roam-node-display-template
+            (concat "${title:*} "
+                    (propertize "${tags:10}" 'face 'org-tag)))
+           (org-roam-database-connector 'sqlite-builtin)
+           (org-roam-completion-everywhere t)
+           ;; org-roam-dailies
+           (org-roam-dailies-directory "~/workspace/org/daily")
+           (org-roam-db-gc-threshold most-positive-fixnum))
+  :init
+  (org-roam-db-autosync-mode t)
+  :config
+  ;; templates
+  (setq org-roam-dailies-capture-templates
+        '(("d" "default" entry
+           "* %?"
+           :target (file+head "%<%Y-%m-%d>.org"
+                              "#+title: %<%Y-%m-%d>\n"))))
+  ;; display buffer
+  (add-to-list 'display-buffer-alist
+             '("\\*org-roam\\*"
+               (display-buffer-in-direction)
+               (direction . right)
+               (window-width . 0.33)
+               (window-height . fit-window-to-buffer))))
+
+
+(with-eval-after-load 'org-roam
+  ;; better support for roam files, when using org-export
+  (require 'org-roam-export))
+
+
+(use-package vulpea)
+
+(with-eval-after-load 'vulpea
+  (setq org-agenda-prefix-format
+        '((agenda . " %i %-12(vulpea-agenda-category)%?-12t% s")
+          (todo . " %i %-12(vulpea-agenda-category) ")
+          (tags . " %i %-12(vulpea-agenda-category) ")
+          (search . " %i %-12(vulpea-agenda-category) ")))
+
+  (defun vulpea-agenda-category (&optional len)
+    "Get category of item at point for agenda.
+
+Category is defined by one of the following items:
+
+- CATEGORY property
+- TITLE keyword
+- TITLE property
+- filename without directory and extension
+
+When LEN is a number, resulting string is padded right with
+spaces and then truncated with ... on the right if result is
+longer than LEN.
+
+Usage example:
+
+  (setq org-agenda-prefix-format
+        '((agenda . \" %(vulpea-agenda-category) %?-12t %12s\")))
+
+Refer to `org-agenda-prefix-format' for more information."
+    (let* ((file-name (when buffer-file-name
+                        (file-name-sans-extension
+                         (file-name-nondirectory buffer-file-name))))
+           (title (vulpea-buffer-prop-get "title"))
+           (category (org-get-category))
+           (result
+            (or (if (and
+                     title
+                     (string-equal category file-name))
+                    title
+                  category)
+                "")))
+      (if (numberp len)
+          (s-truncate len (s-pad-right len " " result))
+        result))))
 
 (provide 'ff-organize-life)
 
