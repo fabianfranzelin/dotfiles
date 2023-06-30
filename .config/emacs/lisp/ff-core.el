@@ -103,20 +103,40 @@
 (defvar scroll-lock-mode nil)
 
 ;; convenient setting to move between open buffers
-(global-set-key (kbd "C-S-B") 'windmove-left)
-(global-set-key (kbd "C-S-F") 'windmove-right)
-(global-set-key (kbd "C-S-P") 'windmove-up)
-(global-set-key (kbd "C-S-N") 'windmove-down)
+(require 'repeat)
+(repeat-mode 1)
 
-(global-set-key (kbd "C-x <left>")  'windmove-left)
-(global-set-key (kbd "C-x <right>") 'windmove-right)
-(global-set-key (kbd "C-x <up>")    'windmove-up)
-(global-set-key (kbd "C-x <down>")  'windmove-down)
+(defvar-keymap ff/window-key-map
+  :doc "Bindings for managing windows, configured to be repeatable."
+  :repeat t
+  "c" 'delete-window
+  "h" 'split-window-horizontally
+  "v" 'split-window-vertically
+  "b" 'windmove-left
+  "f" 'windmove-right
+  "n" 'windmove-down
+  "p" 'windmove-up
+  "B" 'windmove-swap-states-left
+  "F" 'windmove-swate-states-right
+  "N" 'windmove-swate-states-down
+  "P" 'windmove-swap-states-up)
+
+(global-set-key (kbd "C-c w") ff/window-key-map)
 
 ;; winner mode for for redo/undo window configurations
 (winner-mode 1)
-(global-set-key (kbd "C-c p") 'winner-undo)
-(global-set-key (kbd "C-c n") 'winner-redo)
+
+;; https://www.emacswiki.org/emacs/Repeatable
+(defun ff/repeat-command (command)
+  "Repeat COMMAND."
+  (let ((repeat-previous-repeated-command  command)
+        (repeat-message-function           #'ignore)
+        (last-repeatable-command           'repeat))
+    (repeat nil)))
+
+;; make the undo/redo functions repeatable
+(global-set-key (kbd "C-c p") #'(lambda () (interactive) (ff/repeat-command 'winner-undo)))
+(global-set-key (kbd "C-c n") #'(lambda () (interactive) (ff/repeat-command 'winner-redo)))
 
 ;; highlight current line
 (global-set-key (kbd "C-c h") 'global-hl-line-mode)
