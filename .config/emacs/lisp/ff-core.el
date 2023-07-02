@@ -239,7 +239,6 @@
 ;; ESC to cancel copy path of file: 0 w in dired buffer
 (use-package dired
   :straight nil
-  :after (org-download async)
   :custom
   ((dired-auto-revert-buffer nil) ; Auto update when buffer is revisited
    (dired-dwim-target t)
@@ -252,9 +251,6 @@
   (require 'dired-x)
   :config
   (autoload 'dired-omit-mode "dired-x")
-  ;; enable async copy
-  (autoload 'dired-async-mode "dired-async.el" nil t)
-  (dired-async-mode 1)
   :hook ((dired-mode . auto-revert-mode)
          (dired-mode . dired-hide-details-mode)
          (dired-mode . hl-line-mode)
