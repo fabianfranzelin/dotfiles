@@ -159,7 +159,7 @@
      ("m" "meeting" entry
       "* %<%I:%M %p> - %^{Meeting Title}  :meetings:\n\n%?\n\n"
       :if-new (file+head "%<%Y%m%d%H%M>-meeting.org"
-                         "#+title: %<%Y-%m-%d %a>\n\n")
+                         "#+title: %<%Y-%m-%d %a>\n#+category: Meeting\n")
       :unarrowed t)))
   :init
   (org-roam-db-autosync-mode t)
