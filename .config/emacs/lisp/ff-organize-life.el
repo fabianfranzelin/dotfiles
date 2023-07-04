@@ -11,19 +11,19 @@
   :hook (;; clocking
          (org-timer-set . org-clock-in))
   :custom
-  ((org-directory "~/workspace/org")
-   (org-agenda-files `(,(expand-file-name "notes" org-directory)
-                       ,(expand-file-name "journal" org-directory)))
-   (org-agenda-start-with-log-mode t)
-   (org-log-done 'time)
-   (org-log-into-drawer t)
-   (org-babel-python-command "/usr/bin/python3")))
+  (org-directory "~/workspace/org")
+  (org-agenda-files `(,(expand-file-name "notes" org-directory)
+                      ,(expand-file-name "journal" org-directory)))
+  (org-agenda-start-with-log-mode t)
+  (org-log-done 'time)
+  (org-log-into-drawer t)
+  (org-babel-python-command "/usr/bin/python3"))
 
 (with-eval-after-load 'org
   (require 'org-indent)
   (require 'org-habit)
   (add-to-list 'org-modules 'org-habit)
-  (setq org-habit-graph-column 60)
+  (customize-set-variable 'org-habit-graph-column 60)
 
   ;; This is needed as of Org 9.2
   (require 'org-tempo)
@@ -127,15 +127,24 @@
 ;; -------------------------------------------------------------------
 ;; Org-roam: Taking notes
 ;; -------------------------------------------------------------------
+(defun ff/configure-org-roam-mode ()
+  "Configure rst mode."
+  (interactive)
+  (set (make-local-variable 'completion-at-point-functions)
+       '(org-roam-complete-everywhere
+         org-roam-complete-link-at-point
+         cape-dabbrev
+         cape-ispell)))
+
 (use-package org-roam
   :after org
+  :hook ((org-mode . ff/configure-org-roam-mode))
   :custom
   (org-roam-directory (expand-file-name "notes" org-directory))
   (org-roam-node-display-template
    (concat "${title:*} "
            (propertize "${tags:10}" 'face 'org-tag)))
   (org-roam-database-connector 'sqlite-builtin)
-  (org-roam-completion-everywhere t)
   (org-roam-db-gc-threshold most-positive-fixnum)
   (org-roam-capture-templates
    '(("d" "default" plain
@@ -148,7 +157,7 @@
   (org-roam-dailies-capture-templates
    '(("d" "default" plain
       "* %?"
-      :target (file+head "%<%Y%m%d%H%M>.org" "#+title: %<%Y-%m-%d-%H-%M>\n")
+      :target (file+head "%<%Y%m%d>.org" "#+title: %<%Y-%m-%d>\n")
       :unarrowed t)
      ("t" "task" entry
       "* TODO %^{Todo title}\n %U\n %a\n %i\n %?"
@@ -161,9 +170,13 @@
       :if-new (file+head "%<%Y%m%d%H%M>-meeting.org"
                          "#+title: %<%Y-%m-%d %a>\n#+category: Meeting\n")
       :unarrowed t)))
-  :init
-  (org-roam-db-autosync-mode t)
   :config
+  ;; better support for roam files, when using org-export
+  (require 'org-roam-export)
+  ;; make sure that dailies are available
+  (require 'org-roam-dailies)
+  ;; enable autosync
+  (org-roam-db-autosync-mode t)
   ;; display buffer
   (add-to-list 'display-buffer-alist
                '("\\*org-roam\\*"
@@ -172,15 +185,12 @@
                  (window-width . 0.33)
                  (window-height . fit-window-to-buffer)))
   :bind (("C-x n c" . org-roam-capture)
-         ("C-x n f"  . org-roam-node-find)
+         ("C-x n f" . org-roam-node-find)
          ("C-x n b" . org-roam-buffer-toggle)
-         ("C-x n n"  . org-roam-dailies-capture-today)
-         ("C-x n d"  . org-roam-dailies-goto-today)
-         ("C-x n g"  . org-roam-graph)))
-
-(with-eval-after-load 'org-roam
-  ;; better support for roam files, when using org-export
-  (require 'org-roam-export))
+         ("C-x n n" . org-roam-dailies-capture-today)
+         ("C-x n d" . org-roam-dailies-goto-today)
+         ("C-x n g" . org-roam-graph)
+         ("C-x n a" . org-agenda)))
 
 (provide 'ff-organize-life)
 

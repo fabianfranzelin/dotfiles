@@ -124,7 +124,7 @@ ARG: position"
    #'command-completion-default-include-p)
   :init
   ;; Recommended: Enable Corfu globally.
-  (global-corfu-mode)
+  (global-corfu-mode t)
   :bind(:map corfu-map
              ("C-j" . corfu-next)
              ("C-p" . corfu-previous)
