@@ -1,6 +1,13 @@
+#+STARTUP: hidestars
 #+TITLE: Validation of safety functions
+#+SUBTITLE: Yet to be defined
 #+AUTHOR: Fabian Franzelin
 #+EMAIL: fabian.franzelin@gmail.com
+#+OPTIONS: H:4 toc:2 num:2 broken-links:mark
+#+LaTeX_CLASS: report
+#+LATEX_CLASS_OPTIONS: [a4paper]
+#+INCLUDE: ../preamble/default_packages.org
+
 #+CREATOR: Fabian franzelin
 #+LANGUAGE: en
 #+OPTIONS: auto-id:t H:4 broken_links:mark email:t ^:{}

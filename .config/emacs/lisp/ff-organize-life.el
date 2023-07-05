@@ -37,7 +37,12 @@
    'org-babel-load-languages
    '((emacs-lisp . t)
      (python . t)
-     (shell . t)))
+     (shell . t)
+     (R . t)
+     (org . t)
+     (latex . t)
+     (dot . t)
+     (gnuplot . t)))
     (push '("conf-unix" . conf-unix) org-src-lang-modes))
 
 ;; Allow drag and drop into Dired. For details, see enables
