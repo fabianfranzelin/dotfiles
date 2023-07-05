@@ -1,0 +1,10 @@
+:PROPERTIES:
+:ID:       a5cd9007-6934-430a-a903-374b1f73c90a
+:END:
+#+title: 2023-07-05 Wed
+
+* TODO Define a subtitle fpr the paper
+ [2023-07-05 Wed 22:23]
+ [[file:~/workspace/dotfiles/examples/org-project/content/index.org::+SUBTITLE: Yet to be defined]]
+
+ Just a dummy value is set currently

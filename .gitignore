@@ -96,6 +96,7 @@ build/
 .vscode/
 *.db
 *.idx
+*.html
 
 /.local/share/npm/
 /.local/bin/marksman
@@ -120,6 +121,11 @@ build/
 /docs/public/
 /docs/.packages/
 
+### Examples ###
+/examples/org-project/content/index.pdf
+/examples/org-project/content/index.synctex.gz
+/examples/org-project/content/index.tex
+
 ### Python ###
 __pycache__
 .mypy_cache
@@ -137,6 +143,8 @@ flycheck_*
 /.config/emacs/eln-cache/
 /.config/systemd/user/default.target.wants/*.service
 /.config/emacs/install.sh
+/.config/emacs/straight/
+/.config/emacs/var/
 
 ### ZSH ###
 /.config/zsh/.zcompdump*
