@@ -1,0 +1,18 @@
+#+TITLE: Validation of safety functions
+#+AUTHOR: Fabian Franzelin
+#+EMAIL: fabian.franzelin@gmail.com
+#+CREATOR: Fabian franzelin
+#+LANGUAGE: en
+#+OPTIONS: auto-id:t H:4 broken_links:mark email:t ^:{}
+#+KEYWORDS: verfication validation safety
+
+* Introduction
+
+This is an example project on how to write an academic paper in
+org-mode.
+
+* Method
+
+* Results
+
+* Conclusion

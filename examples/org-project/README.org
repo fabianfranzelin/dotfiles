@@ -1,0 +1,8 @@
+#+TITLE: Org example
+#+AUTHOR: Fabian Franzelin
+#+EMAIL: fabian.franzelin@gmail.com
+#+CREATOR: Fabian franzelin
+#+LANGUAGE: en
+#+OPTIONS: auto-id:t H:4 broken_links:mark email:t ^:{}
+
+Here comes an example on how to write academic papers with org-mode.
