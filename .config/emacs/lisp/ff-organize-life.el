@@ -128,8 +128,7 @@
 ;; Org-roam: Taking notes
 ;; -------------------------------------------------------------------
 (defun ff/configure-org-roam-mode ()
-  "Configure rst mode."
-  (interactive)
+  "Configure org-roam-mode."
   (set (make-local-variable 'completion-at-point-functions)
        '(org-roam-complete-everywhere
          org-roam-complete-link-at-point
