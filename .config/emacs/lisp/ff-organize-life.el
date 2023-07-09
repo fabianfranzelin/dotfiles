@@ -155,7 +155,17 @@
       "%?"
       :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
                          "#+title: ${title}\n")
-      :unnarrowed t)))
+      :unnarrowed t)
+     ("l" "log entry" entry
+      "\n* %<%I:%M %p> - Log\n %U\n %a\n %i\n %?"
+      :if-new (file+head "%<%Y%m%d%H%M>-log.org"
+                         "#+title: ${title}\n")
+      :unarrowed t)
+     ("s" "link notes" entry
+      "\n* %<%I:%M %p> - Links\n %U\n %a\n %i\n** Description\n\n%?\n** Log Entries\n\n"
+      :if-new (file+head "%<%Y%m%d%H%M>-link.org"
+                         "#+title: ${title}\n")
+      :unarrowed t)))
   ;; org-roam-dailies
   (org-roam-dailies-directory (expand-file-name "journal" org-directory))
   (org-roam-dailies-capture-templates
@@ -164,13 +174,13 @@
       :target (file+head "%<%Y%m%d>.org" "#+title: %<%Y-%m-%d>\n")
       :unarrowed t)
      ("t" "task" entry
-      "* TODO %^{Todo title}\n %U\n %a\n %i\n %?"
+      "\n* TODO %^{Todo title}\n %U\n %a\n %i\n %?"
       :if-new (file+head "%<%Y%m%d%H%M>-todo.org"
                          "#+title: %<%Y-%m-%d %a>\n\n")
       :empty-lines 1
       :unarrowed t)
      ("m" "meeting" entry
-      "* %<%I:%M %p> - %^{Meeting Title}  :meetings:\n\n%?\n\n"
+      "\n* %<%I:%M %p> - %^{Meeting Title}  :meetings:\n\n%?\n\n"
       :if-new (file+head "%<%Y%m%d%H%M>-meeting.org"
                          "#+title: %<%Y-%m-%d %a>\n#+category: Meeting\n")
       :unarrowed t)))
@@ -188,13 +198,23 @@
                  (direction . right)
                  (window-width . 0.33)
                  (window-height . fit-window-to-buffer)))
-  :bind (("C-x n c" . org-roam-capture)
+  :bind (("C-x n i" . org-roam-node-insert)
+         ("C-x n c" . org-roam-capture)
          ("C-x n f" . org-roam-node-find)
          ("C-x n b" . org-roam-buffer-toggle)
          ("C-x n n" . org-roam-dailies-capture-today)
          ("C-x n d" . org-roam-dailies-goto-today)
          ("C-x n g" . org-roam-graph)
-         ("C-x n a" . org-agenda)))
+         ("C-x n a" . org-agenda)
+         :map org-mode-map
+         ("C-M-i" . completion-at-point)))
+
+(use-package org-roam-ui
+    :after org-roam
+    :hook (after-init . org-roam-ui-mode)
+    :custom
+    (org-roam-ui-sync-theme t)
+    (rg-roam-ui-follow-mode t))
 
 (provide 'ff-organize-life)
 
