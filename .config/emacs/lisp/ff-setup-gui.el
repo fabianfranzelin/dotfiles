@@ -6,8 +6,8 @@
 ;;; Code:
 
 ;; set frame transparency and maximize frame by default
-(set-frame-parameter (selected-frame) 'alpha '(98 . 98))
-(add-to-list 'default-frame-alist '(alpha . (98 . 98)))
+(set-frame-parameter (selected-frame) 'alpha '(100 . 100))
+(add-to-list 'default-frame-alist '(alpha . (100 . 100)))
 (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 

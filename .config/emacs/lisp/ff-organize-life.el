@@ -214,7 +214,10 @@
     :hook (after-init . org-roam-ui-mode)
     :custom
     (org-roam-ui-sync-theme t)
-    (rg-roam-ui-follow-mode t))
+    (rg-roam-ui-follow-mode t)
+    (org-roam-ui-browser-function 'browser-url-firefox)
+    (org-roam-ui-open-on-start nil)
+    (org-roam-ui-update-on-save t))
 
 (provide 'ff-organize-life)
 
