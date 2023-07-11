@@ -166,7 +166,15 @@
       "\n* %<%I:%M %p> - Links\n %U\n %a\n %i\n** Description\n\n%?\n** Log Entries\n\n"
       :if-new (file+head "%<%Y%m%d%H%M>-link.org"
                          "#+title: ${title}\n")
-      :unarrowed t)))
+      :unarrowed t)
+     ;; ("n" "literature note" plain
+     ;;  "%?"
+     ;;  :target
+     ;;  (file+head
+     ;;   "%(expand-file-name (or citar-org-roam-subdir \"\") org-roam-directory)/${citar-citekey}.org"
+     ;;   "#+title: ${citar-citekey} (${citar-date}). ${note-title}.\n#+created: %U\n#+last_modified: %U\n\n")
+     ;;  :unnarrowed t)
+     ))
   ;; org-roam-dailies
   (org-roam-dailies-directory (expand-file-name "journal" org-directory))
   (org-roam-dailies-capture-templates
@@ -236,11 +244,23 @@
 (use-package citar
   :hook
   (LaTeX-mode . citar-capf-setup)
-  (org-mode . citar-capf-setup))
+  (org-mode . citar-capf-setup)
+  :custom
+  (org-cite-insert-processor 'citar)
+  (org-cite-follow-processor 'citar)
+  (org-cite-activate-processor 'citar)
+  (citar-bibliography org-cite-global-bibliography)
+  ;; optional: org-cite-insert is also bound to C-c C-x C-@
+  :bind
+  (:map org-mode-map :package org ("C-c b" . #'org-cite-insert)))
 
 (use-package citar-embark
-  :after citar embark
+  :after (citar embark)
   :config (citar-embark-mode))
+
+(use-package citar-org-roam
+  :after (citar org-roam)
+  :config (citar-org-roam-mode))
 
 (provide 'ff-organize-life)
 
