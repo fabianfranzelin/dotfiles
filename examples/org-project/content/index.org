@@ -7,11 +7,14 @@
 #+LaTeX_CLASS: report
 #+LATEX_CLASS_OPTIONS: [a4paper]
 #+INCLUDE: ../preamble/default_packages.org
+#+bibliography: bib/orgcite.bib
+#+cite_export: csl
 
 #+CREATOR: Fabian franzelin
 #+LANGUAGE: en
 #+OPTIONS: auto-id:t H:4 broken_links:mark email:t ^:{}
 #+KEYWORDS: verfication validation safety
+
 
 * Introduction
 
@@ -20,6 +23,14 @@ org-mode.
 
 * Method
 
+Here come some citations to my bibliography.
+
+[cite:@OrgCitations]
+
 * Results
 
 * Conclusion
+
+* Bibliography
+
+#+print_bibliography:
