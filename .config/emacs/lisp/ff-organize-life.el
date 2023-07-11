@@ -137,6 +137,7 @@
   (set (make-local-variable 'completion-at-point-functions)
        '(org-roam-complete-everywhere
          org-roam-complete-link-at-point
+         citar-capf
          cape-dabbrev
          cape-ispell)))
 
@@ -171,18 +172,17 @@
   (org-roam-dailies-capture-templates
    '(("d" "default" plain
       "* %?"
-      :target (file+head "%<%Y%m%d>.org" "#+title: %<%Y-%m-%d>\n")
+      :target (file+head "%<%Y%m%d>.org" "#+title: %<%Y-%m-%d %a>\n\n")
       :unarrowed t)
      ("t" "task" entry
       "\n* TODO %^{Todo title}\n %U\n %a\n %i\n %?"
       :if-new (file+head "%<%Y%m%d%H%M>-todo.org"
-                         "#+title: %<%Y-%m-%d %a>\n\n")
-      :empty-lines 1
+                         "#+title: %<%Y-%m-%d %a>\n#+category: Task\n\n")
       :unarrowed t)
      ("m" "meeting" entry
       "\n* %<%I:%M %p> - %^{Meeting Title}  :meetings:\n\n%?\n\n"
       :if-new (file+head "%<%Y%m%d%H%M>-meeting.org"
-                         "#+title: %<%Y-%m-%d %a>\n#+category: Meeting\n")
+                         "#+title: %<%Y-%m-%d %a>\n#+category: Meeting\n\n")
       :unarrowed t)))
   :config
   ;; better support for roam files, when using org-export
@@ -219,6 +219,28 @@
     (org-roam-ui-open-on-start nil)
     (org-roam-ui-update-on-save t)
     :bind (("C-x n u" . org-roam-ui-open)))
+
+(use-package citeproc
+  :after org)
+
+(with-eval-after-load 'ox-latex
+   (add-to-list 'org-latex-classes
+                '("scrartcl"
+                  "\\documentclass[letterpaper]{scrartcl}"
+                  ("\\section{%s}" . "\\section*{%s}")
+                  ("\\subsection{%s}" . "\\subsection*{%s}")
+                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                  ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+
+(use-package citar
+  :hook
+  (LaTeX-mode . citar-capf-setup)
+  (org-mode . citar-capf-setup))
+
+(use-package citar-embark
+  :after citar embark
+  :config (citar-embark-mode))
 
 (provide 'ff-organize-life)
 
