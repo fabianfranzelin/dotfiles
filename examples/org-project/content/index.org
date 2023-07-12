@@ -10,7 +10,7 @@
 #+bibliography: bib/orgcite.bib
 #+cite_export: csl
 
-#+CREATOR: Fabian franzelin
+#+CREATOR: Fabian Franzelin
 #+LANGUAGE: en
 #+OPTIONS: auto-id:t H:4 broken_links:mark email:t ^:{}
 #+KEYWORDS: verfication validation safety
