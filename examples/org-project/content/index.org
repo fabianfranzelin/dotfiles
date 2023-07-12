@@ -7,7 +7,6 @@
 #+LaTeX_CLASS: report
 #+LATEX_CLASS_OPTIONS: [a4paper]
 #+INCLUDE: ../preamble/default_packages.org
-#+bibliography: bib/orgcite.bib
 #+cite_export: csl
 
 #+CREATOR: Fabian Franzelin
@@ -26,6 +25,7 @@ org-mode.
 Here come some citations to my bibliography.
 
 [cite:@OrgCitations]
+[cite:@OrgCitationsRoam]
 
 * Results
 
