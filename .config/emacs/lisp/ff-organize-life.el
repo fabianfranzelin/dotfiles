@@ -171,8 +171,8 @@
       "%?"
       :target
       (file+head
-       "%(expand-file-name (or citar-org-roam-subdir \"\") org-roam-directory)/%<%Y%m%d%H%M>-${slug}-bib.org"
-       "#+title: ${citar-key}. ${title}.\n#+created: %U\n#+last_modified: %U\n\n")
+       "%(expand-file-name (or citar-org-roam-subdir \"\") org-roam-directory)/${citar-citekey}.org"
+       "#+title: ${title}\n#+created: %U\n#+last_modified: %U\n\n")
       :unnarrowed t)
      ))
   ;; org-roam-dailies
@@ -182,8 +182,8 @@
       "* %?"
       :target (file+head "%<%Y%m%d>.org" "#+title: %<%Y-%m-%d %a>\n\n")
       :unarrowed t)
-     ("l" "log" entry
-      "\n* TODO %^{Todo title}\n %U\n %a\n %i\n %?"
+     ("f" "fleeting note" entry
+      "\n* TODO %^{Note title}\n %U\n %a\n %i\n %?"
       :if-new (file+head "inbox.org"
                          "#+title: %<%Y-%m-%d %a>\n\n")
       :unarrowed t)
@@ -247,6 +247,7 @@
                   ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 
 (use-package citar
+  :after (org-roam)
   :hook
   (LaTeX-mode . citar-capf-setup)
   (org-mode . citar-capf-setup)
@@ -254,7 +255,10 @@
   (org-cite-insert-processor 'citar)
   (org-cite-follow-processor 'citar)
   (org-cite-activate-processor 'citar)
-  (citar-bibliography org-cite-global-bibliography)
+  (org-cite-global-bibliography `(,(file-truename "~/workspace/org/bib/references.bib")))
+  (citar-bibliography `(,(file-truename "~/workspace/org/bib/references.bib")))
+  (citar-org-roam-subdir "references")
+  (citar-notes-paths `(,org-roam-directory))
   ;; optional: org-cite-insert is also bound to C-c C-x C-@
   :bind
   (:map org-mode-map :package org ("C-c b" . #'org-cite-insert)))
@@ -263,10 +267,25 @@
   :after (citar embark)
   :config (citar-embark-mode))
 
+(defun ff/org-roam-capture-reference-note ()
+  (interactive)
+  (let ((ref (citar-select-ref)))
+    (org-roam-capture- :node (org-roam-node-create)
+                       :templates '(("n" "literature note" plain
+                                     "%?"
+                                     :target
+                                     (file+head
+                                      "%(expand-file-name (or citar-org-roam-subdir \"\") org-roam-directory)/%(ref).org"
+                                      ":PROPERTIES:
+:ROAM_REFS: [cite:@$%(ref)]
+:END:
+#+title: ${title}\n
+#+created: %U\n#+last_modified: %U\n\n"
+                                     :unnarrowed t))))))
+
 (use-package citar-org-roam
   :after (citar org-roam)
   :custom
-  (citar-org-roam-note-title-template "${author} - ${title}")
   (citar-org-roam-capture-template-key "n")
   :config
   (citar-org-roam-mode))
