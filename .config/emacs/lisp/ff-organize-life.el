@@ -154,7 +154,7 @@
   (org-roam-capture-templates
    '(("d" "default" plain
       "%?"
-      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+      :target (file+head "%<%Y%m%d%H%M>-${slug}.org"
                          "#+title: ${title}\n")
       :unnarrowed t)
      ("l" "log entry" entry
@@ -167,13 +167,13 @@
       :if-new (file+head "%<%Y%m%d%H%M>-link.org"
                          "#+title: ${title}\n")
       :unarrowed t)
-     ;; ("n" "literature note" plain
-     ;;  "%?"
-     ;;  :target
-     ;;  (file+head
-     ;;   "%(expand-file-name (or citar-org-roam-subdir \"\") org-roam-directory)/${citar-citekey}.org"
-     ;;   "#+title: ${citar-citekey} (${citar-date}). ${note-title}.\n#+created: %U\n#+last_modified: %U\n\n")
-     ;;  :unnarrowed t)
+     ("n" "literature note" plain
+      "%?"
+      :target
+      (file+head
+       "%(expand-file-name (or citar-org-roam-subdir \"\") org-roam-directory)/%<%Y%m%d%H%M>-${slug}-bib.org"
+       "#+title: ${citar-key}. ${title}.\n#+created: %U\n#+last_modified: %U\n\n")
+      :unnarrowed t)
      ))
   ;; org-roam-dailies
   (org-roam-dailies-directory (expand-file-name "journal" org-directory))
@@ -181,6 +181,11 @@
    '(("d" "default" plain
       "* %?"
       :target (file+head "%<%Y%m%d>.org" "#+title: %<%Y-%m-%d %a>\n\n")
+      :unarrowed t)
+     ("l" "log" entry
+      "\n* TODO %^{Todo title}\n %U\n %a\n %i\n %?"
+      :if-new (file+head "inbox.org"
+                         "#+title: %<%Y-%m-%d %a>\n\n")
       :unarrowed t)
      ("t" "task" entry
       "\n* TODO %^{Todo title}\n %U\n %a\n %i\n %?"
@@ -260,7 +265,11 @@
 
 (use-package citar-org-roam
   :after (citar org-roam)
-  :config (citar-org-roam-mode))
+  :custom
+  (citar-org-roam-note-title-template "${author} - ${title}")
+  (citar-org-roam-capture-template-key "n")
+  :config
+  (citar-org-roam-mode))
 
 (provide 'ff-organize-life)
 
