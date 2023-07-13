@@ -166,15 +166,7 @@
       "\n* %<%I:%M %p> - Links\n %U\n %a\n %i\n** Description\n\n%?\n** Log Entries\n\n"
       :if-new (file+head "%<%Y%m%d%H%M>-link.org"
                          "#+title: ${title}\n")
-      :unarrowed t)
-     ("n" "literature note" plain
-      "%?"
-      :target
-      (file+head
-       "%(expand-file-name (or citar-org-roam-subdir \"\") org-roam-directory)/${citar-citekey}.org"
-       "#+title: ${title}\n#+created: %U\n#+last_modified: %U\n\n")
-      :unnarrowed t)
-     ))
+      :unarrowed t)))
   ;; org-roam-dailies
   (org-roam-dailies-directory (expand-file-name "journal" org-directory))
   (org-roam-dailies-capture-templates
@@ -223,18 +215,16 @@
          ("C-M-i" . completion-at-point)))
 
 (use-package org-roam-ui
-    :after org-roam
-    :hook (after-init . org-roam-ui-mode)
-    :custom
-    (org-roam-ui-sync-theme t)
-    (rg-roam-ui-follow-mode t)
-    (org-roam-ui-browser-function 'browse-url-firefox)
-    (org-roam-ui-open-on-start nil)
-    (org-roam-ui-update-on-save t)
-    :bind (("C-x n u" . org-roam-ui-open)))
+  :hook (after-init . org-roam-ui-mode)
+  :custom
+  (org-roam-ui-sync-theme t)
+  (rg-roam-ui-follow-mode t)
+  (org-roam-ui-browser-function 'browse-url-firefox)
+  (org-roam-ui-open-on-start nil)
+  (org-roam-ui-update-on-save t)
+  :bind (("C-x n u" . org-roam-ui-open)))
 
-(use-package citeproc
-  :after org)
+(use-package citeproc)
 
 (with-eval-after-load 'ox-latex
    (add-to-list 'org-latex-classes
@@ -247,7 +237,7 @@
                   ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 
 (use-package citar
-  :after (org-roam)
+  :after org-roam
   :hook
   (LaTeX-mode . citar-capf-setup)
   (org-mode . citar-capf-setup)
@@ -264,31 +254,33 @@
   (:map org-mode-map :package org ("C-c b" . #'org-cite-insert)))
 
 (use-package citar-embark
-  :after (citar embark)
   :config (citar-embark-mode))
 
-(defun ff/org-roam-capture-reference-note ()
+(defun ff/org-roam-capture-literature-note ()
   (interactive)
-  (let ((ref (citar-select-ref)))
+  ;; make sure that citar-org-roam-mode is enabled
+  (citar-org-roam-mode)
+  ;; load citation key and open capture buffer
+  (let* ((citekey (citar-select-ref))
+         (note-filename (concat (when citar-org-roam-subdir (concat citar-org-roam-subdir "/")) citekey ".org" )))
     (org-roam-capture- :node (org-roam-node-create)
                        :templates '(("n" "literature note" plain
-                                     "%?"
-                                     :target
-                                     (file+head
-                                      "%(expand-file-name (or citar-org-roam-subdir \"\") org-roam-directory)/%(ref).org"
-                                      ":PROPERTIES:
-:ROAM_REFS: [cite:@$%(ref)]
-:END:
-#+title: ${title}\n
-#+created: %U\n#+last_modified: %U\n\n"
-                                     :unnarrowed t))))))
+                                     "\n** %?"
+                                     :target (file+head
+                                              "${note-filename}"
+                                              "#+title: ${citekey}\n#+category: Literature\n#+created: %U\n#+last_modified: %U\n\n")
+                                     :empty-lines 1
+                                     :unnarrowed t))
+                       :info (list :note-filename note-filename
+                                   :citekey citekey
+                                   :ref (concat "@" citekey)))))
 
 (use-package citar-org-roam
-  :after (citar org-roam)
   :custom
   (citar-org-roam-capture-template-key "n")
   :config
-  (citar-org-roam-mode))
+  (citar-org-roam-mode)
+  :bind (("C-x n l" . ff/org-roam-capture-literature-note)))
 
 (provide 'ff-organize-life)
 
