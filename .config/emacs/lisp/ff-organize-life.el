@@ -159,12 +159,12 @@
       :unnarrowed t)
      ("l" "log entry" entry
       "\n* %<%I:%M %p> - Log\n %U\n %a\n %i\n %?"
-      :if-new (file+head "%<%Y%m%d%H%M>-log.org"
+      :target (file+head "%<%Y%m%d%H%M>-log.org"
                          "#+title: ${title}\n")
       :unarrowed t)
      ("s" "link notes" entry
       "\n* %<%I:%M %p> - Links\n %U\n %a\n %i\n** Description\n\n%?\n** Log Entries\n\n"
-      :if-new (file+head "%<%Y%m%d%H%M>-link.org"
+      :target (file+head "%<%Y%m%d%H%M>-link.org"
                          "#+title: ${title}\n")
       :unarrowed t)))
   ;; org-roam-dailies
@@ -176,17 +176,17 @@
       :unarrowed t)
      ("f" "fleeting note" entry
       "\n* TODO %^{Note title}\n %U\n %a\n %i\n %?"
-      :if-new (file+head "inbox.org"
-                         "#+title: %<%Y-%m-%d %a>\n\n")
+      :target (file+head "inbox.org"
+                         "#+title: Inbox\n\n")
       :unarrowed t)
      ("t" "task" entry
       "\n* TODO %^{Todo title}\n %U\n %a\n %i\n %?"
-      :if-new (file+head "%<%Y%m%d%H%M>-todo.org"
+      :target (file+head "%<%Y%m%d%H%M>-todo.org"
                          "#+title: %<%Y-%m-%d %a>\n#+category: Task\n\n")
       :unarrowed t)
      ("m" "meeting" entry
       "\n* %<%I:%M %p> - %^{Meeting Title}  :meetings:\n\n%?\n\n"
-      :if-new (file+head "%<%Y%m%d%H%M>-meeting.org"
+      :target (file+head "%<%Y%m%d%H%M>-meeting.org"
                          "#+title: %<%Y-%m-%d %a>\n#+category: Meeting\n\n")
       :unarrowed t)))
   :config
@@ -205,10 +205,9 @@
                  (window-height . fit-window-to-buffer)))
   :bind (("C-x n i" . org-roam-node-insert)
          ("C-x n c" . org-roam-capture)
+         ("C-x n C" . org-roam-dailies-capture-today)
          ("C-x n f" . org-roam-node-find)
          ("C-x n b" . org-roam-buffer-toggle)
-         ("C-x n n" . org-roam-dailies-capture-today)
-         ("C-x n d" . org-roam-dailies-goto-today)
          ("C-x n g" . org-roam-graph)
          ("C-x n a" . org-agenda)
          :map org-mode-map
@@ -265,7 +264,7 @@
          (note-filename (concat (when citar-org-roam-subdir (concat citar-org-roam-subdir "/")) citekey ".org" )))
     (org-roam-capture- :node (org-roam-node-create)
                        :templates '(("n" "literature note" plain
-                                     "\n** %?"
+                                     "\n** Note (p. ${pages})\n#+created: %U\n\n%?"
                                      :target (file+head
                                               "${note-filename}"
                                               "#+title: ${citekey}\n#+category: Literature\n#+created: %U\n#+last_modified: %U\n\n")
@@ -276,8 +275,6 @@
                                    :ref (concat "@" citekey)))))
 
 (use-package citar-org-roam
-  :custom
-  (citar-org-roam-capture-template-key "n")
   :config
   (citar-org-roam-mode)
   :bind (("C-x n l" . ff/org-roam-capture-literature-note)))
