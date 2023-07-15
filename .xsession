@@ -4,7 +4,7 @@
 setxkbmap -layout de -option ctrl:nocaps
 
 # Start Qtile
-# ~/.local/bin/startqtile
+~/.local/bin/startqtile
 
 # Start xcfe
-/usr/bin/startxfce4
+# /usr/bin/startxfce4
