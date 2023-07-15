@@ -48,10 +48,6 @@ while [ "${#}" -gt 0 ]; do
             INSTALL_DEPENDENCIES=1
             shift # past argument
             ;;
-        '--load-submodules')
-            LOAD_SUBMODULES=1
-            shift # past argument
-            ;;
         '--skip-emacs-build')
             SKIP_EMACS_BUILD=1
             shift # past argument
@@ -67,14 +63,6 @@ while [ "${#}" -gt 0 ]; do
             ;;
     esac
 done
-
-#------------------------------------------------------------------------------#
-# install required packages
-if [ -n "${LOAD_SUBMODULES}" ]; then
-    echo -e "${__COLOR_INFO}INFO: Load submodules${__COLOR_RESET}"
-    git submodule init
-    git submodule update --recursive
-fi
 
 #------------------------------------------------------------------------------#
 # install required packages
