@@ -262,10 +262,25 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
        # Install Qtile window manager
        if [ -z "${SKIP_QTILE_INSTALL}" ]; then
 	   echo -e "${__COLOR_INFO}INFO: Install Qtile desktop manager${__COLOR_RESET}"
-	   python3 -m pip install --upgrade --use-pep517 xcffib
+           VIRTUALENV_NAME="qtile"
+           VIRTUALENV_ACTIVATE_FILEPATH="${HOME}/.virtualenvs/${VIRTUALENV_NAME}/bin/activate"
+
+           if [ ! -f "${VIRTUALENV_ACTIVATE_FILEPATH}" ]; then
+               echo "Create virtualenv ${VIRTUALENV_NAME}"
+               python3 -m venv "${HOME}/.virtualenvs/${VIRTUALENV_NAME}"
+           fi
+
+           # shellcheck disable=SC1090
+           . "${VIRTUALENV_ACTIVATE_FILEPATH}"
+           # install qtile and its dependencies
+           python3 -m pip install --upgrade pip wheel setuptools
+	   python3 -m pip install --upgrade xcffib
 	   python3 -m pip install --upgrade --no-cache-dir cairocffi
 	   sudo apt-get install -y libpangocairo-1.0-0
-	   python3 -m pip install --upgrade qtile
+           python3 -m pip install --upgrade qtile
+           # Install dependencies for widgets
+           python3 -m pip install --upgrade psutil
+           deactivate
 
 	   # Create xsessions entry for qtile according to
 	   # https://docs.qtile.org/en/latest/manual/install/index.html#starting-qtile
@@ -276,7 +291,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
 		   echo "[Desktop Entry]
 Name=Qtile
 Comment=Qtile Session
-Exec=qtile start
+Exec=startqtile
 Type=Application
 Keywords=wm;tiling" | sudo tee "${QTILE_DESKTOP_FILE_PATH}"
                else

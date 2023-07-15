@@ -1,3 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-${HOME}/.local/bin/qtile start -c "${HOME}/.config/qtile/config.py"
+QTILE_VENV_PATH="${HOME}/.virtualenvs/qtile"
+
+. "${QTILE_VENV_PATH}/bin/activate"
+${QTILE_VENV_PATH}/bin/qtile start -c "${HOME}/.config/qtile/config.py"
