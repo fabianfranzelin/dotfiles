@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# Set default keyboard layout to German
-setxkbmap -layout de -option ctrl:nocaps
+# Set default keyboard layout according to xmodmap config
+xmodmap ~/.Xmodmap
 
 # Start Qtile
 ~/.local/bin/startqtile
