@@ -13,7 +13,7 @@
   :custom
   (org-directory "~/workspace/org")
   (org-agenda-files `(,(expand-file-name "notes" org-directory)
-                      ,(expand-file-name "journal" org-directory)))
+                      ,(expand-file-name "notes/journal" org-directory)))
   (org-agenda-start-with-log-mode t)
   (org-log-done 'time)
   (org-log-into-drawer t)
@@ -168,7 +168,7 @@
                          "#+title: ${title}\n")
       :unarrowed t)))
   ;; org-roam-dailies
-  (org-roam-dailies-directory (expand-file-name "journal" org-directory))
+  (org-roam-dailies-directory (expand-file-name "journal" org-roam-directory))
   (org-roam-dailies-capture-templates
    '(("d" "default" plain
       "* %?"
@@ -207,14 +207,12 @@
          ("C-x n c" . org-roam-capture)
          ("C-x n C" . org-roam-dailies-capture-today)
          ("C-x n f" . org-roam-node-find)
-         ("C-x n b" . org-roam-buffer-toggle)
-         ("C-x n g" . org-roam-graph)
+         ("C-x n t" . org-roam-buffer-toggle)
          ("C-x n a" . org-agenda)
          :map org-mode-map
          ("C-M-i" . completion-at-point)))
 
 (use-package org-roam-ui
-  :hook (after-init . org-roam-ui-mode)
   :custom
   (org-roam-ui-sync-theme t)
   (rg-roam-ui-follow-mode t)
@@ -222,6 +220,23 @@
   (org-roam-ui-open-on-start nil)
   (org-roam-ui-update-on-save t)
   :bind (("C-x n u" . org-roam-ui-open)))
+
+
+(use-package consult-org-roam
+   :custom
+   ;; Use `ripgrep' for searching with `consult-org-roam-search'
+   (consult-org-roam-grep-func #'consult-ripgrep)
+   ;; Display org-roam buffers right after non-org-roam buffers
+   ;; in consult-buffer (and not down at the bottom)
+   (consult-org-roam-buffer-after-buffers nil)
+   :init
+   (require 'consult-org-roam)
+   ;; Activate the minor mode
+   (consult-org-roam-mode 1)
+   :bind (("C-x n g" . consult-org-roam-search)
+         :map org-mode-map
+         ("C-x n b" . consult-org-roam-backlinks)
+         ("C-x n l" . consult-org-roam-forward-links)))
 
 (use-package citeproc)
 
