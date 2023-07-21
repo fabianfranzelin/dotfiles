@@ -43,21 +43,21 @@ NAME: name of a tab"
   (ff/tab-bar-switch-or-create
    "org"
    #'(lambda ()
-       (find-file "~/workspace/org/notes.org"))))
+       (find-file "~/workspace/org/content/notes.org"))))
 
 (defun ff/tab-bar-run-aos-architecture ()
   (interactive)
   (ff/tab-bar-switch-or-create
    "org"
    #'(lambda ()
-       (find-file "~/workspace/org/todos_aos_architecture.org"))))
+       (find-file "~/workspace/org/content/todos_aos_architecture.org"))))
 
 (defun ff/tab-bar-run-aos-defect-handling ()
   (interactive)
   (ff/tab-bar-switch-or-create
    "org"
    #'(lambda ()
-       (find-file "~/workspace/org/todos_aos_defect_handling_feature.org"))))
+       (find-file "~/workspace/org/content/todos_aos_defect_handling_feature.org"))))
 
 (use-package tab-bar
   :custom
