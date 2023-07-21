@@ -9,10 +9,6 @@
 export __SHELL_LIB="${XDG_CONFIG_HOME}/shell"
 
 #------------------------------------------------------------------------------#
-# authentication and tokens
-pass passwords/$(pass usernames/bosch)@login | kinit > /dev/null
-
-#------------------------------------------------------------------------------#
 # AOS
 export AOS_BASE_HOME="${HOME}/workspace/aos"
 export AOS_BUILD_DIR="${AOS_BASE_HOME}/build"

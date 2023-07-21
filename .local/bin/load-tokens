@@ -30,3 +30,10 @@ export ARTIFACTORY_API_KEY
 ARTIFACTORY_API_KEY="${ARTIFACTORY_APIKEY}"
 export BDC_428_ARTIFACTORY_API_KEY
 BDC_428_ARTIFACTORY_API_KEY="${ARTIFACTORY_KEY}"
+
+#------------------------------------------------------------------------------#
+# authentication and tokens
+if command -v kinit > /dev/null
+then
+    pass passwords/$(pass usernames/bosch)@login | kinit > /dev/null
+fi

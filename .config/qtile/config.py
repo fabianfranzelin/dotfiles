@@ -233,20 +233,6 @@ def init_widgets_list() -> List[Any]:
             mouse_callbacks={"Button1": lambda: qtile.cmd_spawn(my_term + " -e htop")},  # type: ignore
         ),
         widget.TextBox("|", background=my_colors["bg"]),
-        widget.Memory(
-            foreground=my_colors["fg"],
-            background=my_colors["bg"],
-            mouse_callbacks={"Button1": lambda: qtile.cmd_spawn(my_term + " -e htop")},  # type: ignore
-            fmt="Mem: {}",
-            padding=5,
-        ),
-        widget.TextBox("|", background=my_colors["bg"]),
-        widget.Net(
-            foreground=my_colors["fg"],
-            background=my_colors["bg"],
-            padding=5,
-        ),
-        widget.TextBox("|", background=my_colors["bg"]),
         widget.Clock(
             foreground=my_colors["fg"],
             background=my_colors["bg"],
