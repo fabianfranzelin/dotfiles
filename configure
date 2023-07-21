@@ -152,7 +152,8 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          valgrind \
          ripgrep \
          fd-find \
-         shellcheck
+         shellcheck \
+         poppler-utils
 
     # emacs pdf-tools dependencies
     sudo apt-get install -y \

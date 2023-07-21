@@ -235,8 +235,8 @@
    (consult-org-roam-mode 1)
    :bind (("C-x n g" . consult-org-roam-search)
          :map org-mode-map
-         ("C-x n b" . consult-org-roam-backlinks)
-         ("C-x n l" . consult-org-roam-forward-links)))
+         ("C-x n n" . consult-org-roam-backlinks)
+         ("C-x n p" . consult-org-roam-forward-links)))
 
 (use-package citeproc)
 
@@ -263,6 +263,7 @@
   (citar-bibliography `(,(file-truename "~/workspace/org/bib/references.bib")))
   (citar-org-roam-subdir "references")
   (citar-notes-paths `(,org-roam-directory))
+  (citar-at-point-function 'embark-act)
   ;; optional: org-cite-insert is also bound to C-c C-x C-@
   :bind
   (:map org-mode-map :package org ("C-c b" . #'org-cite-insert)))
