@@ -236,6 +236,10 @@ JAR-PATH: expected binary file in the extracted folder."
 (use-package pdf-tools
   :after (auctex)
   :magic ("%PDF" . pdf-view-mode)
+  :mode
+  ("\\.pdf$" . pdf-view-mode)
+  :custom
+  (pdf-view-display-size 'fit-width)
   :init
   (pdf-tools-install)  ; Standard activation command
   (pdf-loader-install) ; On demand loading, leads to faster startup time
@@ -247,7 +251,9 @@ JAR-PATH: expected binary file in the extracted folder."
   ;; Let auctex open pdf files with pdf-tools
   (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
         TeX-source-correlate-start-server t)
-  :hook (pdf-view-mode . pdf-isearch-minor-mode)
+  :hook
+  (pdf-view-mode . pdf-isearch-minor-mode)
+  (doc-view-mode . pdf-view-mode)
   :bind (:map LaTeX-mode-map
               ("C-c C-a" . pdf-sync-forward-search)
               :map tex-mode-map
