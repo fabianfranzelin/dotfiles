@@ -45,6 +45,14 @@
      (gnuplot . t)))
     (push '("conf-unix" . conf-unix) org-src-lang-modes))
 
+;; use pdf-tools for org links
+(use-package org-pdfview
+  :after org
+  :config
+  (add-to-list 'org-file-apps
+               '("\\.pdf\\'" . (lambda (file link)
+                                 (org-pdfview-open link)))))
+
 ;; Allow drag and drop into Dired. For details, see enables
 ;; https://github.com/abo-abo/org-download
 (use-package org-download
@@ -266,7 +274,8 @@
   (citar-at-point-function 'embark-act)
   ;; optional: org-cite-insert is also bound to C-c C-x C-@
   :bind
-  (:map org-mode-map :package org ("C-c b" . #'org-cite-insert)))
+  (:map org-mode-map :package org
+   ("C-c b" . #'org-cite-insert)))
 
 (use-package citar-embark
   :config (citar-embark-mode))
