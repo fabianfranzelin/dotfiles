@@ -123,9 +123,9 @@ layout_theme = {
 }
 
 layouts = [
-    layout.MonadTall(**layout_theme),
-    layout.Columns(**layout_theme),
-    layout.Max(**layout_theme),
+    layout.MonadTall(**layout_theme),  # type: ignore
+    layout.Columns(**layout_theme),  # type: ignore
+    layout.Max(**layout_theme),  # type: ignore
     layout.Floating(),
 ]
 
@@ -141,7 +141,7 @@ groups = [
 # https://docs.qtile.org/en/stable/manual/config/groups.html MOD4 +
 # index Number : Switch to Group[index] MOD4 + shift + index Number :
 # Send active window to another Group
-dgroups_key_binder = simple_key_binder(mod)
+dgroups_key_binder = simple_key_binder(mod)  # type: ignore
 
 # --------------------------------------------------------
 
@@ -165,13 +165,13 @@ my_colors = {
     "dark-cyan": "#5699AF",
 }
 
-widget_defaults = dict(
-    font="Ubuntu Bold",
-    fontsize=14,
-    padding=2,
-    background=my_colors["bg"],
-    foreground=my_colors["fg"],
-)
+widget_defaults = {
+    "font": "Ubuntu Bold",
+    "fontsize": 14,
+    "padding": 2,
+    "background": my_colors["bg"],
+    "foreground": my_colors["fg"],
+}
 extension_defaults = widget_defaults.copy()
 
 
@@ -243,7 +243,13 @@ def init_widgets_list() -> List[Any]:
 
 
 screens = [
-    Screen(top=bar.Bar(widgets=init_widgets_list(), opacity=1.0, size=20)),
+    Screen(
+        top=bar.Bar(  # type: ignore
+            widgets=init_widgets_list(),
+            opacity=1.0,
+            size=20,
+        )
+    ),
 ]
 
 # Drag floating layouts.
@@ -296,7 +302,7 @@ reconfigure_screens = True
 auto_minimize = True
 
 
-@hook.subscribe.startup_once
+@hook.subscribe.startup_once  # type: ignore
 def startup_once() -> None:
     """Execute some applications at startup once when machine is booted."""
     subprocess.Popen(  # pylint: disable=consider-using-with
@@ -304,7 +310,7 @@ def startup_once() -> None:
     )
 
 
-@hook.subscribe.startup
+@hook.subscribe.startup  # type: ignore
 def startup() -> None:
     """Execute some applications at startup of qtile."""
     subprocess.Popen(  # pylint: disable=consider-using-with

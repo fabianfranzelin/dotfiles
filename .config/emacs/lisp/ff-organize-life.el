@@ -161,7 +161,7 @@
   (org-roam-db-gc-threshold most-positive-fixnum)
   (org-roam-capture-templates
    '(("d" "default" plain
-      "%?"
+      "\n%?"
       :target (file+head "%<%Y%m%d%H%M>-${slug}.org"
                          "#+title: ${title}\n")
       :unnarrowed t)
@@ -179,7 +179,7 @@
   (org-roam-dailies-directory (expand-file-name "journal" org-roam-directory))
   (org-roam-dailies-capture-templates
    '(("d" "default" plain
-      "* %?"
+      "\n* %?"
       :target (file+head "%<%Y%m%d>.org" "#+title: %<%Y-%m-%d %a>\n\n")
       :unarrowed t)
      ("f" "fleeting note" entry
