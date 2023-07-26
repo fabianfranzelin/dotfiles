@@ -61,7 +61,7 @@ PACKAGE-NAME: log message context"
         languagetool-server-command langtool-server)
 
   :bind (("C-x 4 c" . languagetool-check)
-         ("C-x 4 d" . languagetool-clear-suggestions)
+         ("C-x 4 k" . languagetool-clear-suggestions)
          ("C-x 4 p" . languagetool-correct-at-point)
          ("C-x 4 b" . languagetool-correct-buffer)))
 
