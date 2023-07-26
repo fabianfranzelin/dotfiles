@@ -7,7 +7,12 @@
                     (when-let* ((project-dir (locate-dominating-file default-directory "configure")))
                       (list :command-name "sh:configure"
                             :command-line "./configure"
-                            :working-dir project-dir)))))
+                            :working-dir project-dir))
+                    (when-let* ((project-dir (locate-dominating-file default-directory "configure")))
+                      (list :command-name "sh:configure & install"
+                            :command-line "./configure -i --skip-emacs-build"
+                            :working-dir project-dir
+                            :runner 'ff/run-command-runner-vterm)))))
          (run-command-recipes . (list run-command-recipe-ff/local
                                       run-command-recipe-ff/cc
                                       run-command-recipe-ff/python))))
