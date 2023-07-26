@@ -112,7 +112,7 @@ JAR-PATH: expected binary file in the extracted folder."
   (ff/ensure-apt-package "graphviz" "dot")
 
   ;; Consider using (plantuml-download-jar) as alternative
-  (defvar plantuml-version "1.2023.4"
+  (defvar plantuml-version "1.2023.10"
     "Version number of plantuml binary")
   (defvar plantuml-name (concat "plantuml-" plantuml-version ".jar")
     "Name of plantuml executable")
