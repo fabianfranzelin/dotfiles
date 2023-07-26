@@ -42,7 +42,7 @@ PACKAGE-NAME: log message context"
   (ff/ensure-apt-package "unzip" "unzip")
 
   ;; Create directory for languagetool binaries
-  (defvar langtool-version "6.0" "Version of language tool")
+  (defvar langtool-version "6.2" "Version of language tool")
   (defvar langtool-name (concat "LanguageTool-" langtool-version))
   (defvar langtool-url (concat "https://languagetool.org/download/" langtool-name ".zip"))
   (defvar langtool-extract-to (expand-file-name "language-tool" no-littering-var-directory))
