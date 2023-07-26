@@ -101,6 +101,7 @@ MISC is the value returned by `ff/save-shell-buffer'."
   :init
   ;; ensure system packages
   (ff/ensure-apt-package "cmake" "cmake")
+  (ff/ensure-python-package "cmake")
   (ff/ensure-apt-package "libtool-bin" "libtool")
   (ff/ensure-apt-package "zsh" "zsh")
   :config
