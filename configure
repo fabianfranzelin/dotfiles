@@ -172,6 +172,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
             isort \
             yamllint \
             mdformat \
+            cmake \
             cmake_language_server \
             "python-lsp-server[all]" \
             pylsp-mypy \
