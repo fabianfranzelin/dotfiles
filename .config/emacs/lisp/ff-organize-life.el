@@ -280,12 +280,12 @@
 (use-package citar-embark
   :config (citar-embark-mode))
 
-(defun ff/org-roam-capture-literature-note ()
+(defun ff/org-roam-capture-literature-note (&optional citekey)
   (interactive)
   ;; make sure that citar-org-roam-mode is enabled
   (citar-org-roam-mode)
   ;; load citation key and open capture buffer
-  (let* ((citekey (citar-select-ref))
+  (let* ((citekey (or citekey (citar-select-ref)))
          (note-filename (concat (when citar-org-roam-subdir (concat citar-org-roam-subdir "/")) citekey ".org" )))
     (org-roam-capture- :node (org-roam-node-create)
                        :templates '(("n" "literature note" plain
@@ -299,10 +299,23 @@
                                    :citekey citekey
                                    :ref (concat "@" citekey)))))
 
+(defun ff/org-roam-open-literature-note ()
+  (interactive)
+  ;; make sure that citar-org-roam-mode is enabled
+  (citar-org-roam-mode)
+  ;; load citation key and open capture buffer
+  (let* ((citekey (citar-select-ref))
+         (note-filename (expand-file-name (concat (when citar-org-roam-subdir (concat citar-org-roam-subdir "/")) citekey ".org" )
+                                          org-roam-directory)))
+    (if (file-exists-p note-filename)
+        (org-open-file note-filename)
+      (ff/org-roam-capture-literature-note citekey))))
+
 (use-package citar-org-roam
   :config
   (citar-org-roam-mode)
-  :bind (("C-x n l" . ff/org-roam-capture-literature-note)))
+  :bind (("C-x n l" . ff/org-roam-capture-literature-note)
+         ("C-x n o" . ff/org-roam-open-literature-note)))
 
 (provide 'ff-organize-life)
 
