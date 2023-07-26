@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
-# Set default keyboard layout to xmodmap config
-xmodmap "~/.Xmodmap"
+# Set default keyboard layout to german and replace caps lock by
+# control
+set_default_keyboard_layout
 
 # Not available in default repositories of Ubuntu.
 # picom &

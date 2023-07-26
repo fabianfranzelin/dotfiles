@@ -1,8 +1,0 @@
-!
-! Map Control L to Caps Lock
-! https://www.emacswiki.org/emacs/MovingTheCtrlKey#h5o-6
-!
-
-remove Lock = Caps_Lock
-keysym Caps_Lock = Control_L
-add Lock = Caps_Lock
