@@ -235,15 +235,6 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
        fi
     fi
 
-    # Install extensions if code is actually present in the path,
-    # otherwise skip it
-    if command -v code > /dev/null
-    then
-        for CODE_EXTENSION_ID in $(sed -e 's/#.*//' "${DOTFILES}/.config/Code/User/extensions.txt"); do
-            code --force --install-extension "${CODE_EXTENSION_ID}"
-        done
-    fi
-
     if ( __is_linux ) then
        # Install tools that solely work on Ubuntu desktop. Note
        # that this is not working for Docker or WSL.
