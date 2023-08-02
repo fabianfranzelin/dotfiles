@@ -3,9 +3,14 @@
 
 * Installation instructions
 
-Currently, I use version 29 of Emacs. Here I describe on how to
-build it by yourself, which is what I do to keep up with current
-development on the Emacs master branch.
+This document describes how I install Emacs. It supports two modes:
+
+1. Installation of an official release: It downloads, extracts and
+   installs a specified version that is pre-packed and available
+   [[http://ftp.halifax.rwth-aachen.de/gnu/emacs][online.]]
+2. Installation from feature branch of [[https://git.savannah.gnu.org/git/emacs.git][Savannah repository]]: It checks
+   out the corresponding feature branch of Emacs, builds and installs
+   it.
 
 ** My little helpers
 
@@ -187,7 +192,7 @@ Emacs version. The default one is currently 29.
   }
 
   # Emacs version to be installed
-  __EMACS_VERSION="29"
+  __EMACS_VERSION="29.1"
 
   # Loop through arguments and process them
   while [ $# -gt 0 ]; do
@@ -274,10 +279,10 @@ If no Emacs version was found for the given tag, just stop here.
 #+begin_src shell
   if [[ ! -d "${__EMACS_SRC}" ]]
   then
-      echo "Unknown version tag. Only versions like 28.2 and 29 are supported."
+      echo "Unknown version tag. Only versions like 28.2 (for official releases) and"
+      echo " 29 (for feature branches that are named as \"emacs-<version>\") are supported."
       exit 1
   fi
-
 #+end_src
 
 Once we have the source code locally available, all that is left to do

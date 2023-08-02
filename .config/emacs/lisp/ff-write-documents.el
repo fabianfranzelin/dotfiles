@@ -39,7 +39,7 @@
   (interactive)
   (set (make-local-variable 'completion-at-point-functions)
        '(cape-dabbrev
-         cape-ispell)))
+         cape-dict)))
 
 (use-package text-mode
   :straight nil
@@ -54,7 +54,7 @@
   (interactive)
   (set (make-local-variable 'completion-at-point-functions)
        '(cape-dabbrev
-         cape-ispell)))
+         cape-dict)))
 
 (use-package rst
   :mode (("\\.rst$" . rst-mode)
