@@ -147,7 +147,7 @@
          org-roam-complete-link-at-point
          citar-capf
          cape-dabbrev
-         cape-ispell)))
+         cape-dict)))
 
 (use-package org-roam
   :after org

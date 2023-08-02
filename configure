@@ -133,7 +133,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
                   --eval "(require 'org)" \
                   --eval '(org-babel-tangle-file "README.org")'
             # Actually install Emacs via update-alternatives
-            ./install.sh -v 29 || exit 1
+            ./install.sh || exit 1
         )
     fi
     # install dependencies for Emacs
