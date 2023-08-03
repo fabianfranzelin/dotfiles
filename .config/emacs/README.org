@@ -107,7 +107,7 @@ Then, I install all the required third party dependencies and build Emacs
 
           export CC=/usr/bin/gcc-10 CXX=/usr/bin/gcc-10
           cd "${__EMACS_SRC}" || exit 1
-          ./autogen.sh
+          ./autogen.sh all
           ./configure --prefix "${__EMACS_BUILD}" \
                       --bindir "${__EMACS_BUILD}/bin" \
                       CFLAGS="-O3 -mtune=native -march=native -fomit-frame-pointer" \
