@@ -217,8 +217,7 @@
   :type 'string)
 
 (defun ff/robotidy-formatter ()
-  "Formats the selected text with robotidy.
-CONFIG-FILE: path to config file of robotidy."
+  "Formats the selected text with robotidy."
   (interactive)
   (cond ((not ff/robotidy-config)
          (call-process "robotidy" nil "*robotidy*" t (buffer-file-name))
