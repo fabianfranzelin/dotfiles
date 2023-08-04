@@ -209,6 +209,8 @@
 (add-to-list 'auto-mode-alist '("\\.json$" . json-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.inst$" . json-ts-mode))
 
+(add-hook 'after-save-hook 'json-pretty-print-buffer)
+
 ;; -------------------------------------------------------------------
 ;; Robot Framework
 ;; -------------------------------------------------------------------
