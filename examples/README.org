@@ -1,0 +1,9 @@
+#+TITLE: Desktop Backgrounds
+
+This folder contains some code examples to test my system
+configuration.
+
+[[file:org-project/][Scientific paper with org-mode]]
+[[file:cc-project/][Simple C++/CMake project]]
+[[file:python-project/][Simple Python project]]
+[[https://github.com/cpbotha/typescript-emacs-demo.git][Typescript Emacs project (remote)]]

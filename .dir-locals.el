@@ -16,10 +16,11 @@
          (run-command-recipes . (list run-command-recipe-ff/local
                                       run-command-recipe-ff/cc
                                       run-command-recipe-ff/python))))
- (yaml-ts-mode . ((eglot-workspace-configuration
-                   . (:yaml (:rules (:key-ordering nil
-                                                   :line-length nil)
-                                    :schemas (:https://json.schemastore.org/github-action.json "/.github/workflows/.*"))))))
+ (yaml-mode . ((eglot-workspace-configuration
+                . (:yaml (:rules (:key-ordering nil
+                                                :line-length nil)
+                                 :schemas (:https://json.schemastore.org/github-action.json
+                                           "/.github/workflows/.*"))))))
  (python-ts-mode . ((flycheck-add-next-checker . ('python-pylint 'python-mypy))
                     (eval . (add-to-list 'flycheck-disabled-checkers 'python-flake8))
                     (eglot-workspace-configuration

@@ -14,8 +14,9 @@
          (java-ts-mode . eglot-ensure)
          (python-ts-mode . eglot-ensure)
          (typescript-ts-mode . eglot-ensure)
+         (tsx-ts-mode . eglot-ensure)
          (json-ts-mode . eglot-ensure)
-         (yaml-ts-mode . eglot-ensure)
+         (yaml-mode . eglot-ensure)
          (bash-ts-mode . eglot-ensure)
          (sh-mode . eglot-ensure)
          (cmake-ts-mode . eglot-ensure)
@@ -65,6 +66,14 @@
   :after (org)
   :custom ((realgud:pdb-command-name "python3 -m pdb")
            (realgud-safe-mode nil)))
+
+;; -------------------------------------------------------------------
+;; Aphelia: auto-format different source code files extremely
+;; intelligently
+;; -------------------------------------------------------------------
+(use-package apheleia
+  :config
+  (apheleia-global-mode t))
 
 ;; -------------------------------------------------------------------
 ;; Colorful compilation buffer
@@ -177,11 +186,6 @@
 ;; -------------------------------------------------------------------
 ;; Typescript, TSX and Javascript
 ;; -------------------------------------------------------------------
-(use-package tide
-  :hook ((tsx-ts-mode . tide-setup)
-         (tsx-ts-mode . tide-hl-identifier-mode)
-         (before-save . tide-format-before-save)))
-
 (ff/ensure-npm-package "typescript-language-server" "typescript-language-server")
 
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
@@ -203,19 +207,17 @@
 ;; Json
 ;; -------------------------------------------------------------------
 ;; ensure system packages
-(ff/ensure-apt-package "npm" "npm")
 (ff/ensure-npm-package "jsonlint" "jsonlint")
+(ff/ensure-npm-package "prettier-json" "prettier-json")
 
 (add-to-list 'auto-mode-alist '("\\.json$" . json-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.inst$" . json-ts-mode))
-
-(add-hook 'after-save-hook 'json-pretty-print-buffer)
 
 ;; -------------------------------------------------------------------
 ;; Robot Framework
 ;; -------------------------------------------------------------------
 (defcustom ff/robotidy-config nil
-  "Path to robotidy configuation file."
+  "Path to robotidy configuration file."
   :type 'string)
 
 (defun ff/robotidy-formatter ()
@@ -236,6 +238,13 @@
   (ff/ensure-python-package "robotframework-tidy" nil "robotidy")
   :hook ((robot-mode . (lambda ()
                          (add-hook 'after-save-hook 'ff/robotidy-formatter nil t)))))
+
+;; -------------------------------------------------------------------
+;; HTML, CSS
+;; -------------------------------------------------------------------
+(add-to-list 'major-mode-remap-alist '(mhtml-mode html-ts-mode))
+(add-to-list 'major-mode-remap-alist '(css-mode css-ts-mode))
+(add-to-list 'major-mode-remap-alist '(scss-mode css-ts-mode))
 
 ;; -------------------------------------------------------------------
 ;; Direnv: I am using the buffer local version and not the direnv
