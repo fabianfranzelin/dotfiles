@@ -166,28 +166,6 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
             ipython \
             gitpython
 
-   # install Emacs. First, just the regular version.
-    if ! command -v emacs &> /dev/null
-    then
-        echo "Install default Emacs from package sources."
-        sudo apt-get install -y \
-             emacs
-    fi
-
-    if [ -z "${SKIP_EMACS_BUILD}" ]; then
-        (
-            # now, install the newest version available by building and
-            # installing it manually
-            cd "${DOTFILES}/.config/emacs" || exit 1
-            # This creates the install script for Emacs
-            emacs -Q --batch \
-                  --eval "(require 'org)" \
-                  --eval '(org-babel-tangle-file "README.org")'
-            # Actually install Emacs via update-alternatives
-            ./install.sh || exit 1
-        )
-    fi
-
     # additional npm dependencies
     if ( __is_linux ) then
        if [ ! -d "${HOME}/.config/nvm" ]
@@ -214,11 +192,34 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
            typescript-language-server \
            dockerfile-language-server-nodejs \
            jsonlint \
-           vscode-langservers-extracted
+           vscode-langservers-extracted \
+           prettier-json
 
        # install other npm packages
        npm install -g \
            yarn
+    fi
+
+    # install Emacs. First, just the regular version.
+    if ! command -v emacs &> /dev/null
+    then
+        echo "Install default Emacs from package sources."
+        sudo apt-get install -y \
+             emacs
+    fi
+
+    if [ -z "${SKIP_EMACS_BUILD}" ]; then
+        (
+            # now, install the newest version available by building and
+            # installing it manually
+            cd "${DOTFILES}/.config/emacs" || exit 1
+            # This creates the install script for Emacs
+            emacs -Q --batch \
+                  --eval "(require 'org)" \
+                  --eval '(org-babel-tangle-file "README.org")'
+            # Actually install Emacs via update-alternatives
+            ./install.sh || exit 1
+        )
     fi
 
     # -------------------------------------------------

@@ -15,12 +15,11 @@
 (ff/ensure-python-package "pylint")
 (ff/ensure-python-package "mypy")
 (ff/ensure-python-package "flake8")
+(ff/ensure-python-package "black" nil "black")
+(ff/ensure-python-package "isort" nil "isort")
 
 ;; use tree-sitter as default and overwrite python-mode
 (add-to-list 'major-mode-remap-alist '(python-mode python-ts-mode))
-
-;; use my personal hooks
-(add-hook 'python-ts-mode-hook #'hs-minor-mode)
 
 (add-to-list 'auto-mode-alist '("\\.py\\'" . python-ts-mode))
 (add-to-list 'auto-mode-alist '("SConstruct" . python-ts-mode))
@@ -28,34 +27,22 @@
 
 ;; use ipython as default interpreter
 (setq python-shell-interpreter "ipython3"
-      python-shell-interpreter-args "--simple-prompt -i"
-      python-indent-offset 4
-      python-indent-guess-indent-offset nil)
+      python-shell-interpreter-args "--simple-prompt -i")
 
 ;; delete output buffer on buffer execution
 (setq py-shell-switch-buffers-on-execute nil)
 
-;; install black and black-macchiato with pip3 install --user -U
-;; black-macchiato black if black is not available as executable in
-;; ~/.local/bin, provide a dummy one that runs black in library mode
-;; python3 -m black "${@}"
-(use-package python-black
-  :init
-  ;; install system dependencies
-  (ff/ensure-python-package "black" nil "black")
-  :hook ((python-ts-mode . python-black-on-save-mode)))
+;; configure auto format
+(with-eval-after-load 'apheleia
+  (setf (alist-get 'isort apheleia-formatters)
+        '("isort" "--stdout" "-"))
+  (setf (alist-get 'python-ts-mode apheleia-mode-alist)
+        '(black isort)))
 
 ;; supports virtual environments. To be set with pyvenv-workon
 (use-package pyvenv
   :init (pyvenv-mode 1)
   :config (pyvenv-tracking-mode 1))
-
-;; enable py-isort to resort imports on save
-(use-package py-isort
-  :init
-  ;; install system dependencies
-  (ff/ensure-python-package "isort" nil "isort")
-  (add-hook 'before-save-hook 'py-isort-before-save))
 
 ;; enable sphinx doc strings support
 ;; C-c M-d sphinx-doc
