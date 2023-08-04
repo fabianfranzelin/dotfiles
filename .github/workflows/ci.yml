@@ -3,6 +3,8 @@
 name: Configure
 on:
   push:
+    branches:
+      - "nightly"
   pull_request:
 jobs:
   release:
