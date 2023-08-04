@@ -123,11 +123,13 @@
 ;; -------------------------------------------------------------------
 ;; yaml mode
 ;; -------------------------------------------------------------------
-(ff/ensure-python-package "yamllint" nil "yamllint")
-(ff/ensure-npm-package "yaml-language-server" "yaml-language-server")
-
-(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.yaml$" . yaml-ts-mode))
+(use-package yaml-mode
+  :mode (("\\.yml$" . yaml-mode)
+         ("\\.yaml$" . yaml-mode))
+  :init
+  ;; install system dependencies
+  (ff/ensure-python-package "yamllint" nil "yamllint")
+  (ff/ensure-npm-package "yaml-language-server" "yaml-language-server"))
 
 ;; -------------------------------------------------------------------
 ;; Dockerfile
@@ -176,14 +178,14 @@
 ;; Typescript, TSX and Javascript
 ;; -------------------------------------------------------------------
 (use-package tide
-  :hook ((typescript-ts-mode . tide-setup)
-         (typescript-ts-mode . tide-hl-identifier-mode)
+  :hook ((tsx-ts-mode . tide-setup)
+         (tsx-ts-mode . tide-hl-identifier-mode)
          (before-save . tide-format-before-save)))
 
 (ff/ensure-npm-package "typescript-language-server" "typescript-language-server")
 
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . tsx-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js-ts-mode))
 
 ;; -------------------------------------------------------------------
