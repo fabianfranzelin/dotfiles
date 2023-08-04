@@ -502,12 +502,15 @@ TEXT: title"
   :config
   ;; make snippets available in ts-modes when not already available
   (mapcar (lambda (element)
-      (let* ((key (car element))
-             (value (cdr element))
-             (source (expand-file-name key yasnippet-snippets-dir))
-             (target (expand-file-name value yasnippet-snippets-dir)))
-        (unless (file-exists-p target)
-          (f-symlink source target))))
+      (let* ((parent-mode (car element))
+             (target-mode (cdr element))
+             (target-folder (expand-file-name target-mode yasnippet-snippets-dir)))
+        (message target-folder)
+        (unless (file-exists-p target-folder)
+          (make-directory target-folder t)
+          (with-temp-buffer
+            (insert parent-mode)
+            (write-file (expand-file-name ".yas-parents" target-folder))))))
       '(("python-mode" . "python-ts-mode")
         ("dockerfile-mode" . "dockerfile-ts-mode")
         ("sh-mode" . "bash-ts-mode")
@@ -518,6 +521,7 @@ TEXT: title"
         ("java-mode" . "java-ts-mode")
         ("js-mode" . "js-ts-mode")
         ("typescript-mode" . "typescript-ts-mode")
+        ("typescript-mode". "tsx-ts-mode")
         ("yaml-mode" . "yaml-ts-mode"))))
 
 ;; -------------------------------------------------------------------

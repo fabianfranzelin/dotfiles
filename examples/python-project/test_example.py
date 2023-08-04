@@ -1,6 +1,11 @@
 """Some arbitrary test case."""
 
 
+import os
+
+import numpy
+
+
 def capital_case(x: str) -> str:
     """Capital case
 
@@ -13,6 +18,7 @@ def capital_case(x: str) -> str:
 
 def test_capital_case() -> None:
     """Some test case"""
+
     assert capital_case("semaphore") == "Semaphore"
 
 

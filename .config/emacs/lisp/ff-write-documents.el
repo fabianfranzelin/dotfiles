@@ -41,10 +41,7 @@
        '(cape-dabbrev
          cape-dict)))
 
-(use-package text-mode
-  :straight nil
-  :after (cape)
-  :hook ((text-mode . ff/configure-text-mode)))
+(add-hook 'text-mode #'ff/configure-text-mode)
 
 ;; -------------------------------------------------------------------
 ;; RST mode
