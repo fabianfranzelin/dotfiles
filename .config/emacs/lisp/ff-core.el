@@ -158,55 +158,6 @@
                                             "HTTPS_PROXY"))
   :config (exec-path-from-shell-initialize))
 
-;; use built-in tree-sitter
-(use-package treesit
-  :straight nil
-  :preface
-  (defun ff/setup-install-grammars ()
-    "Install Tree-sitter grammars if they are absent."
-    (interactive)
-    (dolist (grammar
-             '((bash "https://github.com/tree-sitter/tree-sitter-bash")
-               (cmake "https://github.com/uyha/tree-sitter-cmake")
-               (css "https://github.com/tree-sitter/tree-sitter-css")
-               (elisp "https://github.com/Wilfred/tree-sitter-elisp")
-               (html "https://github.com/tree-sitter/tree-sitter-html")
-               (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
-               (json "https://github.com/tree-sitter/tree-sitter-json")
-               (make "https://github.com/alemuller/tree-sitter-make")
-               (markdown "https://github.com/ikatyang/tree-sitter-markdown")
-               (python "https://github.com/tree-sitter/tree-sitter-python")
-               (toml "https://github.com/tree-sitter/tree-sitter-toml")
-               (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
-               (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
-               (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
-      (add-to-list 'treesit-language-source-alist grammar)
-      ;; Only install `grammar' if we don't already have it
-      ;; installed. However, if you want to *update* a grammar then
-      ;; this obviously prevents that from happening.
-      (unless (treesit-language-available-p (car grammar))
-        (treesit-install-language-grammar (car grammar)))))
-  :config
-  (ff/setup-install-grammars)
-  (add-to-list 'treesit-extra-load-path (expand-file-name ".cache/emacs/tree-sitter" (getenv "HOME"))))
-
-(use-package combobulate
-  :preface
-  ;; You can customize Combobulate's key prefix here.
-  ;; Note that you may have to restart Emacs for this to take effect!
-  (setq combobulate-key-prefix "C-c o")
-
-  ;; Optional, but recommended.
-  ;;
-  ;; You can manually enable Combobulate with `M-x
-  ;; combobulate-mode'.
-  :hook ((python-ts-mode . combobulate-mode)
-         (js-ts-mode . combobulate-mode)
-         (css-ts-mode . combobulate-mode)
-         (yaml-ts-mode . combobulate-mode)
-         (typescript-ts-mode . combobulate-mode)
-         (tsx-ts-mode . combobulate-mode)))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Let kill operate on the whole line when no region is selected
 (use-package whole-line-or-region
@@ -264,8 +215,8 @@
         ;; make sure vc stuff is not making tramp slower
         vc-ignore-dir-regexp
         (format "%s\\|%s"
-		        vc-ignore-dir-regexp
-		        tramp-file-name-regexp))
+		vc-ignore-dir-regexp
+		tramp-file-name-regexp))
   (put 'temporary-file-directory 'standard-value '("/tmp"))
   ;; Use remote PATH on tramp
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
@@ -502,27 +453,27 @@ TEXT: title"
   :config
   ;; make snippets available in ts-modes when not already available
   (mapcar (lambda (element)
-      (let* ((parent-mode (car element))
-             (target-mode (cdr element))
-             (target-folder (expand-file-name target-mode yasnippet-snippets-dir)))
-        (message target-folder)
-        (unless (file-exists-p target-folder)
-          (make-directory target-folder t)
-          (with-temp-buffer
-            (insert parent-mode)
-            (write-file (expand-file-name ".yas-parents" target-folder))))))
-      '(("python-mode" . "python-ts-mode")
-        ("dockerfile-mode" . "dockerfile-ts-mode")
-        ("sh-mode" . "bash-ts-mode")
-        ("c++-mode" . "c++-ts-mode")
-        ("c-mode" . "c-ts-mode")
-        ("cmake-mode" . "cmake-ts-mode")
-        ("css-mode" . "css-ts-mode")
-        ("java-mode" . "java-ts-mode")
-        ("js-mode" . "js-ts-mode")
-        ("typescript-mode" . "typescript-ts-mode")
-        ("typescript-mode". "tsx-ts-mode")
-        ("yaml-mode" . "yaml-ts-mode"))))
+            (let* ((parent-mode (car element))
+                   (target-mode (cdr element))
+                   (target-folder (expand-file-name target-mode yasnippet-snippets-dir)))
+              (message target-folder)
+              (unless (file-exists-p target-folder)
+                (make-directory target-folder t)
+                (with-temp-buffer
+                  (insert parent-mode)
+                  (write-file (expand-file-name ".yas-parents" target-folder))))))
+          '(("python-mode" . "python-ts-mode")
+            ("dockerfile-mode" . "dockerfile-ts-mode")
+            ("sh-mode" . "bash-ts-mode")
+            ("c++-mode" . "c++-ts-mode")
+            ("c-mode" . "c-ts-mode")
+            ("cmake-mode" . "cmake-ts-mode")
+            ("css-mode" . "css-ts-mode")
+            ("java-mode" . "java-ts-mode")
+            ("js-mode" . "js-ts-mode")
+            ("typescript-mode" . "typescript-ts-mode")
+            ("typescript-mode". "tsx-ts-mode")
+            ("yaml-mode" . "yaml-ts-mode"))))
 
 ;; -------------------------------------------------------------------
 ;; Ace window: select windows based on numbers

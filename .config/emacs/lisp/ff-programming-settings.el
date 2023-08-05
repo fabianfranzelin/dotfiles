@@ -54,6 +54,57 @@
 
 (use-package consult-eglot)
 
+;; -------------------------------------------------------------
+;; use built-in tree-sitter
+;; -------------------------------------------------------------
+(use-package treesit
+  :straight nil
+  :preface
+  (defun ff/setup-install-grammars ()
+    "Install Tree-sitter grammars if they are absent."
+    (interactive)
+    (dolist (grammar
+             '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+               (cmake "https://github.com/uyha/tree-sitter-cmake")
+               (css "https://github.com/tree-sitter/tree-sitter-css")
+               (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+               (html "https://github.com/tree-sitter/tree-sitter-html")
+               (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+               (json "https://github.com/tree-sitter/tree-sitter-json")
+               (make "https://github.com/alemuller/tree-sitter-make")
+               (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+               (python "https://github.com/tree-sitter/tree-sitter-python")
+               (toml "https://github.com/tree-sitter/tree-sitter-toml")
+               (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+               (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+               (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
+      (add-to-list 'treesit-language-source-alist grammar)
+      ;; Only install `grammar' if we don't already have it
+      ;; installed. However, if you want to *update* a grammar then
+      ;; this obviously prevents that from happening.
+      (unless (treesit-language-available-p (car grammar))
+        (treesit-install-language-grammar (car grammar)))))
+  :config
+  (ff/setup-install-grammars)
+  (add-to-list 'treesit-extra-load-path (expand-file-name ".cache/emacs/tree-sitter" (getenv "HOME"))))
+
+(use-package combobulate
+  :preface
+  ;; You can customize Combobulate's key prefix here.
+  ;; Note that you may have to restart Emacs for this to take effect!
+  (setq combobulate-key-prefix "C-c o")
+
+  ;; Optional, but recommended.
+  ;;
+  ;; You can manually enable Combobulate with `M-x
+  ;; combobulate-mode'.
+  :hook ((python-ts-mode . combobulate-mode)
+         (js-ts-mode . combobulate-mode)
+         (css-ts-mode . combobulate-mode)
+         (yaml-ts-mode . combobulate-mode)
+         (typescript-ts-mode . combobulate-mode)
+         (tsx-ts-mode . combobulate-mode)))
+
 ;; -------------------------------------------------------------------
 ;; Additionally to flymake, use flycheck as well for certain modes
 (use-package flycheck
@@ -72,8 +123,8 @@
 ;; intelligently
 ;; -------------------------------------------------------------------
 (use-package apheleia
-  :config
-  (apheleia-global-mode t))
+  :custom
+  (apheleia-log-only-errors nil))
 
 ;; -------------------------------------------------------------------
 ;; Colorful compilation buffer
@@ -92,6 +143,10 @@
 ;; -------------------------------------------------------------------
 (add-to-list 'auto-mode-alist '("\\.el\\'" . emacs-lisp-mode))
 (add-to-list 'auto-mode-alist '("\\.dir-locals\\.el$" . emacs-lisp-mode))
+
+(with-eval-after-load 'apheleia
+  (add-hook 'emacs-lisp-mode-hook 'apheleia-mode)
+  (setf (alist-get 'emacs-lisp-mode apheleia-mode-alist) 'lisp-indent))
 
 ;; enable rainbow delimiters for emacs lisp
 (use-package rainbow-delimiters
@@ -213,38 +268,32 @@
 (add-to-list 'auto-mode-alist '("\\.json$" . json-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.inst$" . json-ts-mode))
 
+;; configure auto format
+(with-eval-after-load 'apheleia
+  (add-hook 'json-ts-mode-hook 'apheleia-mode)
+  (setf (alist-get 'prettier-json apheleia-formatters) '("prettier-json" filepath))
+  (setf (alist-get 'json-ts-mode apheleia-mode-alist) 'prettier-json))
+
 ;; -------------------------------------------------------------------
 ;; Robot Framework
 ;; -------------------------------------------------------------------
+(use-package robot-mode
+  :mode (("\\.robot" . robot-mode))
+  :init
+  (ff/ensure-python-package "robotframework-tidy" nil "robotidy"))
+
 (defcustom ff/robotidy-config nil
   "Path to robotidy configuration file."
   :type 'string)
 
-(defun ff/robotidy-formatter ()
-  "Formats the selected text with robotidy."
-  (interactive)
-  (cond ((not ff/robotidy-config)
-         (call-process "robotidy" nil "*robotidy*" t (buffer-file-name))
-         (revert-buffer :ignore-auto :noconfirm))
-        ((file-exists-p (eval ff/robotidy-config))
-         (call-process "robotidy" nil "*robotidy*" t (buffer-file-name) "--config" ff/robotidy-config)
-         (revert-buffer :ignore-auto :noconfirm))
-        (t
-         (message "[ROBOTIDY] Config file %s does not exist." ff/robotidy-config))))
-
-(use-package robot-mode
-  :mode (("\\.robot" . robot-mode))
-  :init
-  (ff/ensure-python-package "robotframework-tidy" nil "robotidy")
-  :hook ((robot-mode . (lambda ()
-                         (add-hook 'after-save-hook 'ff/robotidy-formatter nil t)))))
-
-;; -------------------------------------------------------------------
-;; HTML, CSS
-;; -------------------------------------------------------------------
-(add-to-list 'major-mode-remap-alist '(mhtml-mode html-ts-mode))
-(add-to-list 'major-mode-remap-alist '(css-mode css-ts-mode))
-(add-to-list 'major-mode-remap-alist '(scss-mode css-ts-mode))
+;; configure auto format
+(with-eval-after-load 'apheleia
+  (add-hook 'robot-mode-hook 'apheleia-mode)
+  (let* ((robotidy-base-cmd '("robotidy" filepath))
+         (robotidy-args (when ff/robotidy-config '("--config" ff/robotidy-config)))
+         (robotidy-cmd (append robotidy-base-cmd robotidy-args)))
+    (setf (alist-get 'robotidy apheleia-formatters) robotidy-cmd))
+  (setf (alist-get 'robot-mode apheleia-mode-alist) 'robotidy))
 
 ;; -------------------------------------------------------------------
 ;; Direnv: I am using the buffer local version and not the direnv
