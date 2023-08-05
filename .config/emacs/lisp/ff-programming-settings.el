@@ -296,10 +296,22 @@
   (setf (alist-get 'robot-mode apheleia-mode-alist) 'robotidy))
 
 ;; -------------------------------------------------------------------
+;; toml
+;; -------------------------------------------------------------------
+;; use tree-sitter as default and overwrite conf-toml-mode
+(add-to-list 'major-mode-remap-alist '(conf-toml-mode toml-ts-mode))
+
+;; -------------------------------------------------------------------
 ;; Direnv: I am using the buffer local version and not the direnv
 ;; package
 ;; -------------------------------------------------------------------
 (use-package envrc)
+
+;; -------------------------------------------------------------------
+;; HTML, CSS, etc.
+;; -------------------------------------------------------------------
+;; use tree-sitter as default and overwrite python-mode
+(add-to-list 'major-mode-remap-alist '(css-mode css-ts-mode))
 
 (provide 'ff-programming-settings)
 
