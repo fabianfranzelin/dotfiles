@@ -449,14 +449,14 @@ TEXT: title"
   :bind (("C-c C-y" . yas-insert-snippet)))
 
 (use-package yasnippet-snippets
-  :after (yasnippet)
-  :config
+  :after (yasnippet))
+
+(with-eval-after-load 'yasnippet-snippets
   ;; make snippets available in ts-modes when not already available
   (mapcar (lambda (element)
             (let* ((parent-mode (car element))
                    (target-mode (cdr element))
                    (target-folder (expand-file-name target-mode yasnippet-snippets-dir)))
-              (message target-folder)
               (unless (file-exists-p target-folder)
                 (make-directory target-folder t)
                 (with-temp-buffer
