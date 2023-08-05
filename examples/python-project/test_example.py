@@ -13,6 +13,7 @@ def capital_case(x: str) -> str:
     :returns: capital case string
 
     """
+
     return x.capitalize()
 
 

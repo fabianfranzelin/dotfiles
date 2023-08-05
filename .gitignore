@@ -105,6 +105,7 @@ build/
 /.local/share/Trash/
 /.local/share/emacs-28.2/
 /.local/share/emacs-29/
+/.local/share/emacs-29.1/
 /.local/share/direnv/
 /.local/share/man/
 /.local/share/CMakeTools/
