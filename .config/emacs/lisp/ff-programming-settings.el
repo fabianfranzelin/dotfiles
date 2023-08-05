@@ -105,6 +105,10 @@
          (typescript-ts-mode . combobulate-mode)
          (tsx-ts-mode . combobulate-mode)))
 
+;; this package is required for refactoring with multiple cursors in
+;; combobulate
+(use-package multiple-cursors)
+
 ;; -------------------------------------------------------------------
 ;; Additionally to flymake, use flycheck as well for certain modes
 (use-package flycheck
