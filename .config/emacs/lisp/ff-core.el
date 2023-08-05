@@ -491,6 +491,12 @@ TEXT: title"
          ("M-g w" . avy-goto-word-1)
          ("M-g c" . avy-goto-char-timer)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Zoom globally for all buffers
+(use-package zoom-frm
+  :bind (("C-c +" . zoom-frm-in)
+         ("C-c -" . zoom-frm-out)))
+
 (provide 'ff-core)
 
 ;;; ff-core.el ends here
