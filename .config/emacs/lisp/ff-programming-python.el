@@ -34,10 +34,10 @@
 
 ;; configure auto format
 (with-eval-after-load 'apheleia
-  (setf (alist-get 'isort apheleia-formatters)
-        '("isort" "--stdout" "-"))
-  (setf (alist-get 'python-ts-mode apheleia-mode-alist)
-        '(black isort)))
+  (add-hook 'python-ts-mode-hook 'apheleia-mode)
+  (setf (alist-get 'black apheleia-formatters) '("black" "-"))
+  (setf (alist-get 'isort apheleia-formatters) '("isort" "--stdout" "-"))
+  (setf (alist-get 'python-ts-mode apheleia-mode-alist) '(isort black)))
 
 ;; supports virtual environments. To be set with pyvenv-workon
 (use-package pyvenv
