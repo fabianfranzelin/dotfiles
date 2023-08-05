@@ -67,27 +67,9 @@ REPLACE-STR: string that replaces all regex matches"
                            ff/cc-conan-cache-container
                            ff/cc-conan-cache-host)))))
 
-(defun ff/clang-format-buffer-smart ()
-  "Reformat buffer if .clang-format exists in the project.el root."
-  (interactive)
-  (when (f-exists? (expand-file-name ".clang-format" (ff/project-root)))
-    (clang-format-buffer)))
-
-(use-package clang-format+
-  :init
-  ;; ensure system packages
-  (ff/ensure-apt-package "clang-format" "clang-format")
-
-  :hook (((c-mode c++-mode) . clang-format+-mode)
-         ((c-mode c++-mode) . (lambda ()
-                                (add-hook 'before-save-hook 'ff/clang-format-buffer-smart nil t))))
-  :config
-  (setq clang-format-executable "/usr/bin/clang-format"))
-
 ;; ----------------------------------------------------------------------------------
-;; Use package for cc-mode
+;; Use package for c++-mode
 (use-package cc-mode
-  :after (clang-format+)
   :mode (("\\.cpp$" . c++-mode)
          ("\\.hpp$" . c++-mode)
          ("\\.inl$" . c++-mode)
@@ -111,6 +93,12 @@ REPLACE-STR: string that replaces all regex matches"
 
   (add-to-list 'c-default-style `(c++-mode . "user"))
   (add-to-list 'c-default-style `(c-mode . "user")))
+
+;; configure auto format
+(with-eval-after-load 'apheleia
+  (ff/ensure-apt-package "clang-format" "clang-format")
+  (add-hook 'c++-mode-hook 'apheleia-mode)
+  (add-hook 'c-mode-hook 'apheleia-mode))
 
 ;; -----------------------------------------------------------------------------------
 ;; CMake
