@@ -14,8 +14,8 @@
                            "python"))
          (python-interpreter-versions
           (split-string (car (cdr (split-string
-                              (shell-command-to-string "python3 --version")
-                              " "))) "\\.")))
+                                   (shell-command-to-string "python3 --version")
+                                   " "))) "\\.")))
     (concat (elt python-interpreter-versions 0) "." (elt python-interpreter-versions 1))))
 
 (defun ff/python-local-site-packages-path (package-name)
@@ -33,10 +33,10 @@ INSTALL-CMD: command to be executed
 PACKAGE-NAME: name of the package to be installed.
 EXECUTABLE: just install if the executable does not exist."
   (if (or (null executable)
-              (and
-               (null (executable-find executable))
-               (not (file-exists-p executable))))
-    (async-shell-command (concat install-cmd " " package-name))))
+          (and
+           (null (executable-find executable))
+           (not (file-exists-p executable))))
+      (async-shell-command (concat install-cmd " " package-name))))
 
 (defun ff/ensure-apt-package (package-name &optional executable)
   "Ensure that the provided apt package is installed.

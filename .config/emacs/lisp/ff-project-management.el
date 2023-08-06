@@ -12,7 +12,7 @@
   "Provide string list of all tab names."
   (interactive)
   (mapcar #'(lambda (tab) (alist-get 'name tab))
-		  (tab-bar-tabs)))
+	  (tab-bar-tabs)))
 
 (defun ff/tab-bar-show-tab-list ()
   "Show list of all tab names."
@@ -106,23 +106,6 @@ Executes COMMAND-LINE in buffer OUTPUT-BUFFER.  Name the process BUFFER-BASE-NAM
        (list :command-name "build:cmake"
              :command-line "mkdir -p build && cd build && cmake .."
              :working-dir default-directory)))))
-
-;; define Python targets
-(defun run-command-recipe-ff/python ()
-  "Define Python recipes for run command package."
-  (list
-   ;; pytest project
-   (when-let* ((project-dir (locate-dominating-file default-directory ".git")))
-     (list :command-name "python:pytest (project)"
-           :command-line "python3 -m pytest"
-           :working-dir project-dir))
-   ;; pytest project vterm
-   (when-let* ((project-dir (locate-dominating-file default-directory ".git")))
-     (list :command-name "python:pytest (project, vterm)"
-           :command-line "python3 -m pytest -vvv -s --pdb"
-           :display "python:pytest (project, vterm)"
-           :working-dir project-dir
-           :runner 'ff/run-command-runner-vterm))))
 
 (use-package run-command
   :custom ((run-command-default-runner #'run-command-runner-compile)))

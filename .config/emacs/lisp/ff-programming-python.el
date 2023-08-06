@@ -6,6 +6,7 @@
 ;;; Code:
 
 ;; Python mode setup
+(require 'python)
 
 ;; install system dependencies
 (ff/ensure-python-package "python-lsp-server[all]" nil "pylsp")
@@ -48,6 +49,22 @@
 ;; C-c M-d sphinx-doc
 (use-package sphinx-doc
   :hook ((python-ts-mode . sphinx-doc-mode)))
+
+;; magit like interface to pytest
+(use-package python-pytest
+  :init
+  (ff/ensure-python-package "pytest" nil "pytest")
+  :config
+  ;; add option to increase verbosity after the "-x" option.
+  (transient-append-suffix
+    'python-pytest-dispatch
+    "-x"
+    '("-v" "increase verbosity" "-vvv"))
+  :bind (:map python-ts-mode-map
+              ("C-c t d" . python-pytest-dispatch)
+              ("C-c t l" . python-pytest-function)
+              ("C-c t f" . python-pytest-file-dwim)
+              ("C-c t e" . python-pytest-last-failed)))
 
 (provide 'ff-programming-python)
 

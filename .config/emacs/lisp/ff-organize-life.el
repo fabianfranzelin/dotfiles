@@ -43,7 +43,7 @@
      (latex . t)
      (dot . t)
      (gnuplot . t)))
-    (push '("conf-unix" . conf-unix) org-src-lang-modes))
+  (push '("conf-unix" . conf-unix) org-src-lang-modes))
 
 ;; use pdf-tools for org links
 (use-package org-pdfview
@@ -58,8 +58,8 @@
 (use-package org-download
   :after org
   :bind (:map org-mode-map
-              (("s-Y" . org-download-screenshot)
-               ("s-y" . org-download-yank))))
+              ("s-Y" . org-download-screenshot)
+              ("s-y" . org-download-yank)))
 
 ;; -------------------------------------------------------------------
 ;; Org modern: nice fonts, colors, etc.
@@ -231,17 +231,17 @@
 
 
 (use-package consult-org-roam
-   :custom
-   ;; Use `ripgrep' for searching with `consult-org-roam-search'
-   (consult-org-roam-grep-func #'consult-ripgrep)
-   ;; Display org-roam buffers right after non-org-roam buffers
-   ;; in consult-buffer (and not down at the bottom)
-   (consult-org-roam-buffer-after-buffers nil)
-   :init
-   (require 'consult-org-roam)
-   ;; Activate the minor mode
-   (consult-org-roam-mode 1)
-   :bind (("C-x n g" . consult-org-roam-search)
+  :custom
+  ;; Use `ripgrep' for searching with `consult-org-roam-search'
+  (consult-org-roam-grep-func #'consult-ripgrep)
+  ;; Display org-roam buffers right after non-org-roam buffers
+  ;; in consult-buffer (and not down at the bottom)
+  (consult-org-roam-buffer-after-buffers nil)
+  :init
+  (require 'consult-org-roam)
+  ;; Activate the minor mode
+  (consult-org-roam-mode 1)
+  :bind (("C-x n g" . consult-org-roam-search)
          :map org-mode-map
          ("C-x n n" . consult-org-roam-backlinks)
          ("C-x n p" . consult-org-roam-forward-links)))
@@ -249,14 +249,14 @@
 (use-package citeproc)
 
 (with-eval-after-load 'ox-latex
-   (add-to-list 'org-latex-classes
-                '("scrartcl"
-                  "\\documentclass[letterpaper]{scrartcl}"
-                  ("\\section{%s}" . "\\section*{%s}")
-                  ("\\subsection{%s}" . "\\subsection*{%s}")
-                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                  ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+  (add-to-list 'org-latex-classes
+               '("scrartcl"
+                 "\\documentclass[letterpaper]{scrartcl}"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 
 (use-package citar
   :after org-roam
@@ -275,7 +275,7 @@
   ;; optional: org-cite-insert is also bound to C-c C-x C-@
   :bind
   (:map org-mode-map :package org
-   ("C-c b" . #'org-cite-insert)))
+        ("C-c b" . #'org-cite-insert)))
 
 (use-package citar-embark
   :config (citar-embark-mode))

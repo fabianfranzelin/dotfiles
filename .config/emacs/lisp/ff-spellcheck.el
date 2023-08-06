@@ -100,11 +100,11 @@ PACKAGE-NAME: log message context"
   ;; alist leeren und für aspell /de_DE.UTF-8 richtig einstellen:
   (setq ispell-local-dictionary-alist nil)
   (add-to-list 'ispell-local-dictionary-alist
-	           '("de_DE"
- 	             "[[:alpha:]]" "[^[:alpha:]]"
-	             "[']" t
-	             ("-C" "-d" "de_DE")
- 	             "~latin1" iso-8859-1))
+	       '("de_DE"
+ 	         "[[:alpha:]]" "[^[:alpha:]]"
+	         "[']" t
+	         ("-C" "-d" "de_DE")
+ 	         "~latin1" iso-8859-1))
 
   ;; skip code blocks in org
   (add-to-list 'ispell-skip-region-alist '("^#+BEGIN_SRC" . "^#+END_SRC"))
@@ -121,13 +121,13 @@ buffers get `flyspell-mode' to check all text.  If flyspell is
 already enabled, does nothing."
   (interactive)
   (when (not (symbol-value flyspell-mode)) ; if not already on
-	(if (derived-mode-p 'prog-mode)
+    (if (derived-mode-p 'prog-mode)
         (progn
-	      (message "Flyspell on (code)")
-	      (flyspell-prog-mode))
+	  (message "Flyspell on (code)")
+	  (flyspell-prog-mode))
       (progn
-	    (message "Flyspell on (text)")
-	    (flyspell-mode t)))))
+	(message "Flyspell on (text)")
+	(flyspell-mode t)))))
 
 (defun ff/flyspell-toggle ()
   "Turn Flyspell on if it is off, or off if it is on.  When turning
@@ -135,9 +135,9 @@ on, it uses `flyspell-on-for-buffer-type' so code-vs-text is
 handled appropriately."
   (interactive)
   (if (symbol-value flyspell-mode)
-	  (progn ; flyspell is on, turn it off
-	    (message "Flyspell off")
-	    (flyspell-mode -1))
+      (progn ; flyspell is on, turn it off
+	(message "Flyspell off")
+	(flyspell-mode -1))
     ;; else - flyspell is off, turn it on
     (ff/flyspell-on-for-buffer-type)))
 
