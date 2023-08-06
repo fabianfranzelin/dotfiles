@@ -29,7 +29,7 @@
 
   :hook ((markdown-mode . flyspell-mode))
   :bind (:map markdown-mode-map
-         ("C-c C-f" . ff/run-mdformat)))
+              ("C-c C-f" . ff/run-mdformat)))
 
 ;; -------------------------------------------------------------------
 ;; Simple text

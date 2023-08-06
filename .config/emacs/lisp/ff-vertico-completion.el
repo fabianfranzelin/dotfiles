@@ -140,9 +140,9 @@ ARG: position"
 (use-package affe
   ;; search also in hidden and ignored files by git
   :custom ((affe-find-command
-              (cond
-               ((executable-find "rg") "rg --color=never --files -uu")
-               (t "find -not ( -wholename */.* -prune ) -type f")))
+            (cond
+             ((executable-find "rg") "rg --color=never --files -uu")
+             (t "find -not ( -wholename */.* -prune ) -type f")))
            (affe-grep-command
             (cond
              ((executable-find "rg") "rg -uu --null --color=never --max-columns=1000 --no-heading --line-number -v ^$ .")

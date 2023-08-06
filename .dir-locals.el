@@ -14,8 +14,7 @@
                             :working-dir project-dir
                             :runner 'ff/run-command-runner-vterm)))))
          (run-command-recipes . (list run-command-recipe-ff/local
-                                      run-command-recipe-ff/cc
-                                      run-command-recipe-ff/python))))
+                                      run-command-recipe-ff/cc))))
  (yaml-mode . ((eglot-workspace-configuration
                 . (:yaml (:rules (:key-ordering nil
                                                 :line-length nil)

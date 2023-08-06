@@ -9,7 +9,10 @@
                             :display "python:run main"
                             :working-dir main-dir)))))
          (eval . (add-to-list 'run-command-recipes #'run-command-recipe-ff/local))))
- (python-ts-mode . ((eglot-workspace-configuration
+ (python-ts-mode . ((eval . (when-let* ((main-dir (locate-dominating-file default-directory "__main__.py")))
+                              (setq python-pytest-executable
+                                    (concat "PYTHONPATH=" main-dir " " "pytest"))))
+                    (eglot-workspace-configuration
                      . (:pylsp (:plugins (:jedi_completion (:include_params t
                                                                             :fuzzy t)
                                                            :pylint (:enabled t)
