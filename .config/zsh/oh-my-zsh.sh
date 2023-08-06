@@ -83,6 +83,7 @@ plugins=(cp # rsync with cpv
          zsh-navigation-tools
          you-should-use
          sudo # ESC-ESC puts sudo in front of last command
+         z # quickly navigating through stuff
         )
 
 . "${ZSH}/oh-my-zsh.sh"
