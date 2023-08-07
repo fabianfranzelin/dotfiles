@@ -469,6 +469,7 @@ TEXT: title"
   :after (yasnippet))
 
 (with-eval-after-load 'yasnippet-snippets
+  (require 'yasnippet)
   ;; make snippets available in ts-modes when not already available
   (mapcar (lambda (element)
             (let* ((parent-mode (car element))
