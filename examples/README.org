@@ -1,9 +1,33 @@
 #+TITLE: Desktop Backgrounds
 
+* Introduction
+
 This folder contains some code examples to test my system
 configuration.
+
+** Internal examples
 
 [[file:org-project/][Scientific paper with org-mode]]
 [[file:cc-project/][Simple C++/CMake project]]
 [[file:python-project/][Simple Python project]]
+
+** Typescript and React
+
+There is a minimal example available online to test the setup:
 [[https://github.com/cpbotha/typescript-emacs-demo.git][Typescript Emacs project (remote)]]
+
+** Sphinx and Esbonio
+
+To setup esbonio in your actual project, use this snippet as a
+template for your =.dir-local.el= file
+
+#+begin_src emacs-lisp
+  ((rst-mode
+    . ((eglot-workspace-configuration
+        . (:sphinx
+           (:builderName "html"
+                         :buildDir "./build"
+                         :confDir "./source")
+           :server
+           (:logLevel "debug"))))))
+#+end_src
