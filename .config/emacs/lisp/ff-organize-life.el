@@ -7,13 +7,19 @@
 ;; Org
 ;; -------------------------------------------------------------------
 
+(defun ff/create-folder-and-return (dir)
+  "Create folder if it does not exist and return its name.
+DIR: directory path"
+  (unless (file-exists-p dir) (make-directory dir t))
+  (expand-file-name dir))
+
 (use-package org
   :hook (;; clocking
          (org-timer-set . org-clock-in))
   :custom
-  (org-directory "~/workspace/org")
-  (org-agenda-files `(,(expand-file-name "notes" org-directory)
-                      ,(expand-file-name "notes/journal" org-directory)))
+  (org-directory (ff/create-folder-and-return "~/workspace/org"))
+  (org-agenda-files `(,(ff/create-folder-and-return (expand-file-name "notes" org-directory))
+                      ,(ff/create-folder-and-return (expand-file-name "notes/journal" org-directory))))
   (org-agenda-start-with-log-mode t)
   (org-log-done 'time)
   (org-log-into-drawer t)

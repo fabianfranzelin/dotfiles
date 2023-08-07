@@ -74,24 +74,15 @@ ARG: position"
               ("C-l" . ff/minibuffer-backward-kill)
               ("C-a" . ff/minibuffer-move-beginning-of-line)))
 
-;; -------------------------------------------------------------------
-;; Prescient: improve predictions for vertico and corfu
-;; -------------------------------------------------------------------
-(use-package prescient
-  :config
-  ;; Save recency and frequency rankings to disk, which let them
-  ;; become better over time.
-  (prescient-persist-mode 1))
+;; fuzzy completion
+(use-package orderless
+  :ensure t
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion)))))
 
-(use-package vertico-prescient
-  :init
-  (vertico-prescient-mode 1))
-
-(use-package corfu-prescient
-  :init
-  (corfu-prescient-mode 1))
-
-;; Save history during sessions
+;; Save history during sessions so that vertico can pick up the latest
+;; used ones
 (use-package savehist
   :init (savehist-mode t))
 
@@ -136,19 +127,6 @@ ARG: position"
   :init
   (when (not (display-graphic-p))
     (corfu-terminal-mode t)))
-
-(use-package affe
-  ;; search also in hidden and ignored files by git
-  :custom ((affe-find-command
-            (cond
-             ((executable-find "rg") "rg --color=never --files -uu")
-             (t "find -not ( -wholename */.* -prune ) -type f")))
-           (affe-grep-command
-            (cond
-             ((executable-find "rg") "rg -uu --null --color=never --max-columns=1000 --no-heading --line-number -v ^$ .")
-             (t "grep -I -r --exclude=.* --exclude-dir=.* --null --color=never --line-number -v ^$"))))
-  :bind (("C-x a f" . affe-find)
-         ("C-x a g" . affe-grep)))
 
 ;; Use dabbrev with Corfu!
 (use-package dabbrev
