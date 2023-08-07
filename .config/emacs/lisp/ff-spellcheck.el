@@ -65,7 +65,7 @@ PACKAGE-NAME: log message context"
          ("C-x 4 p" . languagetool-correct-at-point)
          ("C-x 4 b" . languagetool-correct-buffer)))
 
-(defun fd-switch-dictionary()
+(defun ff/switch-dictionary()
   "Switch dictionary from American English to German an vice versa."
   (interactive)
   (let* ((dic ispell-current-dictionary)
@@ -97,7 +97,7 @@ PACKAGE-NAME: log message context"
   ;; Run flyspell-buffer after change to dictionary
   (advice-add 'ispell-pdict-save :after #'flyspell-buffer-after-pdict-save)
 
-  ;; alist leeren und für aspell /de_DE.UTF-8 richtig einstellen:
+  ;; clear local dictionary list and set it up properly for /de_DE.UTF-8 richtig
   (setq ispell-local-dictionary-alist nil)
   (add-to-list 'ispell-local-dictionary-alist
 	       '("de_DE"
@@ -108,11 +108,9 @@ PACKAGE-NAME: log message context"
 
   ;; skip code blocks in org
   (add-to-list 'ispell-skip-region-alist '("^#+BEGIN_SRC" . "^#+END_SRC"))
-
-  :bind (("<f4>" . fd-switch-dictionary)))
+  :bind (("C-c d" . ff/switch-dictionary)))
 
 ;; flyspell mode
-
 (defun ff/flyspell-on-for-buffer-type ()
   "Enable Flyspell appropriately for the major mode of the current
 buffer.  Uses `flyspell-prog-mode' for modes derived from
@@ -148,7 +146,8 @@ handled appropriately."
          (rst-mode . flyspell-mode)
          (htm-mode . flyspell-mode)
          (html-mode . flyspell-mode)
-         (org-mode . flyspell-mode))
+         (org-mode . flyspell-mode)
+         (emacs-lisp-mode . flyspell-mode))
   :bind (("C-c f" . ff/flyspell-toggle)
          ;; disable default key since it is used by embark
          :map flyspell-mode-map
@@ -156,7 +155,7 @@ handled appropriately."
 
 (use-package flyspell-correct
   :after flyspell
-  :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
+  :bind (:map flyspell-mode-map ("C-#" . flyspell-correct-wrapper)))
 
 (use-package flyspell-correct-popup
   :after flyspell-correct)
