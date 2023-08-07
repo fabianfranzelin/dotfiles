@@ -31,14 +31,9 @@
                `(c-mode "clangd"))
   (add-to-list 'eglot-server-programs
                `(c++-mode "clangd"))
-
   ;; Sphinx, rst-mode
-  (defclass eglot-esbonio (eglot-lsp-server) ()
-    :documentation "Esbonio Language Server.")
   (add-to-list 'eglot-server-programs
-               `(rst-mode . (eglot-esbonio
-                             ,(executable-find "python3")
-                             "-m" "esbonio")))
+               `(rst-mode . ("python3" "-m" "esbonio")))
 
   :bind (("C-c l w s" . eglot)
          ("C-c l w r" . eglot-reconnect)
