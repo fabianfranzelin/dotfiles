@@ -291,8 +291,8 @@
   (let* ((robotidy-base-cmd '("robotidy" filepath))
          (robotidy-args (when ff/robotidy-config '("--config" ff/robotidy-config)))
          (robotidy-cmd (append robotidy-base-cmd robotidy-args)))
-    (setf (alist-get 'robotidy apheleia-formatters) robotidy-cmd))
-  (setf (alist-get 'robot-mode apheleia-mode-alist) 'robotidy))
+    (setf (alist-get 'robotidy apheleia-formatters) robotidy-cmd)
+    (setf (alist-get 'robot-mode apheleia-mode-alist) 'robotidy)))
 
 ;; -------------------------------------------------------------------
 ;; toml
