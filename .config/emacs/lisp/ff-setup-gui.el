@@ -58,10 +58,6 @@
   :config
   ;; Global settings (defaults)
   (load-theme 'doom-palenight t)
-  ;; Enable flashing mode-line on errors
-  (doom-themes-visual-bell-config)
-  ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config)
   ;; Add frame borders and window dividers
   (modify-all-frames-parameters
    '((right-divider-width . 0)
