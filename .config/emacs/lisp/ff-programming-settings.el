@@ -9,16 +9,17 @@
 ;; LSP Client Eglot
 ;; -------------------------------------------------------------------
 (use-package eglot
-  :hook ((c++-mode . eglot-ensure)
-         (c-mode . eglot-ensure)
+  :hook ((c++-ts-mode . eglot-ensure)
+         (c-ts-mode . eglot-ensure)
          (java-ts-mode . eglot-ensure)
          (python-ts-mode . eglot-ensure)
          (typescript-ts-mode . eglot-ensure)
          (tsx-ts-mode . eglot-ensure)
          (json-ts-mode . eglot-ensure)
-         (yaml-mode . eglot-ensure)
+         (yaml-ts-mode . eglot-ensure)
          (bash-ts-mode . eglot-ensure)
-         (sh-mode . eglot-ensure)
+         (bash-ts-mode . eglot-ensure)
+         (sh-mode . englot-ensure)
          (cmake-ts-mode . eglot-ensure)
          (dockerfile-ts-mode . eglot-ensure)
          (rst-mode . eglot-ensure))
@@ -28,9 +29,9 @@
 
   ;; C/C++
   (add-to-list 'eglot-server-programs
-               `(c-mode "clangd"))
+               `(c-ts-mode "clangd"))
   (add-to-list 'eglot-server-programs
-               `(c++-mode "clangd"))
+               `(c++-ts-mode "clangd"))
   ;; Sphinx, rst-mode
   (add-to-list 'eglot-server-programs
                `(rst-mode . ("python3" "-m" "esbonio")))
