@@ -17,7 +17,7 @@
 ;; C/C++
 
 ;; -----------------------------------------------------------------------------------
-;; Formatting and linting
+;; Container handling
 
 ;; Get to work with Docker mounted workspaces: Usually, the docker
 ;; container I am running does not contain a
@@ -67,42 +67,46 @@ REPLACE-STR: string that replaces all regex matches"
                            ff/cc-conan-cache-container
                            ff/cc-conan-cache-host)))))
 
-;; ----------------------------------------------------------------------------------
-;; Use package for c++-mode
-(use-package cc-mode
-  :mode (("\\.cpp$" . c++-mode)
-         ("\\.hpp$" . c++-mode)
-         ("\\.inl$" . c++-mode)
-         ("\\.c$" . c-mode)
-         ("\\.h$" . c-mode))
-  :init
-  ;; ensure system packages
-  (ff/ensure-apt-package "clangd" "clangd")
-  (ff/ensure-apt-package "clang" "clang")
-  ;; configure style
-  (c-add-style "my-cc"
-               '("user"
-                 (c-basic-offset . 4)
-                 (indent-tabs-mode . nil)
-                 (c-offsets-alist . ((innamespace . 0)
-                                     (access-label . -)
-                                     (case-label . 0)
-                                     (member-init-intro . +)
-                                     (topmost-intro . 0)
-                                     (arglist-cont-nonempty . +)))))
+;; make sure that system packages are available
+(ff/ensure-apt-package "clangd" "clangd")
+(ff/ensure-apt-package "clang" "clang")
 
-  (add-to-list 'c-default-style `(c++-mode . "user"))
-  (add-to-list 'c-default-style `(c-mode . "user")))
+;; use tree-sitter as default and overwrite all C/C++ modes
+(add-to-list 'major-mode-remap-alist '(c++-mode c++-ts-mode))
+(add-to-list 'major-mode-remap-alist '(c-mode c-ts-mode))
+(add-to-list 'major-mode-remap-alist '(c-or-c++-mode c-or-c++-ts-mode))
+
+;; set up file bindings
+(add-to-list 'auto-mode-alist '("\\.cpp\\'" . c++-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.hpp\\'" . c++-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.inl\\'" . c++-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.c\\'" . c-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c-ts-mode))
+
+;; fix indentation style
+(defun ff/indent-style()
+  "Override the built-in BSD indentation style with some additional rules."
+  `(;; Here are your custom rules
+    ((node-is ")") parent-bol 0)
+    ((match nil "argument_list" nil 1 1) parent-bol c-ts-mode-indent-offset)
+    ((parent-is "argument_list") prev-sibling 0)
+    ((match nil "parameter_list" nil 1 1) parent-bol c-ts-mode-indent-offset)
+    ((parent-is "parameter_list") prev-sibling 0)
+
+    ;; Append here the indent style you want as base
+    ,@(alist-get 'bsd (c-ts-mode--indent-styles 'cpp))))
+
+(setq c-ts-mode-indent-offset 4
+      c-ts-mode-indent-style #'ff/indent-style)
 
 ;; configure auto format
 (with-eval-after-load 'apheleia
   (ff/ensure-apt-package "clang-format" "clang-format")
-  (add-hook 'c++-mode-hook 'apheleia-mode)
-  (add-hook 'c-mode-hook 'apheleia-mode))
+  (add-hook 'c++-ts-mode-hook 'apheleia-mode)
+  (add-hook 'c-ts-mode-hook 'apheleia-mode))
 
 ;; -----------------------------------------------------------------------------------
 ;; CMake
-
 (ff/ensure-python-package "cmake_language_server" nil "cmake_language_server")
 (add-to-list 'auto-mode-alist '("\\.cmake$" . cmake-ts-mode))
 (add-to-list 'auto-mode-alist '("CMakeLists.txt" . cmake-ts-mode))
