@@ -9,27 +9,20 @@
 ;; -------------------------------------------------------------------
 ;; markdown mode
 ;; -------------------------------------------------------------------
-(defun ff/run-mdformat ()
-  "Run mdformat on current buffer."
-  (interactive)
-  (when (string-match-p ".md\\'" (buffer-file-name))
-    (shell-command (concat "mdformat " (buffer-file-name)))))
-
 (use-package markdown-mode
-  :commands markdown-mode
   :custom
   ;; The default command for markdown (~markdown~), doesn't support tables
   ;; (e.g. GitHub flavored markdown). Pandoc does, so let's use that.
   ((markdown-command "pandoc --from markdown --to html")
    (markdown-command-needs-filename t))
   :init
-  (ff/ensure-apt-package "markdown" "markdown")
-  (ff/ensure-apt-package "pandoc" "pandoc")
-  (ff/ensure-python-package "mdformat" nil "mdformat")
+  :hook ((markdown-mode . flyspell-mode)))
 
-  :hook ((markdown-mode . flyspell-mode))
-  :bind (:map markdown-mode-map
-              ("C-c C-f" . ff/run-mdformat)))
+;; configure auto format
+(with-eval-after-load 'apheleia
+  (add-hook 'markdown-mode-hook 'apheleia-mode)
+  (setf (alist-get 'mdformat apheleia-formatters) '("mdformat" filepath))
+  (setf (alist-get 'markdown-mode apheleia-mode-alist) 'mdformat))
 
 ;; -------------------------------------------------------------------
 ;; Simple text
