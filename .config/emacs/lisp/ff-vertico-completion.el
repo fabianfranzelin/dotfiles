@@ -74,6 +74,16 @@ ARG: position"
               ("C-l" . ff/minibuffer-backward-kill)
               ("C-a" . ff/minibuffer-move-beginning-of-line)))
 
+;; install some vertico extensions
+(with-eval-after-load 'vertico
+  (let ((vertico-extensions-dir (expand-file-name
+                                 "straight/build/vertico/extensions"
+                                 straight-base-dir)))
+    (add-to-list 'load-path vertico-extensions-dir)
+    (require 'vertico-repeat)
+    (keymap-global-set "M-R" #'vertico-repeat)
+    (add-hook 'minibuffer-setup-hook #'vertico-repeat-save)))
+
 ;; fuzzy completion
 (use-package orderless
   :ensure t
@@ -94,7 +104,7 @@ ARG: position"
   :custom
   (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
   (corfu-auto t)                 ;; Enable auto completion
-  ;; (corfu-separator ?\s)          ;; Orderless field separator
+  (corfu-separator ?\s)          ;; Orderless field separator
   ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
   ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
   ;; (corfu-preview-current nil)    ;; Disable current candidate preview
@@ -108,11 +118,9 @@ ARG: position"
   (tab-always-indent 'complete)
   ;; TAB cycle if there are only few candidates
   (completion-cycle-threshold 3)
-
   ;; Emacs 28: Hide commands in M-x which do not apply to the current mode.
   ;; Corfu commands are hidden, since they are not supposed to be used via M-x.
-  (read-extended-command-predicate
-   #'command-completion-default-include-p)
+  (read-extended-command-predicate #'command-completion-default-include-p)
   :init
   ;; Recommended: Enable Corfu globally.
   (global-corfu-mode t)
@@ -120,7 +128,8 @@ ARG: position"
              ("C-j" . corfu-next)
              ("C-p" . corfu-previous)
              ("TAB" . corfu-insert)
-             ("C-f" . corfu-insert)))
+             ("C-f" . corfu-insert)
+             ("SPC" . corfu-insert-separator)))
 
 ;; enable corfu in terminal mode
 (use-package corfu-terminal
@@ -264,7 +273,8 @@ ARG: position"
          :map minibuffer-local-map
          ("C-." . embark-act)
          :map embark-file-map
-         ("S" . sudo-find-file)))
+         ("S" . sudo-find-file)
+         ("s" . sqlite-mode-open-file)))
 
 ;; Nice which key integration that allows to list the which-key
 ;; options via C-h. See

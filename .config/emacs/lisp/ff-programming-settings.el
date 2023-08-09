@@ -313,6 +313,18 @@
 ;; use tree-sitter as default and overwrite python-mode
 (add-to-list 'major-mode-remap-alist '(css-mode css-ts-mode))
 
+;; -------------------------------------------------------------------
+;; SQLite
+;; -------------------------------------------------------------------
+(require 'sqlite-mode-extras)
+
+(define-key sqlite-mode-map "n" 'next-line)
+(define-key sqlite-mode-map "p" 'previous-line)
+(define-key sqlite-mode-map "d" 'sqlite-mode-delete)
+(define-key sqlite-mode-map (kbd "<backtab>") 'sqlite-mode-extras-backtab-dwim)
+(define-key sqlite-mode-map (kbd "<tab>") 'sqlite-mode-extras-tab-dwim)
+(define-key sqlite-mode-map (kbd "RET") 'sqlite-mode-extras-ret-dwim)
+
 (provide 'ff-programming-settings)
 
 ;;; ff-programming-settings.el ends here
