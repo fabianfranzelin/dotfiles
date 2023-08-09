@@ -162,8 +162,7 @@ JAR-PATH: expected binary file in the extracted folder."
          (LaTeX-mode . LaTeX-math-mode)
          (LaTeX-mode . TeX-PDF-mode)
          ;; Set index on document
-         (with-eval-after-load . imenu-add-menubar-index)
-         ))
+         (with-eval-after-load . imenu-add-menubar-index)))
 
 ;; emacs RefTeX
 ;; (setq reftex-ref-macro-prompt nil) ; skips picking the reference style
