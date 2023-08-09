@@ -164,7 +164,8 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
             esbonio \
             robotframework-tidy \
             ipython \
-            gitpython
+            gitpython \
+            pytest
 
     # additional npm dependencies
     if ( __is_linux ) then
