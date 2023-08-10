@@ -407,6 +407,12 @@ under the current directory."
 ;; files that are not under version control
 ;; -------------------------------------------------------------------
 (use-package affe
+  :preface
+  (defun ff/affe-find (dir)
+    "Start the fuzzy find in the current directory.
+DIR: directory"
+    (affe-find dir))
+  :after embark
   ;; search also in hidden and ignored files by git
   :custom ((affe-find-command
             (cond
@@ -417,7 +423,9 @@ under the current directory."
              ((executable-find "rg") "rg -uu --null --color=never --max-columns=1000 --no-heading --line-number -v ^$ .")
              (t "grep -I -r --exclude=.* --exclude-dir=.* --null --color=never --line-number -v ^$"))))
   :bind (("C-x a f" . affe-find)
-         ("C-x a g" . affe-grep)))
+         ("C-x a g" . affe-grep)
+         :map embark-file-map
+         ("a" . ff/affe-find)))
 
 ;; -------------------------------------------------------------------
 ;; Dogears: automatically bookmarks positions in buffers
