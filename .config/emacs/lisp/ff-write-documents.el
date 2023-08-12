@@ -52,7 +52,7 @@
          ("\\.inc$" . rst-mode))
   :init
   (ff/ensure-python-package "esbonio")
-  :hook ((rst-mode . pyvenv-mode) ;; enable support of virtualenvironments
+  :hook ((rst-mode . pyvenv-mode) ;; enable support of virtual environments
          (rst-mode . ff/configure-rst-mode)))
 
 ;; -------------------------------------------------------------------
