@@ -32,7 +32,10 @@
                `(c-ts-mode "clangd"))
   (add-to-list 'eglot-server-programs
                `(c++-ts-mode "clangd"))
-  ;; Sphinx, rst-mode
+  ;; Sphinx, rst-mode Esbonio must be started for each document
+  ;; separately; hence, we need to mark each document as its own
+  ;; project.
+  (add-to-list 'project-vc-extra-root-markers "conf.py")
   (add-to-list 'eglot-server-programs
                `(rst-mode . ("python3" "-m" "esbonio")))
 
