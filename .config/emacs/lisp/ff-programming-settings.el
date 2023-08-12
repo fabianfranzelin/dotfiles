@@ -35,13 +35,20 @@
   ;; Sphinx, rst-mode Esbonio must be started for each document
   ;; separately; hence, we need to mark each document as its own
   ;; project.
-  (add-to-list 'project-vc-extra-root-markers "conf.py")
+  (defun project-rst-try-local (dir)
+    (if (string-equal major-mode "rst-mode")
+        (when-let ((root (locate-dominating-file dir "conf.py")))
+          (list 'vc nil dir))))
+  (add-hook 'project-find-functions 'project-rst-try-local)
+  ;; make esbonio the default lsp server for rst-mode
+  ;; currently only version 0.15 works
   (add-to-list 'eglot-server-programs
                `(rst-mode . ("python3" "-m" "esbonio")))
 
   :bind (("C-c l w s" . eglot)
          ("C-c l w r" . eglot-reconnect)
          ("C-c l w k" . eglot-shutdown)
+         ("C-c l w a" . eglot-shutdown-all)
          ("C-c l f" . eglot-format)
          ("C-c l a" . eglot-code-actions)
          ("C-c l i" . eglot-code-action-organize-imports)
