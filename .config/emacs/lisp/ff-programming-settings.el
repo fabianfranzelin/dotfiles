@@ -32,14 +32,7 @@
                `(c-ts-mode "clangd"))
   (add-to-list 'eglot-server-programs
                `(c++-ts-mode "clangd"))
-  ;; Sphinx, rst-mode Esbonio must be started for each document
-  ;; separately; hence, we need to mark each document as its own
-  ;; project.
-  (defun project-rst-try-local (dir)
-    (if (string-equal major-mode "rst-mode")
-        (when-let ((root (locate-dominating-file dir "conf.py")))
-          (list 'vc nil dir))))
-  (add-hook 'project-find-functions 'project-rst-try-local)
+  ;; Sphinx, rst-mode
   ;; make esbonio the default lsp server for rst-mode
   ;; currently only version 0.15 works
   (add-to-list 'eglot-server-programs
