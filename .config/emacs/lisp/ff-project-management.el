@@ -169,7 +169,7 @@ PROJECT-ROOT: Path to the root directory of the current project."
                               (ff/project-magit "Magit")
                               (project-dired "Dired")))
    (project-vc-extra-root-markers '(".project.el"))
-   (project-vc-ignores '("build/" "install/" ".*cache/")))
+   (project-vc-ignores '("build/" "install/" ".*cache/" "__pycache__")))
   :bind (:map project-prefix-map
               ("P" . ff/project-switch-project)
               ("g" . ff/project-magit)
