@@ -5,5 +5,5 @@
 #+CREATOR: Fabian Franzelin
 #+LANGUAGE: en
 
-The documentation is published [[https://fabianfranzelin.github.io/dotfiles][here]].
+The documentation is published [here](https://pages.github.com/fabianfranzelin/dotfiles/index.html).
 
