@@ -1,5 +1,0 @@
-#!/usr/bin/env sh
-
-kds() {
-  helm delete adcloud --kube-context dol_master@sunnyvale --namespace development-${USER}
-}

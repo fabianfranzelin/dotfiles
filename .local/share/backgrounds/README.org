@@ -1,9 +1,0 @@
-#+TITLE: Desktop Backgrounds
-
-This folder contains my Desktop backgrounds
-
-[[./dolomites.jpg][dolomites.jpg]]
-
-[[./samuel-ferrara-uOi3lg8fGl4-unsplash.jpg][samuel-ferrara-uOi3lg8fGl4-unsplash.jpg]]
-
-by [[https://unsplash.com/photos/uOi3lg8fGl4][Samuel Ferrara]]  (Unsplash [[https://unsplash.com/license][license]])

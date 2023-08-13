@@ -1,5 +1,0 @@
-#!/usr/bin/env sh
-
-kdpf() {
-       k delete pods -l app=adcloud --grace-period=0 --force
-}

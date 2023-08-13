@@ -1,7 +1,0 @@
-configuration {
-    show-icons:   false;
-    sidebar-mode: false;
-    modi:         "window,drun,ssh,combi";
-    combi-modi:   "window,drun,ssh";
-}
-@theme "themes/ff-center.rasi"

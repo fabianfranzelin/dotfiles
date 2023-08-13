@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: Todo
-# key: todo
-# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
-# --
-
-.. todo::
-
-  $0

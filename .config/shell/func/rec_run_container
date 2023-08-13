@@ -1,5 +1,0 @@
-#!/usr/bin/env sh
-
-rec_run_container() {
-    make docker-run-aos
-}

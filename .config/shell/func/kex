@@ -1,5 +1,0 @@
-#!/usr/bin/env sh
-
-kex() {
-       k exec -it "${1}" -- /bin/bash
-}

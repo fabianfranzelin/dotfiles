@@ -1,6 +1,0 @@
-###############################
-# Git Line Endings            #
-###############################
-
-# Set default behaviour to automatically normalize line endings.
-* text=auto

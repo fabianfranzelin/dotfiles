@@ -1,5 +1,0 @@
-#!/usr/bin/env sh
-
-kdp () {
-    k get pods | grep adcompute | awk '{print $1}' | xargs k delete pods
-}

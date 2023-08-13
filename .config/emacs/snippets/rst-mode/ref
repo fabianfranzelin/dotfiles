@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: ref
-# key: ref
-# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
-# --
-
-:ref:\`$0 <${1:Label}>\`
