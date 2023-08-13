@@ -42,11 +42,11 @@ def run_publish_on_github(built_docs_dir: Path, dryrun: bool = False) -> int:
     git_repo.pull("origin", github_pages_branchname)
 
     # Remove everything in the repo
-
     print(f"Copy sphinx builds the temporary folder {tmp_dir}")
     if not built_docs_dir.is_dir():
         print(
-            "Document source does not exist. Build the html document before you continue."
+            "Document source does not exist. "
+            "Build the html document before you continue."
         )
         return 2
 
@@ -54,10 +54,10 @@ def run_publish_on_github(built_docs_dir: Path, dryrun: bool = False) -> int:
     for filename in os.listdir(tmp_dir):
         if filename not in [".git"]:
             file_path = tmp_dir / filename
-            if file_path.is_file():
+            if file_path.is_file() or file_path.is_symlink():
                 os.remove(file_path)
             else:
-                shutil.rmtree(str(tmp_dir / filename))
+                shutil.rmtree(str(file_path))
 
     shutil.copytree(built_docs_dir, tmp_dir, dirs_exist_ok=True)
 

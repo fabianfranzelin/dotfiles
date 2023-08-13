@@ -2,6 +2,7 @@
 ;;; For more information see (info "(emacs) Directory Variables")
 
 ((nil . ((pyvenv-workon . nil)
+         ;; Configure ;;;;;;;;;;;;;;;;;;;;;;;;;;;
          (eval . (defun run-command-recipe-ff/local ()
                    (list
                     (when-let* ((project-dir (locate-dominating-file default-directory "configure")))
@@ -13,8 +14,37 @@
                             :command-line "./configure -i --skip-emacs-build"
                             :working-dir project-dir
                             :runner 'ff/run-command-runner-vterm)))))
-         (run-command-recipes . (list run-command-recipe-ff/local
-                                      run-command-recipe-ff/cc))))
+         ;; Docs ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+         (eval . (defun run-command-recipe-ff/docs ()
+                   (list
+                    (when-let* ((project-dir (locate-dominating-file default-directory ".git"))
+                                (docs-dir (expand-file-name "docs" project-dir))
+                                (build-script (expand-file-name "build.el" docs-dir)))
+                      (list :command-name "sh:build"
+                            :command-line "./build.el"
+                            :working-dir docs-dir))
+                    (when-let* ((project-dir (locate-dominating-file default-directory ".git"))
+                                (docs-dir (expand-file-name "docs" project-dir))
+                                (publish-script (expand-file-name "publish.sh" docs-dir)))
+                      (list :command-name "sh:publish"
+                            :command-line "./publish.sh"
+                            :working-dir docs-dir))
+                    (when-let* ((project-dir (locate-dominating-file default-directory ".git"))
+                                (docs-dir (expand-file-name "docs" project-dir))
+                                (publish-script (expand-file-name "publish.sh" docs-dir)))
+                      (list :command-name "sh:publish (dryrun)"
+                            :command-line "./publish.sh --dryrun"
+                            :working-dir docs-dir))
+                    (when-let* ((project-dir (locate-dominating-file default-directory ".git"))
+                                (docs-dir (expand-file-name "docs" project-dir))
+                                (build-script (expand-file-name "build.el" docs-dir))
+                                (publish-script (expand-file-name "publish.sh" docs-dir)))
+                      (list :command-name "sh:build_and_publish"
+                            :command-line "./build.el && ./publish.sh"
+                            :working-dir docs-dir)))))
+         (run-command-recipes . (run-command-recipe-ff/local
+                                 run-command-recipe-ff/docs
+                                 run-command-recipe-ff/cc))))
  (yaml-mode . ((eglot-workspace-configuration
                 . (:yaml (:rules (:key-ordering nil
                                                 :line-length nil)
@@ -40,4 +70,9 @@
  ((bash-ts-mode sh-mode) . ((flycheck-add-next-checker . '(sh-shellcheck sh-zsh))
                             (eval . (add-to-list 'flycheck-disabled-checkers 'sh-posix-dash))
                             (eval . (add-to-list 'flycheck-disabled-checkers 'sh-posix-bash))
-                            (eval . (add-to-list 'flycheck-disabled-checkers 'sh-bash)))))
+                            (eval . (add-to-list 'flycheck-disabled-checkers 'sh-bash))))
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ;;                 Docs                ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ("docs"
+  . ((nil . ((compile-command . "cd docs && ./build.el && ./publish.sh"))))))
