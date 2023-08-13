@@ -52,25 +52,23 @@
          ("C-c l c" . eglot-show-workspace-configuration)))
 
 (with-eval-after-load 'eglot
-  (defun eglot--current-project ()
-    "Return a project object for Eglot's LSP purposes.
-This relies on `project-current' and thus on
-`project-find-functions'.  Functions in the latter
-variable (which see) can query the value `eglot-lsp-context' to
-decide whether a given directory is a project containing a
-suitable root directory for a given LSP server's purposes."
+  (defun ff/eglot-find-local-project ()
+    "Create a local project on-the-fly for specific modes.
+
+This is required when one has a mono repository, where I do only
+want to start my LSP server in a certain directory without
+the need to update my project hierarchy."
     (let ((eglot-lsp-context t))
-      (or
-       ;; Select the project for all buffers with major-mode rst-mode
-       ;; automatically. This is required when one has a mono
-       ;; repository, where I do only want to start my LSP server in a
-       ;; certain directory without the need to update my project
-       ;; hierarchy.
-       (when (string-equal major-mode "rst-mode")
-         (when-let ((root (locate-dominating-file (buffer-file-name) "conf.py")))
-           (list 'vc nil root)))
-       (project-current)
-       `(transient . ,(expand-file-name default-directory))))))
+      (cond ((string-equal major-mode "rst-mode")
+             ;; I always want to start esbonio at the same level as
+             ;; the conf.py file is located.
+             (when-let ((root (locate-dominating-file (buffer-file-name) "conf.py")))
+               (list 'vc nil root)))
+            (t
+             nil))))
+
+  (advice-add 'eglot--current-project :before-until
+              #'ff/eglot-find-local-project))
 
 (use-package consult-eglot)
 
