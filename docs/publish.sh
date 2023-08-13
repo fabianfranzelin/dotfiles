@@ -16,7 +16,7 @@ dotfiles_docs_root=$(realpath "$(dirname "${script_name}")")
 #+CREATOR: Fabian Franzelin
 #+LANGUAGE: en
 
-The documentation is published [[here][https://fabianfranzelin.github.io/dotfiles]].
+The documentation is published [[https://fabianfranzelin.github.io/dotfiles][here]].
 " > "public/README.org"
 
     python3 ./publish_on_github.py publish "$@"
