@@ -42,18 +42,13 @@ ARG: position"
                (delete-char -1))))
     (delete-char -1)))
 
-(defun ff/minibuffer-move-beginning-of-line (arg)
-  "Change default behavior of move to beginning of line.
-
-Delete the complete minibuffer content and go the the root folder
-when completing file names.  If not, move point to beginning of
-line.
-
-ARG: position"
+(defun ff/minibuffer-move-to-dir (dir)
+  "Go the the specified directory when completing file names.
+DIR: directory"
   (interactive "p")
   (cond (minibuffer-completing-file-name
          (delete-minibuffer-contents)
-         (insert (substitute-in-file-name "/")))
+         (insert (substitute-in-file-name dir)))
         (t
          (move-beginning-of-line 0))))
 
@@ -72,7 +67,8 @@ ARG: position"
               ("C-j" . vertico-exit-input)
               :map minibuffer-local-map
               ("C-l" . ff/minibuffer-backward-kill)
-              ("C-a" . ff/minibuffer-move-beginning-of-line)))
+              ("C-a" . (lambda() (interactive) (ff/minibuffer-move-to-dir "/")))
+              ("C-o" . (lambda() (interactive) (ff/minibuffer-move-to-dir "~/")))))
 
 ;; install some vertico extensions
 (with-eval-after-load 'vertico
