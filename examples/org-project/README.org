@@ -1,7 +1,7 @@
 #+TITLE: Org example
 #+AUTHOR: Fabian Franzelin
 #+EMAIL: fabian.franzelin@gmail.com
-#+CREATOR: Fabian franzelin
+#+CREATOR: Fabian Franzelin
 #+LANGUAGE: en
 #+OPTIONS: auto-id:t H:4 broken_links:mark email:t ^:{}
 

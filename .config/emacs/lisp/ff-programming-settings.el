@@ -28,15 +28,12 @@
   (setq read-process-output-max (* 1024 1024))
 
   ;; C/C++
-  (add-to-list 'eglot-server-programs
-               `(c-ts-mode "clangd"))
-  (add-to-list 'eglot-server-programs
-               `(c++-ts-mode "clangd"))
+  (add-to-list 'eglot-server-programs `(c-ts-mode "clangd"))
+  (add-to-list 'eglot-server-programs `(c++-ts-mode "clangd"))
   ;; Sphinx, rst-mode
   ;; make esbonio the default lsp server for rst-mode
   ;; currently only version 0.15 works
-  (add-to-list 'eglot-server-programs
-               `(rst-mode . ("python3" "-m" "esbonio")))
+  (add-to-list 'eglot-server-programs `(rst-mode . ("python3" "-m" "esbonio")))
 
   :bind (("C-c l w s" . eglot)
          ("C-c l w r" . eglot-reconnect)
@@ -60,10 +57,12 @@ want to start my LSP server in a certain directory without
 the need to update my project hierarchy."
     (let ((eglot-lsp-context t))
       (cond ((string-equal major-mode "rst-mode")
-             ;; I always want to start esbonio at the same level as
-             ;; the conf.py file is located.
+             ;; I always want to start esbonio at the same level
+             ;; directory the conf.py file is located.
              (when-let ((root (locate-dominating-file (buffer-file-name) "conf.py")))
                (list 'vc nil root)))
+            ;; in all other cases, let the original function handle
+            ;; the project folder.
             (t
              nil))))
 
