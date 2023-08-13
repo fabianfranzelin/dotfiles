@@ -51,6 +51,27 @@
          ("C-c l e" . eglot-stderr-buffer)
          ("C-c l c" . eglot-show-workspace-configuration)))
 
+(with-eval-after-load 'eglot
+  (defun eglot--current-project ()
+    "Return a project object for Eglot's LSP purposes.
+This relies on `project-current' and thus on
+`project-find-functions'.  Functions in the latter
+variable (which see) can query the value `eglot-lsp-context' to
+decide whether a given directory is a project containing a
+suitable root directory for a given LSP server's purposes."
+    (let ((eglot-lsp-context t))
+      (or
+       ;; Select the project for all buffers with major-mode rst-mode
+       ;; automatically. This is required when one has a mono
+       ;; repository, where I do only want to start my LSP server in a
+       ;; certain directory without the need to update my project
+       ;; hierarchy.
+       (when (string-equal major-mode "rst-mode")
+         (when-let ((root (locate-dominating-file (buffer-file-name) "conf.py")))
+           (list 'vc nil root)))
+       (project-current)
+       `(transient . ,(expand-file-name default-directory))))))
+
 (use-package consult-eglot)
 
 ;; -------------------------------------------------------------
