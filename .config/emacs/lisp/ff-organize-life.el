@@ -167,24 +167,24 @@ DIR: directory path"
   (org-roam-db-gc-threshold most-positive-fixnum)
   (org-roam-capture-templates
    '(("d" "default" plain
-      "\n%?"
+      "\n\n%?"
       :target (file+head "%<%Y%m%d%H%M>-${slug}.org"
                          "#+title: ${title}\n")
       :unnarrowed t)
      ("l" "log entry" entry
-      "\n* %<%I:%M %p> - Log\n %U\n %a\n %i\n %?"
+      "\n\n* %<%I:%M %p> - Log\n %U\n %a\n %i\n %?"
       :target (file+head "%<%Y%m%d%H%M>-log.org"
                          "#+title: ${title}\n")
       :unarrowed t)
      ("s" "link notes" entry
-      "\n* %<%I:%M %p> - Links\n %U\n %a\n %i\n** Description\n\n%?\n** Log Entries\n\n"
+      "\n\n* %<%I:%M %p> - Links\n %U\n %a\n %i\n** Description\n\n%?\n** Log Entries\n\n"
       :target (file+head "%<%Y%m%d%H%M>-link.org"
                          "#+title: ${title}\n")
       :unarrowed t)
      ("p" "project note" entry
-      "\n%?"
+      "\n\n* %?"
       :target (file+head "%<%Y%m%d%H%M>-${slug}.org"
-                         "#+title: ${title}\n#+filetags. %^{project}\n\n")
+                         "#+title: ${title}\n#+filetags: :%^{project}:\n\n")
       :unarrowed t)))
   ;; org-roam-dailies
   (org-roam-dailies-directory (expand-file-name "journal" org-roam-directory))
@@ -194,12 +194,12 @@ DIR: directory path"
       :target (file+head "%<%Y%m%d>.org" "#+title: %<%Y-%m-%d %a>\n\n")
       :unarrowed t)
      ("f" "fleeting note" entry
-      "\n* TODO %^{Note title}\n %U\n %a\n %i\n %?"
+      "\n* TODO %^{Note title}\n %U\n %i\n %?"
       :target (file+head "inbox.org"
                          "#+title: Inbox\n\n")
       :unarrowed t)
      ("t" "task" entry
-      "\n* TODO %^{Todo title}\n %U\n %a\n %i\n %?"
+      "\n* TODO %^{Todo title}\n %U\n %i\n %?"
       :target (file+head "%<%Y%m%d%H%M>-todo.org"
                          "#+title: %<%Y-%m-%d %a>\n#+category: Task\n\n")
       :unarrowed t)
