@@ -180,6 +180,11 @@ DIR: directory path"
       "\n* %<%I:%M %p> - Links\n %U\n %a\n %i\n** Description\n\n%?\n** Log Entries\n\n"
       :target (file+head "%<%Y%m%d%H%M>-link.org"
                          "#+title: ${title}\n")
+      :unarrowed t)
+     ("p" "project note" entry
+      "\n%?"
+      :target (file+head "%<%Y%m%d%H%M>-${slug}.org"
+                         "#+title: ${title}\n#+filetags. %^{project}\n\n")
       :unarrowed t)))
   ;; org-roam-dailies
   (org-roam-dailies-directory (expand-file-name "journal" org-roam-directory))
