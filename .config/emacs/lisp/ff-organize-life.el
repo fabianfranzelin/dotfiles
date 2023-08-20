@@ -323,6 +323,59 @@ DIR: directory path"
   :bind (("C-x n l" . ff/org-roam-capture-literature-note)
          ("C-x n o" . ff/org-roam-open-literature-note)))
 
+;; -------------------------------------------------------------------
+;; Organizing tasks and agenda
+;; https://config.daviwil.com/workflow
+;; -------------------------------------------------------------------
+
+(with-eval-after-load 'org-roam
+  ;; Todo types
+  ;;     TODO - A task that should be done at some point
+  ;;     NEXT - This task should be done next (in the Getting Things Done sense)
+  ;;     WAIT - Waiting for someone else to be actionable again
+  ;;     DONE - It's done!
+
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
+          (sequence "|" "WAIT(w)")))
+
+  (setq org-todo-keyword-faces
+        '(("NEXT" . (:foreground "orange red" :weight bold))
+          ("WAIT" . (:foreground "HotPink2" :weight bold))))
+
+  ;; Customize org-agenda
+  (setq org-agenda-window-setup 'current-window)
+  (setq org-agenda-span 'day)
+  (setq org-agenda-start-with-log-mode t)
+
+  ;; Make done tasks show up in the agenda log
+  (setq org-log-done 'time)
+  (setq org-log-into-drawer t)
+
+  (setq org-columns-default-format "%20CATEGORY(Category) %65ITEM(Task) %TODO %6Effort(Estim){:}  %6CLOCKSUM(Clock) %TAGS")
+
+  (setq org-agenda-custom-commands
+        `(("d" "Dashboard"
+           ((agenda "" ((org-deadline-warning-days 7)))
+            (tags-todo "+followup" ((org-agenda-overriding-header "Needs Follow Up")))
+            (todo "NEXT"
+                  ((org-agenda-overriding-header "Next Actions")
+                   (org-agenda-max-todos nil)))
+            (todo "WAIT"
+                  ((org-agenda-overriding-header "Waiting for Action")
+                   (org-agenda-max-todos nil)))
+            (todo "TODO"
+                  ((org-agenda-overriding-header "Unprocessed Inbox Tasks")
+                   (org-agenda-files '(,(expand-file-name "inbox.org" org-roam-dailies-directory)))
+                   (org-agenda-text-search-extra-files nil)))))
+          ("n" "Next Tasks"
+           ((agenda "" ((org-deadline-warning-days 7)))
+            (todo "NEXT"
+                  ((org-agenda-overriding-header "Next Tasks")))))
+          ("A" "Agenda and all TODOs"
+           ((agenda "")
+            (alltodo ""))))))
+
 (provide 'ff-organize-life)
 
 ;;; ff-organize-life.el ends here
