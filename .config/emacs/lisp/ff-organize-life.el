@@ -257,6 +257,9 @@ DIR: directory path"
          ("C-x n n" . consult-org-roam-backlinks)
          ("C-x n p" . consult-org-roam-forward-links)))
 
+;; -------------------------------------------------------------------
+;; Citations for org-files
+;; -------------------------------------------------------------------
 (use-package citeproc)
 
 (with-eval-after-load 'ox-latex
@@ -284,9 +287,12 @@ DIR: directory path"
   (citar-notes-paths `(,org-roam-directory))
   (citar-at-point-function 'embark-act)
   ;; optional: org-cite-insert is also bound to C-c C-x C-@
-  :bind
-  (:map org-mode-map :package org
-        ("C-c b" . #'org-cite-insert)))
+  :bind (("C-c c o" . citar-open)
+         ("C-c c e" . citar-open-entry)
+         ("C-c c f" . citar-open-files)
+         ("C-c c n" . citar-open-notes)
+         (:map org-mode-map :package org
+               ("C-c b" . org-cite-insert))))
 
 (use-package citar-embark
   :config (citar-embark-mode))
@@ -311,6 +317,7 @@ DIR: directory path"
                                    :ref (concat "@" citekey)))))
 
 (defun ff/org-roam-open-literature-note ()
+  "Open a literature note for a specific document."
   (interactive)
   ;; make sure that citar-org-roam-mode is enabled
   (citar-org-roam-mode)

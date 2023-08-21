@@ -21,7 +21,7 @@
 ;; Package Management - straight.el
 
 ;; use latest develop for straight itself; check
-; https://github.com/radian-software/straight.el/issues/1059
+;; https://github.com/radian-software/straight.el/issues/1059
 (setq straight-repository-branch "develop")
 
 ;; set actual repository user from github, so that pull straight works
@@ -62,7 +62,7 @@
 ;; Before we do anything, set up the no littering package
 (use-package no-littering
   :init
-;; setup a new custom file and load it
+  ;; setup a new custom file and load it
   (setq custom-file (no-littering-expand-etc-file-name "custom.el"))
   (load custom-file t)
   :config
@@ -71,7 +71,7 @@
 
 ;; -------------------------------------------------------------------
 (require 'ff-core)
-(require 'ff-vertico-completion)
+(require 'ff-vertical-completion)
 (require 'ff-setup-vterm)
 (require 'ff-magit-version-control)
 (require 'ff-project-management)

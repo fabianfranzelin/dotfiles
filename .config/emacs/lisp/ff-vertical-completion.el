@@ -1,6 +1,6 @@
-;;; ff-vertico-completion --- Set up completion system with Vertico, etc.
+;;; ff-vertical-completion --- Set up vertical completion system with Vertico.
 ;;; Commentary:
-;;; Sets up completion system for Emacs
+;;; Sets up vertical completion system for Emacs
 ;;; https://github.com/daviwil/dotfiles/blob/master/Emacs.org#completion-system
 
 ;;; Code:
@@ -320,6 +320,6 @@ targets."
   ;; auto-updating embark collect buffer
   :hook ((embark-collect-mode . consult-preview-at-point-mode)))
 
-(provide 'ff-vertico-completion)
+(provide 'ff-vertical-completion)
 
-;;; ff-vertico-completion.el ends here
+;;; ff-vertical-completion.el ends here
