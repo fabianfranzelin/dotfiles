@@ -140,8 +140,13 @@ JAR-PATH: expected binary file in the extracted folder."
 ;; Latex
 ;; -------------------------------------------------------------------
 (use-package auctex
+  :commands LaTeX-mode
   :hook ((LaTeX-mode . TeX-fold-mode)
-         (LaTeX-mode . outline-minor-mode)))
+         (LaTeX-mode . outline-minor-mode))
+  :init
+  ;; Let auctex open pdf files with pdf-tools
+  (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+        TeX-source-correlate-start-server t))
 
 (use-package reftex
   :config
@@ -166,7 +171,6 @@ JAR-PATH: expected binary file in the extracted folder."
 
 ;; emacs RefTeX
 ;; (setq reftex-ref-macro-prompt nil) ; skips picking the reference style
-
 (eval-after-load 'reftex-vars
   '(progn
      ;; (also some other reftex-related customizations)
@@ -207,6 +211,10 @@ JAR-PATH: expected binary file in the extracted folder."
 ;; add make, scons and latexmk commands as tex build commands
 (add-hook 'LaTeX-mode-hook
           (lambda ()
+            ;; define key for foward pdf search
+            (define-key LaTeX-mode-map (kbd "C-c C-s") 'pdf-sync-forward-search)
+            ;; Run C-Mouse 1 for inverse search in pdf buffer (pdf-view-mode)
+
             (add-to-list 'TeX-command-list
                          '("Make" "make" TeX-run-TeX nil t :help "Runs make") t)
             (add-to-list 'TeX-command-list
@@ -218,12 +226,17 @@ JAR-PATH: expected binary file in the extracted folder."
 ;; http://www.gnu.org/software/auctex/manual/auctex/Adding-Environments.html
 ;; -------------------------------------------------------------------
 
+(use-package texinfo
+  :defines texinfo-section-list
+  :commands texinfo-mode
+  :init
+  (add-to-list 'auto-mode-alist '("\\.texi$" . texinfo-mode)))
+
 ;; -------------------------------------------------------------------
 ;; PDF-tools: Mainly used to display PDFs and to inverse and forward
 ;; jumps for Latex documents
 ;; -------------------------------------------------------------------
 (use-package pdf-tools
-  :after (auctex)
   :custom
   (pdf-view-display-size 'fit-width)
   :init
@@ -234,19 +247,11 @@ JAR-PATH: expected binary file in the extracted folder."
   ;; PDF-buffer after the TeX compilation has finished.
   ;; https://github.com/politza/pdf-tools
   (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
-  ;; Let auctex open pdf files with pdf-tools
-  (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
-        TeX-source-correlate-start-server t)
-
+  ;; set pdf-view-mode as default for pdf files
   (add-to-list 'auto-mode-alist '("\\.pdf\\'" . pdf-view-mode))
-  :hook
-  (pdf-view-mode . pdf-isearch-minor-mode)
-  :bind (:map LaTeX-mode-map
-              ("C-c C-a" . pdf-sync-forward-search)
-              :map tex-mode-map
-              ("C-c C-a" . pdf-sync-forward-search)
-              ;; Run C-Mouse 1 for inverse search in pdf buffer
-              :map pdf-view-mode-map
+  (add-hook 'pdf-view-mode-hook #'pdf-isearch-minor-mode)
+  (add-hook 'pdf-view-mode-hook #'pdf-sync-minor-mode)
+  :bind (:map pdf-view-mode-map
               ("C-s" . isearch-forward)))
 
 (provide 'ff-write-documents)

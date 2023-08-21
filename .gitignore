@@ -124,8 +124,13 @@ build/
 
 ### Examples ###
 /examples/org-project/content/index.pdf
-/examples/org-project/content/index.synctex.gz
 /examples/org-project/content/index.tex
+/examples/org-project/content/*.aux
+/examples/org-project/content/*.log
+/examples/org-project/content/*.out
+/examples/org-project/content/*.rel
+/examples/org-project/content/*.toc
+/examples/org-project/content/*.synctex.gz
 
 ### Python ###
 __pycache__
