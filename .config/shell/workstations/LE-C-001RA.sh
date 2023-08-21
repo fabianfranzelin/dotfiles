@@ -47,6 +47,7 @@ export AOS_INSTALL_DIR="${AOS_BASE_HOME}/install"
 export CONAN_USER_HOME="${HOME}/.aos_conan_download_cache"
 export AOS_WORKDIR="${HOME}/.aos_conan_download_cache"
 mkdir -p "${AOS_WORKDIR}"
+export DISABLE_RECOMPUTE_DEPENDENCY_CHECK=1
 
 #------------------------------------------------------------------------------#
 # Azure DevOps

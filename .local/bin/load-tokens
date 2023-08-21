@@ -13,8 +13,6 @@ CONAN_LOGIN_USERNAME="${BOSCH_USER}"
 export CONAN_PASSWORD
 CONAN_PASSWORD="${ARTIFACTORY_APIKEY}"
 
-export DISABLE_RECOMPUTE_DEPENDENCY_CHECK=1
-
 #------------------------------------------------------------------------------#
 # PJ-Rec
 export ARTIFACTORY_USER
