@@ -23,7 +23,9 @@ DIR: directory path"
   (org-agenda-start-with-log-mode t)
   (org-log-done 'time)
   (org-log-into-drawer t)
-  (org-babel-python-command "/usr/bin/python3"))
+  (org-babel-python-command "/usr/bin/python3")
+  ;; disable isearch when using org-goto
+  (org-goto-auto-isearch nil))
 
 (with-eval-after-load 'org
   (require 'org-indent)
@@ -149,9 +151,8 @@ DIR: directory path"
 (defun ff/configure-org-roam-mode ()
   "Configure org-roam-mode."
   (set (make-local-variable 'completion-at-point-functions)
-       '(org-roam-complete-everywhere
-         org-roam-complete-link-at-point
-         citar-capf
+       '(citar-capf
+         pcomplete-completions-at-point
          cape-dabbrev
          cape-dict)))
 

@@ -254,6 +254,12 @@ JAR-PATH: expected binary file in the extracted folder."
   :bind (:map pdf-view-mode-map
               ("C-s" . isearch-forward)))
 
+;; restore positions of pdfs when reopened
+(use-package pdf-view-restore
+  :after pdf-tools
+  :config
+  (add-hook 'pdf-view-mode-hook 'pdf-view-restore-mode))
+
 (provide 'ff-write-documents)
 
 ;;; ff-write-documents.el ends here
