@@ -151,7 +151,9 @@ handled appropriately."
   :bind (("C-c f" . ff/flyspell-toggle)
          ;; disable default key since it is used by embark
          :map flyspell-mode-map
-         ("C-." . nil)))
+         ("C-." . nil)
+         ;; disable this one because it is used otherwise in org-mode
+         ("M-TAB" . nil)))
 
 (use-package flyspell-correct
   :after flyspell

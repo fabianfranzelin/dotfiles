@@ -2,6 +2,7 @@
 #+TITLE: Validation of safety functions
 #+SUBTITLE: Yet to be defined
 #+AUTHOR: Fabian Franzelin
+#+DATE: 2023-08-22 Tue
 #+EMAIL: fabian.franzelin@gmail.com
 #+OPTIONS: H:4 toc:2 num:2 broken-links:mark
 #+LaTeX_CLASS: report
@@ -20,17 +21,68 @@
 This is an example project on how to write an academic paper in
 org-mode.
 
-* Method
++ This is a list item
+  - Here comes a secondary item
+  - And a third one
++ Here comes another item
+
+
+Here comes a numbered list
+
+1. First item
+2. Second item
+   1) First item of the second main one
+3. Third one
 
 Here come some citations to my bibliography.
 
 [cite:@OrgCitations]
 [cite:@OrgCitationsRoam]
 
+* Method
+
+Here come a few definitions
+
++ item1 :: description of item 1
++ item2 :: description of item 2
+  - with a few bullet points inside
+  - blubb
+
+Here comes[fn:1] a footnote[fn:2]. Insert them with =C-c C-x f= and resort them with =C-u C-c C-x f s=.
+
 * Results
 
+Here comes a table
+
+#+name: tab:yield
+#+caption: Simple table created using LaTeX tabular environment
+#+attr_latex: :environment tabular :width \textwidth :align lrr
+ | State          | Average yield | Average income |
+ |----------------+---------------+----------------|
+ | Madhya Pradesh |           672 |          13000 |
+ | Haryana        |           300 |          25000 |
+ | Punjab         |           260 |          35000 |
+
+[[tab:yield]]
+
+** Experiment 1
+
+** Experiment 2
+
 * Conclusion
+
+Add links to headings as follows: type =[[*= and hit =M-TAB=, then you'll
+get a list of the current headings from which you can selected the
+desired one.
+
+The experiments [[*Experiment 1]] and [[*Experiment 2]] have shown that...
 
 * Bibliography
 
 #+print_bibliography:
+
+* Footnotes
+
+[fn:1] another footnote
+
+[fn:2] hello
