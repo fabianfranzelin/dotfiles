@@ -307,18 +307,28 @@ DIR: directory path"
   (citar-org-roam-mode)
   ;; load citation key and open capture buffer
   (let* ((citekey (or citekey (citar-select-ref)))
-         (note-filename (concat (when citar-org-roam-subdir (concat citar-org-roam-subdir "/")) citekey ".org" )))
-    (org-roam-capture- :node (org-roam-node-create)
-                       :templates '(("n" "literature note" plain
-                                     "\n** Note (p. ${pages})\n#+created: %U\n\n%?"
-                                     :target (file+head
-                                              "${note-filename}"
-                                              "#+title: ${citekey}\n#+category: Literature\n#+created: %U\n#+last_modified: %U\n\n")
-                                     :empty-lines 1
-                                     :unnarrowed t))
-                       :info (list :note-filename note-filename
-                                   :citekey citekey
-                                   :ref (concat "@" citekey)))))
+         (note-filename (concat (when citar-org-roam-subdir (concat citar-org-roam-subdir "/")) citekey ".org" ))
+         (file-name-pdf nil))
+    (maphash (lambda (key value) (setq-local file-name-pdf (car value)))
+             (citar-get-files citekey))
+
+    (let* ((heading (if file-name-pdf
+                        ;; make sure to have org-pdftools installed to make this work
+                        (format "[[pdf:%s::%i][Note]]" file-name-pdf (read-number "Page: "))
+                      "Note"))
+           (capture-heading (concat "\n* " heading "\n#+created: %U\n\n\%?")))
+      (org-roam-capture- :node (org-roam-node-create)
+                         :templates '(("n" "literature note" plain
+                                       "${capture-heading}"
+                                       :target (file+head
+                                                "${note-filename}"
+                                                "#+title: ${citekey}\n#+category: Literature\n#+created: %U\n#+last_modified: %U\n\n")
+                                       :empty-lines 1
+                                       :unnarrowed t))
+                         :info (list :note-filename note-filename
+                                     :citekey citekey
+                                     :capture-heading capture-heading
+                                     :ref (concat "@" citekey))))))
 
 (defun ff/org-roam-open-literature-note ()
   "Open a literature note for a specific document."
