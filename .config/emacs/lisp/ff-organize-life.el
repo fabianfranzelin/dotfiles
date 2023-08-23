@@ -51,7 +51,10 @@ DIR: directory path"
      (latex . t)
      (dot . t)
      (gnuplot . t)))
-  (push '("conf-unix" . conf-unix) org-src-lang-modes))
+  (push '("conf-unix" . conf-unix) org-src-lang-modes)
+
+  ;; yas-snippet
+  (define-key org-mode-map (kbd "C-c C-y") 'yas-insert-snippet))
 
 ;; use pdf-tools for org links
 (use-package org-pdfview
