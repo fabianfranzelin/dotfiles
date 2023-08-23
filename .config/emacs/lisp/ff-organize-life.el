@@ -302,6 +302,9 @@ DIR: directory path"
   :config (citar-embark-mode))
 
 (defun ff/org-roam-capture-literature-note (&optional citekey)
+  ;; alternative path: if already visiting a pdf file that is listed
+  ;; in the bibliography, load the citekey automatically and enter the
+  ;; page nunber via pdftools (pdf-view-current-page), for example.
   (interactive)
   ;; make sure that citar-org-roam-mode is enabled
   (citar-org-roam-mode)
