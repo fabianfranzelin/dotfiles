@@ -260,6 +260,9 @@ JAR-PATH: expected binary file in the extracted folder."
   :config
   (add-hook 'pdf-view-mode-hook 'pdf-view-restore-mode))
 
+(use-package org-pdftools
+  :hook (org-mode . org-pdftools-setup-link))
+
 (provide 'ff-write-documents)
 
 ;;; ff-write-documents.el ends here
