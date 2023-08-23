@@ -77,6 +77,18 @@ desired one.
 
 The experiments [[*Experiment 1]] and [[*Experiment 2]] have shown that...
 
+#+name: src:hello-world
+#+begin_src python :tangle yes :exports both value
+    print("Hello World!")
+    return(10)
+#+end_src
+
+#+RESULTS: src:hello-world
+: 10
+
+[[src:hello-world][Code]]
+
+
 * Bibliography
 
 #+print_bibliography:
