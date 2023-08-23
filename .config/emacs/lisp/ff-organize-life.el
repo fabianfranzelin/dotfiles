@@ -294,7 +294,6 @@ DIR: directory path"
   :bind (("C-c c o" . citar-open)
          ("C-c c e" . citar-open-entry)
          ("C-c c f" . citar-open-files)
-         ("C-c c n" . citar-open-notes)
          (:map org-mode-map :package org
                ("C-c b" . org-cite-insert))))
 
@@ -362,11 +361,12 @@ DIR: directory path"
                                        "${capture-heading}"
                                        :target (file+head
                                                 "${note-filename}"
-                                                "#+title: ${citekey}\n#+category: Literature\n#+created: %U\n#+last_modified: %U\n\n")
+                                                "#+title: Note on ${citetitle}\n#+category: Literature\n#+created: %U\n#+last_modified: %U\n\n")
                                        :empty-lines 1
                                        :unnarrowed t))
                          :info (list :note-filename note-filename
                                      :citekey citekey
+                                     :citetitle (cdr (assoc "title" (citar-get-entry citekey)))
                                      :capture-heading capture-heading
                                      :ref (concat "@" citekey))))))
 
