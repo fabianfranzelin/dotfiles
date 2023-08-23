@@ -100,7 +100,7 @@ DIR: directory"
   :custom
   (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
   (corfu-auto t)                 ;; Enable auto completion
-  (corfu-separator ?\s)          ;; Orderless field separator
+  ;; (corfu-separator ?\s)          ;; Orderless field separator
   ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
   ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
   ;; (corfu-preview-current nil)    ;; Disable current candidate preview
@@ -124,8 +124,9 @@ DIR: directory"
              ("C-j" . corfu-next)
              ("C-p" . corfu-previous)
              ("TAB" . corfu-insert)
-             ("C-f" . corfu-insert)
-             ("SPC" . corfu-insert-separator)))
+             ("C-f" . corfu-insert)))
+                                        ; Use this and enable corfu-separator for fuzzy function finding
+                                        ; ("SPC" . corfu-insert-separator)))
 
 ;; enable corfu in terminal mode
 (use-package corfu-terminal
