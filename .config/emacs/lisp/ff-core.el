@@ -78,7 +78,7 @@
 (electric-indent-mode nil)
 
 (dolist (mode '(org-mode-hook))
-  (add-hook mode (lambda () (electric-pair-mode 0))))
+  (add-hook mode (lambda () (electric-pair-local-mode 0))))
 
 ;; save cursor position in files even when buffers are killed
 (save-place-mode)

@@ -276,6 +276,10 @@ DIR: directory path"
                  ("\\paragraph{%s}" . "\\paragraph*{%s}")
                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 
+(defun ff/citar-reference-notes-absolute-path ()
+  "Load the absolute path to all literature notes."
+  (concat org-roam-directory (if citar-org-roam-subdir (concat "/" citar-org-roam-subdir))))
+
 (use-package citar
   :after org-roam
   :hook
@@ -313,62 +317,76 @@ DIR: directory path"
 (defun ff/find-citekey-for-pdf-file-name (file-name)
   (cdr (assoc file-name (ff/load-all-bibliography-pdf-file-entries))))
 
-(defun ff/org-roam-capture-literature-note (&optional citekey)
-  ;; alternative path: if already visiting a pdf file that is listed
-  ;; in the bibliography, load the citekey automatically and enter the
-  ;; page nunber via pdftools (pdf-view-current-page), for example.
+(defun ff/citar-get-pdf-file-name (&optional citekey)
+  (let ((file-name-pdf nil))
+    (cond ((string-equal major-mode "pdf-view-mode")
+           (setq-local file-name-pdf (buffer-file-name)))
+          (t
+           ;; check whether the bibliography entry links to a pdf file
+           (let ((citekey (or citekey
+                              (citar-select-ref))))
+             (maphash (lambda (key value)
+                        (let ((file-name (car value)))
+                          (when (string-equal (file-name-extension file-name) "pdf")
+                            (setq-local file-name-pdf (car value)))))
+                      (citar-get-files citekey)))))
+    file-name-pdf))
+
+(defun ff/citar-get-pdf-page-number (&optional citekey)
+  (if (string-equal major-mode "pdf-view-mode")
+      (pdf-view-current-page))
+  (read-number "Page: "))
+
+(defun ff/citar-capture-org-roam-literature-note-for-entry (citekey)
+  "Capture a literature note with org-roam using citar as subsystem.
+CITEKEY: citation key in bibtex"
   (interactive)
   ;; make sure that citar-org-roam-mode is enabled
   (citar-org-roam-mode)
   ;; load citation key and open capture buffer
-  (let* ((file-name-pdf nil)
-         (page nil))
-    ;; find the bibliography entry automatically, if possible. If not,
-    ;; present a nice selection interface to the use
-    (cond ((string-equal major-mode "pdf-view-mode")
-           ;; try to load citekey from bibliography.
-           (setq-local file-name-pdf (buffer-file-name))
-           (when (not citekey)
-             (setq-local citekey (ff/find-citekey-for-pdf-file-name (file-name-nondirectory file-name-pdf))))
-           ;; the current page is available through the major-mode
-           (setq-local page (pdf-view-current-page)))
-          (t
-           ;; use citar to select the entry manually
-           (when (not citekey)
-             (setq-local citekey (citar-select-ref)))
-           ;; check whether the bibliography entry links to a pdf file
-           (maphash (lambda (key value)
-                      (let ((file-name (car value)))
-                        (when (string-equal (file-name-extension file-name) "pdf")
-                          (setq-local file-name-pdf (car value)))))
-                    (citar-get-files citekey))
-           (when file-name-pdf
-             (setq-local page (read-number "Page: ")))))
-    ;; create the headings out of the collected meta information
-    (let* ((heading (if file-name-pdf
-                        ;; make sure to have org-pdftools installed to make this work
-                        (format "[[pdfview:%s::%i][Note]]" file-name-pdf page)
-                      (if page
-                          ;; an actual page is available
-                          (format "Note (p. %s)" page)
-                        ;; No pdf file at all is linked to the entry,
-                        ;; so no further linking possible as of now
-                        "Note")))
-           (capture-heading (concat "\n* " heading "\n#+created: %U\n\n\%?"))
-           (note-filename (concat (when citar-org-roam-subdir (concat citar-org-roam-subdir "/")) citekey ".org" )))
-      (org-roam-capture- :node (org-roam-node-create)
-                         :templates '(("n" "literature note" plain
-                                       "${capture-heading}"
-                                       :target (file+head
-                                                "${note-filename}"
-                                                "#+title: Note on ${citetitle}\n#+category: Literature\n#+created: %U\n#+last_modified: %U\n\n")
-                                       :empty-lines 1
-                                       :unnarrowed t))
-                         :info (list :note-filename note-filename
-                                     :citekey citekey
-                                     :citetitle (cdr (assoc "title" (citar-get-entry citekey)))
-                                     :capture-heading capture-heading
-                                     :ref (concat "@" citekey))))))
+  (let* ((file-name-pdf (ff/citar-get-pdf-file-name citekey))
+         (file-page (ff/citar-get-pdf-page-number citekey))
+         (file-name-pdf-relative (file-relative-name file-name-pdf (ff/citar-reference-notes-absolute-path)))
+         (heading (if (and file-name-pdf (file-exists-p file-name-pdf))
+                      ;; make sure to have pdf-tools installed to make this work
+                      (format "[[pdfview:%s::%i][Note (p. %i)]]" file-name-pdf-relative file-page file-page)
+                    (if file-page
+                        ;; an actual page is available
+                        (format "Note (p. %s)" file-page)
+                      ;; No pdf file at all is linked to the entry,
+                      ;; so no further linking possible as of now
+                      "Note")))
+         (capture-heading (concat "\n* " heading "\n#+created: %U\n\n\%?"))
+         (note-filename (expand-file-name (format "%s.org" citekey) (ff/citar-reference-notes-absolute-path)))
+         (title (cdr (assoc "title" (citar-get-entry citekey))))
+         (note-header (concat "#+title: Note on " title "\n"
+                              (format "#+noter_document: [[pdfview:%s::1]]\n" file-name-pdf)
+                              "#+category: Literature\n"
+                              "#+created: %U\n"
+                              "#+last_modified: %U\n"
+                              "\n")))
+    (org-roam-capture- :node (org-roam-node-create)
+                       :templates '(("n" "literature note" plain
+                                     "${capture-heading}"
+                                     :target (file+head
+                                              "${note-filename}"
+                                              "${note-header}")
+                                     :empty-lines 1
+                                     :unnarrowed t))
+                       :info (list :capture-heading capture-heading
+                                   :note-filename note-filename
+                                   :note-header note-header
+                                   :ref (concat "@" citekey)))))
+
+(defun ff/org-roam-capture-literature-note ()
+  "Capture a literature note for a specific document."
+  (interactive)
+  ;; make sure that citar-org-roam-mode is enabled
+  (citar-org-roam-mode)
+  ;; load citation key and open capture buffer
+  (let* ((citekey (or (ff/find-citekey-for-pdf-file-name (file-name-nondirectory (buffer-file-name)))
+                      (citar-select-ref))))
+    (ff/citar-capture-org-roam-literature-note-for-entry citekey)))
 
 (defun ff/org-roam-open-literature-note ()
   "Open a literature note for a specific document."
@@ -376,14 +394,13 @@ DIR: directory path"
   ;; make sure that citar-org-roam-mode is enabled
   (citar-org-roam-mode)
   ;; load citation key and open capture buffer
-  ;; load citation key and open capture buffer
   (let* ((citekey (or (ff/find-citekey-for-pdf-file-name (file-name-nondirectory (buffer-file-name)))
                       (citar-select-ref)))
-         (note-filename (expand-file-name (concat (when citar-org-roam-subdir (concat citar-org-roam-subdir "/")) citekey ".org" )
-                                          org-roam-directory)))
+         (note-filename (expand-file-name (format "%s.org" citekey)
+                                          (ff/citar-reference-notes-absolute-path))))
     (if (file-exists-p note-filename)
         (org-open-file note-filename)
-      (ff/org-roam-capture-literature-note citekey))))
+      (ff/citar-capture-org-roam-literature-note-for-entry citekey))))
 
 (use-package citar-org-roam
   :config

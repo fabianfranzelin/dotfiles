@@ -236,6 +236,49 @@ JAR-PATH: expected binary file in the extracted folder."
 ;; PDF-tools: Mainly used to display PDFs and to inverse and forward
 ;; jumps for Latex documents
 ;; -------------------------------------------------------------------
+(defun ff/org-roam-capture-pdf-note ()
+  (interactive)
+  ;; make sure that citar-org-roam-mode is enabled
+  (citar-org-roam-mode)
+  (when (string-equal major-mode "pdf-view-mode")
+    (let* ((file-name-pdf (buffer-file-name))
+           (file-name-pdf-relative (file-relative-name file-name-pdf (ff/citar-reference-notes-absolute-path)))
+           (page (pdf-view-current-page))
+           (capture-heading (concat "\n* "
+                                    (format "[[pdfview:%s::%i][Note (p. %i)]]" file-name-pdf page page)
+                                    "\n#+created: %U\n\n\%?"))
+           (note-filename (expand-file-name (format "%s.org" (file-name-base file-name-pdf))
+                                            (ff/citar-reference-notes-absolute-path)))
+           (note-header (concat "#+title: Note on " (unless (file-exists-p file-name-pdf) (read-string "Title: ") "nil") "\n"
+                                (format "#+noter_document: [[pdfview:%s::1]]\n" file-name-pdf-relative)
+                                "#+category: Literature\n"
+                                "#+created: %U\n"
+                                "#+last_modified: %U\n"
+                                "\n")))
+      (org-roam-capture- :node (org-roam-node-create)
+                         :templates '(("n" "literature note" plain
+                                       "${capture-heading}"
+                                       :target (file+head
+                                                "${note-filename}"
+                                                "${note-header}")
+                                       :empty-lines 1
+                                       :unnarrowed t))
+                         :info (list :capture-heading capture-heading
+                                     :note-filename note-filename
+                                     :note-header note-header)))))
+
+(defun ff/org-roam-open-pdf-note ()
+  (interactive)
+  ;; make sure that citar-org-roam-mode is enabled
+  (citar-org-roam-mode)
+  (when (string-equal major-mode "pdf-view-mode")
+    (let* ((file-name-pdf (file-relative-name (buffer-file-name) (ff/citar-reference-notes-absolute-path)))
+           (note-filename (expand-file-name (format "%s.org" (file-name-base file-name-pdf))
+                                            (ff/citar-reference-notes-absolute-path))))
+      (if (file-exists-p note-filename)
+          (org-open-file note-filename)
+        (ff/org-roam-capture-pdf-note)))))
+
 (use-package pdf-tools
   :custom
   (pdf-view-display-size 'fit-width)
@@ -252,7 +295,9 @@ JAR-PATH: expected binary file in the extracted folder."
   (add-hook 'pdf-view-mode-hook #'pdf-isearch-minor-mode)
   (add-hook 'pdf-view-mode-hook #'pdf-sync-minor-mode)
   :bind (:map pdf-view-mode-map
-              ("C-s" . isearch-forward)))
+              ("C-s" . isearch-forward)
+              ("C-c n" . ff/org-roam-capture-pdf-note)
+              ("C-c o" . ff/org-roam-open-pdf-note)))
 
 ;; restore positions of pdfs when reopened
 (use-package pdf-view-restore
