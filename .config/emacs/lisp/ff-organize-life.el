@@ -278,7 +278,9 @@ DIR: directory path"
 
 (defun ff/citar-reference-notes-absolute-path ()
   "Load the absolute path to all literature notes."
-  (concat org-roam-directory (if citar-org-roam-subdir (concat "/" citar-org-roam-subdir))))
+  (concat org-roam-directory
+          (if citar-org-roam-subdir
+              (concat "/" citar-org-roam-subdir))))
 
 (use-package citar
   :after org-roam
@@ -305,6 +307,7 @@ DIR: directory path"
   :config (citar-embark-mode))
 
 (defun ff/load-all-bibliography-pdf-file-entries ()
+  "Load all bibliography entries that contain a pdf file as file link."
   (let ((all-entries-alist nil))
     (maphash (lambda (citekey files)
                (mapcar (lambda (file)
@@ -315,9 +318,15 @@ DIR: directory path"
     all-entries-alist))
 
 (defun ff/find-citekey-for-pdf-file-name (file-name)
-  (cdr (assoc file-name (ff/load-all-bibliography-pdf-file-entries))))
+  "Find the first citation key to which the current file is linked.
+FILE-NAME: file name"
+  (if file-name
+      (cdr (assoc (file-name-nondirectory file-name)
+                  (ff/load-all-bibliography-pdf-file-entries)))))
 
 (defun ff/citar-get-pdf-file-name (&optional citekey)
+  "Lookup a linked pdf file in the bibliography, if a citeky is given.
+CITEKEY: citation key in bibliography"
   (let ((file-name-pdf nil))
     (cond ((string-equal major-mode "pdf-view-mode")
            (setq-local file-name-pdf (buffer-file-name)))
@@ -332,7 +341,8 @@ DIR: directory path"
                       (citar-get-files citekey)))))
     file-name-pdf))
 
-(defun ff/citar-get-pdf-page-number (&optional citekey)
+(defun ff/citar-get-pdf-page-number ()
+  "Get the page number to which the note refers."
   (if (string-equal major-mode "pdf-view-mode")
       (pdf-view-current-page))
   (read-number "Page: "))
@@ -345,28 +355,32 @@ CITEKEY: citation key in bibtex"
   (citar-org-roam-mode)
   ;; load citation key and open capture buffer
   (let* ((file-name-pdf (ff/citar-get-pdf-file-name citekey))
-         (file-page (ff/citar-get-pdf-page-number citekey))
-         (file-name-pdf-relative (file-relative-name file-name-pdf (ff/citar-reference-notes-absolute-path)))
-         (heading (if (and file-name-pdf (file-exists-p file-name-pdf))
+         (file-page (if file-name-pdf (ff/citar-get-pdf-page-number)))
+         (file-name-pdf-relative (if file-name-pdf (file-relative-name file-name-pdf (ff/citar-reference-notes-absolute-path))))
+         (heading (if (and file-name-pdf (file-exists-p file-name-pdf) file-page)
                       ;; make sure to have pdf-tools installed to make this work
                       (format "[[pdfview:%s::%i][Note (p. %i)]]" file-name-pdf-relative file-page file-page)
                     (if file-page
                         ;; an actual page is available
-                        (format "Note (p. %s)" file-page)
+                        (format "Note (p. %i)" file-page)
                       ;; No pdf file at all is linked to the entry,
                       ;; so no further linking possible as of now
                       "Note")))
          (capture-heading (concat "\n* " heading "\n#+created: %U\n\n\%?"))
          (note-filename (expand-file-name (format "%s.org" citekey) (ff/citar-reference-notes-absolute-path)))
-         (title (cdr (assoc "title" (citar-get-entry citekey))))
+         (citekey-citar-entry (citar-get-entry citekey))
+         (title (format "%s ::  %s"
+                        (cdr (assoc "author" citekey-citar-entry))
+                        (cdr (assoc "title" citekey-citar-entry))))
          (note-header (concat "#+title: Note on " title "\n"
-                              (format "#+noter_document: [[pdfview:%s::1]]\n" file-name-pdf)
+                              (if file-name-pdf-relative
+                                  (concat "#+noter_document: " (format "[[file:%s]]\n" file-name-pdf-relative)))
                               "#+category: Literature\n"
                               "#+created: %U\n"
                               "#+last_modified: %U\n"
                               "\n")))
     (org-roam-capture- :node (org-roam-node-create)
-                       :templates '(("n" "literature note" plain
+                       :templates '(("n" "literature note" entry
                                      "${capture-heading}"
                                      :target (file+head
                                               "${note-filename}"
@@ -384,7 +398,7 @@ CITEKEY: citation key in bibtex"
   ;; make sure that citar-org-roam-mode is enabled
   (citar-org-roam-mode)
   ;; load citation key and open capture buffer
-  (let* ((citekey (or (ff/find-citekey-for-pdf-file-name (file-name-nondirectory (buffer-file-name)))
+  (let* ((citekey (or (ff/find-citekey-for-pdf-file-name (buffer-file-name))
                       (citar-select-ref))))
     (ff/citar-capture-org-roam-literature-note-for-entry citekey)))
 
@@ -394,7 +408,7 @@ CITEKEY: citation key in bibtex"
   ;; make sure that citar-org-roam-mode is enabled
   (citar-org-roam-mode)
   ;; load citation key and open capture buffer
-  (let* ((citekey (or (ff/find-citekey-for-pdf-file-name (file-name-nondirectory (buffer-file-name)))
+  (let* ((citekey (or (ff/find-citekey-for-pdf-file-name (buffer-file-name))
                       (citar-select-ref)))
          (note-filename (expand-file-name (format "%s.org" citekey)
                                           (ff/citar-reference-notes-absolute-path))))
@@ -419,7 +433,6 @@ CITEKEY: citation key in bibtex"
   ;;     NEXT - This task should be done next (in the Getting Things Done sense)
   ;;     WAIT - Waiting for someone else to be actionable again
   ;;     DONE - It's done!
-
   (setq org-todo-keywords
         '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
           (sequence "|" "WAIT(w)")))

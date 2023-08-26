@@ -67,7 +67,11 @@ NAME: name of a tab"
   :init
   (tab-bar-mode t)
   :bind (("C-x t n" . tab-new)
-         ("C-x t w" . tab-close)
+         ;; after a tab is closed, the *scratch* tab appears
+         ;; automatically; Hence, we close that one as well after
+         ;; closing the actually intended one to actually get to the
+         ;; previous user tab.
+         ("C-x t w" . (lambda () (interactive) (tab-close) (tab-close)))
          ("C-<prior>" . tab-previous)
          ("C-<next>" . tab-next)
          ("C-x t h a" . ff/tab-bar-run-aos-architecture)

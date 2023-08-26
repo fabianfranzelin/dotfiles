@@ -250,13 +250,13 @@ JAR-PATH: expected binary file in the extracted folder."
            (note-filename (expand-file-name (format "%s.org" (file-name-base file-name-pdf))
                                             (ff/citar-reference-notes-absolute-path)))
            (note-header (concat "#+title: Note on " (unless (file-exists-p file-name-pdf) (read-string "Title: ") "nil") "\n"
-                                (format "#+noter_document: [[pdfview:%s::1]]\n" file-name-pdf-relative)
+                                "#+noter_document: " (format "[[file:%s]]\n" file-name-pdf-relative)
                                 "#+category: Literature\n"
                                 "#+created: %U\n"
                                 "#+last_modified: %U\n"
                                 "\n")))
       (org-roam-capture- :node (org-roam-node-create)
-                         :templates '(("n" "literature note" plain
+                         :templates '(("n" "literature note" entry
                                        "${capture-heading}"
                                        :target (file+head
                                                 "${note-filename}"
@@ -296,8 +296,8 @@ JAR-PATH: expected binary file in the extracted folder."
   (add-hook 'pdf-view-mode-hook #'pdf-sync-minor-mode)
   :bind (:map pdf-view-mode-map
               ("C-s" . isearch-forward)
-              ("C-c n" . ff/org-roam-capture-pdf-note)
-              ("C-c o" . ff/org-roam-open-pdf-note)))
+              ("c n" . ff/org-roam-capture-pdf-note)
+              ("c o" . ff/org-roam-open-pdf-note)))
 
 ;; restore positions of pdfs when reopened
 (use-package pdf-view-restore
