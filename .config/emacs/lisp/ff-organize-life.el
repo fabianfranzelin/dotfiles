@@ -165,8 +165,8 @@ DIR: directory path"
   :custom
   (org-roam-directory (expand-file-name "notes" org-directory))
   (org-roam-node-display-template
-   (concat "${title:*} "
-           (propertize "${tags:20}" 'face 'org-tag)))
+   (concat "${title:80} " (propertize "${tags:20}" 'face 'org-tag) "${backlinkscount:6}"))
+  (org-roam-node-annotation-function (lambda (node) (marginalia--time (org-roam-node-file-mtime node))))
   (org-roam-database-connector 'sqlite-builtin)
   (org-roam-db-gc-threshold most-positive-fixnum)
   (org-roam-capture-templates
@@ -226,6 +226,16 @@ DIR: directory path"
                  (direction . right)
                  (window-width . 0.33)
                  (window-height . fit-window-to-buffer)))
+  ;; show number of backlinks when searching for notes
+  ;; https://github.com/org-roam/org-roam/wiki/User-contributed-Tricks
+  (cl-defmethod org-roam-node-backlinkscount ((node org-roam-node))
+    (let* ((count (caar (org-roam-db-query
+                         [:select (funcall count source)
+                                  :from links
+                                  :where (= dest $s1)
+                                  :and (= type "id")]
+                         (org-roam-node-id node)))))
+      (format "[%d]" count)))
   :bind (("C-x n i" . org-roam-node-insert)
          ("C-x n c" . org-roam-capture)
          ("C-x n C" . org-roam-dailies-capture-today)
@@ -347,15 +357,15 @@ CITEKEY: citation key in bibliography"
       (pdf-view-current-page))
   (read-number "Page: "))
 
-(defun ff/citar-capture-org-roam-literature-note-for-entry (citekey)
+(defun ff/citar-capture-org-roam-literature-note-for-entry (citekey &optional file-name-pdf file-page)
   "Capture a literature note with org-roam using citar as subsystem.
-CITEKEY: citation key in bibtex"
+CITEKEY: citation key in bibtex
+FILE-NAME-PDF: absolute path to the file to be annotated
+FILE-PAGE: page at which the annotation refers to"
   (interactive)
-  ;; make sure that citar-org-roam-mode is enabled
-  (citar-org-roam-mode)
   ;; load citation key and open capture buffer
-  (let* ((file-name-pdf (ff/citar-get-pdf-file-name citekey))
-         (file-page (if file-name-pdf (ff/citar-get-pdf-page-number)))
+  (let* ((file-name-pdf (or file-name-pdf (ff/citar-get-pdf-file-name citekey)))
+         (file-page (or file-page (if file-name-pdf (ff/citar-get-pdf-page-number))))
          (file-name-pdf-relative (if file-name-pdf (file-relative-name file-name-pdf (ff/citar-reference-notes-absolute-path))))
          (heading (if (and file-name-pdf (file-exists-p file-name-pdf) file-page)
                       ;; make sure to have pdf-tools installed to make this work
@@ -374,7 +384,7 @@ CITEKEY: citation key in bibtex"
                         (cdr (assoc "title" citekey-citar-entry))))
          (note-header (concat "#+title: Note on " title "\n"
                               (if file-name-pdf-relative
-                                  (concat "#+noter_document: " (format "[[file:%s]]\n" file-name-pdf-relative)))
+                                  (concat "#+document: " (format "[[file:%s]]\n" file-name-pdf-relative)))
                               "#+category: Literature\n"
                               "#+created: %U\n"
                               "#+last_modified: %U\n"
@@ -395,8 +405,6 @@ CITEKEY: citation key in bibtex"
 (defun ff/org-roam-capture-literature-note ()
   "Capture a literature note for a specific document."
   (interactive)
-  ;; make sure that citar-org-roam-mode is enabled
-  (citar-org-roam-mode)
   ;; load citation key and open capture buffer
   (let* ((citekey (or (ff/find-citekey-for-pdf-file-name (buffer-file-name))
                       (citar-select-ref))))
@@ -405,8 +413,6 @@ CITEKEY: citation key in bibtex"
 (defun ff/org-roam-open-literature-note ()
   "Open a literature note for a specific document."
   (interactive)
-  ;; make sure that citar-org-roam-mode is enabled
-  (citar-org-roam-mode)
   ;; load citation key and open capture buffer
   (let* ((citekey (or (ff/find-citekey-for-pdf-file-name (buffer-file-name))
                       (citar-select-ref)))
@@ -417,6 +423,7 @@ CITEKEY: citation key in bibtex"
       (ff/citar-capture-org-roam-literature-note-for-entry citekey))))
 
 (use-package citar-org-roam
+  :commands citar-org-roam-mode
   :config
   (citar-org-roam-mode)
   :bind (("C-x n l" . ff/org-roam-capture-literature-note)
