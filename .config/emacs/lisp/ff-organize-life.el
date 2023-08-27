@@ -226,6 +226,7 @@ DIR: directory path"
                  (direction . right)
                  (window-width . 0.33)
                  (window-height . fit-window-to-buffer)))
+
   ;; show number of backlinks when searching for notes
   ;; https://github.com/org-roam/org-roam/wiki/User-contributed-Tricks
   (cl-defmethod org-roam-node-backlinkscount ((node org-roam-node))
@@ -382,7 +383,7 @@ FILE-PAGE: page at which the annotation refers to"
          (title (format "%s ::  %s"
                         (cdr (assoc "author" citekey-citar-entry))
                         (cdr (assoc "title" citekey-citar-entry))))
-         (note-header (concat "#+title: Note on " title "\n"
+         (note-header (concat "#+title: " title "\n"
                               (if file-name-pdf-relative
                                   (concat "#+document: " (format "[[file:%s]]\n" file-name-pdf-relative)))
                               "#+category: Literature\n"
