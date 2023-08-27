@@ -26,7 +26,6 @@ org-mode.
   - And a third one
 + Here comes another item
 
-
 Here comes a numbered list
 
 1. First item
