@@ -241,31 +241,44 @@ JAR-PATH: expected binary file in the extracted folder."
   ;; make sure that citar-org-roam-mode is enabled
   (citar-org-roam-mode)
   (when (string-equal major-mode "pdf-view-mode")
-    (let* ((file-name-pdf (buffer-file-name))
-           (file-name-pdf-relative (file-relative-name file-name-pdf (ff/citar-reference-notes-absolute-path)))
-           (page (pdf-view-current-page))
-           (capture-heading (concat "\n* "
-                                    (format "[[pdfview:%s::%i][Note (p. %i)]]" file-name-pdf page page)
-                                    "\n#+created: %U\n\n\%?"))
-           (note-filename (expand-file-name (format "%s.org" (file-name-base file-name-pdf))
-                                            (ff/citar-reference-notes-absolute-path)))
-           (note-header (concat "#+title: Note on " (unless (file-exists-p file-name-pdf) (read-string "Title: ") "nil") "\n"
-                                "#+noter_document: " (format "[[file:%s]]\n" file-name-pdf-relative)
-                                "#+category: Literature\n"
-                                "#+created: %U\n"
-                                "#+last_modified: %U\n"
-                                "\n")))
-      (org-roam-capture- :node (org-roam-node-create)
-                         :templates '(("n" "literature note" entry
-                                       "${capture-heading}"
-                                       :target (file+head
-                                                "${note-filename}"
-                                                "${note-header}")
-                                       :empty-lines 1
-                                       :unnarrowed t))
-                         :info (list :capture-heading capture-heading
-                                     :note-filename note-filename
-                                     :note-header note-header)))))
+    (let ((file-name-pdf (buffer-file-name)))
+      ;; check whether there is an entry in the bibliography that
+      ;; links to this file
+      (if-let ((citekey (ff/find-citekey-for-pdf-file-name file-name-pdf)))
+          ;; load a note with given citekey
+          (progn
+            (ff/citar-capture-org-roam-literature-note-for-entry citekey file-name-pdf (pdf-view-current-page)))
+        ;; else: continue with a simple note
+        (let* ((file-name-pdf (buffer-file-name))
+               (file-name-pdf-relative (file-relative-name file-name-pdf (ff/citar-reference-notes-absolute-path)))
+               (page (pdf-view-current-page))
+               (capture-heading (concat "\n* "
+                                        (format "[[pdfview:%s::%i][Note (p. %i)]]" file-name-pdf page page)
+                                        "\n#+created: %U\n\n\%?"))
+               (note-filename (expand-file-name (format "%s.org" (file-name-base file-name-pdf))
+                                                (ff/citar-reference-notes-absolute-path)))
+               (note-header (concat "#+title: Note on "
+                                    (unless (file-exists-p note-filename)
+                                      (format "%s :: %s"
+                                              (read-string "Author: ")
+                                              (read-string "Title: ")))
+                                    "\n"
+                                    "#+document: " (format "[[file:%s]]\n" file-name-pdf-relative)
+                                    "#+category: Literature\n"
+                                    "#+created: %U\n"
+                                    "#+last_modified: %U\n"
+                                    "\n")))
+          (org-roam-capture- :node (org-roam-node-create)
+                             :templates '(("n" "literature note" entry
+                                           "${capture-heading}"
+                                           :target (file+head
+                                                    "${note-filename}"
+                                                    "${note-header}")
+                                           :empty-lines 1
+                                           :unnarrowed t))
+                             :info (list :capture-heading capture-heading
+                                         :note-filename note-filename
+                                         :note-header note-header)))))))
 
 (defun ff/org-roam-open-pdf-note ()
   (interactive)
