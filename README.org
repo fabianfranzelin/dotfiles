@@ -27,7 +27,7 @@ configure script of the repository
 ./configure -i
 #+end_src
 
-* Beyond System Configuration
+* Beyond Configurations
 
 + [[file:examples/README.org][Examples: Python, C++, org, Sphinx, Typescript/React]]
 + [[file:docs/content/index.org][Docs with org-mode and published as HTML on Github pages]]
