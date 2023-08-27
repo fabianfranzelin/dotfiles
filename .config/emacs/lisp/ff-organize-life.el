@@ -166,7 +166,7 @@ DIR: directory path"
   (org-roam-directory (expand-file-name "notes" org-directory))
   (org-roam-node-display-template
    (concat "${title:*} "
-           (propertize "${tags:10}" 'face 'org-tag)))
+           (propertize "${tags:20}" 'face 'org-tag)))
   (org-roam-database-connector 'sqlite-builtin)
   (org-roam-db-gc-threshold most-positive-fixnum)
   (org-roam-capture-templates
@@ -390,7 +390,7 @@ CITEKEY: citation key in bibtex"
                        :info (list :capture-heading capture-heading
                                    :note-filename note-filename
                                    :note-header note-header
-                                   :ref (concat "@" citekey)))))
+                                   :ref (format "@%s" citekey)))))
 
 (defun ff/org-roam-capture-literature-note ()
   "Capture a literature note for a specific document."
