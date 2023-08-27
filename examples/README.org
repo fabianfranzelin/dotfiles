@@ -1,15 +1,13 @@
 #+TITLE: Example Projects to Test Emacs Configuration
 
-* Introduction
-
 This folder contains some code examples to test my system
 configuration.
 
 ** Internal examples
 
-[[file:org-project/][Scientific paper with org-mode]]
-[[file:cc-project/][Simple C++/CMake project]]
-[[file:python-project/][Simple Python project]]
++ [[file:org-project/][Scientific paper with org-mode]]
++ [[file:cc-project/][Simple C++/CMake project]]
++ [[file:python-project/][Simple Python project]]
 
 ** Typescript and React
 
