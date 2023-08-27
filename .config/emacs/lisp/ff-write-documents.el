@@ -257,7 +257,7 @@ JAR-PATH: expected binary file in the extracted folder."
                                         "\n#+created: %U\n\n\%?"))
                (note-filename (expand-file-name (format "%s.org" (file-name-base file-name-pdf))
                                                 (ff/citar-reference-notes-absolute-path)))
-               (note-header (concat "#+title: Note on "
+               (note-header (concat "#+title: "
                                     (unless (file-exists-p note-filename)
                                       (format "%s :: %s"
                                               (read-string "Author: ")
