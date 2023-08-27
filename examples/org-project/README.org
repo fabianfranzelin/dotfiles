@@ -6,3 +6,5 @@
 #+OPTIONS: auto-id:t H:4 broken_links:mark email:t ^:{}
 
 Here comes an example on how to write academic papers with org-mode.
+
+This is a helpful guide called [[https://github.com/vikasrawal/orgpaper/blob/master/orgpapers.org][orgpapers]].

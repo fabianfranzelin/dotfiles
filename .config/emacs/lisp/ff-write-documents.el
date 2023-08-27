@@ -296,7 +296,7 @@ JAR-PATH: expected binary file in the extracted folder."
   (add-hook 'pdf-view-mode-hook #'pdf-sync-minor-mode)
   :bind (:map pdf-view-mode-map
               ("C-s" . isearch-forward)
-              ("c n" . ff/org-roam-capture-pdf-note)
+              ("c c" . ff/org-roam-capture-pdf-note)
               ("c o" . ff/org-roam-open-pdf-note)))
 
 ;; restore positions of pdfs when reopened
