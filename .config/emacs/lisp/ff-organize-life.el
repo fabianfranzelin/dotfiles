@@ -294,6 +294,7 @@ DIR: directory path"
               (concat "/" citar-org-roam-subdir))))
 
 (use-package citar
+  :commands citar-open
   :after org-roam
   :hook
   (LaTeX-mode . citar-capf-setup)
@@ -307,6 +308,12 @@ DIR: directory path"
   (citar-org-roam-subdir "references")
   (citar-notes-paths `(,org-roam-directory))
   (citar-at-point-function 'embark-act)
+  :config
+  (dolist (file-name (append citar-bibliography org-cite-global-bibliography))
+    (unless (file-exists-p file-name)
+      (make-directory (file-name-directory file-name) t)
+      (with-temp-buffer
+        (write-file file-name))))
   ;; optional: org-cite-insert is also bound to C-c C-x C-@
   :bind (("C-c c o" . citar-open)
          ("C-c c e" . citar-open-entry)
