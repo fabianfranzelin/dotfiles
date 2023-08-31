@@ -387,7 +387,7 @@ FILE-PAGE: page at which the annotation refers to"
          (capture-heading (concat "\n* " heading "\n#+created: %U\n\n\%?"))
          (note-filename (expand-file-name (format "%s.org" citekey) (ff/citar-reference-notes-absolute-path)))
          (citekey-citar-entry (citar-get-entry citekey))
-         (title (format "%s ::  %s"
+         (title (format "%s :: %s"
                         (cdr (assoc "author" citekey-citar-entry))
                         (cdr (assoc "title" citekey-citar-entry))))
          (note-header (concat "#+title: " title "\n"
