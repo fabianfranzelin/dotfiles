@@ -252,33 +252,22 @@ JAR-PATH: expected binary file in the extracted folder."
         (let* ((file-name-pdf (buffer-file-name))
                (file-name-pdf-relative (file-relative-name file-name-pdf (ff/citar-reference-notes-absolute-path)))
                (page (pdf-view-current-page))
-               (capture-heading (concat "\n* "
-                                        (format "[[pdfview:%s::%i][Note (p. %i)]]" file-name-pdf page page)
-                                        "\n#+created: %U\n\n\%?"))
-               (note-filename (expand-file-name (format "%s.org" (file-name-base file-name-pdf))
-                                                (ff/citar-reference-notes-absolute-path)))
-               (note-header (concat "#+title: "
-                                    (unless (file-exists-p note-filename)
-                                      (format "%s :: %s"
-                                              (read-string "Author: ")
-                                              (read-string "Title: ")))
-                                    "\n"
-                                    "#+document: " (format "[[file:%s]]\n" file-name-pdf-relative)
-                                    "#+category: Literature\n"
-                                    "#+created: %U\n"
-                                    "#+last_modified: %U\n"
-                                    "\n")))
-          (org-roam-capture- :node (org-roam-node-create)
-                             :templates '(("n" "literature note" entry
-                                           "${capture-heading}"
-                                           :target (file+head
-                                                    "${note-filename}"
-                                                    "${note-header}")
-                                           :empty-lines 1
-                                           :unnarrowed t))
-                             :info (list :capture-heading capture-heading
-                                         :note-filename note-filename
-                                         :note-header note-header)))))))
+               (author (read-string "Author: "))
+               (title (read-string "Title: "))
+               (citekey (read-string "Citation key: "))
+               (bibtex-file (car citar-bibliography)))
+          ;; write entry in global bibtex file
+          (with-temp-buffer
+            (goto-char (point-max))
+            (insert (format "
+@unpublished{%s,
+  author = {%s},
+  title  = {%s},
+  file   = {:%s:PDF}
+}" citekey author title (file-relative-name file-name-pdf (file-name-directory bibtex-file))))
+            (write-region (point-min) (point-max) bibtex-file t))
+          ;; then open org capture
+          (ff/citar-capture-org-roam-literature-note-for-entry citekey file-name-pdf page))))))
 
 (defun ff/org-roam-open-pdf-note ()
   (interactive)
