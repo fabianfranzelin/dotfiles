@@ -377,10 +377,10 @@ FILE-PAGE: page at which the annotation refers to"
          (file-name-pdf-relative (if file-name-pdf (file-relative-name file-name-pdf (ff/citar-reference-notes-absolute-path))))
          (heading (if (and file-name-pdf (file-exists-p file-name-pdf) file-page)
                       ;; make sure to have pdf-tools installed to make this work
-                      (format "[[pdfview:%s::%i][Note (p. %i)]]" file-name-pdf-relative file-page file-page)
+                      (format "[[pdfview:%s::%d][Note (p. %03d)]]" file-name-pdf-relative file-page file-page)
                     (if file-page
                         ;; an actual page is available
-                        (format "Note (p. %i)" file-page)
+                        (format "Note (p. %03d)" file-page)
                       ;; No pdf file at all is linked to the entry,
                       ;; so no further linking possible as of now
                       "Note")))
