@@ -73,7 +73,7 @@
 (require 'ff-core)
 (require 'ff-vertical-completion)
 (require 'ff-setup-vterm)
-(require 'ff-magit-version-control)
+(require 'ff-version-control)
 (require 'ff-project-management)
 (require 'ff-programming-settings)
 (require 'ff-organize-life)

@@ -285,8 +285,8 @@ JAR-PATH: expected binary file in the extracted folder."
   :custom
   (pdf-view-display-size 'fit-width)
   :init
-  (pdf-tools-install)  ; Standard activation command
-  (pdf-loader-install) ; On demand loading, leads to faster startup time
+  (pdf-tools-install t)  ; Standard activation command
+  (pdf-loader-install t) ; On demand loading, leads to faster startup time
   ;; With a recent auctex installation, you might want to put the
   ;; following somewhere in your dotemacs, which will revert the
   ;; PDF-buffer after the TeX compilation has finished.

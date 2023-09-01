@@ -1,7 +1,7 @@
-;;; ff-magit-version-control.el --- Magit setup
+;;; ff-version-control.el --- Magit and ediff setup
 
 ;;; Commentary:
-;; Configuration for magit
+;; Configuration for magit and ediff
 
 ;;; Code:
 (use-package magit
@@ -34,6 +34,6 @@
               (add-hook 'ediff-quit-hook restore-window-configuration 'append)
               (add-hook 'ediff-suspend-hook restore-window-configuration 'append))))
 
-(provide 'ff-magit-version-control)
+(provide 'ff-version-control)
 
-;;; ff-magit-version-control.el ends here
+;;; ff-version-control.el ends here
