@@ -244,7 +244,8 @@ DIR: directory path"
          ("C-x n t" . org-roam-buffer-toggle)
          ("C-x n a" . org-agenda)
          :map org-mode-map
-         ("C-M-i" . completion-at-point)))
+         ("C-M-i" . completion-at-point)
+         ("C-c C-x t" . org-roam-tag-add)))
 
 (use-package org-roam-ui
   :custom

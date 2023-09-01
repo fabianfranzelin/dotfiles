@@ -83,8 +83,8 @@ keys = [
     Key([mod], "r", lazy.spawn("rofi -show run"), desc="Run Rofi"),
     Key([mod], "s", lazy.spawn(str(Path("~/.local/bin/rofi-shutdown").expanduser()))),
     # Groups
-    Key([mod, "shift"], "Left", lazy.screen.prev_group()),
-    Key([mod, "shift"], "Right", lazy.screen.next_group()),
+    Key([mod, "control"], "Left", lazy.screen.prev_group()),
+    Key([mod, "control"], "Right", lazy.screen.next_group()),
 ]
 
 # --------------------------------------------------------
