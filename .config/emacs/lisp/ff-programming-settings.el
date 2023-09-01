@@ -295,6 +295,9 @@ the need to update my project hierarchy."
   (setf (alist-get 'prettier-json apheleia-formatters) '("prettier-json" filepath))
   (setf (alist-get 'json-ts-mode apheleia-mode-alist) 'prettier-json))
 
+;; enable eslint for javascript
+(flycheck-add-mode 'javascript-eslint 'js-ts-mode)
+
 ;; -------------------------------------------------------------------
 ;; Robot Framework
 ;; -------------------------------------------------------------------

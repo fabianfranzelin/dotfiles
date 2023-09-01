@@ -61,8 +61,7 @@
 (global-subword-mode t)
 
 ;; enable smooth scrolling mode
-(when (>= emacs-major-version 29)
-  (pixel-scroll-precision-mode t))
+(pixel-scroll-precision-mode t)
 
 ;; highlight the marked region (C-SPC) and use commands (like
 ;; latex-environment) on current region.
@@ -227,8 +226,6 @@
 
 ;; docker-tramp is part of Emacs 29 core
 ;; multihop example: /ssh:frf2lr@ws|docker:vscode@c8416d9f4da6:/
-(when (< emacs-major-version 29)
-  (use-package docker-tramp))
 
 ;; -------------------------------------------------------------------
 ;; Transpose frame
@@ -425,6 +422,13 @@ DIR: directory"
             (cond
              ((executable-find "rg") "rg -uu --null --color=never --max-columns=1000 --no-heading --line-number -v ^$ .")
              (t "grep -I -r --exclude=.* --exclude-dir=.* --null --color=never --line-number -v ^$"))))
+  :config
+  ;; use orderless as expression compiler
+  (defun affe-orderless-regexp-compiler (input _type _ignorecase)
+    (setq input (orderless-pattern-compiler input))
+    (cons input (apply-partially #'orderless--highlight input)))
+  (setq affe-regexp-compiler #'affe-orderless-regexp-compiler)
+
   :bind (("C-x a f" . affe-find)
          ("C-x a g" . affe-grep)
          :map embark-file-map
