@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Emacs Installation Instructions</title>
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css" />
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Emacs Installation Instructions</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgc29202b">Installation instructions</a>
+<ul>
+<li><a href="#org9e7b577">My little helpers</a></li>
+<li><a href="#orgc3e6804">Main</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgc29202b" class="outline-2">
+<h2 id="orgc29202b">Installation instructions</h2>
+<div class="outline-text-2" id="text-orgc29202b">
+<p>
+This document describes how I install Emacs. It supports two modes:
+</p>
+
+<ol class="org-ol">
+<li>Installation of an official release: It downloads, extracts and
+installs a specified version that is pre-packed and available
+<a href="http://ftp.halifax.rwth-aachen.de/gnu/emacs">online.</a></li>
+<li>Installation from feature branch of <a href="https://git.savannah.gnu.org/git/emacs.git">Savannah repository</a>: It checks
+out the corresponding feature branch of Emacs, builds and installs
+it.</li>
+</ol>
+</div>
+
+<div id="outline-container-org9e7b577" class="outline-3">
+<h3 id="org9e7b577">My little helpers</h3>
+<div class="outline-text-3" id="text-org9e7b577">
+<p>
+Let's start off with some basic stuff and exit the script as soon as an
+error occurs.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell"><span style="font-weight: bold;">set</span> -e
+</pre>
+</div>
+
+<p>
+There are two options to get Emacs. The first one is to download the
+source code from an official server.
+</p>
+
+<p>
+The following code works for all officially released Emacs version.
+It downloads and extracts Emacs.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell"><span style="font-weight: bold;">download</span>() {
+    (
+        <span style="font-weight: bold; font-style: italic;">__TMP_DIR</span>=<span style="font-style: italic;">"$(</span><span style="font-weight: bold;">mktemp -d</span><span style="font-style: italic;">)"</span>
+        <span style="font-weight: bold;">echo</span> <span style="font-style: italic;">"Download Emacs ${__EMACS_VERSION} to ${__TMP_DIR}"</span>
+
+        <span style="font-weight: bold;">cd</span> <span style="font-style: italic;">"${__TMP_DIR}"</span> || <span style="font-weight: bold;">exit</span> 1
+        <span style="font-weight: bold; font-style: italic;">__EMACS_TAR_FILENAME</span>=<span style="font-style: italic;">"emacs-${__EMACS_VERSION}.tar.gz"</span>
+        wget <span style="font-style: italic;">"http://ftp.halifax.rwth-aachen.de/gnu/emacs/${__EMACS_TAR_FILENAME}"</span>
+        tar -xvf <span style="font-style: italic;">"${__EMACS_TAR_FILENAME}"</span> -C <span style="font-style: italic;">"${__XDG_CACHE_HOME}"</span>
+        <span style="font-weight: bold;">if</span> [ ! -d <span style="font-style: italic;">"${__EMACS_SRC}"</span> ]
+        <span style="font-weight: bold;">then</span>
+            <span style="font-weight: bold;">echo</span> <span style="font-style: italic;">"Source folder ${__EMACS_SRC} does not exist. Extracting Emacs package failed."</span>
+            <span style="font-weight: bold;">exit</span> 1
+        <span style="font-weight: bold;">fi</span>
+    )
+}
+</pre>
+</div>
+
+<p>
+The following code allows you to clone a specific version of Emacs
+that is tagged in the Savannah repository. Usually, when they create a
+release branch I use this function to download it.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell"><span style="font-weight: bold;">clone</span>() {
+    (
+        git clone https://git.savannah.gnu.org/git/emacs.git <span style="font-style: italic;">"${__EMACS_SRC}"</span>
+        <span style="font-weight: bold;">cd</span> <span style="font-style: italic;">"${__EMACS_SRC}"</span> || <span style="font-weight: bold;">exit</span> 1
+        git checkout emacs-<span style="font-style: italic;">"${__EMACS_VERSION}"</span>
+    )
+}
+
+<span style="font-weight: bold;">pull</span>() {
+    (
+        <span style="font-weight: bold;">cd</span> <span style="font-style: italic;">"${__EMACS_SRC}"</span> || <span style="font-weight: bold;">exit</span> 1
+        git reset --hard HEAD
+        git checkout emacs-<span style="font-style: italic;">"${__EMACS_VERSION}"</span>
+        git pull
+    )
+}
+</pre>
+</div>
+
+<p>
+Then, I install all the required third party dependencies and build Emacs
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell"><span style="font-weight: bold;">build</span>() {
+    <span style="font-weight: bold;">echo</span> <span style="font-style: italic;">"Install dependencies for building Emacs ${__EMACS_VERSION}"</span>
+    sudo apt install -y <span style="font-style: italic;">\</span>
+         gcc-10 <span style="font-style: italic;">\</span>
+         g++-10 <span style="font-style: italic;">\</span>
+         libgccjit0 <span style="font-style: italic;">\</span>
+         libgccjit-10-dev <span style="font-style: italic;">\</span>
+         libgccjit-9-dev <span style="font-style: italic;">\</span>
+         libjansson4 <span style="font-style: italic;">\</span>
+         libjansson-dev <span style="font-style: italic;">\</span>
+         libacl1-dev <span style="font-style: italic;">\</span>
+         libmagickwand-dev <span style="font-style: italic;">\</span>
+         libxml2-dev <span style="font-style: italic;">\</span>
+         build-essential <span style="font-style: italic;">\</span>
+         libgtk-3-dev <span style="font-style: italic;">\</span>
+         libgnutls28-dev <span style="font-style: italic;">\</span>
+         libtiff-dev <span style="font-style: italic;">\</span>
+         libgif-dev <span style="font-style: italic;">\</span>
+         libjpeg-dev <span style="font-style: italic;">\</span>
+         libpng-dev <span style="font-style: italic;">\</span>
+         libxpm-dev <span style="font-style: italic;">\</span>
+         libncurses-dev <span style="font-style: italic;">\</span>
+         texinfo
+
+    <span style="font-weight: bold;">if</span> [ -d <span style="font-style: italic;">"${__EMACS_BUILD}"</span> ]
+    <span style="font-weight: bold;">then</span>
+        <span style="font-weight: bold;">echo</span> <span style="font-style: italic;">"Remove existing Emacs installation ${__EMACS_BUILD}."</span>
+        rm -rf <span style="font-style: italic;">"${__EMACS_BUILD}"</span>
+    <span style="font-weight: bold;">fi</span>
+
+    <span style="font-weight: bold; font-style: italic;"># </span><span style="font-weight: bold; font-style: italic;">Install tree-sitter</span>
+    <span style="font-weight: bold; font-style: italic;"># </span><span style="font-weight: bold; font-style: italic;">https://git.savannah.gnu.org/cgit/emacs.git/tree/admin/notes/tree-sitter/starter-guide?h=feature/tree-sitter</span>
+    (
+        <span style="font-weight: bold;">cd</span> <span style="font-style: italic;">"${__XDG_CACHE_HOME}"</span> || <span style="font-weight: bold;">exit</span> 1
+        <span style="font-weight: bold; font-style: italic;">TREE_SITTER_DIR</span>=<span style="font-style: italic;">"tree-sitter"</span>
+        rm -rf <span style="font-style: italic;">"${TREE_SITTER_DIR}"</span>
+        git clone https://github.com/tree-sitter/tree-sitter.git <span style="font-style: italic;">"${TREE_SITTER_DIR}"</span>
+        <span style="font-weight: bold;">cd</span> <span style="font-style: italic;">"${TREE_SITTER_DIR}"</span> || <span style="font-weight: bold;">exit</span> 1
+        make clean
+        make -j<span style="font-style: italic;">"$(</span><span style="font-weight: bold;">nproc</span><span style="font-style: italic;">)"</span>
+        sudo make install
+    )
+
+    <span style="font-weight: bold;">echo</span> <span style="font-style: italic;">"Compile and install Emacs ${__EMACS_VERSION}"</span>
+
+    (
+        <span style="font-weight: bold;">cd</span> <span style="font-style: italic;">"${__EMACS_SRC}"</span> || <span style="font-weight: bold;">exit</span> 1
+        <span style="font-weight: bold;">export</span> <span style="font-weight: bold; font-style: italic;">CC</span>=/usr/bin/gcc-10 <span style="font-weight: bold; font-style: italic;">CXX</span>=/usr/bin/gcc-10
+        <span style="font-weight: bold; font-style: italic;"># </span><span style="font-weight: bold; font-style: italic;">Make sure that treesitter lib is available to Emacs build</span>
+        <span style="font-weight: bold; font-style: italic;"># </span><span style="font-weight: bold; font-style: italic;">process</span>
+        <span style="font-weight: bold;">export</span> <span style="font-weight: bold; font-style: italic;">LD_LIBRARY_PATH</span>=/usr/local/lib:${<span style="font-weight: bold; font-style: italic;">LD_LIBRARY_PATH</span>}
+        ./autogen.sh all
+        ./configure --prefix <span style="font-style: italic;">"${__EMACS_BUILD}"</span> <span style="font-style: italic;">\</span>
+                    --bindir <span style="font-style: italic;">"${__EMACS_BUILD}/bin"</span> <span style="font-style: italic;">\</span>
+                    <span style="font-weight: bold; font-style: italic;">CFLAGS</span>=<span style="font-style: italic;">"-O3 -mtune=native -march=native -fomit-frame-pointer"</span> <span style="font-style: italic;">\</span>
+                    --with-modules <span style="font-style: italic;">\</span>
+                    --with-gnutls <span style="font-style: italic;">\</span>
+                    --with-json <span style="font-style: italic;">\</span>
+                    --with-mailutils <span style="font-style: italic;">\</span>
+                    --with-native-compilation <span style="font-style: italic;">\</span>
+                    --with-imagemagick <span style="font-style: italic;">\</span>
+                    --with-rsvg --with-gif --with-jpeg --with-png --with-rsvg --with-tiff <span style="font-style: italic;">\</span>
+                    --with-wide-int <span style="font-style: italic;">\</span>
+                    --with-xft <span style="font-style: italic;">\</span>
+                    --with-xml2 <span style="font-style: italic;">\</span>
+                    --with-xpm <span style="font-style: italic;">\</span>
+                    --with-dbus <span style="font-style: italic;">\</span>
+                    --with-x <span style="font-style: italic;">\</span>
+                    --with-x-toolkit=gtk3 <span style="font-style: italic;">\</span>
+                    --with-native-compilation=aot <span style="font-style: italic;">\</span>
+                    --with-tree-sitter
+        make clean
+        make -j<span style="font-style: italic;">"$(</span><span style="font-weight: bold;">nproc</span><span style="font-style: italic;">)"</span>
+    )
+}
+</pre>
+</div>
+
+<p>
+Finally, I make the new version globally available in your system
+using update-alternatives.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell"><span style="font-weight: bold;">install</span>() {
+    <span style="font-weight: bold;">echo</span> <span style="font-style: italic;">"Install Emacs and make it globally available with update-alternatives."</span>
+
+    (
+        <span style="font-weight: bold;">cd</span> <span style="font-style: italic;">"${__EMACS_SRC}"</span> || <span style="font-weight: bold;">exit</span> 1
+        make install
+    )
+
+    sudo update-alternatives --install <span style="font-style: italic;">"/usr/bin/emacsclient"</span> emacsclient <span style="font-style: italic;">"${__EMACS_BUILD}/bin/emacsclient"</span> 100
+    sudo update-alternatives --install <span style="font-style: italic;">"/usr/bin/emacs"</span> emacs <span style="font-style: italic;">"${__EMACS_BUILD}/bin/emacs"</span> 100
+    sudo update-alternatives --auto emacs
+    sudo update-alternatives --auto emacsclient
+}
+</pre>
+</div>
+
+<p>
+Once you have Emacs installed, it configures it on its own at
+startup.
+</p>
+
+<p>
+Finally, we check whether the right Emacs version is installed or not
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell"><span style="font-weight: bold;">is_expected_emacs_version_installed</span>() {
+    <span style="font-weight: bold; font-style: italic;">__EMACS_VERSION_OUTPUT</span>=$(<span style="font-weight: bold;">emacs -Q --version | grep "${__EMACS_VERSION}"</span>)
+    [[ <span style="font-style: italic;">"${__EMACS_VERSION_OUTPUT}"</span> =~ <span style="font-style: italic;">"GNU Emacs ${__EMACS_VERSION}"</span>* ]]
+}
+</pre>
+</div>
+
+<p>
+and if the source directory, where Emacs should be downloaded to, does
+exist or not.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell"><span style="font-weight: bold;">exists_src_directory</span>() {
+    <span style="font-weight: bold;">test</span> -r <span style="font-style: italic;">"${__EMACS_SRC}"</span>
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc3e6804" class="outline-3">
+<h3 id="orgc3e6804">Main</h3>
+<div class="outline-text-3" id="text-orgc3e6804">
+<p>
+Here, we combine the little helper functions from the previous section
+to install various versions of Emacs.
+</p>
+
+<p>
+First, we use a command line argument parser to get the user defined
+Emacs version. The default one is currently 29.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell"><span style="font-weight: bold;">usage</span>()
+{
+    <span style="font-weight: bold;">echo</span> <span style="font-style: italic;">"Builds and installs Emacs"</span>
+    <span style="font-weight: bold;">echo</span> <span style="font-style: italic;">""</span>
+    <span style="font-weight: bold;">echo</span> <span style="font-style: italic;">" -h --help:                 show this help"</span>
+    <span style="font-weight: bold;">echo</span> <span style="font-style: italic;">" -v --version               Emacs version to be installed."</span>
+    <span style="font-weight: bold;">echo</span> <span style="font-style: italic;">""</span>
+}
+
+<span style="font-weight: bold; font-style: italic;"># </span><span style="font-weight: bold; font-style: italic;">Emacs version to be installed</span>
+<span style="font-weight: bold; font-style: italic;">__EMACS_VERSION</span>=<span style="font-style: italic;">"29.1"</span>
+
+<span style="font-weight: bold; font-style: italic;"># </span><span style="font-weight: bold; font-style: italic;">Loop through arguments and process them</span>
+<span style="font-weight: bold;">while</span> [ $<span style="font-weight: bold; font-style: italic;">#</span> -gt 0 ]; <span style="font-weight: bold;">do</span>
+    <span style="font-weight: bold; font-style: italic;">key</span>=<span style="font-style: italic;">"$1"</span>
+    <span style="font-weight: bold;">case</span> $<span style="font-weight: bold; font-style: italic;">key</span><span style="font-weight: bold;"> in</span>
+        -h | --help)
+            usage
+            <span style="font-weight: bold;">exit</span>
+            ;;
+        -v|--version)
+            <span style="font-weight: bold; font-style: italic;">__EMACS_VERSION</span>=<span style="font-style: italic;">"$2"</span>
+            <span style="font-weight: bold;">shift</span>
+            <span style="font-weight: bold;">shift</span>
+            ;;
+        *)
+            <span style="font-weight: bold;">echo</span> <span style="font-style: italic;">"ERROR: unknown parameter $1"</span>
+            usage
+            <span style="font-weight: bold;">exit</span> 1
+            ;;
+    <span style="font-weight: bold;">esac</span>
+<span style="font-weight: bold;">done</span>
+</pre>
+</div>
+
+<p>
+Then we set up a few variables that define the home directory of the Emacs installation.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell"><span style="font-weight: bold; font-style: italic;">__XDG_DATA_HOME</span>=<span style="font-style: italic;">"${XDG_DATA_HOME:-${HOME}/.local/share}"</span>
+<span style="font-weight: bold; font-style: italic;">__XDG_CACHE_HOME</span>=<span style="font-style: italic;">"${XDG_CACHE_HOME:-${HOME}/.cache}"</span>
+<span style="font-weight: bold; font-style: italic;">__EMACS_SRC</span>=<span style="font-style: italic;">"${__XDG_CACHE_HOME}/emacs-${__EMACS_VERSION}"</span>
+<span style="font-weight: bold; font-style: italic;">__EMACS_BUILD</span>=<span style="font-style: italic;">"${__XDG_DATA_HOME}/emacs-${__EMACS_VERSION}"</span>
+[ ! -d <span style="font-style: italic;">"${__XDG_DATA_HOME}"</span> ] &amp;&amp; mkdir -p <span style="font-style: italic;">"${__XDG_DATA_HOME}"</span>
+[ ! -d <span style="font-style: italic;">"${__XDG_CACHE_HOME}"</span> ] &amp;&amp; mkdir -p <span style="font-style: italic;">"${__XDG_CACHE_HOME}"</span>
+
+</pre>
+</div>
+
+<p>
+Check if the given Emacs version is an official release. If so,
+install it from one of the official release servers.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell"><span style="font-weight: bold;">if</span> [[ ${<span style="font-weight: bold; font-style: italic;">__EMACS_VERSION</span>} =~ ^[0-9]+<span style="font-style: italic;">\.</span>[0-9]+$ ]]
+<span style="font-weight: bold;">then</span>
+    <span style="font-weight: bold;">echo</span> <span style="font-style: italic;">"Looks like an official Emacs version."</span>
+
+    <span style="font-weight: bold;">if</span> ( is_expected_emacs_version_installed )
+    <span style="font-weight: bold;">then</span>
+        <span style="font-weight: bold;">echo</span> <span style="font-style: italic;">"Emacs ${__EMACS_VERSION} is already installed. Nothing to be done here."</span>
+        <span style="font-weight: bold;">exit</span> 0
+    <span style="font-weight: bold;">fi</span>
+
+    <span style="font-weight: bold;">if</span> ( exists_src_directory )
+    <span style="font-weight: bold;">then</span>
+        <span style="font-weight: bold;">echo</span> <span style="font-style: italic;">"Source directory of Emacs does already exist."</span>
+
+        <span style="font-weight: bold;">read</span> -p <span style="font-style: italic;">"Do you want to delete ${__EMACS_SRC} [y/n]? "</span> -n 1 -r
+        <span style="font-weight: bold;">echo</span>    <span style="font-weight: bold; font-style: italic;"># </span><span style="font-weight: bold; font-style: italic;">(optional) move to a new line</span>
+        <span style="font-weight: bold;">if</span> [[ $<span style="font-weight: bold; font-style: italic;">REPLY</span> =~ ^[Yy]$ ]]
+        <span style="font-weight: bold;">then</span>
+            <span style="font-weight: bold; font-style: italic;"># </span><span style="font-weight: bold; font-style: italic;">do dangerous stuff</span>
+                  rm -rf <span style="font-style: italic;">"${__EMACS_SRC}"</span>
+        <span style="font-weight: bold;">else</span>
+            <span style="font-weight: bold;">echo</span> <span style="font-style: italic;">"Delete ${__EMACS_SRC} before you can continue."</span>
+                  <span style="font-weight: bold;">exit</span> 1
+        <span style="font-weight: bold;">fi</span>
+    <span style="font-weight: bold;">fi</span>
+
+    download
+<span style="font-weight: bold;">fi</span>
+</pre>
+</div>
+
+<p>
+If it is no official version, check for a release tag on the Savannah
+repository and check it out.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell"><span style="font-weight: bold;">if</span> [[ ${<span style="font-weight: bold; font-style: italic;">__EMACS_VERSION</span>} =~ ^[0-9]+$ ]]
+<span style="font-weight: bold;">then</span>
+    <span style="font-weight: bold;">echo</span> <span style="font-style: italic;">"Looks like a tag version of the Emacs Savannah git repository."</span>
+
+    <span style="font-weight: bold;">if</span> [[ ! -d ${<span style="font-weight: bold; font-style: italic;">__EMACS_SRC</span>} ]]
+    <span style="font-weight: bold;">then</span>
+        clone
+    <span style="font-weight: bold;">elif</span> [[ -d <span style="font-style: italic;">"${__EMACS_SRC}/.git"</span> ]]
+    <span style="font-weight: bold;">then</span>
+        pull
+    <span style="font-weight: bold;">else</span>
+        <span style="font-weight: bold;">echo</span> <span style="font-style: italic;">"The source directory ${__EMACS_SRC} already exists but it is not a git repository."</span>
+        <span style="font-weight: bold;">echo</span> <span style="font-style: italic;">"Please remove it before you can continute."</span>
+    <span style="font-weight: bold;">fi</span>
+<span style="font-weight: bold;">fi</span>
+</pre>
+</div>
+
+<p>
+If no Emacs version was found for the given tag, just stop here.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell"><span style="font-weight: bold;">if</span> [[ ! -d <span style="font-style: italic;">"${__EMACS_SRC}"</span> ]]
+<span style="font-weight: bold;">then</span>
+    <span style="font-weight: bold;">echo</span> <span style="font-style: italic;">"Unknown version tag. Only versions like 28.2 (for official releases) and"</span>
+    <span style="font-weight: bold;">echo</span> <span style="font-style: italic;">" 29 (for feature branches that are named as \"emacs-&lt;version&gt;\") are supported."</span>
+    <span style="font-weight: bold;">exit</span> 1
+<span style="font-weight: bold;">fi</span>
+</pre>
+</div>
+
+<p>
+Once we have the source code locally available, all that is left to do
+is to build and to install it
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell">build
+install
+</pre>
+</div>
+
+<p>
+Check now again if the expected version of Emacs is installed
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell"><span style="font-weight: bold;">if</span> ( is_expected_emacs_version_installed )
+<span style="font-weight: bold;">then</span>
+    <span style="font-weight: bold;">echo</span> <span style="font-style: italic;">"Emacs ${__EMACS_VERSION} was successfully installed."</span>
+<span style="font-weight: bold;">else</span>
+    <span style="font-weight: bold;">echo</span> <span style="font-style: italic;">"Emacs ${__EMACS_VERSION} was not found."</span>
+    <span style="font-weight: bold;">echo</span> <span style="font-style: italic;">"Please check 'sudo update-alternatives --config emacs' for details."</span>
+<span style="font-weight: bold;">fi</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.1 (<a href="https://orgmode.org">Org</a> mode 9.6.6)</p>
+</div>
+</body>
+</html>
