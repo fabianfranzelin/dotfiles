@@ -194,14 +194,13 @@
 
 ;; Proced
 ;; https://laurencewarne.github.io/emacs/programming/2022/12/26/exploring-proced.html
-
 (require 'proced)
 
 ;; make the buffer auto-update every 5 seconds
 (setq-default proced-auto-update-flag t)
 (setq proced-auto-update-interval 5)
 
-;; alter the the output format
+;; alter the output format
 (add-to-list
  'proced-format-alist
  '(custom user pid ppid sess tree pcpu pmem rss start time state (args comm)))
