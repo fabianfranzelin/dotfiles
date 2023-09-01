@@ -78,6 +78,9 @@ PACKAGE-NAME: log message context"
 ;; On the fly spell check with aspell and flyspell
 ;; --------------------------------------------------------
 (defun flyspell-buffer-after-pdict-save (&rest _)
+  "Ignore parameters for `ispell-pdict-save'.
+
+_: ignored parameters"
   (flyspell-buffer))
 
 (use-package ispell
@@ -112,8 +115,9 @@ PACKAGE-NAME: log message context"
 
 ;; flyspell mode
 (defun ff/flyspell-on-for-buffer-type ()
-  "Enable Flyspell appropriately for the major mode of the current
-buffer.  Uses `flyspell-prog-mode' for modes derived from
+  "Enable Flyspell appropriately for the major mode of the current buffer.
+
+  Uses `flyspell-prog-mode' for modes derived from
 `prog-mode', so only strings and comments get checked.  All other
 buffers get `flyspell-mode' to check all text.  If flyspell is
 already enabled, does nothing."
@@ -128,9 +132,10 @@ already enabled, does nothing."
 	(flyspell-mode t)))))
 
 (defun ff/flyspell-toggle ()
-  "Turn Flyspell on if it is off, or off if it is on.  When turning
-on, it uses `flyspell-on-for-buffer-type' so code-vs-text is
-handled appropriately."
+  "Turn Flyspell on if it is off, or off if it is on.
+
+  When turning on, it uses `flyspell-on-for-buffer-type' so
+code-vs-text is handled appropriately."
   (interactive)
   (if (symbol-value flyspell-mode)
       (progn ; flyspell is on, turn it off

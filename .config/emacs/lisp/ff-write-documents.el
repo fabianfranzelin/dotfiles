@@ -107,7 +107,7 @@ JAR-PATH: expected binary file in the extracted folder."
   (defvar plantuml-name (concat "plantuml-" plantuml-version ".jar")
     "Name of plantuml executable")
   (defvar plantuml-url
-    (concat "https://github.com/plantuml/plantuml/releases/download/v" plantuml-version "/" plantuml-name)
+    (format "https://github.com/plantuml/plantuml/releases/download/v%s/%s" plantuml-version plantuml-name)
     "URL to download plantuml from github.")
   (defvar plantuml-path (expand-file-name "plantuml" no-littering-var-directory)
     "Directory where the plantuml jar file should be stored")
