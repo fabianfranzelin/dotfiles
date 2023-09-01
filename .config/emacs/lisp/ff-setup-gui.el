@@ -97,19 +97,6 @@
 ;; Define font size and methods to adjust it on the fly
 (set-face-attribute 'default nil :height 110) ;; default = 110
 
-;; define functions that increase and decrease the font-size for the
-;; whole frame globally
-(defun ff/adjust-font-size-per-frame (increment)
-  "Adjust the font size for all buffers in the current frame.
-INCREMENT: Value of which the current font-size is changed"
-  (interactive "P")
-  (let ((current-height (face-attribute 'default :height)))
-    (set-face-attribute 'default nil :height (+ current-height increment))))
-
-(global-set-key (kbd "C-c +") #'(lambda() (interactive) (ff/adjust-font-size-per-frame 10)))
-(global-set-key (kbd "C-c -") #'(lambda() (interactive) (ff/adjust-font-size-per-frame -10)))
-
-
 ;; Show number of lines in the left side of the buffer
 (global-display-line-numbers-mode 1)
 
@@ -204,6 +191,24 @@ INCREMENT: Value of which the current font-size is changed"
      (t ,(nerd-icons-codicon "nf-cod-code") :face font-lock-warning-face)))
   :config
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+
+;; Proced
+;; https://laurencewarne.github.io/emacs/programming/2022/12/26/exploring-proced.html
+
+;; make the buffer auto-update every 5 seconds
+(setq-default proced-auto-update-flag t)
+(setq proced-auto-update-interval 5)
+
+;; alter the the output format
+(add-to-list
+ 'proced-format-alist
+ '(custom user pid ppid sess tree pcpu pmem rss start time state (args comm)))
+(setq-default proced-format 'custom)
+
+(setq proced-goal-attribute nil)
+
+;; enable coloring
+(setq proced-enable-color-flag t)
 
 (provide 'ff-setup-gui)
 
