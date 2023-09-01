@@ -8,62 +8,10 @@
 ;; -------------------------------------------------------------------
 ;; Tab bar: one tab per project
 ;; -------------------------------------------------------------------
-(defun ff/tab-bar-list ()
-  "Provide string list of all tab names."
-  (interactive)
-  (mapcar #'(lambda (tab) (alist-get 'name tab))
-	  (tab-bar-tabs)))
-
-(defun ff/tab-bar-show-tab-list ()
-  "Show list of all tab names."
-  (interactive)
-  (message (string-join (ff/tab-bar-list) " ")))
-
-(defun ff/tab-bar-tab-exists (name)
-  "Check whether the given tab-name exists already.
-NAME: name of a tab"
-  (member name (ff/tab-bar-list)))
-
-(defun ff/tab-bar-new-tab (name)
-  "Create a new tab with the given name.
-NAME: name of a tab"
-  (when (eq nil tab-bar-mode)
-    (tab-bar-mode))
-  (tab-bar-new-tab)
-  (tab-bar-rename-tab name))
-
-(defun ff/tab-bar-switch-or-create (name func)
-  (if (ff/tab-bar-tab-exists name)
-      (tab-bar-switch-to-tab name)
-    (ff/tab-bar-new-tab name))
-  (funcall func))
-
-(defun ff/tab-bar-run-notes ()
-  (interactive)
-  (ff/tab-bar-switch-or-create
-   "org"
-   #'(lambda ()
-       (find-file "~/workspace/org/content/notes.org"))))
-
-(defun ff/tab-bar-run-aos-architecture ()
-  (interactive)
-  (ff/tab-bar-switch-or-create
-   "org"
-   #'(lambda ()
-       (find-file "~/workspace/org/content/todos_aos_architecture.org"))))
-
-(defun ff/tab-bar-run-aos-defect-handling ()
-  (interactive)
-  (ff/tab-bar-switch-or-create
-   "org"
-   #'(lambda ()
-       (find-file "~/workspace/org/content/todos_aos_defect_handling_feature.org"))))
-
 (use-package tab-bar
   :custom
   ;; Don't turn on tab-bar-mode when tabs are created
-  ((tab-bar-show nil)
-   (tab-bar-new-tab-choice "*scratch*"))
+  (tab-bar-show nil)
   :init
   (tab-bar-mode t)
   :bind (("C-x t n" . tab-new)
@@ -71,13 +19,7 @@ NAME: name of a tab"
          ;; automatically; Hence, we close that one as well after
          ;; closing the actually intended one to actually get to the
          ;; previous user tab.
-         ("C-x t w" . (lambda () (interactive) (tab-close) (tab-close)))
-         ("C-<prior>" . tab-previous)
-         ("C-<next>" . tab-next)
-         ("C-x t h a" . ff/tab-bar-run-aos-architecture)
-         ("C-x t h d" . ff/tab-bar-run-aos-defect-handling)
-         ("C-x t h n" . ff/tab-bar-run-notes)
-         ("C-x t l" . ff/tab-bar-show-tab-list)))
+         ("C-x t w" . tab-close)))
 
 ;; -------------------------------------------------------------------
 ;; Tasks
