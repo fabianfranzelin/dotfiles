@@ -113,6 +113,11 @@ When BACKWARD is set, navigate to previous field."
   (interactive)
   (sqlite-mode-extras-tab-dwim t))
 
+(defun sqlite-mode-extras-previous-column ()
+  "Navigate to next column."
+  (interactive)
+  (sqlite-mode-extras-next-column t))
+
 (defun sqlite-mode-extras-next-column (&optional backward)
   "Navigate to next column.
 
