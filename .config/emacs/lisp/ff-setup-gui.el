@@ -195,6 +195,8 @@
 ;; Proced
 ;; https://laurencewarne.github.io/emacs/programming/2022/12/26/exploring-proced.html
 
+(require 'proced)
+
 ;; make the buffer auto-update every 5 seconds
 (setq-default proced-auto-update-flag t)
 (setq proced-auto-update-interval 5)
