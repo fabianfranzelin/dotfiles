@@ -211,6 +211,9 @@
 ;; enable coloring
 (setq proced-enable-color-flag t)
 
+;; enable remote support via tramp
+(setq proced-show-remote-processes t)
+
 (provide 'ff-setup-gui)
 
 ;;; ff-setup-gui.el ends here
