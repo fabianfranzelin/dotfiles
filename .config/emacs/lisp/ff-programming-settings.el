@@ -49,6 +49,16 @@
          ("C-c l c" . eglot-show-workspace-configuration)))
 
 (with-eval-after-load 'eglot
+
+  (defun ff/find-all-parent-folders-with- (directory file-name &optional result)
+    (if (f-directory-p (file-name-concat directory ".git"))
+        (if (file-exists-p (file-name-concat directory "conf.py"))
+            (append result '(directory))
+          result)
+      ;; there are more parent folders to be explored
+      (let* ((parent (file-name-directory (directory-file-name directory))))
+        (ff/find-all-parent-folders-with- parent file-name result))))
+
   (defun ff/eglot-find-local-project ()
     "Create a local project on-the-fly for specific modes.
 
@@ -57,6 +67,11 @@ want to start my LSP server in a certain directory without
 the need to update my project hierarchy."
     (let ((eglot-lsp-context t))
       (cond ((string-equal major-mode "rst-mode")
+             ;; TODO: search for multiple conf.py files in all parent
+             ;; folders. Until reaching the project root. If multiple
+             ;; are found, offer the user the one he wants to select
+             ;; via `completing-read'.
+
              ;; I always want to start esbonio at the same level
              ;; directory the conf.py file is located.
              (when-let ((root (locate-dominating-file (buffer-file-name) "conf.py")))
@@ -172,6 +187,9 @@ the need to update my project hierarchy."
 ;; enable rainbow delimiters for emacs lisp
 (use-package rainbow-delimiters
   :hook ((emacs-lisp-mode . rainbow-delimiters-mode)))
+
+;; define shortcut that launches ielm
+(define-key emacs-lisp-mode-map (kbd "C-c C-r") 'ielm)
 
 ;; -------------------------------------------------------------------
 ;; C/C++
