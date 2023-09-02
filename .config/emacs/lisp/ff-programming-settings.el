@@ -50,14 +50,16 @@
 
 (with-eval-after-load 'eglot
 
-  (defun ff/find-all-parent-folders-with- (directory file-name &optional result)
-    (if (f-directory-p (file-name-concat directory ".git"))
-        (if (file-exists-p (file-name-concat directory "conf.py"))
-            (append result '(directory))
-          result)
-      ;; there are more parent folders to be explored
-      (let* ((parent (file-name-directory (directory-file-name directory))))
-        (ff/find-all-parent-folders-with- parent file-name result))))
+  (defun ff/find-all-parent-folders-with-file (directory file-name &optional result)
+    (append result
+            ;; add current folder if it contains the right file
+            (when (file-exists-p (file-name-concat directory file-name))
+              `(,directory))
+            ;; there are more parent folders to be explored; stop at
+            ;; the root folder of the repository
+            (unless (f-directory-p (file-name-concat directory ".git"))
+              (let ((parent (file-name-directory (directory-file-name directory))))
+                (ff/find-all-parent-folders-with-file parent file-name result)))))
 
   (defun ff/eglot-find-local-project ()
     "Create a local project on-the-fly for specific modes.
@@ -66,11 +68,12 @@ This is required when one has a mono repository, where I do only
 want to start my LSP server in a certain directory without
 the need to update my project hierarchy."
     (let ((eglot-lsp-context t))
-      (cond ((string-equal major-mode "rst-mode")
+      (cond ((string= major-mode "rst-mode")
              ;; TODO: search for multiple conf.py files in all parent
              ;; folders. Until reaching the project root. If multiple
              ;; are found, offer the user the one he wants to select
-             ;; via `completing-read'.
+             ;; via `completing-read'. But make sure that the
+             ;; `completion-read' is only called once.
 
              ;; I always want to start esbonio at the same level
              ;; directory the conf.py file is located.
