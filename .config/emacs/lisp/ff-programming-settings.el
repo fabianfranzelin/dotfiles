@@ -50,16 +50,24 @@
 
 (with-eval-after-load 'eglot
 
-  (defun ff/find-all-parent-folders-with-file (directory file-name &optional result)
-    (append result
-            ;; add current folder if it contains the right file
-            (when (file-exists-p (file-name-concat directory file-name))
-              `(,directory))
-            ;; there are more parent folders to be explored; stop at
-            ;; the root folder of the repository
-            (unless (f-directory-p (file-name-concat directory ".git"))
-              (let ((parent (file-name-directory (directory-file-name directory))))
-                (ff/find-all-parent-folders-with-file parent file-name result)))))
+  (defun ff/find-all-parent-dirs-with-file (directory file-name)
+    "List all parent directories that contain the given `file-name'.
+
+The output contains the directories in ascending order, starting
+with the one closes to the root directory.
+
+DIRECTORY: directory where to start the search.
+FILE-NAME: file name that marks the directory to be collected.
+"
+    (append
+     ;; there are more parent folders to be explored; stop at
+     ;; the root folder of the repository
+     (unless (f-directory-p (file-name-concat directory ".git"))
+       (let ((parent (file-name-directory (directory-file-name directory))))
+         (ff/find-all-parent-dirs-with-file parent file-name)))
+     ;; add current folder if it contains the right file
+     (when (file-exists-p (file-name-concat directory file-name))
+       `(,directory))))
 
   (defun ff/eglot-find-local-project ()
     "Create a local project on-the-fly for specific modes.
@@ -77,7 +85,8 @@ the need to update my project hierarchy."
 
              ;; I always want to start esbonio at the same level
              ;; directory the conf.py file is located.
-             (when-let ((root (locate-dominating-file (buffer-file-name) "conf.py")))
+             (when-let ((roots (ff/find-all-parent-dirs-with-file (buffer-file-name) "conf.py"))
+                        (root (car roots)))
                (list 'vc nil root)))
             ;; in all other cases, let the original function handle
             ;; the project folder.
@@ -317,6 +326,7 @@ the need to update my project hierarchy."
   (setf (alist-get 'json-ts-mode apheleia-mode-alist) 'prettier-json))
 
 ;; enable eslint for javascript
+(ff/ensure-npm-package "eslint" "eslint")
 (flycheck-add-mode 'javascript-eslint 'js-ts-mode)
 
 ;; -------------------------------------------------------------------

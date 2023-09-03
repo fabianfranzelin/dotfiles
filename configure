@@ -194,7 +194,8 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
            dockerfile-language-server-nodejs \
            jsonlint \
            vscode-langservers-extracted \
-           prettier-json
+           prettier-json \
+           eslint
 
        # install other npm packages
        npm install -g \

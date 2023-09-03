@@ -1,7 +1,7 @@
 ;;; Directory Local Variables
 ;;; For more information see (info "(emacs) Directory Variables")
 
-((nil . ((eval . (pyvenv-deactivate))
+((nil . ((pyvenv-workon . nil)
          ;; Configure ;;;;;;;;;;;;;;;;;;;;;;;;;;;
          (eval . (defun run-command-recipe-ff/local ()
                    (list

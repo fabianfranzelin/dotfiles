@@ -14,6 +14,18 @@ configuration.
 There is a minimal example available online to test the setup:
 [[https://github.com/cpbotha/typescript-emacs-demo.git][Typescript Emacs project (remote)]]
 
+1. Clone the repository first
+#+begin_src emacs-lisp :tangle yes
+  git clone "https://github.com/cpbotha/typescript-emacs-demo.git" "~/workspace"
+  cd "~/workspace/typescript-emacs-demo/"
+#+end_src
+
+Then install all the npm dependencies before you start the development server
+#+begin_src emacs-lisp :tangle yes
+  npm install
+  yarn start
+#+end_src
+
 ** Sphinx and Esbonio
 
 To setup esbonio in your actual project, use this snippet as a
