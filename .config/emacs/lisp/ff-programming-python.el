@@ -66,6 +66,10 @@
               ("C-c t f" . python-pytest-file-dwim)
               ("C-c t e" . python-pytest-last-failed)))
 
+;; flycheck
+(flycheck-add-mode 'python-pylint 'python-ts-mode)
+(flycheck-add-mode 'python-mypy 'python-ts-mode)
+
 (provide 'ff-programming-python)
 
 ;;; ff-programming-python.el ends here
