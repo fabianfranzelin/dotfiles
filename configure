@@ -168,39 +168,38 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
             pytest
 
     # additional npm dependencies
-    if ( __is_linux ) then
-       if [ ! -d "${HOME}/.config/nvm" ]
-       then
-           # use nvm to install node, npm, etc. See
-           # https://github.com/nvm-sh/nvm for details.
-           wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-       fi
-       # load nvm paths
-       export NVM_DIR="${HOME}/.config/nvm"
-       [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-       export NVM_DIR="${HOME}/.nvm"
-       [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-
-       # install npm v16 as default
-       nvm install 14
-       nvm use 14
-
-       # install lsp servers, linters, etc.
-       npm install -g \
-           yaml-language-server \
-           bash-language-server \
-           typescript \
-           typescript-language-server \
-           dockerfile-language-server-nodejs \
-           jsonlint \
-           vscode-langservers-extracted \
-           prettier-json \
-           eslint
-
-       # install other npm packages
-       npm install -g \
-           yarn
+    echo "Install npm dependencies"
+    if [ ! -d "${HOME}/.config/nvm" ]
+    then
+        # use nvm to install node, npm, etc. See
+        # https://github.com/nvm-sh/nvm for details.
+        wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
     fi
+    # load nvm paths
+    export NVM_DIR="${HOME}/.config/nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+    export NVM_DIR="${HOME}/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+    # install npm v16 as default
+    nvm install 14
+    nvm use 14
+
+    # install lsp servers, linters, etc.
+    npm install -g \
+        yaml-language-server \
+        bash-language-server \
+        typescript \
+        typescript-language-server \
+        dockerfile-language-server-nodejs \
+        jsonlint \
+        vscode-langservers-extracted \
+        prettier-json \
+        eslint
+
+    # install other npm packages
+    npm install -g \
+        yarn
 
     # install Emacs. First, just the regular version.
     if ! command -v emacs &> /dev/null
