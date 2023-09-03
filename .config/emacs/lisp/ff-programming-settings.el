@@ -298,6 +298,11 @@ the need to update my project hierarchy."
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . tsx-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js-ts-mode))
 
+;; enable eslint for javascript
+(ff/ensure-npm-package "eslint" "eslint")
+(flycheck-add-mode 'javascript-eslint 'js-ts-mode)
+(flycheck-add-mode 'javascript-eslint 'tsx-ts-mode)
+
 ;; -------------------------------------------------------------------
 ;; Groovy mode for Jenkins
 ;; -------------------------------------------------------------------
@@ -324,10 +329,6 @@ the need to update my project hierarchy."
   (add-hook 'json-ts-mode-hook 'apheleia-mode)
   (setf (alist-get 'prettier-json apheleia-formatters) '("prettier-json" filepath))
   (setf (alist-get 'json-ts-mode apheleia-mode-alist) 'prettier-json))
-
-;; enable eslint for javascript
-(ff/ensure-npm-package "eslint" "eslint")
-(flycheck-add-mode 'javascript-eslint 'js-ts-mode)
 
 ;; -------------------------------------------------------------------
 ;; Robot Framework
