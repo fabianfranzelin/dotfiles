@@ -278,52 +278,66 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
         ${QTILE_PYTHON_FILEPATH} -m pip install --upgrade psutil
     fi
 
-    if ( __is_linux ) then
-       # Install tools that solely work on Ubuntu desktop. Note
-       # that this is not working for Docker or WSL.
-       echo -e "${__COLOR_INFO}INFO: Install GTK tools${__COLOR_RESET}"
+    # Install tools that solely work on Ubuntu desktop. Note
+    # that this is not working for Docker or WSL.
+    echo -e "${__COLOR_INFO}INFO: Install GTK tools${__COLOR_RESET}"
 
-       # Install Qtile window manager
-       if [ -z "${SKIP_QTILE_INSTALL}" ]; then
-	   echo -e "${__COLOR_INFO}INFO: Install X configs for Qtile${__COLOR_RESET}"
+    # Install Qtile window manager
+    if [ -z "${SKIP_QTILE_INSTALL}" ]; then
+	echo -e "${__COLOR_INFO}INFO: Install X configs for Qtile${__COLOR_RESET}"
 
-	   # Create xsessions entry for qtile according to
-	   # https://docs.qtile.org/en/latest/manual/install/index.html#starting-qtile
-	   XSESSIONS_PATH="/usr/share/xsessions"
-	   if [ -d "${XSESSIONS_PATH}" ]; then
-               QTILE_DESKTOP_FILE_PATH="${XSESSIONS_PATH}/qtile.desktop"
-               if [ ! -f "${QTILE_DESKTOP_FILE_PATH}" ]; then
-		   echo "[Desktop Entry]
+	# Create xsessions entry for qtile according to
+	# https://docs.qtile.org/en/latest/manual/install/index.html#starting-qtile
+	XSESSIONS_PATH="/usr/share/xsessions"
+	if [ -d "${XSESSIONS_PATH}" ]; then
+            QTILE_DESKTOP_FILE_PATH="${XSESSIONS_PATH}/qtile.desktop"
+            if [ ! -f "${QTILE_DESKTOP_FILE_PATH}" ]; then
+		echo "[Desktop Entry]
 Name=Qtile
 Comment=Qtile Session
 Exec=startqtile
 Type=Application
 Keywords=wm;tiling" | sudo tee "${QTILE_DESKTOP_FILE_PATH}"
-               else
-		   echo -e "${__COLOR_WARN}The file '${QTILE_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
-               fi
+            else
+		echo -e "${__COLOR_WARN}The file '${QTILE_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
+            fi
 
-               CUSTOM_DESKTOP_FILE_PATH="${XSESSIONS_PATH}/custom.desktop"
-               if [ ! -f "${CUSTOM_DESKTOP_FILE_PATH}" ]; then
-		   echo "[Desktop Entry]
+            CUSTOM_DESKTOP_FILE_PATH="${XSESSIONS_PATH}/custom.desktop"
+            if [ ! -f "${CUSTOM_DESKTOP_FILE_PATH}" ]; then
+		echo "[Desktop Entry]
 Name=Qtile
 Comment=Qtile Session
 Exec=/etc/X11/Xsession
 Type=Application
 Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
-               else
-		   echo -e "${__COLOR_WARN}The file '${CUSTOM_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
-               fi
-	   else
-               echo -e "${__COLOR_INFO}INFO: skipping xsession configuration for qtile"
-	   fi
-       fi
-       sudo apt-get install -y \
-            vlc \
+            else
+		echo -e "${__COLOR_WARN}The file '${CUSTOM_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
+            fi
+	else
+            echo -e "${__COLOR_INFO}INFO: skipping xsession configuration for qtile"
+	fi
+    fi
+    sudo apt-get install -y \
+         vlc \
+         firefox \
+         eog
+
+    #------------------------------------------------------------------------------#
+    # Do some wsl specific setup
+    if ( __is_wsl ) then
+       # Set the hosts firefox installation as alternative
+       sudo update-alternatives --install \
+            "/usr/bin/firefox" \
             firefox \
-            eog
-    else
-       echo -e "${__COLOR_INFO}INFO: Skip installing GTK tools since we are running in WSL or Docker.${__COLOR_RESET}"
+            "/mnt/c/Program Files/Mozilla Firefox/firefox.exe" \
+            100
+       sudo update-alternatives --install \
+            "/usr/bin/firefox" \
+            firefox \
+            "/lib/lib/firefox" \
+            10
+       sudo update-alternatives --auto\
+            firefox
     fi
 
     #------------------------------------------------------------------------------#
