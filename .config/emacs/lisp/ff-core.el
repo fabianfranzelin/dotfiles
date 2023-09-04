@@ -90,6 +90,13 @@
       kept-old-versions 2
       version-control t)
 
+;; helper function to call a command as sudo from M-x
+(defun ff/sudo-shell-command (command)
+  (interactive "MShell command (root): ")
+  (with-temp-buffer
+    (cd "/sudo::/")
+    (async-shell-command command)))
+
 ;; -------------------------------------------------------------------
 ;; Global key bindings
 ;; -------------------------------------------------------------------
