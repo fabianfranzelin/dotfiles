@@ -158,7 +158,8 @@
                                             "SSH_AUTH_SOCK"
                                             "HTTP_PROXY"
                                             "HTTPS_PROXY"
-                                            "BROWSER"))
+                                            "BROWSER"
+                                            "HISTFILE"))
   :config (exec-path-from-shell-initialize))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -93,20 +93,27 @@ MISC is the value returned by `ff/save-shell-buffer'."
         ;; close all windows
         (ff/close-windows visible-buffers))))
 
+(defun ff/read-last-command-from-shell-history ()
+  "Read the last command that is listed in the shell's history file."
+  (let* ((file-content (with-temp-buffer
+                         (insert-file-contents (cdr (assoc "HISTFILE" (exec-path-from-shell-getenvs '("HISTFILE")))))
+                         (buffer-string)))
+         (lines (split-string file-content "\n"))
+         (second-last-line (car (last lines 2))))
+    second-last-line))
+
 (defun ff/vterm-send-password ()
   "Use Emacs prompt to enter password for vterm.
 
 This is required for a safe password input, see
 https://github.com/akermu/emacs-libvterm/issues/518"
   (interactive)
-  (let ((selection (completing-read "Select password: "
-                                    '("sudo"
-                                      "... (enter password)"))))
-    (cond ((string= selection "sudo")
-           (vterm-send-string (password-store-get "passwords/sudo")))
+  (let ((last-command (ff/read-last-command-from-shell-history)))
+    (cond ((string-match ".*sudo.*" last-command)
+           (vterm-send-string (password-store-get (format "passwords/sudo@%s" system-name))))
           (t
            (comint-send-invisible "Enter password: ")))
-    (vterm-send-return)
+    (vterm-send-C-j)
     (clear-this-command-keys)))
 
 (use-package vterm
