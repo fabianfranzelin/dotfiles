@@ -201,7 +201,7 @@ the need to update my project hierarchy."
   :hook ((emacs-lisp-mode . rainbow-delimiters-mode)))
 
 ;; define shortcut that launches ielm
-(define-key emacs-lisp-mode-map (kbd "C-c C-r") #'(lambda ()
+(define-key emacs-lisp-mode-map (kbd "C-c C-p") #'(lambda ()
                                                     (interactive)
                                                     (split-window)
                                                     (other-window 1)
