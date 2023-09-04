@@ -334,7 +334,7 @@ Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
        sudo update-alternatives --install \
             "/usr/bin/firefox" \
             firefox \
-            "/lib/lib/firefox" \
+            "/lib/firefox/firefox" \
             10
        sudo update-alternatives --auto\
             firefox
