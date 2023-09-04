@@ -106,7 +106,7 @@ https://github.com/akermu/emacs-libvterm/issues/518"
            (vterm-send-string (password-store-get "passwords/sudo")))
           (t
            (comint-send-invisible "Enter password: ")))
-    (vterm-send-string "\n")
+    (vterm-send-return)
     (clear-this-command-keys)))
 
 (use-package vterm
