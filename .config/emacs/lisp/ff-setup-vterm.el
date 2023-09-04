@@ -99,9 +99,15 @@ MISC is the value returned by `ff/save-shell-buffer'."
 This is required for a safe password input, see
 https://github.com/akermu/emacs-libvterm/issues/518"
   (interactive)
-  (comint-send-invisible "Enter password: ")
-  (vterm-send-string "\n")
-  (clear-this-command-keys))
+  (let ((selection (completing-read "Select password: "
+                                    '("sudo"
+                                      "... (enter password)"))))
+    (cond ((string= selection "sudo")
+           (vterm-send-string (password-store-get "passwords/sudo")))
+          (t
+           (comint-send-invisible "Enter password: ")))
+    (vterm-send-string "\n")
+    (clear-this-command-keys)))
 
 (use-package vterm
   :custom ((vterm-shell "/bin/zsh")
