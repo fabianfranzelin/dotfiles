@@ -14,7 +14,7 @@ if ( __is_linux ) then
    alias gnome_keyring_daemon="gnome-keyring-daemon --replace --components=pkcs11,secrets,ssh && seahorse"
 fi
 
-   alias cp='cp -i -P'
+alias cp='cp -i -P'
 alias mv='mv -i'
 alias grep='grep --color=auto'
 
