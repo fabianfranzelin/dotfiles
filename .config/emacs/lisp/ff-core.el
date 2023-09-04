@@ -157,7 +157,8 @@
                                             "MANPATH"
                                             "SSH_AUTH_SOCK"
                                             "HTTP_PROXY"
-                                            "HTTPS_PROXY"))
+                                            "HTTPS_PROXY"
+                                            "BROWSER"))
   :config (exec-path-from-shell-initialize))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -332,11 +333,6 @@
 ;; -------------------------------------------------------------------
 (use-package openwith
   :if (display-graphic-p)
-  :init
-  ;; ensure system dependencies
-  (ff/ensure-apt-package "vlc" "vlc")
-  (ff/ensure-apt-package "eog" "eog")
-  (ff/ensure-apt-package "firefox" "firefox")
   :config
   (setq openwith-associations
         (list

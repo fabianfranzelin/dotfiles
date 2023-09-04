@@ -25,7 +25,10 @@ export ftp_proxy="http://127.0.0.1:3128"
 export DISPLAY="`grep nameserver /etc/resolv.conf | sed 's/nameserver //'`:0"
 export LIBGL_ALWAYS_INDIRECT=1
 
-# .bashrc
+# Set default browser use `xdg-open` to call it
+export BROWSER=wslview
+alias firefox="xdg-open"
+
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)

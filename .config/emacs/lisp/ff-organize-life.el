@@ -251,7 +251,7 @@ DIR: directory path"
   :custom
   (org-roam-ui-sync-theme t)
   (rg-roam-ui-follow-mode t)
-  (org-roam-ui-browser-function 'browse-url-firefox) ; TODO: when in WSL, use hosts browser
+  (org-roam-ui-browser-function 'browse-url-xdg-open)
   (org-roam-ui-open-on-start nil)
   (org-roam-ui-update-on-save t)
   :bind (("C-x n u" . org-roam-ui-open)))
