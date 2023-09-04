@@ -93,6 +93,16 @@ MISC is the value returned by `ff/save-shell-buffer'."
         ;; close all windows
         (ff/close-windows visible-buffers))))
 
+(defun ff/vterm-send-password ()
+  "Use Emacs prompt to enter password for vterm.
+
+This is required for a safe password input, see
+https://github.com/akermu/emacs-libvterm/issues/518"
+  (interactive)
+  (comint-send-invisible "Enter password: ")
+  (vterm-send-string "\n")
+  (clear-this-command-keys))
+
 (use-package vterm
   :custom ((vterm-shell "/bin/zsh")
            (vterm-max-scrollback 100000)
@@ -112,6 +122,7 @@ MISC is the value returned by `ff/save-shell-buffer'."
          ("C-y" . vterm-yank)
          ("C-x 2" . ff/open-vterm-below)
          ("C-x 3" . ff/open-vterm-right)
+         ("C-M-p" . ff/vterm-send-password)
          ("C-c C-t" . vterm-copy-mode)
          ("C-c t" . (lambda()
                       (interactive)
