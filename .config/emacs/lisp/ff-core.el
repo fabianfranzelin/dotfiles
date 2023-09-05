@@ -90,9 +90,11 @@
       kept-old-versions 2
       version-control t)
 
-;; helper function to call a command as sudo from M-x
 (defun ff/sudo-shell-command (command)
-  (interactive "MShell command (root): ")
+  "Launch sudo command asynchronously with tramp.
+
+COMMAND: command to be executed"
+  (interactive "MShell command (sudo): ")
   (with-temp-buffer
     (cd "/sudo::/")
     (async-shell-command command)))
