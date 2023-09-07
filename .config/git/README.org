@@ -1,0 +1,11 @@
+#+TITLE: Git configuration
+
+* Windows
+
+Magit is quite slow on Windows. Consider applying the following code that is taken from [[https://magit.vc/manual/magit/Microsoft-Windows-Performance.html][Magit's user manual]]
+
+#+begin_src shell :tangle yes
+git config --global core.preloadindex true   # default since v2.1
+git config --global core.fscache true        # default since v2.8
+git config --global gc.auto 256
+#+end_src
