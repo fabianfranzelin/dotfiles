@@ -29,7 +29,7 @@ Then install all the npm dependencies before you start the development server
 ** Sphinx and Esbonio
 
 To setup esbonio in your actual project, use this snippet as a
-template for your =.dir-local.el= file
+template for your =.dir-locals.el= file
 
 #+begin_src emacs-lisp
   ((rst-mode
