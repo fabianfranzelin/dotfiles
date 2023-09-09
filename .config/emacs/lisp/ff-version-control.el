@@ -50,7 +50,8 @@
   (define-key ztree-mode-map "p" 'ztree-previous-line)
   (define-key ztree-mode-map "f" 'ztree-jump-side)
   (define-key ztree-mode-map "b" 'ztree-jump-side)
-  (define-key ztree-mode-map (kbd "<tab>") 'ztree-perform-action))
+  (define-key ztree-mode-map (kbd "<tab>") 'ztree-perform-action)
+  (define-key ztree-mode-map "l" 'ztree-move-up-in-tree))
 
 (provide 'ff-version-control)
 
