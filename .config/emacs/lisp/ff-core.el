@@ -99,6 +99,9 @@ COMMAND: command to be executed"
     (cd "/sudo::/")
     (async-shell-command command)))
 
+;; add newline with C-n when at end of buffer 
+(setq next-line-add-newlines t)
+
 ;; -------------------------------------------------------------------
 ;; Global key bindings
 ;; -------------------------------------------------------------------
