@@ -448,16 +448,13 @@ DIR: directory"
 ;; -------------------------------------------------------------------
 (use-package dogears
   :custom
-  ((dogears-idle 0.5)
+  ((dogears-idle 0.2)
    (dogears-limit 50))
   :init
   (dogears-mode t)
   ;; These bindings are optional, of course:
   :bind (:map global-map
-              ("M-g d" . dogears-go)
-              ("M-g M-b" . dogears-back)
-              ("M-g M-f" . dogears-forward)
-              ("M-g M-d" . dogears-list)))
+              ("M-g d" . dogears-go)))
 
 ;; -------------------------------------------------------------------
 ;; Drag stuff around with M-up/down
@@ -529,15 +526,18 @@ TEXT: title"
 (use-package avy
   :custom
   ((avy-timeout 0.1))
-  :bind (("M-g f" . avy-goto-line)
-         ("M-g w" . avy-goto-word-1)
-         ("M-g c" . avy-goto-char-timer)))
+  :bind (("M-g c" . avy-goto-char-timer)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Zoom globally for all buffers
 (use-package zoom-frm
   :bind (("C-c +" . zoom-frm-in)
          ("C-c -" . zoom-frm-out)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Save kill ring over various sessions
+(require 'savekill)
+(setq save-kill-file-name (expand-file-name "kill-ring.el" no-littering-etc-directory))
 
 (provide 'ff-core)
 
