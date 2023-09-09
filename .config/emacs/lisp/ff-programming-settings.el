@@ -378,15 +378,23 @@ the need to update my project hierarchy."
 ;; -------------------------------------------------------------------
 (require 'sqlite-mode-extras)
 
+(defun ff/sqlite-mode-extras-previous-column ()
+  "Navigate to previous column."
+  (interactive)
+  (sqlite-mode-extras-next-column t))
+
 (define-key sqlite-mode-map "n" 'next-line)
 (define-key sqlite-mode-map "p" 'previous-line)
 (define-key sqlite-mode-map "f" 'sqlite-mode-extras-next-column)
-(define-key sqlite-mode-map "b" 'sqlite-mode-extras-previous-column)
+(define-key sqlite-mode-map "b" 'ff/sqlite-mode-extras-previous-column)
 (define-key sqlite-mode-map "d" 'sqlite-mode-delete)
+(define-key sqlite-mode-map "D" 'sqlite-mode-extras-delete-row-dwim)
 (define-key sqlite-mode-map "e" 'sqlite-mode-extras-edit-row-field)
 (define-key sqlite-mode-map (kbd "<backtab>") 'sqlite-mode-extras-backtab-dwim)
 (define-key sqlite-mode-map (kbd "<tab>") 'sqlite-mode-extras-tab-dwim)
 (define-key sqlite-mode-map (kbd "RET") 'sqlite-mode-extras-ret-dwim)
+(define-key sqlite-mode-map "+" 'sqlite-mode-extras-add-row)
+(define-key sqlite-mode-map "g" 'sqlite-mode-extras-refresh)
 
 (provide 'ff-programming-settings)
 
