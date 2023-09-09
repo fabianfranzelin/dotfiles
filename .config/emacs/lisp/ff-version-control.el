@@ -17,6 +17,7 @@
 ;; This is what you probably want if you are using a tiling window
 ;; manager under X, such as ratpoison.
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+(setq ediff-split-window-function 'split-window-horizontally)
 
 ;; save and restore window configuration when entering and quitting
 ;; ediff
@@ -33,6 +34,23 @@
                      (set-window-configuration ediff-saved-window-configuration))))
               (add-hook 'ediff-quit-hook restore-window-configuration 'append)
               (add-hook 'ediff-suspend-hook restore-window-configuration 'append))))
+
+;; diff of directories; diff of files via ediff
+(straight-use-package
+ '(ztree
+   :type git
+   :host codeberg
+   :repo "fourier/ztree"))
+
+(with-eval-after-load 'ztree
+  (setq ztree-diff-additional-options '("-w" "-i"))
+
+  ;; define my default navigation keys for ztree-mode
+  (define-key ztree-mode-map "n" 'ztree-next-line)
+  (define-key ztree-mode-map "p" 'ztree-previous-line)
+  (define-key ztree-mode-map "f" 'ztree-jump-side)
+  (define-key ztree-mode-map "b" 'ztree-jump-side)
+  (define-key ztree-mode-map (kbd "<tab>") 'ztree-perform-action))
 
 (provide 'ff-version-control)
 
