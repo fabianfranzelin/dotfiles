@@ -53,8 +53,8 @@
 ;; Doom Color themes
 (use-package doom-themes
   :custom
-  ((doom-themes-enable-bold t)    ; if nil, bold is universally disabled
-   (doom-themes-enable-italic t)) ; if nil, italics is universally disabled
+  (doom-themes-enable-bold t)    ; if nil, bold is universally disabled
+  (doom-themes-enable-italic t) ; if nil, italics is universally disabled
   :config
   ;; Global settings (defaults)
   (load-theme 'doom-palenight t)
@@ -73,23 +73,23 @@
 ;; Use doom modeline
 (use-package doom-modeline
   :custom
-  ((doom-modeline-height 15)
-   (doom-modeline-bar-width 6)
-   (doom-modeline-icon t)
-   (doom-modeline-modal-icon t)
-   (doom-modeline-lsp t)
-   (doom-modeline-github nil)
-   (doom-modeline-mu4e nil)
-   (doom-modeline-irc nil)
-   (doom-modeline-minor-modes nil)
-   (doom-modeline-persp-name nil)
-   (doom-modeline-display-default-persp-name nil)
-   (doom-modeline-persp-icon nil)
-   (doom-modeline-buffer-file-name-style 'truncate-except-project)
-   (doom-modeline-buffer-modification-icon t)
-   (doom-modeline-major-mode-icon t)
-   (doom-modeline-buffer-encoding nil)
-   (doom-modeline-vcs-max-length 48))
+  (doom-modeline-height 15)
+  (doom-modeline-bar-width 6)
+  (doom-modeline-icon t)
+  (doom-modeline-modal-icon t)
+  (doom-modeline-lsp t)
+  (doom-modeline-github nil)
+  (doom-modeline-mu4e nil)
+  (doom-modeline-irc nil)
+  (doom-modeline-minor-modes nil)
+  (doom-modeline-persp-name nil)
+  (doom-modeline-display-default-persp-name nil)
+  (doom-modeline-persp-icon nil)
+  (doom-modeline-buffer-file-name-style 'truncate-except-project)
+  (doom-modeline-buffer-modification-icon t)
+  (doom-modeline-major-mode-icon t)
+  (doom-modeline-buffer-encoding nil)
+  (doom-modeline-vcs-max-length 48)
   :init
   (doom-modeline-mode 1))
 
@@ -123,25 +123,25 @@
 (use-package dashboard
   :after (nerd-icons page-break-lines)
   :custom
-  (;; Content is not centered by default. To center, set
-   (dashboard-center-content t)
-   ;; To disable shortcut "jump" indicators for each section, set
-   (dashboard-show-shortcuts t)
-   (dashboard-items '((projects . 5)
-                      (agenda . 10)
-                      (recents  . 5)))
-   (dashboard-set-heading-icons t)
-   (dashboard-set-file-icons t)
-   (dashboard-set-init-info t)
-   (dashboard-week-agenda t)
-   (dashboard-filter-agenda-entry 'dashboard-no-filter-agenda)
-   ;; Show dashboard for newly created frames
-   (initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
-   ;; set the project backend to project.el
-   (dashboard-projects-backend `project-el)
-   (dashboard-icon-type `nerd-icons)
-   ;; filter agenda entries
-   (dashboard-match-agenda-entry "TODO=\"TODO\"|TODO=\"IN-PROGRESS\""))
+  ;; Content is not centered by default. To center, set
+  (dashboard-center-content t)
+  ;; To disable shortcut "jump" indicators for each section, set
+  (dashboard-show-shortcuts t)
+  (dashboard-items '((projects . 5)
+                     (agenda . 10)
+                     (recents  . 5)))
+  (dashboard-set-heading-icons t)
+  (dashboard-set-file-icons t)
+  (dashboard-set-init-info t)
+  (dashboard-week-agenda t)
+  (dashboard-filter-agenda-entry 'dashboard-no-filter-agenda)
+  ;; Show dashboard for newly created frames
+  (initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
+  ;; set the project backend to project.el
+  (dashboard-projects-backend `project-el)
+  (dashboard-icon-type `nerd-icons)
+  ;; filter agenda entries
+  (dashboard-match-agenda-entry "TODO=\"TODO\"|TODO=\"IN-PROGRESS\"")
   :config
   (dashboard-setup-startup-hook))
 

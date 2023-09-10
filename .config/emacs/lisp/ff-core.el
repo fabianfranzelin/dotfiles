@@ -202,14 +202,14 @@ COMMAND: command to be executed"
 ;; -------------------------------------------------------------
 ;; Show available keybindings
 (use-package which-key
-  :custom ((which-key-idle-delay 1))
+  :custom (which-key-idle-delay 1)
   :init (which-key-mode 1))
 
 ;; -------------------------------------------------------------
 ;; center the text for the corresponding modes; writing documentation
 ;; is easier with this setting.
 (use-package olivetti
-  :custom ((olivetti-body-width 0.66))
+  :custom (olivetti-body-width 0.66)
   :hook ((org-mode . olivetti-mode)
          (rst-mode . olivetti-mode)
          (markdown-mode . olivetti-mode)
@@ -220,10 +220,10 @@ COMMAND: command to be executed"
 (use-package tramp
   :straight nil
   :custom
-  ((tramp-terminal-type "dumb")
-   (tramp-default-method "ssh")
-   (tramp-use-ssh-controlmaster-options nil)
-   (vc-handled-backends '(Git)))
+  (tramp-terminal-type "dumb")
+  (tramp-default-method "ssh")
+  (tramp-use-ssh-controlmaster-options nil)
+  (vc-handled-backends '(Git))
   :config
   (setq tramp-verbose 3
         tramp-auto-save-directory (expand-file-name "tramp/backups" no-littering-var-directory)
@@ -255,13 +255,13 @@ COMMAND: command to be executed"
 (use-package dired
   :straight nil
   :custom
-  ((dired-auto-revert-buffer nil) ; Auto update when buffer is revisited
-   (dired-dwim-target t)
-   (dired-recursive-deletes 'always)
-   (dired-recursive-copies 'always)
-   (delete-by-moving-to-trash t)
-   (dired-listing-switches "-agho --group-directories-first")
-   (dired-hide-details-hide-symlink-targets nil))
+  (dired-auto-revert-buffer nil) ; Auto update when buffer is revisited
+  (dired-dwim-target t)
+  (dired-recursive-deletes 'always)
+  (dired-recursive-copies 'always)
+  (delete-by-moving-to-trash t)
+  (dired-listing-switches "-agho --group-directories-first")
+  (dired-hide-details-hide-symlink-targets nil)
   :init
   (require 'dired-x)
   :config
@@ -339,7 +339,7 @@ COMMAND: command to be executed"
   (async-shell-command "pkill -9 ssh-agent && eval $(ssh-agent -s) && ssh-add-keys"))
 
 (use-package pass
-  :custom ((pass-show-keybindings nil)))
+  :custom (pass-show-keybindings nil))
 
 ;; -------------------------------------------------------------------
 ;; Open files externally
@@ -369,7 +369,7 @@ COMMAND: command to be executed"
 (setq auto-save-default nil)
 
 (use-package super-save
-  :custom ((super-save-auto-save-when-idle nil))
+  :custom (super-save-auto-save-when-idle nil)
   :init (super-save-mode t))
 
 ;; -------------------------------------------------------------------
@@ -423,14 +423,15 @@ DIR: directory"
     (affe-find dir))
   :after embark
   ;; search also in hidden and ignored files by git
-  :custom ((affe-find-command
-            (cond
-             ((executable-find "rg") "rg --color=never --files -uu")
-             (t "find -not ( -wholename */.* -prune ) -type f")))
-           (affe-grep-command
-            (cond
-             ((executable-find "rg") "rg -uu --null --color=never --max-columns=1000 --no-heading --line-number -v ^$ .")
-             (t "grep -I -r --exclude=.* --exclude-dir=.* --null --color=never --line-number -v ^$"))))
+  :custom
+  (affe-find-command
+   (cond
+    ((executable-find "rg") "rg --color=never --files -uu")
+    (t "find -not ( -wholename */.* -prune ) -type f")))
+  (affe-grep-command
+   (cond
+    ((executable-find "rg") "rg -uu --null --color=never --max-columns=1000 --no-heading --line-number -v ^$ .")
+    (t "grep -I -r --exclude=.* --exclude-dir=.* --null --color=never --line-number -v ^$")))
   :config
   ;; use orderless as expression compiler
   (defun affe-orderless-regexp-compiler (input _type _ignorecase)
@@ -448,8 +449,8 @@ DIR: directory"
 ;; -------------------------------------------------------------------
 (use-package dogears
   :custom
-  ((dogears-idle 0.2)
-   (dogears-limit 50))
+  (dogears-idle 0.2)
+  (dogears-limit 50)
   :init
   (dogears-mode t)
   ;; These bindings are optional, of course:
@@ -525,7 +526,7 @@ TEXT: title"
 ;; -------------------------------------------------------------------
 (use-package avy
   :custom
-  ((avy-timeout 0.1))
+  (avy-timeout 0.1)
   :bind (("M-g c" . avy-goto-char-timer)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
