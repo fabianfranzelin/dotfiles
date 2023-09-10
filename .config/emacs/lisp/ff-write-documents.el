@@ -240,7 +240,7 @@ JAR-PATH: expected binary file in the extracted folder."
   (interactive)
   ;; make sure that citar-org-roam-mode is enabled
   (citar-org-roam-mode)
-  (when (string-equal major-mode "pdf-view-mode")
+  (when (derived-mode-p 'pdf-view-mode)
     (let ((file-name-pdf (buffer-file-name)))
       ;; check whether there is an entry in the bibliography that
       ;; links to this file
@@ -273,7 +273,7 @@ JAR-PATH: expected binary file in the extracted folder."
   (interactive)
   ;; make sure that citar-org-roam-mode is enabled
   (citar-org-roam-mode)
-  (when (string-equal major-mode "pdf-view-mode")
+  (when (derived-mode-p 'pdf-view-mode)
     (let* ((file-name-pdf (file-relative-name (buffer-file-name) (ff/citar-reference-notes-absolute-path)))
            (note-filename (expand-file-name (format "%s.org" (file-name-base file-name-pdf))
                                             (ff/citar-reference-notes-absolute-path))))

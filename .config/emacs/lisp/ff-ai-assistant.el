@@ -20,7 +20,7 @@
 
 
   (add-hook 'gptel-post-response-hook #'(lambda ()
-                                          (when (string-equal major-mode "org-mode")
+                                          (when (derived-mode-p 'org-mode)
                                             (org-forward-element)
                                             (org-end-of-line))))
 

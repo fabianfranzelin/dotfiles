@@ -108,7 +108,7 @@ MISC is the value returned by `ff/save-shell-buffer'."
 This is required for a safe password input, see
 https://github.com/akermu/emacs-libvterm/issues/518"
   (interactive)
-  (when (string-equal major-mode "vterm-mode")
+  (when (derived-mode-p 'vterm-mode)
     (let ((last-shell-command (ff/read-last-command-from-shell-history)))
       (cond ((string-match ".*sudo.*" last-shell-command)
              (message "Sending password to %s" (buffer-name))
