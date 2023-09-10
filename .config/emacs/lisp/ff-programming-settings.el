@@ -76,7 +76,7 @@ This is required when one has a mono repository, where I do only
 want to start my LSP server in a certain directory without
 the need to update my project hierarchy."
     (let ((eglot-lsp-context t))
-      (cond ((string= major-mode "rst-mode")
+      (cond ((derived-mode-p 'rst-mode)
              ;; TODO: search for multiple conf.py files in all parent
              ;; folders. Until reaching the project root. If multiple
              ;; are found, offer the user the one he wants to select

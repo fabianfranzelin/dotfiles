@@ -71,10 +71,13 @@ Here comes a table
 
 * Conclusion
 
-Add links to headings as follows: type =[[*= and hit =M-TAB=, then you'll
-get a list of the current headings from which you can selected the
-desired one.
+To add links to headings in Emacs, you can use the following steps:
 
+1. Type =[[== and press =M-TAB= (Alt + TAB).
+2. Emacs will display a list of current headings.
+3. Select the desired heading from the list.
+
+This will add a link to the selected heading in your document.
 The experiments [[*Experiment 1]] and [[*Experiment 2]] have shown that...
 
 #+name: src:hello-world

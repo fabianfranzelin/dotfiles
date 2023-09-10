@@ -347,7 +347,7 @@ FILE-NAME: file name"
   "Lookup a linked pdf file in the bibliography, if a citeky is given.
 CITEKEY: citation key in bibliography"
   (let ((file-name-pdf nil))
-    (cond ((string-equal major-mode "pdf-view-mode")
+    (cond ((derived-mode-p 'pdf-view-mode)
            (setq-local file-name-pdf (buffer-file-name)))
           (t
            ;; check whether the bibliography entry links to a pdf file
@@ -362,7 +362,7 @@ CITEKEY: citation key in bibliography"
 
 (defun ff/citar-get-pdf-page-number ()
   "Get the page number to which the note refers."
-  (if (string-equal major-mode "pdf-view-mode")
+  (if (derived-mode-p 'pdf-view-mode)
       (pdf-view-current-page))
   (read-number "Page: "))
 
