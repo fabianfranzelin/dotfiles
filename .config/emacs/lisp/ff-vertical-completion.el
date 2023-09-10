@@ -54,8 +54,8 @@ DIR: directory"
 
 (use-package vertico
   :custom
-  ((vertico-count 10)
-   (vertico-cycle t))
+  (vertico-count 10)
+  (vertico-cycle t)
   :init
   (vertico-mode t)
   ;; Enable recursive minibuffers

@@ -13,8 +13,8 @@
   :custom
   ;; The default command for markdown (~markdown~), doesn't support tables
   ;; (e.g. GitHub flavored markdown). Pandoc does, so let's use that.
-  ((markdown-command "pandoc --from markdown --to html")
-   (markdown-command-needs-filename t))
+  (markdown-command "pandoc --from markdown --to html")
+  (markdown-command-needs-filename t)
   :init
   :hook ((markdown-mode . flyspell-mode)))
 
@@ -133,7 +133,7 @@ JAR-PATH: expected binary file in the extracted folder."
 
 ;; Graphviz mode
 (use-package graphviz-dot-mode
-  :custom ((graphviz-dot-indent-width 4))
+  :custom (graphviz-dot-indent-width 4)
   :init (ff/ensure-apt-package "graphviz" "dot"))
 
 ;; -------------------------------------------------------------------

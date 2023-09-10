@@ -54,7 +54,7 @@ Executes COMMAND-LINE in buffer OUTPUT-BUFFER.  Name the process BUFFER-BASE-NAM
              :working-dir default-directory)))))
 
 (use-package run-command
-  :custom ((run-command-default-runner #'run-command-runner-compile)))
+  :custom (run-command-default-runner #'run-command-runner-compile))
 
 ;; -------------------------------------------------------------------
 ;; Project (built in project handling mode; similar to projectile)
@@ -110,12 +110,12 @@ PROJECT-ROOT: Path to the root directory of the current project."
 
 (use-package project
   :custom
-  ((project-switch-commands '((project-find-file "Find file")
-                              (project-find-dir "Find directory")
-                              (ff/project-magit "Magit")
-                              (project-dired "Dired")))
-   (project-vc-extra-root-markers '(".project.el"))
-   (project-vc-ignores '("build/" "install/" ".*cache/" "__pycache__")))
+  (project-switch-commands '((project-find-file "Find file")
+                             (project-find-dir "Find directory")
+                             (ff/project-magit "Magit")
+                             (project-dired "Dired")))
+  (project-vc-extra-root-markers '(".project.el"))
+  (project-vc-ignores '("build/" "install/" ".*cache/" "__pycache__"))
   :bind (:map project-prefix-map
               ("P" . ff/project-switch-project)
               ("g" . ff/project-magit)

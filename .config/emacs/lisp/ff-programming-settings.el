@@ -23,7 +23,8 @@
          (cmake-ts-mode . eglot-ensure)
          (dockerfile-ts-mode . eglot-ensure)
          (rst-mode . eglot-ensure))
-  :custom ((eglot-events-buffer-size 10))
+  :custom
+  (eglot-events-buffer-size 10)
   :config
   (setq read-process-output-max (* 1024 1024))
 
@@ -163,8 +164,9 @@ the need to update my project hierarchy."
 ;; -------------------------------------------------------------------
 (use-package realgud
   :after (org)
-  :custom ((realgud:pdb-command-name "python3 -m pdb")
-           (realgud-safe-mode nil)))
+  :custom
+  (realgud:pdb-command-name "python3 -m pdb")
+  (realgud-safe-mode nil))
 
 ;; -------------------------------------------------------------------
 ;; Aphelia: auto-format different source code files extremely
@@ -217,13 +219,13 @@ the need to update my project hierarchy."
 ;; -------------------------------------------------------------------
 (use-package ess
   :custom
-  ((ess-use-eldoc nil)
-   ;; ESS will not print the evaluated commands, also speeds up the
-   ;; evaluation
-   (ess-eval-visibly nil)
-   ;; if you don't want to be prompted each time you start an
-   ;; interactive R session
-   (ess-ask-for-ess-directory nil)))
+  (ess-use-eldoc nil)
+  ;; ESS will not print the evaluated commands, also speeds up the
+  ;; evaluation
+  (ess-eval-visibly nil)
+  ;; if you don't want to be prompted each time you start an
+  ;; interactive R session
+  (ess-ask-for-ess-directory nil))
 
 ;; -------------------------------------------------------------------
 ;; Python
