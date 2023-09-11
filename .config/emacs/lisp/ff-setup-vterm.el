@@ -110,9 +110,15 @@ https://github.com/akermu/emacs-libvterm/issues/518"
   (interactive)
   (when (derived-mode-p 'vterm-mode)
     (let ((last-shell-command (ff/read-last-command-from-shell-history)))
-      (cond ((string-match ".*sudo.*" last-shell-command)
+      (cond ((or (string-match ".*sudo.*" last-shell-command)
+                 (string-match "init" last-shell-command))
              (message "Sending password to %s" (buffer-name))
              (vterm-send-string (password-store-get (format "passwords/sudo@%s" system-name))))
+            ((string-match "kinit" last-shell-command)
+             (message "Sending password to %s" (buffer-name))
+             (vterm-send-string (password-store-get
+                                 (format "passwords/%s@login"
+                                         (password-store-get "usernames/bosch")))))
             (t
              (comint-send-invisible "Enter password: ")))
       (vterm-send-C-j)
