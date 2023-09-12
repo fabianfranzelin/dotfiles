@@ -27,27 +27,19 @@
   (eglot-events-buffer-size 10)
   :config
   (setq read-process-output-max (* 1024 1024))
-
-  ;; C/C++
-  (add-to-list 'eglot-server-programs `(c-ts-mode "clangd"))
-  (add-to-list 'eglot-server-programs `(c++-ts-mode "clangd"))
-  ;; Sphinx, rst-mode
-  ;; make esbonio the default lsp server for rst-mode
-  ;; currently only version 0.15 works
-  (add-to-list 'eglot-server-programs `(rst-mode . ("python3" "-m" "esbonio")))
-
-  :bind (("C-c l w s" . eglot)
-         ("C-c l w r" . eglot-reconnect)
-         ("C-c l w k" . eglot-shutdown)
-         ("C-c l w a" . eglot-shutdown-all)
-         ("C-c l f" . eglot-format)
-         ("C-c l a" . eglot-code-actions)
-         ("C-c l i" . eglot-code-action-organize-imports)
-         ("C-c l r" . eglot-rename)
-         ("C-c l d" . flymake-show-buffer-diagnostics)
-         ("C-h ." . eldoc)
-         ("C-c l e" . eglot-stderr-buffer)
-         ("C-c l c" . eglot-show-workspace-configuration)))
+  :bind
+  (("C-c l w s" . eglot)
+   ("C-c l w r" . eglot-reconnect)
+   ("C-c l w k" . eglot-shutdown)
+   ("C-c l w a" . eglot-shutdown-all)
+   ("C-c l f" . eglot-format)
+   ("C-c l a" . eglot-code-actions)
+   ("C-c l i" . eglot-code-action-organize-imports)
+   ("C-c l r" . eglot-rename)
+   ("C-c l d" . flymake-show-buffer-diagnostics)
+   ("C-h ." . eldoc)
+   ("C-c l e" . eglot-stderr-buffer)
+   ("C-c l c" . eglot-show-workspace-configuration)))
 
 (with-eval-after-load 'eglot
 
@@ -131,7 +123,8 @@ the need to update my project hierarchy."
         (treesit-install-language-grammar (car grammar)))))
   :config
   (ff/setup-install-grammars)
-  (add-to-list 'treesit-extra-load-path (expand-file-name ".cache/emacs/tree-sitter" (getenv "HOME"))))
+  (add-to-list 'treesit-extra-load-path
+               (expand-file-name ".cache/emacs/tree-sitter" (getenv "HOME"))))
 
 (use-package combobulate
   :preface
@@ -143,12 +136,13 @@ the need to update my project hierarchy."
   ;;
   ;; You can manually enable Combobulate with `M-x
   ;; combobulate-mode'.
-  :hook ((python-ts-mode . combobulate-mode)
-         (js-ts-mode . combobulate-mode)
-         (css-ts-mode . combobulate-mode)
-         (yaml-ts-mode . combobulate-mode)
-         (typescript-ts-mode . combobulate-mode)
-         (tsx-ts-mode . combobulate-mode)))
+  :hook
+  ((python-ts-mode . combobulate-mode)
+   (js-ts-mode . combobulate-mode)
+   (css-ts-mode . combobulate-mode)
+   (yaml-ts-mode . combobulate-mode)
+   (typescript-ts-mode . combobulate-mode)
+   (tsx-ts-mode . combobulate-mode)))
 
 ;; this package is required for refactoring with multiple cursors in
 ;; combobulate
@@ -245,8 +239,9 @@ the need to update my project hierarchy."
 ;; yaml mode
 ;; -------------------------------------------------------------------
 (use-package yaml-mode
-  :mode (("\\.yml$" . yaml-mode)
-         ("\\.yaml$" . yaml-mode))
+  :mode
+  ("\\.yml$" . yaml-mode)
+  ("\\.yaml$" . yaml-mode)
   :init
   ;; install system dependencies
   (ff/ensure-python-package "yamllint" nil "yamllint")
@@ -340,7 +335,8 @@ the need to update my project hierarchy."
 ;; Robot Framework
 ;; -------------------------------------------------------------------
 (use-package robot-mode
-  :mode (("\\.robot" . robot-mode))
+  :mode
+  ("\\.robot" . robot-mode)
   :init
   (ff/ensure-python-package "robotframework-tidy" nil "robotidy"))
 

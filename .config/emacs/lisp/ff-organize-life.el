@@ -14,8 +14,6 @@ DIR: directory path"
   (expand-file-name dir))
 
 (use-package org
-  :hook (;; clocking
-         (org-timer-set . org-clock-in))
   :custom
   (org-directory (ff/create-folder-and-return "~/workspace/org"))
   (org-agenda-files `(,(ff/create-folder-and-return (expand-file-name "notes" org-directory))
@@ -25,7 +23,10 @@ DIR: directory path"
   (org-log-into-drawer t)
   (org-babel-python-command "/usr/bin/python3")
   ;; disable isearch when using org-goto
-  (org-goto-auto-isearch nil))
+  (org-goto-auto-isearch nil)
+  :hook
+  ;; clocking
+  (org-timer-set . org-clock-in))
 
 (with-eval-after-load 'org
   (require 'org-indent)
@@ -68,16 +69,18 @@ DIR: directory path"
 ;; https://github.com/abo-abo/org-download
 (use-package org-download
   :after org
-  :bind (:map org-mode-map
-              ("s-Y" . org-download-screenshot)
-              ("s-y" . org-download-yank)))
+  :bind
+  (:map org-mode-map
+        ("s-Y" . org-download-screenshot)
+        ("s-y" . org-download-yank)))
 
 ;; -------------------------------------------------------------------
 ;; Org modern: nice fonts, colors, etc.
 ;; -------------------------------------------------------------------
 (use-package org-modern
-  :hook ((org-mode . org-modern-mode)
-         (org-agenda-finalize . org-modern-agenda))
+  :hook
+  (org-mode . org-modern-mode)
+  (org-agenda-finalize . org-modern-agenda)
   :custom
   ;; Edit settings
   (org-auto-align-tags nil)
@@ -141,12 +144,14 @@ DIR: directory path"
 
 (use-package org-present
   :after org-appear
-  :hook ((org-present-mode . dw/org-present-hook)
-         (org-present-mode . visual-line-mode)
-         (org-present-mode-quit . dw/org-present-quit-hook))
-  :bind (:map org-present-mode-keymap
-              ("C-c C-f" . dw/org-present-next)
-              ("C-c C-b" . dw/org-present-prev)))
+  :hook
+  (org-present-mode . dw/org-present-hook)
+  (org-present-mode . visual-line-mode)
+  (org-present-mode-quit . dw/org-present-quit-hook)
+  :bind
+  (:map org-present-mode-keymap
+        ("C-c C-f" . dw/org-present-next)
+        ("C-c C-b" . dw/org-present-prev)))
 
 ;; -------------------------------------------------------------------
 ;; Org-roam: Taking notes
@@ -161,7 +166,8 @@ DIR: directory path"
 
 (use-package org-roam
   :after org
-  :hook ((org-mode . ff/configure-org-roam-mode))
+  :hook
+  (org-mode . ff/configure-org-roam-mode)
   :custom
   (org-roam-directory (expand-file-name "notes" org-directory))
   (org-roam-node-display-template
@@ -237,15 +243,16 @@ DIR: directory path"
                                   :and (= type "id")]
                          (org-roam-node-id node)))))
       (format "[%d]" count)))
-  :bind (("C-x n i" . org-roam-node-insert)
-         ("C-x n c" . org-roam-capture)
-         ("C-x n C" . org-roam-dailies-capture-today)
-         ("C-x n f" . org-roam-node-find)
-         ("C-x n t" . org-roam-buffer-toggle)
-         ("C-x n a" . org-agenda)
-         :map org-mode-map
-         ("C-M-i" . completion-at-point)
-         ("C-c C-x t" . org-roam-tag-add)))
+  :bind
+  (("C-x n i" . org-roam-node-insert)
+   ("C-x n c" . org-roam-capture)
+   ("C-x n C" . org-roam-dailies-capture-today)
+   ("C-x n f" . org-roam-node-find)
+   ("C-x n t" . org-roam-buffer-toggle)
+   ("C-x n a" . org-agenda)
+   :map org-mode-map
+   ("C-M-i" . completion-at-point)
+   ("C-c C-x t" . org-roam-tag-add)))
 
 (use-package org-roam-ui
   :custom
@@ -254,7 +261,8 @@ DIR: directory path"
   (org-roam-ui-browser-function 'browse-url-xdg-open)
   (org-roam-ui-open-on-start nil)
   (org-roam-ui-update-on-save t)
-  :bind (("C-x n u" . org-roam-ui-open)))
+  :bind
+  (("C-x n u" . org-roam-ui-open)))
 
 
 (use-package consult-org-roam
@@ -268,10 +276,11 @@ DIR: directory path"
   (require 'consult-org-roam)
   ;; Activate the minor mode
   (consult-org-roam-mode 1)
-  :bind (("C-x n g" . consult-org-roam-search)
-         :map org-mode-map
-         ("C-x n n" . consult-org-roam-backlinks)
-         ("C-x n p" . consult-org-roam-forward-links)))
+  :bind
+  (("C-x n g" . consult-org-roam-search)
+   :map org-mode-map
+   ("C-x n n" . consult-org-roam-backlinks)
+   ("C-x n p" . consult-org-roam-forward-links)))
 
 ;; -------------------------------------------------------------------
 ;; Citations for org-files
@@ -316,11 +325,12 @@ DIR: directory path"
       (with-temp-buffer
         (write-file file-name))))
   ;; optional: org-cite-insert is also bound to C-c C-x C-@
-  :bind (("C-c c o" . citar-open)
-         ("C-c c e" . citar-open-entry)
-         ("C-c c f" . citar-open-files)
-         (:map org-mode-map :package org
-               ("C-c b" . org-cite-insert))))
+  :bind
+  (("C-c c o" . citar-open)
+   ("C-c c e" . citar-open-entry)
+   ("C-c c f" . citar-open-files)
+   (:map org-mode-map :package org
+         ("C-c b" . org-cite-insert))))
 
 (use-package citar-embark
   :config (citar-embark-mode))
@@ -435,8 +445,9 @@ FILE-PAGE: page at which the annotation refers to"
   :commands citar-org-roam-mode
   :config
   (citar-org-roam-mode)
-  :bind (("C-x n l" . ff/org-roam-capture-literature-note)
-         ("C-x n o" . ff/org-roam-open-literature-note)))
+  :bind
+  (("C-x n l" . ff/org-roam-capture-literature-note)
+   ("C-x n o" . ff/org-roam-open-literature-note)))
 
 ;; -------------------------------------------------------------------
 ;; Organizing tasks and agenda

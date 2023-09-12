@@ -50,10 +50,15 @@
   :mode (("\\.rst$" . rst-mode)
          ("\\.rest$" . rst-mode)
          ("\\.inc$" . rst-mode))
-  :init
-  (ff/ensure-python-package "esbonio==0.15" nil "esbonio")
   :hook ((rst-mode . pyvenv-mode) ;; enable support of virtual environments
          (rst-mode . ff/configure-rst-mode)))
+
+(with-eval-after-load 'eglot
+  ;; Sphinx, rst-mode
+  ;; make esbonio the default lsp server for rst-mode
+  ;; currently only version 0.15 works
+  (ff/ensure-python-package "esbonio==0.15" nil "esbonio")
+  (add-to-list 'eglot-server-programs `(rst-mode . ("python3" "-m" "esbonio"))))
 
 ;; -------------------------------------------------------------------
 ;; Plantuml & Graphviz mode

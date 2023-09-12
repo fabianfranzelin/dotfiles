@@ -16,6 +16,9 @@
 ;; -----------------------------------------------------------------------------------
 ;; C/C++
 
+;; install system dependencies
+(require 'ff-ensure-system-packages)
+
 ;; -----------------------------------------------------------------------------------
 ;; Container handling
 
@@ -44,7 +47,7 @@ REPLACE-STR: string that replaces all regex matches"
       (replace-match replace-str))))
 
 (defun ff/container-host-compile-commands-mapping ()
-  "Adjusts the compile commands json of CMake to match the host system and not the containers."
+  "Adjust the compile commands of CMake to match the host systems paths."
   (interactive)
   (let* ((workspace-folder (file-name-directory ff/cc-build-folder-container))
          (build-folder (file-name-nondirectory ff/cc-build-folder-container))
@@ -67,9 +70,14 @@ REPLACE-STR: string that replaces all regex matches"
                            ff/cc-conan-cache-container
                            ff/cc-conan-cache-host)))))
 
-;; make sure that system packages are available
-(ff/ensure-apt-package "clangd" "clangd")
-(ff/ensure-apt-package "clang" "clang")
+(with-eval-after-load 'eglot
+  ;; make sure that system packages are available
+  (ff/ensure-apt-package "clangd" "clangd")
+  (ff/ensure-apt-package "clang" "clang")
+
+  ;; register clangd as default lsp server in eglot
+  (add-to-list 'eglot-server-programs `(c-ts-mode "clangd"))
+  (add-to-list 'eglot-server-programs `(c++-ts-mode "clangd")))
 
 ;; use tree-sitter as default and overwrite all C/C++ modes
 (add-to-list 'major-mode-remap-alist '(c++-mode c++-ts-mode))

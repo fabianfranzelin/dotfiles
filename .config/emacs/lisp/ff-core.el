@@ -99,7 +99,7 @@ COMMAND: command to be executed"
     (cd "/sudo::/")
     (async-shell-command command)))
 
-;; add newline with C-n when at end of buffer 
+;; add newline with C-n when at end of buffer.
 (setq next-line-add-newlines t)
 
 ;; -------------------------------------------------------------------
@@ -172,7 +172,7 @@ COMMAND: command to be executed"
                                             "HTTPS_PROXY"
                                             "BROWSER"
                                             "HISTFILE"))
-  :config (exec-path-from-shell-initialize))
+  :init (exec-path-from-shell-initialize))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Let kill operate on the whole line when no region is selected
@@ -192,12 +192,13 @@ COMMAND: command to be executed"
 ;; -------------------------------------------------------------
 ;; Better help
 (use-package helpful
-  :bind (("C-h f" . helpful-callable)
-         ("C-h v" . helpful-variable)
-         ("C-h k" . helpful-key)
-         ("C-c C-d" . helpful-at-point)
-         ("C-h F" . helpful-function)
-         ("C-h C" . helpful-command)))
+  :bind
+  (("C-h f" . helpful-callable)
+   ("C-h v" . helpful-variable)
+   ("C-h k" . helpful-key)
+   ("C-c C-d" . helpful-at-point)
+   ("C-h F" . helpful-function)
+   ("C-h C" . helpful-command)))
 
 ;; -------------------------------------------------------------
 ;; Show available keybindings
@@ -210,10 +211,11 @@ COMMAND: command to be executed"
 ;; is easier with this setting.
 (use-package olivetti
   :custom (olivetti-body-width 0.66)
-  :hook ((org-mode . olivetti-mode)
-         (rst-mode . olivetti-mode)
-         (markdown-mode . olivetti-mode)
-         (LaTeX-mode . olivetti-mode)))
+  :hook
+  ((org-mode . olivetti-mode)
+   (rst-mode . olivetti-mode)
+   (markdown-mode . olivetti-mode)
+   (LaTeX-mode . olivetti-mode)))
 
 ;; -------------------------------------------------------------------
 ;; Tramp
@@ -264,17 +266,18 @@ COMMAND: command to be executed"
   (dired-hide-details-hide-symlink-targets nil)
   :init
   (require 'dired-x)
-  :config
   (autoload 'dired-omit-mode "dired-x")
-  :hook ((dired-mode . auto-revert-mode)
-         (dired-mode . dired-hide-details-mode)
-         (dired-mode . hl-line-mode)
-         ;; enables drag-and-drop in dired
-         (dired-mode . org-download-enable))
-  :bind (("C-x C-j" . dired-jump)
-         :map dired-mode-map
-         ("l" . dired-up-directory)
-         ("TAB" . dired-find-file)))
+  :hook
+  ((dired-mode . auto-revert-mode)
+   (dired-mode . dired-hide-details-mode)
+   (dired-mode . hl-line-mode)
+   ;; enables drag-and-drop in dired
+   (dired-mode . org-download-enable))
+  :bind
+  (("C-x C-j" . dired-jump)
+   :map dired-mode-map
+   ("l" . dired-up-directory)
+   ("TAB" . dired-find-file)))
 
 (use-package dired-hacks
   :after (dired)
@@ -304,12 +307,14 @@ COMMAND: command to be executed"
 
 (use-package dired-hide-dotfiles
   :after (dired)
-  :bind (:map dired-mode-map
-              ("H" . dired-hide-dotfiles-mode)))
+  :bind
+  (:map dired-mode-map
+        ("H" . dired-hide-dotfiles-mode)))
 
 (use-package dired-rsync
-  :bind (:map dired-mode-map
-              ("C" . dired-rsync)))
+  :bind
+  (:map dired-mode-map
+        ("C" . dired-rsync)))
 
 ;; -------------------------------------------------------------------
 ;; Undo tree - make undos more powerful
@@ -391,9 +396,10 @@ COMMAND: command to be executed"
   :init
   (popper-mode t)
   (popper-echo-mode t)
-  :bind (("C-*" . popper-toggle-latest)
-         ("M-*" . popper-cycle)
-         ("C-M-*" . popper-toggle-type)))
+  :bind
+  (("C-*" . popper-toggle-latest)
+   ("M-*" . popper-cycle)
+   ("C-M-*" . popper-toggle-type)))
 
 ;; -------------------------------------------------------------------
 ;; Ripgrep integration
@@ -439,10 +445,11 @@ DIR: directory"
     (cons input (apply-partially #'orderless--highlight input)))
   (setq affe-regexp-compiler #'affe-orderless-regexp-compiler)
 
-  :bind (("C-x a f" . affe-find)
-         ("C-x a g" . affe-grep)
-         :map embark-file-map
-         ("a" . ff/affe-find)))
+  :bind
+  (("C-x a f" . affe-find)
+   ("C-x a g" . affe-grep)
+   :map embark-file-map
+   ("a" . ff/affe-find)))
 
 ;; -------------------------------------------------------------------
 ;; Dogears: automatically bookmarks positions in buffers
@@ -454,18 +461,20 @@ DIR: directory"
   :init
   (dogears-mode t)
   ;; These bindings are optional, of course:
-  :bind (:map global-map
-              ("M-g d" . dogears-go)))
+  :bind
+  (:map global-map
+        ("M-g d" . dogears-go)))
 
 ;; -------------------------------------------------------------------
 ;; Drag stuff around with M-up/down
 ;; -------------------------------------------------------------------
 (use-package drag-stuff
   :config (drag-stuff-global-mode t)
-  :bind (("M-p" . drag-stuff-up)
-         ("M-<up>" . drag-stuff-up)
-         ("M-n" . drag-stuff-down)
-         ("M-<down>" . drag-stuff-down)))
+  :bind
+  (("M-p" . drag-stuff-up)
+   ("M-<up>" . drag-stuff-up)
+   ("M-n" . drag-stuff-down)
+   ("M-<down>" . drag-stuff-down)))
 
 ;; -------------------------------------------------------------------
 ;; Yasnippet
@@ -485,7 +494,8 @@ TEXT: title"
   (yas-global-mode 1)
   :config
   (setq yas-verbosity 1)
-  :bind (("C-c C-y" . yas-insert-snippet)))
+  :bind
+  (("C-c C-y" . yas-insert-snippet)))
 
 (use-package yasnippet-snippets
   :after (yasnippet))
@@ -527,18 +537,22 @@ TEXT: title"
 (use-package avy
   :custom
   (avy-timeout 0.1)
-  :bind (("M-g c" . avy-goto-char-timer)))
+  :bind
+  (("M-g c" . avy-goto-char-timer)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Zoom globally for all buffers
 (use-package zoom-frm
-  :bind (("C-c +" . zoom-frm-in)
-         ("C-c -" . zoom-frm-out)))
+  :bind
+  (("C-c +" . zoom-frm-in)
+   ("C-c -" . zoom-frm-out)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Save kill ring over various sessions
 (require 'savekill)
-(setq save-kill-file-name (expand-file-name "kill-ring.el" no-littering-etc-directory))
+(setq save-kill-file-name (expand-file-name
+                           "kill-ring.el"
+                           no-littering-etc-directory))
 
 (provide 'ff-core)
 
