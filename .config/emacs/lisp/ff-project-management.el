@@ -14,12 +14,13 @@
   (tab-bar-show nil)
   :init
   (tab-bar-mode t)
-  :bind (("C-x t n" . tab-new)
-         ;; after a tab is closed, the *scratch* tab appears
-         ;; automatically; Hence, we close that one as well after
-         ;; closing the actually intended one to actually get to the
-         ;; previous user tab.
-         ("C-x t w" . tab-close)))
+  :bind
+  (("C-x t n" . tab-new)
+   ;; after a tab is closed, the *scratch* tab appears
+   ;; automatically; Hence, we close that one as well after
+   ;; closing the actually intended one to actually get to the
+   ;; previous user tab.
+   ("C-x t w" . tab-close)))
 
 ;; -------------------------------------------------------------------
 ;; Tasks
@@ -116,14 +117,15 @@ PROJECT-ROOT: Path to the root directory of the current project."
                              (project-dired "Dired")))
   (project-vc-extra-root-markers '(".project.el"))
   (project-vc-ignores '("build/" "install/" ".*cache/" "__pycache__"))
-  :bind (:map project-prefix-map
-              ("P" . ff/project-switch-project)
-              ("g" . ff/project-magit)
-              ("v" . ff/project-vterm)
-              ("a" . affe-find)
-              ("r" . affe-grep)
-              ("t" . ff/project-project-tab)
-              ("C" . run-command)))
+  :bind
+  (:map project-prefix-map
+        ("P" . ff/project-switch-project)
+        ("g" . ff/project-magit)
+        ("v" . ff/project-vterm)
+        ("a" . affe-find)
+        ("r" . affe-grep)
+        ("t" . ff/project-project-tab)
+        ("C" . run-command)))
 
 (provide 'ff-project-management)
 

@@ -9,6 +9,8 @@
 (require 'python)
 
 ;; install system dependencies
+(require 'ff-ensure-system-packages)
+
 (ff/ensure-python-package "python-lsp-server[all]" nil "pylsp")
 (ff/ensure-python-package "ipython" nil "ipython")
 (ff/ensure-python-package "pdb")
