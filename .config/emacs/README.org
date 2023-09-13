@@ -94,7 +94,8 @@ Then, I install all the required third party dependencies and build Emacs
            libpng-dev \
            libxpm-dev \
            libncurses-dev \
-           texinfo
+           texinfo \
+	   libsqlite3-dev
 
       if [ -d "${__EMACS_BUILD}" ]
       then
@@ -120,6 +121,8 @@ Then, I install all the required third party dependencies and build Emacs
       (
           cd "${__EMACS_SRC}" || exit 1
           export CC=/usr/bin/gcc-10 CXX=/usr/bin/gcc-10
+          # clean everything before you start
+          make clean
           # Make sure that treesitter lib is available to Emacs build
           # process
           export LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH}
@@ -143,7 +146,6 @@ Then, I install all the required third party dependencies and build Emacs
                       --with-x-toolkit=gtk3 \
                       --with-native-compilation=aot \
                       --with-tree-sitter
-          make clean
           make -j"$(nproc)"
       )
   }

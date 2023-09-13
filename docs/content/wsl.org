@@ -1,0 +1,6 @@
+* WSL2
+
++ [[https://www.configserverfirewall.com/windows-10/please-enable-the-virtual-machine-platform-windows-feature-and-ensure-virtualization-is-enabled-in-the-bios/][Enable WSL2]]
++ [[https://learn.microsoft.com/en-us/windows/wsl/setup/environment#set-up-your-linux-username-and-password][Setup windows terminal]]
++ [[https://github.com/microsoft/WSL/issues/4793][XLaunch setup for vcxsrv]]
++ [[https://www.configserverfirewall.com/windows-10/please-enable-the-virtual-machine-platform-windows-feature-and-ensure-virtualization-is-enabled-in-the-bios/][Remove WSL completely]]

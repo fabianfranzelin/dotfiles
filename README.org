@@ -11,7 +11,7 @@
 #+html: <a href="https://github.com/fabianfranzelin/dotfiles/commits"><img src="https://img.shields.io/github/last-commit/fabianfranzelin/dotfiles"/></a>
 #+html: <a href="https://github.com/fabianfranzelin/dotfiles/blob/nightly/LICENSE"><img src="https://img.shields.io/github/license/fabianfranzelin/dotfiles"/></a>
 
-*  System Configuration
+* System Configuration
 
 In this repository, I gather my system configurations that allow me to have
 a consistent computing experience over multiple Linux machines.
