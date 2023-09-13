@@ -4,6 +4,10 @@
 ((nil . ((compile-command . "cd ./examples/cc-project/build && make")
          (eval . (defun run-command-recipe-ff/local ()
                    (list
+                    (when-let* ((project-dir (locate-dominating-file default-directory ".clangd")))
+                      (list :command-name "cc:cmake main"
+                            :command-line "mkdir build && cd build && cmake .."
+                            :working-dir project-dir))
                     (when-let* ((project-dir (locate-dominating-file default-directory "build"))
                                 (build-dir (expand-file-name "build" project-dir)))
                       (if (f-file-p (expand-file-name "main" build-dir))
