@@ -117,7 +117,9 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          htop \
          ssh \
          sshpass \
-         dos2unix
+         dos2unix \
+	 openssl \
+	 libssl-dev
 
     # ---------------------------------------------------------
     # install dependencies for Emacs
@@ -399,3 +401,15 @@ echo -e "${__COLOR_INFO}INFO: Setup symbolic links with GNU stow.${__COLOR_RESET
     cd "${DOTFILES}"
     stow . -t "${HOME}"
 )
+
+# -------------------------------------------------
+# GNUPG setup
+
+# To fix the " gpg: WARNING: unsafe permissions on homedir '/home/path/to/user/.gnupg' " error
+# Make sure that the .gnupg directory and its contents is accessibile by your user.
+chown -R $(whoami) "${HOME}/.gnupg/"
+
+# Also correct the permissions and access rights on the directory
+chmod 700 "${HOME}/.gnupg"
+
+
