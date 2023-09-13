@@ -103,6 +103,7 @@ the need to update my project hierarchy."
     (dolist (grammar
              '((bash "https://github.com/tree-sitter/tree-sitter-bash")
                (cmake "https://github.com/uyha/tree-sitter-cmake")
+               (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
                (css "https://github.com/tree-sitter/tree-sitter-css")
                (elisp "https://github.com/Wilfred/tree-sitter-elisp")
                (html "https://github.com/tree-sitter/tree-sitter-html")
@@ -120,6 +121,7 @@ the need to update my project hierarchy."
       ;; installed. However, if you want to *update* a grammar then
       ;; this obviously prevents that from happening.
       (unless (treesit-language-available-p (car grammar))
+        (message "Install tree sitter language grammar for %s" (car grammar))
         (treesit-install-language-grammar (car grammar)))))
   :config
   (ff/setup-install-grammars)
