@@ -336,7 +336,7 @@ Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
       sudo apt-get install -y \
            flatpak
 
-      if [ -z "${INSTALL_NYXT}" ]; then
+      if [ -n "${INSTALL_NYXT}" ]; then
       (
           # install Nyxt
           TMP_NYXT_SRC=$(mktemp -d)
@@ -344,7 +344,7 @@ Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
           NYXT_VERSION="3.7.0"
           NYXT_FLATPAK_FILE_NAME="nyxt-${NYXT_VERSION}.flatpak"
           wget "https://github.com/atlas-engineer/nyxt/releases/download/${NYXT_VERSION}/${NYXT_FLATPAK_FILE_NAME}"
-          flatpak install "${NYXT_FLATPAK_FILE_NAME}"
+          sudo flatpak install "${NYXT_FLATPAK_FILE_NAME}"
       )
       fi
 
