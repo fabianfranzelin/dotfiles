@@ -2,14 +2,14 @@
 
 IDS=""
 
-if [ "$(hostname)" = "ST39-C-00066" ] || [ $(hostname) = "LE-C-001RA" ]
+if [ "$(hostname)" = "ST39-C-00066" ] || [ "$(hostname)" = "LE-C-001RA" ]
 then
     IDS="id_rsa id_ed25519"
 fi
 
-if [ "$(hostname)" = "ThinkPad" ] || [ $(hostname) = "DESKTOP-E7EFIIN" ]
+if [ "$(hostname)" = "ThinkPad" ] || [ "$(hostname)" = "DESKTOP-E7EFIIN" ]
 then
-    IDS="id_ed255195"
+    IDS=""
 fi
 
 for id in ${IDS}; do
