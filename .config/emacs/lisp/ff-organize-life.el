@@ -211,12 +211,12 @@ DIR: directory path"
      ("t" "task" entry
       "\n* TODO %^{Todo title}\n %U\n %i\n %?"
       :target (file+head "%<%Y%m%d%H%M>-todo.org"
-                         "#+title: %<%Y-%m-%d %a>\n#+category: Task\n\n")
+                         "#+title: %<%Y-%m-%d %a>\n#+CATEGORY: Task\n\n")
       :unarrowed t)
      ("m" "meeting" entry
       "\n* %<%I:%M %p> - %^{Meeting Title}  :meetings:\n\n%?\n\n"
       :target (file+head "%<%Y%m%d%H%M>-meeting.org"
-                         "#+title: %<%Y-%m-%d %a>\n#+category: Meeting\n\n")
+                         "#+title: %<%Y-%m-%d %a>\n#+CATEGORY: Meeting\n\n")
       :unarrowed t)))
   :config
   ;; better support for roam files, when using org-export
