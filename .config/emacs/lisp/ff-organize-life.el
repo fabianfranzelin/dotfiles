@@ -243,6 +243,13 @@ DIR: directory path"
                                   :and (= type "id")]
                          (org-roam-node-id node)))))
       (format "[%d]" count)))
+
+  ;; create inbox file if it does not already exist
+  (dolist (file-name `(,(expand-file-name "inbox.org" org-roam-dailies-directory)))
+    (unless (file-exists-p file-name)
+      (make-directory (file-name-directory file-name) t)
+      (with-temp-buffer
+        (write-file file-name))))
   :bind
   (("C-x n i" . org-roam-node-insert)
    ("C-x n c" . org-roam-capture)
