@@ -114,14 +114,16 @@ PROJECT-ROOT: Path to the root directory of the current project."
   (project-switch-commands '((project-find-file "Find file")
                              (project-find-dir "Find directory")
                              (ff/project-magit "Magit")
-                             (project-dired "Dired")))
+                             (project-dired "Dired")
+                             (project-vc-dir "VC-Dir")
+                             (affe-find "Fuzzy find")))
   (project-vc-extra-root-markers '(".project.el"))
   (project-vc-ignores '("build/" "install/" ".*cache/" "__pycache__"))
   :bind
   (:map project-prefix-map
         ("P" . ff/project-switch-project)
         ("g" . ff/project-magit)
-        ("v" . ff/project-vterm)
+        ("v" . project-vc-dir)
         ("a" . affe-find)
         ("r" . affe-grep)
         ("t" . ff/project-project-tab)
