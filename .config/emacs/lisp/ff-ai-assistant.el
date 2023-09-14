@@ -17,8 +17,6 @@
 
 (with-eval-after-load 'gptel
   ;; move cursor to next heading when response is posted
-
-
   (add-hook 'gptel-post-response-hook #'(lambda ()
                                           (when (derived-mode-p 'org-mode)
                                             (org-forward-element)
