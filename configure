@@ -346,6 +346,8 @@ Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
           wget "https://github.com/atlas-engineer/nyxt/releases/download/${NYXT_VERSION}/${NYXT_FLATPAK_FILE_NAME}"
           flatpak install "${NYXT_FLATPAK_FILE_NAME}"
       )
+      fi
+
     else
       echo -e "${__COLOR_WARN}WARN: Skip installation of GTK tools.${__COLOR_RESET}"
     fi
@@ -432,5 +434,3 @@ chown -R "$(whoami)" "${HOME}/.gnupg/"
 
 # Also correct the permissions and access rights on the directory
 chmod 700 "${HOME}/.gnupg"
-
-
