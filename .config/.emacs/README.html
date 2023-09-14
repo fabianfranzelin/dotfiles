@@ -16,19 +16,19 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgc29202b">Installation instructions</a>
+<li><a href="#org7dac962">Installation instructions</a>
 <ul>
-<li><a href="#org9e7b577">My little helpers</a></li>
-<li><a href="#orgc3e6804">Main</a></li>
+<li><a href="#org2803bf6">My little helpers</a></li>
+<li><a href="#org0c8ac30">Main</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgc29202b" class="outline-2">
-<h2 id="orgc29202b">Installation instructions</h2>
-<div class="outline-text-2" id="text-orgc29202b">
+<div id="outline-container-org7dac962" class="outline-2">
+<h2 id="org7dac962">Installation instructions</h2>
+<div class="outline-text-2" id="text-org7dac962">
 <p>
 This document describes how I install Emacs. It supports two modes:
 </p>
@@ -43,9 +43,9 @@ it.</li>
 </ol>
 </div>
 
-<div id="outline-container-org9e7b577" class="outline-3">
-<h3 id="org9e7b577">My little helpers</h3>
-<div class="outline-text-3" id="text-org9e7b577">
+<div id="outline-container-org2803bf6" class="outline-3">
+<h3 id="org2803bf6">My little helpers</h3>
+<div class="outline-text-3" id="text-org2803bf6">
 <p>
 Let's start off with some basic stuff and exit the script as soon as an
 error occurs.
@@ -69,7 +69,7 @@ It downloads and extracts Emacs.
 <div class="org-src-container">
 <pre class="src src-shell"><span style="font-weight: bold;">download</span>() {
     (
-        <span style="font-weight: bold; font-style: italic;">__TMP_DIR</span>=<span style="font-style: italic;">"$(</span><span style="font-weight: bold;">mktemp -d</span><span style="font-style: italic;">)"</span>
+        <span style="font-weight: bold; font-style: italic;">__TMP_DIR</span>=<span style="font-style: italic;">"$(mktemp -d)"</span>
         <span style="font-weight: bold;">echo</span> <span style="font-style: italic;">"Download Emacs ${__EMACS_VERSION} to ${__TMP_DIR}"</span>
 
         <span style="font-weight: bold;">cd</span> <span style="font-style: italic;">"${__TMP_DIR}"</span> || <span style="font-weight: bold;">exit</span> 1
@@ -139,7 +139,8 @@ Then, I install all the required third party dependencies and build Emacs
          libpng-dev <span style="font-style: italic;">\</span>
          libxpm-dev <span style="font-style: italic;">\</span>
          libncurses-dev <span style="font-style: italic;">\</span>
-         texinfo
+         texinfo <span style="font-style: italic;">\</span>
+         libsqlite3-dev
 
     <span style="font-weight: bold;">if</span> [ -d <span style="font-style: italic;">"${__EMACS_BUILD}"</span> ]
     <span style="font-weight: bold;">then</span>
@@ -156,7 +157,7 @@ Then, I install all the required third party dependencies and build Emacs
         git clone https://github.com/tree-sitter/tree-sitter.git <span style="font-style: italic;">"${TREE_SITTER_DIR}"</span>
         <span style="font-weight: bold;">cd</span> <span style="font-style: italic;">"${TREE_SITTER_DIR}"</span> || <span style="font-weight: bold;">exit</span> 1
         make clean
-        make -j<span style="font-style: italic;">"$(</span><span style="font-weight: bold;">nproc</span><span style="font-style: italic;">)"</span>
+        make -j<span style="font-style: italic;">"$(nproc)"</span>
         sudo make install
     )
 
@@ -165,6 +166,8 @@ Then, I install all the required third party dependencies and build Emacs
     (
         <span style="font-weight: bold;">cd</span> <span style="font-style: italic;">"${__EMACS_SRC}"</span> || <span style="font-weight: bold;">exit</span> 1
         <span style="font-weight: bold;">export</span> <span style="font-weight: bold; font-style: italic;">CC</span>=/usr/bin/gcc-10 <span style="font-weight: bold; font-style: italic;">CXX</span>=/usr/bin/gcc-10
+        <span style="font-weight: bold; font-style: italic;"># </span><span style="font-weight: bold; font-style: italic;">clean everything before you start</span>
+        make clean
         <span style="font-weight: bold; font-style: italic;"># </span><span style="font-weight: bold; font-style: italic;">Make sure that treesitter lib is available to Emacs build</span>
         <span style="font-weight: bold; font-style: italic;"># </span><span style="font-weight: bold; font-style: italic;">process</span>
         <span style="font-weight: bold;">export</span> <span style="font-weight: bold; font-style: italic;">LD_LIBRARY_PATH</span>=/usr/local/lib:${<span style="font-weight: bold; font-style: italic;">LD_LIBRARY_PATH</span>}
@@ -188,8 +191,7 @@ Then, I install all the required third party dependencies and build Emacs
                     --with-x-toolkit=gtk3 <span style="font-style: italic;">\</span>
                     --with-native-compilation=aot <span style="font-style: italic;">\</span>
                     --with-tree-sitter
-        make clean
-        make -j<span style="font-style: italic;">"$(</span><span style="font-weight: bold;">nproc</span><span style="font-style: italic;">)"</span>
+        make -j<span style="font-style: italic;">"$(nproc)"</span>
     )
 }
 </pre>
@@ -228,7 +230,7 @@ Finally, we check whether the right Emacs version is installed or not
 
 <div class="org-src-container">
 <pre class="src src-shell"><span style="font-weight: bold;">is_expected_emacs_version_installed</span>() {
-    <span style="font-weight: bold; font-style: italic;">__EMACS_VERSION_OUTPUT</span>=$(<span style="font-weight: bold;">emacs -Q --version | grep "${__EMACS_VERSION}"</span>)
+    <span style="font-weight: bold; font-style: italic;">__EMACS_VERSION_OUTPUT</span>=$(emacs -Q --version | grep <span style="font-style: italic;">"${__EMACS_VERSION}"</span>)
     [[ <span style="font-style: italic;">"${__EMACS_VERSION_OUTPUT}"</span> =~ <span style="font-style: italic;">"GNU Emacs ${__EMACS_VERSION}"</span>* ]]
 }
 </pre>
@@ -241,16 +243,16 @@ exist or not.
 
 <div class="org-src-container">
 <pre class="src src-shell"><span style="font-weight: bold;">exists_src_directory</span>() {
-    <span style="font-weight: bold;">test</span> -r <span style="font-style: italic;">"${__EMACS_SRC}"</span>
+    test -r <span style="font-style: italic;">"${__EMACS_SRC}"</span>
 }
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgc3e6804" class="outline-3">
-<h3 id="orgc3e6804">Main</h3>
-<div class="outline-text-3" id="text-orgc3e6804">
+<div id="outline-container-org0c8ac30" class="outline-3">
+<h3 id="org0c8ac30">Main</h3>
+<div class="outline-text-3" id="text-org0c8ac30">
 <p>
 Here, we combine the little helper functions from the previous section
 to install various versions of Emacs.

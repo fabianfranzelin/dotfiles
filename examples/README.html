@@ -16,9 +16,9 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org0b86353">Internal examples</a></li>
-<li><a href="#org8fbfb34">Typescript and React</a></li>
-<li><a href="#org9437faf">Sphinx and Esbonio</a></li>
+<li><a href="#orga014a26">Internal examples</a></li>
+<li><a href="#org968594e">Typescript and React</a></li>
+<li><a href="#orgfe0f80e">Sphinx and Esbonio</a></li>
 </ul>
 </div>
 </div>
@@ -27,9 +27,9 @@ This folder contains some code examples to test my system
 configuration.
 </p>
 
-<div id="outline-container-org0b86353" class="outline-2">
-<h2 id="org0b86353">Internal examples</h2>
-<div class="outline-text-2" id="text-org0b86353">
+<div id="outline-container-orga014a26" class="outline-2">
+<h2 id="orga014a26">Internal examples</h2>
+<div class="outline-text-2" id="text-orga014a26">
 <ul class="org-ul">
 <li><a href="org-project/">Scientific paper with org-mode</a></li>
 <li><a href="cc-project/">Simple C++/CMake project</a></li>
@@ -38,22 +38,40 @@ configuration.
 </div>
 </div>
 
-<div id="outline-container-org8fbfb34" class="outline-2">
-<h2 id="org8fbfb34">Typescript and React</h2>
-<div class="outline-text-2" id="text-org8fbfb34">
+<div id="outline-container-org968594e" class="outline-2">
+<h2 id="org968594e">Typescript and React</h2>
+<div class="outline-text-2" id="text-org968594e">
 <p>
 There is a minimal example available online to test the setup:
 <a href="https://github.com/cpbotha/typescript-emacs-demo.git">Typescript Emacs project (remote)</a>
 </p>
+
+<ol class="org-ol">
+<li>Clone the repository first</li>
+</ol>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">git clone <span style="font-style: italic;">"https://github.com/cpbotha/typescript-emacs-demo.git"</span> <span style="font-style: italic;">"~/workspace"</span>
+cd <span style="font-style: italic;">"~/workspace/typescript-emacs-demo/"</span>
+</pre>
+</div>
+
+<p>
+Then install all the npm dependencies before you start the development server
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">npm install
+yarn start
+</pre>
+</div>
 </div>
 </div>
 
-<div id="outline-container-org9437faf" class="outline-2">
-<h2 id="org9437faf">Sphinx and Esbonio</h2>
-<div class="outline-text-2" id="text-org9437faf">
+<div id="outline-container-orgfe0f80e" class="outline-2">
+<h2 id="orgfe0f80e">Sphinx and Esbonio</h2>
+<div class="outline-text-2" id="text-orgfe0f80e">
 <p>
 To setup esbonio in your actual project, use this snippet as a
-template for your <code>.dir-local.el</code> file
+template for your <code>.dir-locals.el</code> file
 </p>
 
 <div class="org-src-container">
