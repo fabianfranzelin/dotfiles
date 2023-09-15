@@ -2,11 +2,7 @@
 
 # Set default keyboard layout to german and replace caps lock by
 # control
-set_default_keyboard_layout
-
-# Not available in default repositories of Ubuntu.
-# picom &
-nm-applet &
+# setxkbmap -layout de -option ctrl:nocaps && xmodmap -e "keycode 111 = Alt_L Meta_L Alt_L Meta_L"
 
 ### UNCOMMENT ONLY ONE OF THE FOLLOWING THREE OPTIONS! ###
 # 1. Uncomment to restore last saved wallpaper
