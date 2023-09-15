@@ -1,4 +1,5 @@
 #!/bin/bash
 
 QTILE_PYTHON_FILEPATH="${HOME}/.cache/qtile/python/bin/python3"
-${QTILE_PYTHON_FILEPATH} ${HOME}/.local/bin/qtile start -c "${HOME}/.config/qtile/config.py"
+QTILE_BIN_FILEPATH="${HOME}/.cache/qtile/python/bin/qtile"
+${QTILE_PYTHON_FILEPATH} ${QTILE_BIN_FILEPATH} start -c "${HOME}/.config/qtile/config.py"
