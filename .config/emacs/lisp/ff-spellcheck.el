@@ -145,20 +145,22 @@ code-vs-text is handled appropriately."
     (ff/flyspell-on-for-buffer-type)))
 
 (use-package flyspell
-  :hook ((prog-mode . flyspell-prog-mode)
-         (text-mode . flyspell-mode)
-         (latex-mode . flyspell-mode)
-         (rst-mode . flyspell-mode)
-         (htm-mode . flyspell-mode)
-         (html-mode . flyspell-mode)
-         (org-mode . flyspell-mode)
-         (emacs-lisp-mode . flyspell-mode))
-  :bind (("C-c f" . ff/flyspell-toggle)
-         ;; disable default key since it is used by embark
-         :map flyspell-mode-map
-         ("C-." . nil)
-         ;; disable this one because it is used otherwise in org-mode
-         ("M-TAB" . nil)))
+  :hook
+  (prog-mode . flyspell-prog-mode)
+  (text-mode . flyspell-mode)
+  (latex-mode . flyspell-mode)
+  (rst-mode . flyspell-mode)
+  (htm-mode . flyspell-mode)
+  (html-mode . flyspell-mode)
+  (org-mode . flyspell-mode)
+  (emacs-lisp-mode . flyspell-mode)
+  :bind
+  (("C-c f" . ff/flyspell-toggle)
+   ;; disable default key since it is used by embark
+   :map flyspell-mode-map
+   ("C-." . nil)
+   ;; disable this one because it is used otherwise in org-mode
+   ("M-TAB" . nil)))
 
 (use-package flyspell-correct
   :after flyspell

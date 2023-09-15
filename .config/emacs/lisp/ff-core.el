@@ -209,10 +209,10 @@ COMMAND: command to be executed"
 (use-package olivetti
   :custom (olivetti-body-width 0.66)
   :hook
-  ((org-mode . olivetti-mode)
-   (rst-mode . olivetti-mode)
-   (markdown-mode . olivetti-mode)
-   (LaTeX-mode . olivetti-mode)))
+  (org-mode . olivetti-mode)
+  (rst-mode . olivetti-mode)
+  (markdown-mode . olivetti-mode)
+  (LaTeX-mode . olivetti-mode))
 
 ;; -------------------------------------------------------------------
 ;; Tramp
@@ -265,11 +265,11 @@ COMMAND: command to be executed"
   (require 'dired-x)
   (autoload 'dired-omit-mode "dired-x")
   :hook
-  ((dired-mode . auto-revert-mode)
-   (dired-mode . dired-hide-details-mode)
-   (dired-mode . hl-line-mode)
-   ;; enables drag-and-drop in dired
-   (dired-mode . org-download-enable))
+  (dired-mode . auto-revert-mode)
+  (dired-mode . dired-hide-details-mode)
+  (dired-mode . hl-line-mode)
+  ;; enables drag-and-drop in dired
+  (dired-mode . org-download-enable)
   :bind
   (("C-x C-j" . dired-jump)
    :map dired-mode-map
