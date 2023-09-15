@@ -47,7 +47,7 @@
 
 (use-package nerd-icons-dired
   :hook
-  ((dired-mode . nerd-icons-dired-mode)))
+  (dired-mode . nerd-icons-dired-mode))
 
 ;; -------------------------------------------------------------------
 ;; Doom Color themes

@@ -176,8 +176,8 @@ DIR: directory"
 (use-package consult
   ;; Enable automatic preview at point in the *Completions* buffer. This is
   ;; relevant when you use the default completion UI.
-  :hook ((completion-list-mode . consult-preview-at-point-mode))
-
+  :hook
+  (completion-list-mode . consult-preview-at-point-mode)
   :init
   ;; Optionally configure the register formatting. This improves the register
   ;; preview for `consult-register', `consult-register-load',
@@ -319,7 +319,8 @@ targets."
   :after (embark consult)
   ;; if you want to have consult previews as you move around an
   ;; auto-updating embark collect buffer
-  :hook ((embark-collect-mode . consult-preview-at-point-mode)))
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
 
 (provide 'ff-vertical-completion)
 

@@ -15,8 +15,8 @@
   ;; (e.g. GitHub flavored markdown). Pandoc does, so let's use that.
   (markdown-command "pandoc --from markdown --to html")
   (markdown-command-needs-filename t)
-  :init
-  :hook ((markdown-mode . flyspell-mode)))
+  :hook
+  (markdown-mode . flyspell-mode))
 
 ;; configure auto format
 (with-eval-after-load 'apheleia
@@ -47,11 +47,13 @@
          cape-dict)))
 
 (use-package rst
-  :mode (("\\.rst$" . rst-mode)
-         ("\\.rest$" . rst-mode)
-         ("\\.inc$" . rst-mode))
-  :hook ((rst-mode . pyvenv-mode) ;; enable support of virtual environments
-         (rst-mode . ff/configure-rst-mode)))
+  :mode
+  ("\\.rst$" . rst-mode)
+  ("\\.rest$" . rst-mode)
+  ("\\.inc$" . rst-mode)
+  :hook
+  (rst-mode . pyvenv-mode) ;; enable support of virtual environments
+  (rst-mode . ff/configure-rst-mode))
 
 (with-eval-after-load 'eglot
   ;; Sphinx, rst-mode
@@ -146,8 +148,9 @@ JAR-PATH: expected binary file in the extracted folder."
 ;; -------------------------------------------------------------------
 (use-package auctex
   :commands LaTeX-mode
-  :hook ((LaTeX-mode . TeX-fold-mode)
-         (LaTeX-mode . outline-minor-mode))
+  :hook
+  (LaTeX-mode . TeX-fold-mode)
+  (LaTeX-mode . outline-minor-mode)
   :init
   ;; Let auctex open pdf files with pdf-tools
   (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
@@ -165,14 +168,15 @@ JAR-PATH: expected binary file in the extracted folder."
           ("bib" . "kpsewhich -format=.bib %f")))
 
   (setq LaTeX-command "latex -synctex=1") ;; enable synctex
-  :hook ((reftex-mode . imenu-add-menubar-index)
-         (LaTeX-mode . turn-on-reftex)
-         (latex-mode . turn-on-reftex)
-         (LaTeX-mode . reftex-mode)
-         (LaTeX-mode . LaTeX-math-mode)
-         (LaTeX-mode . TeX-PDF-mode)
-         ;; Set index on document
-         (with-eval-after-load . imenu-add-menubar-index)))
+  :hook
+  (reftex-mode . imenu-add-menubar-index)
+  (LaTeX-mode . turn-on-reftex)
+  (latex-mode . turn-on-reftex)
+  (LaTeX-mode . reftex-mode)
+  (LaTeX-mode . LaTeX-math-mode)
+  (LaTeX-mode . TeX-PDF-mode)
+  ;; Set index on document
+  (with-eval-after-load . imenu-add-menubar-index))
 
 ;; emacs RefTeX
 ;; (setq reftex-ref-macro-prompt nil) ; skips picking the reference style

@@ -50,7 +50,8 @@
 ;; enable sphinx doc strings support
 ;; C-c M-d sphinx-doc
 (use-package sphinx-doc
-  :hook ((python-ts-mode . sphinx-doc-mode)))
+  :hook
+  (python-ts-mode . sphinx-doc-mode))
 
 ;; magit like interface to pytest
 (use-package python-pytest

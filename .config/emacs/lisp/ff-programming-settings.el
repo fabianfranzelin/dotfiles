@@ -9,20 +9,21 @@
 ;; LSP Client Eglot
 ;; -------------------------------------------------------------------
 (use-package eglot
-  :hook ((c++-ts-mode . eglot-ensure)
-         (c-ts-mode . eglot-ensure)
-         (java-ts-mode . eglot-ensure)
-         (python-ts-mode . eglot-ensure)
-         (typescript-ts-mode . eglot-ensure)
-         (tsx-ts-mode . eglot-ensure)
-         (json-ts-mode . eglot-ensure)
-         (yaml-ts-mode . eglot-ensure)
-         (bash-ts-mode . eglot-ensure)
-         (bash-ts-mode . eglot-ensure)
-         (sh-mode . englot-ensure)
-         (cmake-ts-mode . eglot-ensure)
-         (dockerfile-ts-mode . eglot-ensure)
-         (rst-mode . eglot-ensure))
+  :hook
+  (c++-ts-mode . eglot-ensure)
+  (c-ts-mode . eglot-ensure)
+  (java-ts-mode . eglot-ensure)
+  (python-ts-mode . eglot-ensure)
+  (typescript-ts-mode . eglot-ensure)
+  (tsx-ts-mode . eglot-ensure)
+  (json-ts-mode . eglot-ensure)
+  (yaml-ts-mode . eglot-ensure)
+  (bash-ts-mode . eglot-ensure)
+  (bash-ts-mode . eglot-ensure)
+  (sh-mode . englot-ensure)
+  (cmake-ts-mode . eglot-ensure)
+  (dockerfile-ts-mode . eglot-ensure)
+  (rst-mode . eglot-ensure)
   :custom
   (eglot-events-buffer-size 10)
   :config
@@ -139,12 +140,12 @@ the need to update my project hierarchy."
   ;; You can manually enable Combobulate with `M-x
   ;; combobulate-mode'.
   :hook
-  ((python-ts-mode . combobulate-mode)
-   (js-ts-mode . combobulate-mode)
-   (css-ts-mode . combobulate-mode)
-   (yaml-ts-mode . combobulate-mode)
-   (typescript-ts-mode . combobulate-mode)
-   (tsx-ts-mode . combobulate-mode)))
+  (python-ts-mode . combobulate-mode)
+  (js-ts-mode . combobulate-mode)
+  (css-ts-mode . combobulate-mode)
+  (yaml-ts-mode . combobulate-mode)
+  (typescript-ts-mode . combobulate-mode)
+  (tsx-ts-mode . combobulate-mode))
 
 ;; this package is required for refactoring with multiple cursors in
 ;; combobulate
@@ -196,7 +197,8 @@ the need to update my project hierarchy."
 
 ;; enable rainbow delimiters for emacs lisp
 (use-package rainbow-delimiters
-  :hook ((emacs-lisp-mode . rainbow-delimiters-mode)))
+  :hook
+  (emacs-lisp-mode . rainbow-delimiters-mode))
 
 ;; define shortcut that launches ielm
 (define-key emacs-lisp-mode-map (kbd "C-c C-p") #'(lambda ()
