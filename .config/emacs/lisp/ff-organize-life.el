@@ -24,6 +24,8 @@ DIR: directory path"
   (org-babel-python-command "/usr/bin/python3")
   ;; disable isearch when using org-goto
   (org-goto-auto-isearch nil)
+  ;; use relative paths for links
+  (org-link-file-path-type 'relative)
   :hook
   ;; clocking
   (org-timer-set . org-clock-in))
@@ -69,10 +71,13 @@ DIR: directory path"
 ;; https://github.com/abo-abo/org-download
 (use-package org-download
   :after org
+  :custom
+  (org-download-method 'directory)
+  (org-download-image-org-width 600)
   :bind
   (:map org-mode-map
-        ("s-Y" . org-download-screenshot)
-        ("s-y" . org-download-yank)))
+        ("Y" . org-download-screenshot)
+        ("y" . org-download-yank)))
 
 ;; -------------------------------------------------------------------
 ;; Org modern: nice fonts, colors, etc.

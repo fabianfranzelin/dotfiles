@@ -22,12 +22,12 @@
 
 ;; use latest develop for straight itself; check
 ;; https://github.com/radian-software/straight.el/issues/1059
-(setq straight-repository-branch "develop")
+(customize-set-variable 'straight-repository-branch "develop")
 
 ;; set actual repository user from github, so that pull straight works
 ;; with given recipe from
 ;; https://github.com/radian-software/straight.el#overriding-recipes
-(setq straight-repository-user "radian-software")
+(customize-set-variable 'straight-repository-user "radian-software")
 
 ;; Download straight directly from github
 (defvar bootstrap-version)
@@ -47,7 +47,7 @@
 (straight-use-package 'use-package)
 
 ;; ensure all packages to be installed
-(setq straight-use-package-by-default t)
+(customize-set-variable 'straight-use-package-by-default t)
 
 ;; -------------------------------------------------------------------
 ;; define path of local lisp packages that are part of the dotfiles
@@ -61,9 +61,10 @@
 ;; -------------------------------------------------------------------
 ;; Before we do anything, set up the no littering package
 (use-package no-littering
+  :custom
+  (custom-file (no-littering-expand-etc-file-name "custom.el"))
   :init
   ;; setup a new custom file and load it
-  (setq custom-file (no-littering-expand-etc-file-name "custom.el"))
   (load custom-file t)
   :config
   ;; this sets the path right for undo-tree, auto-save and backup files
