@@ -100,7 +100,7 @@ COMMAND: command to be executed"
     (async-shell-command command)))
 
 ;; add newline with C-n when at end of buffer.
-(setq next-line-add-newlines t)
+(setq next-line-add-newlines nil)
 
 ;; -------------------------------------------------------------------
 ;; Global key bindings
