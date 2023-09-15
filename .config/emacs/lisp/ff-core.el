@@ -541,8 +541,8 @@ TEXT: title"
 ;; Zoom globally for all buffers
 (use-package zoom-frm
   :bind
-  (("C-c +" . zoom-frm-in)
-   ("C-c -" . zoom-frm-out)))
+  (("C-c +" . (lambda () (interactive) (ff/repeat-command 'zoom-frm-in)))
+   ("C-c -" . (lambda () (interactive) (ff/repeat-command 'zoom-frm-out)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Save kill ring over various sessions
