@@ -7,8 +7,8 @@
 
 ;;; Garbage collection
 ;; Increase the GC threshold for faster startup
-;; The default is 800 kilobytes.  Measured in bytes.
-(setq gc-cons-threshold (* 50 1000 1000))
+;; The default is 800 kilobytes. Measured in bytes.
+(customize-set-variable 'gc-cons-threshold (* 50 1000 1000))
 
 ;;; Emacs lisp source/compiled preference
 ;; Prefer loading newest compiled .el file
@@ -16,7 +16,7 @@
 
 ;; -------------------------------------------------------------------
 ;; Disable package.el since we use straight.el
-(setq package-enable-at-startup nil)
+(customize-set-variable 'package-enable-at-startup nil)
 
 ;; -------------------------------------------------------------------
 ;; Change my user emacs directory to non-default location since it is
@@ -34,7 +34,7 @@
 (when (fboundp 'startup-redirect-eln-cache)
   (startup-redirect-eln-cache
    (convert-standard-filename
-  (expand-file-name  "var/eln-cache/" user-emacs-directory))))
+    (expand-file-name  "var/eln-cache/" user-emacs-directory))))
 
 (when (featurep 'native-compile)
   ;; Set the right directory to store the native compilation cache

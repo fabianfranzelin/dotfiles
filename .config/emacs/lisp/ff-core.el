@@ -7,13 +7,10 @@
 
 (require 'ff-ensure-system-packages)
 
-;; The default is 800 kilobytes. Measured in bytes.
-(setq gc-cons-threshold (* 50 1000 1000))
-
 ;; enables local variables per default
-(setq enable-local-variables t)
+(customize-set-variable 'enable-local-variables t)
 ;; dir-local variables will be applied to remote files.
-(setq enable-remote-dir-locals t)
+(customize-set-variable 'enable-remote-dir-locals t)
 
 ;; dont warn for following symlinked files
 (setq vc-follow-symlinks t)
