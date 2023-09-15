@@ -28,7 +28,12 @@ DIR: directory path"
   (org-link-file-path-type 'relative)
   :hook
   ;; clocking
-  (org-timer-set . org-clock-in))
+  (org-timer-set . org-clock-in)
+  :bind
+  (:map org-mode-map
+        ;; disable these two keys since they are taken by zoom-frm
+        ("C-c +" . nil)
+        ("C-c -" . nil)))
 
 (with-eval-after-load 'org
   (require 'org-indent)
@@ -76,8 +81,8 @@ DIR: directory path"
   (org-download-image-org-width 600)
   :bind
   (:map org-mode-map
-        ("Y" . org-download-screenshot)
-        ("y" . org-download-yank)))
+        ("C-c C-x Y" . org-download-screenshot)
+        ("C-c C-x y" . org-download-yank)))
 
 ;; -------------------------------------------------------------------
 ;; Org modern: nice fonts, colors, etc.
