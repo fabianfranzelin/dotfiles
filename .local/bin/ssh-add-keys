@@ -9,7 +9,7 @@ fi
 
 if [ "$(hostname)" = "ThinkPad" ] || [ "$(hostname)" = "DESKTOP-E7EFIIN" ]
 then
-    IDS=""
+    IDS="id_ed25519"
 fi
 
 for id in ${IDS}; do
