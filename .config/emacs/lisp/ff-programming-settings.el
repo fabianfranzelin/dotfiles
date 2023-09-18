@@ -9,6 +9,7 @@
 ;; LSP Client Eglot
 ;; -------------------------------------------------------------------
 (use-package eglot
+  :commands eglot-ensure
   :hook
   (c++-ts-mode . eglot-ensure)
   (c-ts-mode . eglot-ensure)
@@ -19,8 +20,6 @@
   (json-ts-mode . eglot-ensure)
   (yaml-ts-mode . eglot-ensure)
   (bash-ts-mode . eglot-ensure)
-  (bash-ts-mode . eglot-ensure)
-  (sh-mode . englot-ensure)
   (cmake-ts-mode . eglot-ensure)
   (dockerfile-ts-mode . eglot-ensure)
   (rst-mode . eglot-ensure)
@@ -234,6 +233,9 @@ the need to update my project hierarchy."
 ;; Shell
 ;; -------------------------------------------------------------------
 ;; part of the lsp-mode configuration
+
+;; use tree-sitter as default and overwrite python-mode
+(add-to-list 'major-mode-remap-alist '(sh-mode bash-ts-mode))
 
 ;; Make sure that my preferred linter is installed
 (ff/ensure-apt-package "shellcheck" "shellcheck")
