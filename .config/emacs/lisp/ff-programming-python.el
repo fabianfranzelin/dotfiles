@@ -22,7 +22,7 @@
 (ff/ensure-python-package "isort" nil "isort")
 
 ;; use tree-sitter as default and overwrite python-mode
-(add-to-list 'major-mode-remap-alist '(python-mode python-ts-mode))
+(add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
 
 (add-to-list 'auto-mode-alist '("\\.py\\'" . python-ts-mode))
 (add-to-list 'auto-mode-alist '("SConstruct" . python-ts-mode))
