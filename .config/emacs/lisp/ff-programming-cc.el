@@ -80,9 +80,9 @@ REPLACE-STR: string that replaces all regex matches"
   (add-to-list 'eglot-server-programs `(c++-ts-mode "clangd")))
 
 ;; use tree-sitter as default and overwrite all C/C++ modes
-(add-to-list 'major-mode-remap-alist '(c++-mode c++-ts-mode))
-(add-to-list 'major-mode-remap-alist '(c-mode c-ts-mode))
-(add-to-list 'major-mode-remap-alist '(c-or-c++-mode c-or-c++-ts-mode))
+(add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
+(add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
+(add-to-list 'major-mode-remap-alist '(c-or-c++-mode . c-or-c++-ts-mode))
 
 ;; set up file bindings
 (add-to-list 'auto-mode-alist '("\\.cpp\\'" . c++-ts-mode))

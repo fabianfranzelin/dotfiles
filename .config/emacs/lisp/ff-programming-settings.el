@@ -235,7 +235,7 @@ the need to update my project hierarchy."
 ;; part of the lsp-mode configuration
 
 ;; use tree-sitter as default and overwrite python-mode
-(add-to-list 'major-mode-remap-alist '(sh-mode bash-ts-mode))
+(add-to-list 'major-mode-remap-alist '(sh-mode . bash-ts-mode))
 
 ;; Make sure that my preferred linter is installed
 (ff/ensure-apt-package "shellcheck" "shellcheck")
@@ -363,7 +363,7 @@ the need to update my project hierarchy."
 ;; toml
 ;; -------------------------------------------------------------------
 ;; use tree-sitter as default and overwrite conf-toml-mode
-(add-to-list 'major-mode-remap-alist '(conf-toml-mode toml-ts-mode))
+(add-to-list 'major-mode-remap-alist '(conf-toml-mode . toml-ts-mode))
 
 ;; -------------------------------------------------------------------
 ;; Direnv: I am using the buffer local version and not the direnv
@@ -375,7 +375,7 @@ the need to update my project hierarchy."
 ;; HTML, CSS, etc.
 ;; -------------------------------------------------------------------
 ;; use tree-sitter as default and overwrite python-mode
-(add-to-list 'major-mode-remap-alist '(css-mode css-ts-mode))
+(add-to-list 'major-mode-remap-alist '(css-mode . css-ts-mode))
 
 ;; -------------------------------------------------------------------
 ;; SQLite

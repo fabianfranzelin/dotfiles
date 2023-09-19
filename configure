@@ -181,7 +181,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
     then
         # use nvm to install node, npm, etc. See
         # https://github.com/nvm-sh/nvm for details.
-        wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+        wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
     fi
     # load nvm paths
     export NVM_DIR="${HOME}/.config/nvm"
@@ -190,14 +190,16 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
     # install npm v16 as default
-    nvm install 14
-    nvm use 14
+    nvm install 16
+    nvm use 16
+
+    # update node
+    nvm install node
 
     # install lsp servers, linters, etc.
     npm install -g \
         yaml-language-server \
         bash-language-server \
-        typescript \
         typescript-language-server \
         dockerfile-language-server-nodejs \
         jsonlint \
