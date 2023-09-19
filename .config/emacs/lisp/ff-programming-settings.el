@@ -19,7 +19,9 @@
   (tsx-ts-mode . eglot-ensure)
   (json-ts-mode . eglot-ensure)
   (yaml-ts-mode . eglot-ensure)
-  (bash-ts-mode . eglot-ensure)
+  ;; Wait for tree-sitter mode to be fixed
+  ;; https://github.com/bash-lsp/bash-language-server/issues/943
+  ;; (bash-ts-mode . eglot-ensure)
   (cmake-ts-mode . eglot-ensure)
   (dockerfile-ts-mode . eglot-ensure)
   (rst-mode . eglot-ensure)
