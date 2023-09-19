@@ -181,7 +181,10 @@ DIR: directory path"
   :custom
   (org-roam-directory (expand-file-name "notes" org-directory))
   (org-roam-node-display-template
-   (concat "${title:80} " (propertize "${tags:20}" 'face 'org-tag) "${backlinkscount:6}"))
+   (concat "${title:80}"
+           (propertize "${tags:20}" 'face 'org-tag)
+           "${category:15}"
+           "${backlinkscount:6}"))
   (org-roam-node-annotation-function (lambda (node) (marginalia--time (org-roam-node-file-mtime node))))
   (org-roam-database-connector 'sqlite-builtin)
   (org-roam-db-gc-threshold most-positive-fixnum)
