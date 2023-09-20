@@ -481,8 +481,7 @@ FILE-PAGE: page at which the annotation refers to"
   ;;     WAIT - Waiting for someone else to be actionable again
   ;;     DONE - It's done!
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
-          (sequence "|" "WAIT(w)")))
+        '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "|" "DONE(d!)")))
 
   (setq org-todo-keyword-faces
         '(("NEXT" . (:foreground "orange red" :weight bold))
