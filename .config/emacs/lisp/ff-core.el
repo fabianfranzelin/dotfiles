@@ -485,8 +485,6 @@ TEXT: title"
   :custom
   (yas-wrap-around-region t)
   :init
-  ;; add pesonal snippets directory
-  (add-to-list 'yas-snippet-dirs (expand-file-name "snippets/" emacs-config-home))
   ;; enable yas everywhere
   (yas-global-mode 1)
   :config
@@ -520,7 +518,13 @@ TEXT: title"
             ("js-mode" . "js-ts-mode")
             ("typescript-mode" . "typescript-ts-mode")
             ("typescript-mode". "tsx-ts-mode")
-            ("yaml-mode" . "yaml-ts-mode"))))
+            ("yaml-mode" . "yaml-ts-mode")))
+
+  ;; update snippet directories
+  ;; add pesonal snippets directory
+  (customize-set-variable 'yas-snippet-dirs `(,(expand-file-name "snippets/" emacs-config-home)
+                                              ,yasnippet-snippets-dir)))
+
 
 ;; -------------------------------------------------------------------
 ;; Ace window: select windows based on numbers
