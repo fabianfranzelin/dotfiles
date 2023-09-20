@@ -2,5 +2,27 @@
 
 + [[https://www.configserverfirewall.com/windows-10/please-enable-the-virtual-machine-platform-windows-feature-and-ensure-virtualization-is-enabled-in-the-bios/][Enable WSL2]]
 + [[https://learn.microsoft.com/en-us/windows/wsl/setup/environment#set-up-your-linux-username-and-password][Setup windows terminal]]
-+ [[https://github.com/microsoft/WSL/issues/4793][XLaunch setup for vcxsrv]]
 + [[https://www.configserverfirewall.com/windows-10/please-enable-the-virtual-machine-platform-windows-feature-and-ensure-virtualization-is-enabled-in-the-bios/][Remove WSL completely]]
+
+** Vcxsrv
+
++ [[https://github.com/microsoft/WSL/issues/4793][XLaunch setup for vcxsrv]]
+
+**** Configure X server
+
+I found the best way to use the =vcxsrv= is to use the multi-window
+mode. Each GUI starts in its own window, it can be resized on-the-fly
+and they do not interfere with one another in the same window. Use the
+following command to start =vcxsrv= in that mode
+
+#+begin_src shell :tangle yes
+"C:\Program Files\VcXsrv\vcxsrv.exe" :0 -clipboard -ac -multiwindow -wgl
+#+end_src
+
++ =:0= Display number
++ =clipboard= Enable clipboard sharing between host and wsl
++ =ac= Disable access control restrictions so that the wsl client can
+  connect to the server
++ =wgl= Enable GLX extension
+
+For details, check the [[https://gist.github.com/ctaggart/68ead4d0d942b240061086f4ba587f5f][command line options of vcxsrv]].
