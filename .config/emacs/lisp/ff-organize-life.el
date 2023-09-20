@@ -49,6 +49,7 @@ DIR: directory path"
   (add-to-list 'org-structure-template-alist '("py" . "src python"))
   (add-to-list 'org-structure-template-alist '("cc" . "src c++"))
 
+  ;; org-babel
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
@@ -60,6 +61,9 @@ DIR: directory path"
      (dot . t)
      (gnuplot . t)))
   (push '("conf-unix" . conf-unix) org-src-lang-modes)
+
+  ;; do not ask each time whether a source block should be evaluated
+  (customize-set-variable 'org-confirm-babel-evaluate nil)
 
   ;; yas-snippet
   (define-key org-mode-map (kbd "C-c C-y") 'yas-insert-snippet))
