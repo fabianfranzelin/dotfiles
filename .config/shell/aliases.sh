@@ -86,3 +86,6 @@ alias set_default_keyboard_layout='setxkbmap -layout de -option ctrl:nocaps && x
 
 # SSH logins
 alias ssh_ws='sshpass -p "$(pass passwords/$(pass usernames/bosch)@login)" ssh ws'
+
+# unlock gpg key
+alias unlock_key="pass usernames/public@github > /dev/null"

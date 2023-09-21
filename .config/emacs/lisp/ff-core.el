@@ -340,6 +340,12 @@ COMMAND: command to be executed"
   (interactive)
   (async-shell-command "pkill -9 ssh-agent && eval $(ssh-agent -s) && ssh-add-keys"))
 
+(defun ff/unlock-key ()
+  "Unlock gpg key."
+  (interactive)
+  (password-store-get "usernames/public@github")
+  (message "GPG key is unlocked"))
+
 (use-package pass
   :custom (pass-show-keybindings nil))
 
