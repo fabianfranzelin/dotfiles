@@ -343,8 +343,11 @@ COMMAND: command to be executed"
 (defun ff/unlock-key ()
   "Unlock gpg key."
   (interactive)
-  (password-store-get "usernames/public@github")
-  (message "GPG key is unlocked"))
+  (if (password-store-get "usernames/public@github")
+      (message "GPG key is unlocked")
+    (message "Wrong password. GPG key is not unlocked.")))
+
+(global-set-key (kbd "C-c g") 'ff/unlock-key)
 
 (use-package pass
   :custom (pass-show-keybindings nil))

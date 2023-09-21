@@ -34,7 +34,7 @@ if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
-alias init='wsl.exe -d wsl-vpnkit service wsl-vpnkit start; sudo service cntlm start; sudo service docker start'
+alias init='wsl.exe -d wsl-vpnkit service wsl-vpnkit start; sudo service cntlm start; sudo service docker start; vcxsrv-multi-window'
 
 # Restart ssh-agent on each startup. I do not know why this is required in WSL
 pkill -9 ssh-agent && eval "$(ssh-agent -s)" > /dev/null
