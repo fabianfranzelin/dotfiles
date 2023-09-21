@@ -1,0 +1,12 @@
+#!/bin/bash
+
+VCXSRV_CMD="/mnt/c/Program Files/VcXsrv/vcxsrv.exe"
+VCXSRV_ARGS=":0 -clipboard -ac -multiwindow -wgl"
+
+if [ -f "${VCXSRV_CMD}" ]
+then
+    # shellcheck disable=SC2086
+    "${VCXSRV_CMD}" ${VCXSRV_ARGS}
+else
+    echo "Executable vor VcXsrv is missing under ${VCXSRV_CMD}."
+fi
