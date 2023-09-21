@@ -15,18 +15,60 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org87e8f48">WSL2</a></li>
+<li><a href="#orgc14f5a7">WSL2</a>
+<ul>
+<li><a href="#org1a02d83">Vcxsrv</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org87e8f48" class="outline-2">
-<h2 id="org87e8f48">WSL2</h2>
-<div class="outline-text-2" id="text-org87e8f48">
+<div id="outline-container-orgc14f5a7" class="outline-2">
+<h2 id="orgc14f5a7">WSL2</h2>
+<div class="outline-text-2" id="text-orgc14f5a7">
 <ul class="org-ul">
 <li><a href="https://www.configserverfirewall.com/windows-10/please-enable-the-virtual-machine-platform-windows-feature-and-ensure-virtualization-is-enabled-in-the-bios/">Enable WSL2</a></li>
 <li><a href="https://learn.microsoft.com/en-us/windows/wsl/setup/environment#set-up-your-linux-username-and-password">Setup windows terminal</a></li>
-<li><a href="https://github.com/microsoft/WSL/issues/4793">XLaunch setup for vcxsrv</a></li>
 <li><a href="https://www.configserverfirewall.com/windows-10/please-enable-the-virtual-machine-platform-windows-feature-and-ensure-virtualization-is-enabled-in-the-bios/">Remove WSL completely</a></li>
+</ul>
+</div>
+
+<div id="outline-container-org1a02d83" class="outline-3">
+<h3 id="org1a02d83">Vcxsrv</h3>
+<div class="outline-text-3" id="text-org1a02d83">
+<ul class="org-ul">
+<li><a href="https://github.com/microsoft/WSL/issues/4793">XLaunch setup for vcxsrv</a></li>
+</ul>
+</div>
+
+<ul class="org-ul">
+<li><a id="org895c026"></a>Configure X server<br />
+<div class="outline-text-5" id="text-org895c026">
+<p>
+I found the best way to use the <code>vcxsrv</code> is to use the multi-window
+mode. Each GUI starts in its own window, it can be resized on-the-fly
+and they do not interfere with one another in the same window. Use the
+following command to start <code>vcxsrv</code> in that mode
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell"><span style="font-style: italic;">"C:\Program Files\VcXsrv\vcxsrv.exe"</span> :0 -clipboard -ac -multiwindow -wgl
+</pre>
+</div>
+
+<ul class="org-ul">
+<li><code>:0</code> Display number</li>
+<li><code>clipboard</code> Enable clipboard sharing between host and wsl</li>
+<li><code>ac</code> Disable access control restrictions so that the wsl client can
+connect to the server</li>
+<li><code>wgl</code> Enable GLX extension</li>
+</ul>
+
+<p>
+For details, check the <a href="https://gist.github.com/ctaggart/68ead4d0d942b240061086f4ba587f5f">command line options of vcxsrv</a>.
+</p>
+</div>
+</li>
 </ul>
 </div>
 </div>
