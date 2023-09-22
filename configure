@@ -132,6 +132,13 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          texlive-bibtex-extra \
          biber
 
+    if ( __is_wsl ) then
+       # install wslview for xdg-open so that firefox calls are
+       # forwarded to host system
+       sudo apt install -y \
+            wslu
+    fi
+
     # ---------------------------------------------------------
     # install dependencies for Emacs
     sudo apt-get install -y \
