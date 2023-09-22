@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: inline-python
+# key: inline-python
+# --
+src_python[:session]{$0}
