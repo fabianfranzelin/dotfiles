@@ -2,6 +2,6 @@
 # name: python
 # key: python
 # --
-#+begin_src python :tangle yes
+#+begin_src python :session
 $0
 #+end_src

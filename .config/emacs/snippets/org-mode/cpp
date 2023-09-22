@@ -2,6 +2,6 @@
 # name: cpp
 # key: cpp
 # --
-#+begin_src c++ :tangle yes
+#+begin_src c++ :session
 $0
 #+end_src

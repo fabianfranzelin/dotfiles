@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: inline-shell
+# key: inline-shell
+# --
+src_shell[:session]{$0}
