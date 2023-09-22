@@ -217,21 +217,21 @@ DIR: directory path"
   (org-roam-dailies-directory (expand-file-name "journal" org-roam-directory))
   (org-roam-dailies-capture-templates
    '(("d" "default" plain
-      "\n* %?"
+      "* %?"
       :target (file+head "%<%Y%m%d>.org" "#+title: %<%Y-%m-%d %a>\n\n")
       :unarrowed t)
      ("f" "fleeting note" entry
-      "\n* TODO %^{Note title}\n %U\n %i\n %?"
+      "* TODO %^{Note title}\n %U\n %i\n %?"
       :target (file+head "inbox.org"
                          "#+title: Inbox\n\n")
       :unarrowed t)
      ("t" "task" entry
-      "\n* TODO %^{Todo title}\n %U\n %i\n %?"
+      "* TODO %^{Todo title}\n %U\n %i\n %?"
       :target (file+head "%<%Y%m%d%H%M>-todo.org"
                          "#+title: %<%Y-%m-%d %a>\n#+CATEGORY: Task\n\n")
       :unarrowed t)
      ("m" "meeting" entry
-      "\n* %<%I:%M %p> - %^{Meeting Title}  :meetings:\n\n%?\n\n"
+      "* %<%I:%M %p> - %^{Meeting Title}  :meetings:\n\n** Participants\n\n+ Fabian Franzelin\n\n** Notes\n\n%?\n\n** Todos"
       :target (file+head "%<%Y%m%d%H%M>-meeting.org"
                          "#+title: %<%Y-%m-%d %a>\n#+CATEGORY: Meeting\n\n")
       :unarrowed t)))
