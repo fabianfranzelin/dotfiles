@@ -125,7 +125,12 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          sshpass \
          dos2unix \
 	 openssl \
-	 libssl-dev
+	 libssl-dev \
+         scons \
+         texlive-base \
+         texlive-science \
+         texlive-bibtex-extra \
+         biber
 
     # ---------------------------------------------------------
     # install dependencies for Emacs
