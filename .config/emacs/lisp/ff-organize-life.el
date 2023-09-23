@@ -220,10 +220,11 @@ DIR: directory path"
       "* %?"
       :target (file+head "%<%Y%m%d>.org" "#+title: %<%Y-%m-%d %a>\n\n")
       :unarrowed t)
-     ("f" "fleeting note" entry
-      "* TODO %^{Note title}\n %U\n %i\n %?"
-      :target (file+head "inbox.org"
-                         "#+title: Inbox\n\n")
+     ("f" "fleeting note" plain
+      "** TODO %^{Note title}\n %U\n %i\n %?"
+      :target (file+head+olp "inbox.org"
+                             "#+title: Inbox\n\n"
+                             ("%(format-time-string \"%B, %d.%m\")"))
       :unarrowed t)
      ("t" "task" entry
       "* TODO %^{Todo title}\n %U\n %i\n %?"
@@ -234,6 +235,12 @@ DIR: directory path"
       "* %<%I:%M %p> - %^{Meeting Title}  :meetings:\n\n** Participants\n\n+ Fabian Franzelin\n\n** Notes\n\n%?\n\n** Todos"
       :target (file+head "%<%Y%m%d%H%M>-meeting.org"
                          "#+title: %<%Y-%m-%d %a>\n#+CATEGORY: Meeting\n\n")
+      :unarrowed t)
+     ("w" "workday" plain
+      "** %<[w%V] %a (%d.%m)> \n\n %?"
+      :target (file+head+olp "clocking.org"
+                             "#+title: Clocking\n\n"
+                             ("%(format-time-string \"%B, %Y\")"))
       :unarrowed t)))
   :config
   ;; better support for roam files, when using org-export
