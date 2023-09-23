@@ -120,6 +120,7 @@ DIR: directory path"
 ;; org-present
 ;; -------------------------------------------------------------------
 (defun dw/org-present-prepare-slide ()
+  "Present and prepare slide."
   (org-overview)
   (org-show-entry)
   (org-show-children))
@@ -491,45 +492,50 @@ FILE-PAGE: page at which the annotation refers to"
   ;;     NEXT - This task should be done next (in the Getting Things Done sense)
   ;;     WAIT - Waiting for someone else to be actionable again
   ;;     DONE - It's done!
-  (setq org-todo-keywords
-        '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "|" "DONE(d!)" "DISCARD(c)")))
+  (customize-set-variable
+   'org-todo-keywords
+   '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "|" "DONE(d!)" "DISCARD(c)")))
 
-  (setq org-todo-keyword-faces
-        '(("NEXT" . (:foreground "orange red" :weight bold))
-          ("WAIT" . (:foreground "HotPink2" :weight bold))))
+  (customize-set-variable
+   'org-todo-keyword-faces
+   '(("NEXT" . (:foreground "orange red" :weight bold))
+     ("WAIT" . (:foreground "HotPink2" :weight bold))))
 
   ;; Customize org-agenda
-  (setq org-agenda-window-setup 'current-window)
-  (setq org-agenda-span 'day)
-  (setq org-agenda-start-with-log-mode t)
+  (customize-set-variable 'org-agenda-window-setup 'current-window)
+  (customize-set-variable 'org-agenda-span 'week)
+  (customize-set-variable 'org-agenda-start-with-log-mode t)
 
   ;; Make done tasks show up in the agenda log
-  (setq org-log-done 'time)
-  (setq org-log-into-drawer t)
+  (customize-set-variable 'org-log-done 'time)
+  (customize-set-variable 'org-log-into-drawer t)
 
-  (setq org-columns-default-format "%20CATEGORY(Category) %65ITEM(Task) %TODO %6Effort(Estim){:}  %6CLOCKSUM(Clock) %TAGS")
+  (customize-set-variable
+   'org-columns-default-format
+   "%20CATEGORY(Category) %65ITEM(Task) %TODO %6Effort(Estim){:}  %6CLOCKSUM(Clock) %TAGS")
 
-  (setq org-agenda-custom-commands
-        `(("d" "Dashboard"
-           ((agenda "" ((org-deadline-warning-days 7)))
-            (tags-todo "+followup" ((org-agenda-overriding-header "Needs Follow Up")))
-            (todo "NEXT"
-                  ((org-agenda-overriding-header "Next Actions")
-                   (org-agenda-max-todos nil)))
-            (todo "WAIT"
-                  ((org-agenda-overriding-header "Waiting for Action")
-                   (org-agenda-max-todos nil)))
-            (todo "TODO"
-                  ((org-agenda-overriding-header "Unprocessed Inbox Tasks")
-                   (org-agenda-files '(,(expand-file-name "inbox.org" org-roam-dailies-directory)))
-                   (org-agenda-text-search-extra-files nil)))))
-          ("n" "Next Tasks"
-           ((agenda "" ((org-deadline-warning-days 7)))
-            (todo "NEXT"
-                  ((org-agenda-overriding-header "Next Tasks")))))
-          ("A" "Agenda and all TODOs"
-           ((agenda "")
-            (alltodo ""))))))
+  (customize-set-variable
+   'org-agenda-custom-commands
+   `(("d" "Dashboard"
+      ((agenda "" ((org-deadline-warning-days 14)))
+       (todo "NEXT"
+             ((org-agenda-overriding-header "Next Actions")
+              (org-agenda-max-todos nil)))
+       (todo "WAIT"
+             ((org-agenda-overriding-header "Waiting for Action")
+              (org-agenda-max-todos nil)))
+       (todo "TODO"
+             ((org-agenda-overriding-header "Unprocessed Inbox Tasks")
+              (org-agenda-files '(,(expand-file-name "inbox.org" org-roam-dailies-directory)))
+              (org-agenda-text-search-extra-files nil)))
+       (alltodo "")))
+     ("n" "Next Tasks"
+      ((agenda "" ((org-deadline-warning-days 7)))
+       (todo "NEXT"
+             ((org-agenda-overriding-header "Next Tasks")))))
+     ("A" "Agenda and all TODOs"
+      ((agenda "")
+       (alltodo ""))))))
 
 (provide 'ff-organize-life)
 
