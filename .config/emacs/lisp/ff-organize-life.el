@@ -361,7 +361,7 @@ DIR: directory path"
    ("C-c c e" . citar-open-entry)
    ("C-c c f" . citar-open-files)
    (:map org-mode-map :package org
-         ("C-c b" . org-cite-insert))))
+         ("C-c c i" . org-cite-insert))))
 
 (use-package citar-embark
   :config (citar-embark-mode))
