@@ -228,6 +228,10 @@ DIR: directory"
          ("C-s" . consult-history)))
 
 (use-package consult-dir
+  :commands consult-dir
+  :config
+  (add-to-list 'consult-dir-sources 'consult-dir--source-tramp-ssh t)
+  ;; this works also with bookmarks; set them with C-x r m
   :bind (("C-x C-d" . consult-dir)
          :map vertico-map
          ("C-x C-d" . consult-dir)
