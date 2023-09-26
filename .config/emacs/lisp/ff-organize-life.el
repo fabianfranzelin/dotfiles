@@ -26,6 +26,8 @@ DIR: directory path"
   (org-goto-auto-isearch nil)
   ;; use relative paths for links
   (org-link-file-path-type 'relative)
+  ;; highlight latex
+  (org-highlight-latex-and-related '(latex))
   :hook
   ;; clocking
   (org-timer-set . org-clock-in)
