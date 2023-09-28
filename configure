@@ -346,19 +346,18 @@ Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
            firefox \
            eog
 
-      # install Flatpak to install nyxt
-      sudo apt-get install -y \
-           flatpak
-
+      # Install nyxt
       if [ -n "${INSTALL_NYXT}" ]; then
       (
           # install Nyxt
           TMP_NYXT_SRC=$(mktemp -d)
           cd "${TMP_NYXT_SRC}" || exit 1
-          NYXT_VERSION="3.7.0"
-          NYXT_FLATPAK_FILE_NAME="nyxt-${NYXT_VERSION}.flatpak"
-          wget "https://github.com/atlas-engineer/nyxt/releases/download/${NYXT_VERSION}/${NYXT_FLATPAK_FILE_NAME}"
-          sudo flatpak install "${NYXT_FLATPAK_FILE_NAME}"
+          NYXT_VERSION="3.8.0"
+          NYXT_SRC_FILE_NAME="nyxt-${NYXT_VERSION}-source-with-submodules.tar.xz"
+          wget "https://github.com/atlas-engineer/nyxt/releases/download/${NYXT_VERSION}/${NYXT_SRC_FILE_NAME}"
+          tar -xvf "${NYXT_SRC_FILE_NAME}"
+          make all
+          make install
       )
       fi
 
