@@ -151,6 +151,7 @@ flycheck_*
 /.config/emacs/install.sh
 /.config/emacs/straight/
 /.config/emacs/var/
+/.config/emacs/projects
 
 ### ZSH ###
 /.config/zsh/.zcompdump*
