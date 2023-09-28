@@ -31,6 +31,13 @@ aos_create_venv() {
         # # other stuff that helps working
         # python3 -m pip install ipdb ipython
 
+        python3 -m pip install \
+                sphinx_rtd_theme \
+                breathe myst_parser \
+                sphinx_git \
+                sphinx_copybutton \
+                sphinxcontrib_svg2pdfconverter
+
         deactivate
     )
 }

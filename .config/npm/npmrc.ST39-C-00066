@@ -3,4 +3,4 @@ strict-ssl=false
 loglevel=warn
 prefix=${XDG_DATA_HOME}/npm
 cache=${XDG_CACHE_HOME}/npm
-registry=http://registry.npmjs.org
+registry=https://rb-artifactory.bosch.com/artifactory/api/npm/npm-repo/
