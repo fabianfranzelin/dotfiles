@@ -403,7 +403,7 @@ COMMAND: command to be executed"
   (popper-mode t)
   (popper-echo-mode t)
   :bind
-  (("C-*" . popper-toggle-latest)
+  (("C-*" . popper-toggle)
    ("M-*" . popper-cycle)
    ("C-M-*" . popper-toggle-type)))
 
