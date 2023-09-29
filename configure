@@ -212,6 +212,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
     npm install -g \
         yaml-language-server \
         bash-language-server \
+        typescript \
         typescript-language-server \
         dockerfile-language-server-nodejs \
         jsonlint \
