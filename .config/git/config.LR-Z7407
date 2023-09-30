@@ -18,7 +18,9 @@
 [credential "https://github.com"]
     helper = !pass keys/$(pass usernames/public@github)@github.com
 [credential "https://github.com/PACE-INT/pace.git"]
-    helper = !pass keys/$(pass usernames/bosch)@github.com
+    helper = !pass keys/$(pass usernames/pace@github)@github.com
+[credential "https://github.com/PACE-INT/aos.git"]
+    helper = !pass keys/$(pass usernames/pace@github)@github.com
 [credential "https://github.boschdevcloud.com"]
     helper = !pass keys/$(pass usernames/bosch)@github.boschdevcloud.com
 [credential "https://sourcecode01.de.bosch.com"]
