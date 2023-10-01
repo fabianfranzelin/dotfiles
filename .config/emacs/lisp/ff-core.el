@@ -534,7 +534,6 @@ TEXT: title"
   (customize-set-variable 'yas-snippet-dirs `(,(expand-file-name "snippets/" emacs-config-home)
                                               ,yasnippet-snippets-dir)))
 
-
 ;; -------------------------------------------------------------------
 ;; Ace window: select windows based on numbers
 ;; -------------------------------------------------------------------
