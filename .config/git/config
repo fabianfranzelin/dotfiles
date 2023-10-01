@@ -5,13 +5,8 @@
     autocrlf = false
     safecrlf = true
     eol = lf
-    editor = vim
 [gc]
     autoDetach = false
-[merge]
-    tool = meld
-[diff]
-    tool = meld
 [push]
     default = simple
     recurseSubmodules = check
