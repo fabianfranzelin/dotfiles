@@ -104,6 +104,7 @@ the need to update my project hierarchy."
              '((bash "https://github.com/tree-sitter/tree-sitter-bash")
                (cmake "https://github.com/uyha/tree-sitter-cmake")
                (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
+               (c "https://github.com/tree-sitter/tree-sitter-c")
                (css "https://github.com/tree-sitter/tree-sitter-css")
                (elisp "https://github.com/Wilfred/tree-sitter-elisp")
                (html "https://github.com/tree-sitter/tree-sitter-html")
