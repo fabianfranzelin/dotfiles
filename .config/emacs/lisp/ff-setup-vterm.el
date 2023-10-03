@@ -113,13 +113,22 @@ https://github.com/akermu/emacs-libvterm/issues/518"
       (cond ((or (string-match ".*sudo.*" last-shell-command)
                  (string-match "init" last-shell-command)
                  (string-match ".*configure -i.*" last-shell-command))
-             (message "Sending password to %s" (buffer-name))
-             (vterm-send-string (password-store-get (format "passwords/sudo@%s" system-name))))
+             (let* ((pwd-store-entry (format "passwords/sudo@%s" system-name))
+                    (pwd (password-store-get pwd-store-entry)))
+               (if pwd
+                   (progn
+                     (message "Sending password to %s" (buffer-name))
+                     (vterm-send-string pwd))
+                 (message "No password found under %s" pwd-store-entry))))
             ((string-match "kinit" last-shell-command)
-             (message "Sending password to %s" (buffer-name))
-             (vterm-send-string (password-store-get
-                                 (format "passwords/%s@login"
-                                         (password-store-get "usernames/bosch")))))
+             (let* ((user-name (password-store-get "usernames/bosch"))
+                    (pwd-store-entry (format "passwords/%s@login" user-name))
+                    (pwd (password-store-get pwd-store-entry))))
+             (if pwd
+                 (progn
+                   (message "Sending password to %s" (buffer-name))
+                   (vterm-send-string pwd))
+               (message "No password found for user %s" pwd-store-entry)))
             (t
              (comint-send-invisible "Enter password: ")))
       (vterm-send-C-j)
