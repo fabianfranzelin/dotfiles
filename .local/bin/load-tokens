@@ -33,5 +33,5 @@ BDC_428_ARTIFACTORY_API_KEY="${ARTIFACTORY_KEY}"
 # authentication and tokens
 if command -v kinit > /dev/null
 then
-    pass passwords/$(pass usernames/bosch)@login | kinit > /dev/null
+    pass "passwords/$(pass usernames/bosch)@nt" | kinit > /dev/null
 fi
