@@ -23,6 +23,7 @@ aos_create_venv() {
         python3 -m pip install -r "_tools/docker/aos_dev_ubuntu2004/requirements.txt"
 
         # Workarounds
+        python3 -m pip install pycryptodomex gnupg rospkg
         # python3 -m pip install fasteners jsonschema pytz
 
         # install stuff for sphinx builds
