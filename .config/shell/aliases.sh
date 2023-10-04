@@ -85,7 +85,7 @@ alias ff='find_file'
 alias set_default_keyboard_layout='setxkbmap -layout de -option ctrl:nocaps && xmodmap -e "keycode 111 = Alt_L Meta_L Alt_L Meta_L"'
 
 # SSH logins
-alias ssh_ws='sshpass -p "$(pass passwords/$(pass usernames/bosch)@login)" ssh ws'
+alias ssh_ws='sshpass -p "$(pass passwords/$(pass usernames/bosch)@nt)" ssh ws'
 
 # unlock gpg key
 alias unlock_key="pass usernames/public@github > /dev/null"

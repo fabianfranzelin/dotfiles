@@ -122,7 +122,7 @@ https://github.com/akermu/emacs-libvterm/issues/518"
                  (message "No password found under %s" pwd-store-entry))))
             ((string-match "kinit" last-shell-command)
              (let* ((user-name (password-store-get "usernames/bosch"))
-                    (pwd-store-entry (format "passwords/%s@login" user-name))
+                    (pwd-store-entry (format "passwords/%s@nt" user-name))
                     (pwd (password-store-get pwd-store-entry))))
              (if pwd
                  (progn
