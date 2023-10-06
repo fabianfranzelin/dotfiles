@@ -132,6 +132,10 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          texlive-bibtex-extra \
          biber
 
+    # Docker setup
+    sudo apt-get install -y \
+         docker.io
+
     if ( __is_wsl ) then
        # install wslview for xdg-open so that firefox calls are
        # forwarded to host system
@@ -417,6 +421,19 @@ fi
     else
         echo -e "${__COLOR_INFO}No specific npm configuration for $(hostname) available. Using the default one.${__COLOR_RESET}"
         ln -s -f "npmrc.default" "npmrc"
+    fi
+)
+
+#------------------------------------------------------------------------------#
+# Hack: setup workstation specific config for docker using extra symlink
+(
+    cd "${DOTFILES}/.docker"
+    TARGET_DOCKER_CONFIG="config-$(hostname).json"
+    if [ -f "${TARGET_DOCKER_CONFIG}" ]; then
+        ln -s -f "${TARGET_DOCKER_CONFIG}" "config.json"
+    else
+        echo -e "${__COLOR_INFO}No specific docker configuration for $(hostname) available. Using the default one.${__COLOR_RESET}"
+        ln -s -f "config-default.json" "config.json"
     fi
 )
 
