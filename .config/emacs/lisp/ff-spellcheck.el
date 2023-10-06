@@ -43,8 +43,8 @@ PACKAGE-NAME: log message context"
 
   ;; Create directory for languagetool binaries
   (defvar langtool-version "6.2" "Version of language tool")
-  (defvar langtool-name (concat "LanguageTool-" langtool-version))
-  (defvar langtool-url (concat "https://languagetool.org/download/" langtool-name ".zip"))
+  (defvar langtool-name (format "LanguageTool-%s" langtool-version))
+  (defvar langtool-url (format "https://languagetool.org/download/%s.zip" langtool-name))
   (defvar langtool-extract-to (expand-file-name "language-tool" no-littering-var-directory))
   (defvar langtool-path (expand-file-name langtool-name langtool-extract-to))
   (defvar langtool-server (expand-file-name "languagetool-server.jar" langtool-path))

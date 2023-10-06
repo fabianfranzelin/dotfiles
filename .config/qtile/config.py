@@ -140,7 +140,7 @@ my_colors = {
 }
 
 widget_defaults = {
-    "font": "Ubuntu Bold",
+    "font": "Ubuntu Mono",
     "fontsize": 14,
     "padding": 2,
     "background": my_colors["bg"],
@@ -173,7 +173,6 @@ def init_widgets_list() -> List[Any]:
     """
     widgets_list = [
         widget.GroupBox(
-            font="Ubuntu Mono",
             margin_y=3,
             margin_x=0,
             padding_y=5,
@@ -194,12 +193,13 @@ def init_widgets_list() -> List[Any]:
         widget.WindowCount(fmt="#{}", font="Ubuntu Mono", foreground=my_colors["fg"]),
         widget.Sep(linewidth=0, padding=6),
         widget.WindowName(
-            font="Ubuntu Mono",
             foreground=my_colors["fg"],
             padding=10,
         ),
         widget.Systray(padding=5),
         widget.Sep(linewidth=0, padding=6),
+        widget.BatteryIcon(),
+        widget.Battery(),
         widget.TextBox(text="|", background=my_colors["bg"]),
         widget.CPU(
             foreground=my_colors["fg"],
