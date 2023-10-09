@@ -251,6 +251,17 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
         sudo chmod 660 "/var/run/docker.sock"
     fi
 
+    # Install docker-credential-pass
+    DOCKER_CRED_PASS_VER="0.8.0"
+    DOCKER_CRED_PASS_BIN="docker-credential-pass-v${DOCKER_CRED_PASS_VER}.linux-amd64"
+    DOCKER_CRED_PASS_URL="https://github.com/docker/docker-credential-helpers/releases/download/v${DOCKER_CRED_PASS_VER}/${DOCKER_CRED_PASS_BIN}"
+    (
+        cd "/tmp"
+        wget "${DOCKER_CRED_PASS_URL}"
+        chmod 755 "${DOCKER_CRED_PASS_BIN}"
+        mv -f "${DOCKER_CRED_PASS_BIN}" "${HOME}/.local/bin/docker-credential-pass"
+    )
+
     #------------------------------------------------------------------------------#
     # install dependencies for vscode
     if ( __is_linux ) then
@@ -277,7 +288,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
                 TMP_PYTHON_SRC=$(mktemp -d)
                 cd "${TMP_PYTHON_SRC}" || exit 1
                 QTILE_PYTHON_VERSION="3.10.12"
-                wget http://www.python.org/ftp/python/${QTILE_PYTHON_VERSION}/Python-${QTILE_PYTHON_VERSION}.tgz
+                wget "http://www.python.org/ftp/python/${QTILE_PYTHON_VERSION}/Python-${QTILE_PYTHON_VERSION}.tgz"
                 tar -zxvf "Python-${QTILE_PYTHON_VERSION}.tgz"
                 cd "Python-${QTILE_PYTHON_VERSION}" || exit 1
 
