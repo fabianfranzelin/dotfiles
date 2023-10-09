@@ -439,8 +439,7 @@ fi
     if [ -f "${TARGET_DOCKER_CONFIG}" ]; then
         ln -s -f "${TARGET_DOCKER_CONFIG}" "config.json"
     else
-        echo -e "${__COLOR_INFO}No specific docker configuration for $(hostname) available. Using the default one.${__COLOR_RESET}"
-        ln -s -f "config-default.json" "config.json"
+        echo -e "${__COLOR_INFO}No specific docker configuration for $(hostname) available. I'll leave it empty.${__COLOR_RESET}"
     fi
 )
 
