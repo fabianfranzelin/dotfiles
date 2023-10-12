@@ -24,6 +24,9 @@
 ;; define alias for yes-or-no decision
 (defalias 'yes-or-no-p 'y-or-n-p)
 
+;; ignore bell function
+(customize-set-variable 'ring-bell-function 'ignore)
+
 ;; let me confirm emacs before killing it
 (setq confirm-kill-emacs 'yes-or-no-p)
 
