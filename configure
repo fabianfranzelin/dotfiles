@@ -152,7 +152,9 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          clang-format \
          clang-tidy \
          clangd \
+         clangd-12 \
          clang \
+         clang-12 \
          valgrind \
          ripgrep \
          fd-find \
