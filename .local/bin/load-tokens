@@ -8,6 +8,8 @@ export CONAN_LOGIN_USERNAME
 CONAN_LOGIN_USERNAME="${BOSCH_USER}"
 export CONAN_PASSWORD
 CONAN_PASSWORD="$(pass tokens/${BOSCH_USER}@jfrog.ad-alliance.biz)"
+export NPM_TOKEN
+NPM_TOKEN="$(pass tokens/$(pass usernames/bosch)@npm.rb-artifactory.bosch.com)"
 
 #------------------------------------------------------------------------------#
 # PJ-Rec
