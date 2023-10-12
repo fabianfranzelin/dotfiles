@@ -46,21 +46,21 @@
   (defun ff/find-all-parent-dirs-with-file (directory file-name)
     "List all parent directories that contain the given `file-name'.
 
-The output contains the directories in ascending order, starting
-with the one closes to the root directory.
+The output contains the directories in descending order, starting
+with the one closes to the current folder.
 
 DIRECTORY: directory where to start the search.
 FILE-NAME: file name that marks the directory to be collected.
 "
     (append
+     ;; add current folder if it contains the right file
+     (when (file-exists-p (file-name-concat directory file-name))
+       `(,directory))
      ;; there are more parent folders to be explored; stop at
      ;; the root folder of the repository
      (unless (f-directory-p (file-name-concat directory ".git"))
        (let ((parent (file-name-directory (directory-file-name directory))))
-         (ff/find-all-parent-dirs-with-file parent file-name)))
-     ;; add current folder if it contains the right file
-     (when (file-exists-p (file-name-concat directory file-name))
-       `(,directory))))
+         (ff/find-all-parent-dirs-with-file parent file-name)))))
 
   (defun ff/eglot-find-local-project ()
     "Create a local project on-the-fly for specific modes.
