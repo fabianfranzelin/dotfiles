@@ -181,7 +181,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
             "python-lsp-server[all]" \
             pylsp-mypy \
             python-lsp-black \
-            esbonio \
+            esbonio==0.15 \
             robotframework-tidy \
             ipython \
             gitpython \
