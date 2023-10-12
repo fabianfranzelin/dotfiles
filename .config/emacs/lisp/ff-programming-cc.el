@@ -72,12 +72,12 @@ REPLACE-STR: string that replaces all regex matches"
 
 (with-eval-after-load 'eglot
   ;; make sure that system packages are available
-  (ff/ensure-apt-package "clangd" "clangd")
-  (ff/ensure-apt-package "clang" "clang")
+  (ff/ensure-apt-package "clangd-12" "clangd-12")
+  (ff/ensure-apt-package "clang-12" "clang-12")
 
   ;; register clangd as default lsp server in eglot
-  (add-to-list 'eglot-server-programs `(c-ts-mode "clangd"))
-  (add-to-list 'eglot-server-programs `(c++-ts-mode "clangd")))
+  (add-to-list 'eglot-server-programs `(c-ts-mode "clangd-12"))
+  (add-to-list 'eglot-server-programs `(c++-ts-mode "clangd-12")))
 
 ;; use tree-sitter as default and overwrite all C/C++ modes
 (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
