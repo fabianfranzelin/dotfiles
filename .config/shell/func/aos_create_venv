@@ -24,20 +24,18 @@ aos_create_venv() {
 
         # Workarounds
         python3 -m pip install pycryptodomex gnupg rospkg
-        # python3 -m pip install fasteners jsonschema pytz
 
-        # install stuff for sphinx builds
-        # python3 -m pip install git+https://github.boschdevcloud.com/FRF2LR/py_sphinx_docs.git
-
-        # # other stuff that helps working
-        # python3 -m pip install ipdb ipython
+        # other stuff that helps working
+        python3 -m pip install ipdb ipython
 
         python3 -m pip install \
                 sphinx_rtd_theme \
                 breathe myst_parser \
                 sphinx_git \
                 sphinx_copybutton \
-                sphinxcontrib_svg2pdfconverter
+                sphinx_panels \
+                sphinxcontrib_svg2pdfconverter \
+                esbonio==0.15
 
         deactivate
     )
