@@ -26,24 +26,28 @@ PACKAGE-NAME: name of the package to be checked."
           (ff/python-interpreter-version)
           "/site-packages/" package-name))
 
-(defun ff/ensure-system-package (install-cmd package-name &optional executable)
+(defun ff/ensure-system-package (install-cmd package-name &optional executable require-sudo)
   "Ensure that the provided system package is installed.
 
 INSTALL-CMD: command to be executed
 PACKAGE-NAME: name of the package to be installed.
-EXECUTABLE: just install if the executable does not exist."
-  (if (or (null executable)
-          (and
-           (null (executable-find executable))
-           (not (file-exists-p executable))))
-      (async-shell-command (concat install-cmd " " package-name))))
+EXECUTABLE: just install if the executable does not exist.
+REQUIRE-SUDO: launch it as sudo"
+  (when (or (null executable)
+            (and
+             (null (executable-find executable))
+             (not (file-exists-p executable))))
+    (with-temp-buffer
+      (when require-sudo
+        (cd "/sudo::/"))
+      (async-shell-command (format "%s %s" install-cmd package-name)))))
 
 (defun ff/ensure-apt-package (package-name &optional executable)
   "Ensure that the provided apt package is installed.
 
 PACKAGE-NAME: name of the package to be installed.
 EXECUTABLE: just install if the executable does not exist."
-  (ff/ensure-system-package "sudo apt install -y" package-name executable))
+  (ff/ensure-system-package "apt install -y" package-name executable t))
 
 (defun ff/ensure-npm-package (package-name &optional executable)
   "Ensure that the provided apt package is installed.
