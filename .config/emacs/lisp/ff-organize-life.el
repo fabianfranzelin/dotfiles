@@ -61,7 +61,8 @@ DIR: directory path"
      (org . t)
      (latex . t)
      (dot . t)
-     (gnuplot . t)))
+     (gnuplot . t)
+     (plantuml . t)))
   (push '("conf-unix" . conf-unix) org-src-lang-modes)
 
   ;; do not ask each time whether a source block should be evaluated
