@@ -65,6 +65,10 @@ DIR: directory path"
      (plantuml . t)))
   (push '("conf-unix" . conf-unix) org-src-lang-modes)
 
+  ;; plantuml setup
+  (customize-set-variable 'org-plantuml-jar-path plantuml-jar-path)
+  (customize-set-variable 'org-plantuml-args plantuml-jar-args)
+
   ;; do not ask each time whether a source block should be evaluated
   (customize-set-variable 'org-confirm-babel-evaluate nil)
 
