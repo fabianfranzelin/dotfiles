@@ -101,6 +101,8 @@ JAR-PATH: expected binary file in the extracted folder."
       (url-copy-file url jar-path))))
 
 (use-package plantuml-mode
+  :after org
+  :commands plantuml-preview
   :mode (("\\.puml" . plantuml-mode)
          ("\\.iuml" . plantuml-mode)
          ("\\.uml" . plantuml-mode))
@@ -130,6 +132,11 @@ JAR-PATH: expected binary file in the extracted folder."
   ;; remap preview to personal function; for some reason, bind does
   ;; not accept it
   (define-key plantuml-mode-map [remap plantuml-preview] 'ff/plantum-preview)
+
+  ;; plantuml setup for org-babel
+  (customize-set-variable 'org-plantuml-jar-path plantuml-jar-path)
+  (customize-set-variable 'org-plantuml-args plantuml-jar-args)
+
   :bind (:map plantuml-mode-map
               ("C-M-i" . plantuml-complete-symbol)
               ("C-c C-e" . (lambda() (interactive) (ff/plantuml-create-svg (buffer-file-name))))))
