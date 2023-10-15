@@ -105,8 +105,19 @@ COMMAND: command to be executed"
 ;; -------------------------------------------------------------------
 ;; Global key bindings
 ;; -------------------------------------------------------------------
+;; convenient setting to move between open buffers
+(require 'repeat)
+(repeat-mode 1)
+
 ;; Kill this buffer, instead of prompting for which one to kill
-(global-set-key (kbd "C-x k") #'(lambda() (interactive) (kill-buffer (current-buffer))))
+(defun ff/kill-buffer-current ()
+  "Kill current buffer."
+  (interactive)
+  (kill-buffer (current-buffer)))
+
+(global-set-key (kbd "C-x k") #'(lambda ()
+                                  (interactive)
+                                  (ff/repeat-command 'ff/kill-buffer-current)))
 
 ;; make ESC quit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
@@ -116,10 +127,7 @@ COMMAND: command to be executed"
 (global-set-key (kbd "<Scroll_Lock>") 'do-nothing)
 (defvar scroll-lock-mode nil)
 
-;; convenient setting to move between open buffers
-(require 'repeat)
-(repeat-mode 1)
-
+;; window movement
 (defvar-keymap ff/window-key-map
   :doc "Bindings for managing windows, configured to be repeatable."
   :repeat t
