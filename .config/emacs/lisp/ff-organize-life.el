@@ -13,6 +13,48 @@ DIR: directory path"
   (unless (file-exists-p dir) (make-directory dir t))
   (expand-file-name dir))
 
+(defun ff/org-switch-directory ()
+  (interactive)
+  (when-let ((ff/org-directory
+              (if (string= (f-filename org-directory) "org")
+                  (expand-file-name "~/workspace/org_personal")
+                (expand-file-name "~/workspace/org"))))
+    (when (file-exists-p ff/org-directory)
+      (customize-set-variable 'org-directory ff/org-directory)
+      (customize-set-variable 'org-agenda-files `(,(expand-file-name "notes" org-directory)
+                                                  ,(expand-file-name "notes/journal" org-directory)))
+      (customize-set-variable 'org-roam-directory (expand-file-name "notes" org-directory))
+      (customize-set-variable 'org-roam-dailies-directory (expand-file-name "journal" org-roam-directory))
+      (customize-set-variable 'org-cite-global-bibliography `(,(file-truename (expand-file-name "bib/references.bib" org-directory))))
+      (customize-set-variable 'citar-bibliography `(,(file-truename (expand-file-name "bib/references.bib" org-directory))))
+      (customize-set-variable 'citar-notes-paths `(,org-roam-directory))
+
+      (customize-set-variable
+       'org-agenda-custom-commands
+       `(("d" "Dashboard"
+          ((agenda "" ((org-deadline-warning-days 14)))
+           (todo "NEXT"
+                 ((org-agenda-overriding-header "Next Actions")
+                  (org-agenda-max-todos nil)))
+           (todo "WAIT"
+                 ((org-agenda-overriding-header "Waiting for Action")
+                  (org-agenda-max-todos nil)))
+           (todo "TODO"
+                 ((org-agenda-overriding-header "Unprocessed Inbox Tasks")
+                  (org-agenda-files '(,(expand-file-name "inbox.org" org-roam-dailies-directory)))
+                  (org-agenda-text-search-extra-files nil)))
+           (alltodo "")))
+         ("n" "Next Tasks"
+          ((agenda "" ((org-deadline-warning-days 7)))
+           (todo "NEXT"
+                 ((org-agenda-overriding-header "Next Tasks")))))
+         ("A" "Agenda and all TODOs"
+          ((agenda "")
+           (alltodo "")))))
+
+      (org-roam-db-sync)
+      (message "Update main org folder to %s" ff/org-directory))))
+
 (use-package org
   :custom
   (org-directory (ff/create-folder-and-return "~/workspace/org"))
@@ -339,7 +381,7 @@ DIR: directory path"
 
 (use-package citar
   :commands citar-open
-  :after org-roam
+  :after org-roam org
   :hook
   (LaTeX-mode . citar-capf-setup)
   (org-mode . citar-capf-setup)
@@ -347,8 +389,8 @@ DIR: directory path"
   (org-cite-insert-processor 'citar)
   (org-cite-follow-processor 'citar)
   (org-cite-activate-processor 'citar)
-  (org-cite-global-bibliography `(,(file-truename "~/workspace/org/bib/references.bib")))
-  (citar-bibliography `(,(file-truename "~/workspace/org/bib/references.bib")))
+  (org-cite-global-bibliography `(,(file-truename (expand-file-name "bib/references.bib" org-directory))))
+  (citar-bibliography `(,(file-truename (expand-file-name "bib/references.bib" org-directory))))
   (citar-org-roam-subdir "references")
   (citar-notes-paths `(,org-roam-directory))
   (citar-at-point-function 'embark-act)
