@@ -74,10 +74,11 @@ DIR: directory path"
   ;; clocking
   (org-timer-set . org-clock-in)
   :bind
-  (:map org-mode-map
-        ;; disable these two keys since they are taken by zoom-frm
-        ("C-c +" . nil)
-        ("C-c -" . nil)))
+  (("C-c C-x b" . ff/org-switch-directory)
+   :map org-mode-map
+   ;; disable these two keys since they are taken by zoom-frm
+   ("C-c +" . nil)
+   ("C-c -" . nil)))
 
 (with-eval-after-load 'org
   (require 'org-indent)
