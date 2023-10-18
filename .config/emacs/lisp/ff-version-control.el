@@ -4,11 +4,21 @@
 ;; Configuration for magit and ediff
 
 ;;; Code:
+(defun ff/stage-commit-push-all ()
+  "Stage, commit, and push all changed files in a Git repo."
+  (interactive)
+  (magit-stage-modified)
+  (magit-commit-create '("-m" "update some stuff"))
+  (magit-push-current-to-upstream nil))
+
 (use-package magit
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
   ;; Show word based diff
-  (magit-diff-refine-hunk 'all))
+  (magit-diff-refine-hunk 'all)
+  :bind
+  (:map magit-mode-map
+        ("C-c C-a" . ff/stage-commit-push-all)))
 
 (use-package magit-lfs)
 
