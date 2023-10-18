@@ -358,7 +358,7 @@ COMMAND: command to be executed"
       (message "GPG key is unlocked")
     (message "Wrong password. GPG key is not unlocked.")))
 
-(global-set-key (kbd "C-c g") 'ff/unlock-key)
+(global-set-key (kbd "C-c C-g") 'ff/unlock-key)
 
 (use-package pass
   :custom (pass-show-keybindings nil))
