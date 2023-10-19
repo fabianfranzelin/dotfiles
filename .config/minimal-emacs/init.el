@@ -96,6 +96,51 @@
 ;; no splash screen
 (setq inhibit-startup-screen t)
 
+;; -------------------------------------------------------------------
+(use-package doom-themes
+  :custom
+  (doom-themes-enable-bold t)    ; if nil, bold is universally disabled
+  (doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  :config
+  ;; Global settings (defaults)
+  (load-theme 'doom-palenight t)
+  ;; Add frame borders and window dividers
+  (modify-all-frames-parameters
+   '((right-divider-width . 0)
+     (internal-border-width . 0)))
+  (dolist (face '(window-divider
+                  window-divider-first-pixel
+                  window-divider-last-pixel))
+    (face-spec-reset-face face)
+    (set-face-foreground face (face-attribute 'default :background)))
+  (set-face-background 'fringe (face-attribute 'default :background)))
+
+;; -------------------------------------------------------------------
+(use-package dired
+  :straight nil
+  :custom
+  (dired-auto-revert-buffer nil) ; Auto update when buffer is revisited
+  (dired-dwim-target t)
+  (dired-recursive-deletes 'always)
+  (dired-recursive-copies 'always)
+  (delete-by-moving-to-trash t)
+  (dired-listing-switches "-agho --group-directories-first")
+  (dired-hide-details-hide-symlink-targets nil)
+  :init
+  (require 'dired-x)
+  (autoload 'dired-omit-mode "dired-x")
+  :hook
+  (dired-mode . auto-revert-mode)
+  (dired-mode . dired-hide-details-mode)
+  (dired-mode . hl-line-mode)
+  ;; enables drag-and-drop in dired
+  (dired-mode . org-download-enable)
+  :bind
+  (("C-x C-j" . dired-jump)
+   :map dired-mode-map
+   ("l" . dired-up-directory)
+   ("TAB" . dired-find-file)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;           Version control           ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
