@@ -113,6 +113,18 @@
               ("C-a" . (lambda() (interactive) (ff/minibuffer-move-to-dir "/")))
               ("C-o" . (lambda() (interactive) (ff/minibuffer-move-to-dir "~/")))))
 
+(package-install 'orderless)
+(use-package orderless
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion)))))
+
+;; Save history during sessions so that vertico can pick up the latest
+;; used ones
+(package-install 'savehist)
+(use-package savehist
+  :init (savehist-mode t))
+
 ;; -------------------------------------------------------------------
 (use-package dired
   :ensure nil
