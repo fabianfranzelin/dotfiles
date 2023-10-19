@@ -7,8 +7,10 @@
 (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
                          ("melpa" . "https://melpa.org/packages/")
                          ("melpa-stable" . "https://stable.melpa.org/packages/")))
+;; Initialize the package system
 (package-initialize)
-;; (package-refresh-contents)
+(unless package-archive-contents
+  (package-refresh-contents))
 
 ;; -------------------------------------------------------------------
 ;; Before we do anything, set up the no littering package
