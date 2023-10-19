@@ -346,6 +346,9 @@ COMMAND: command to be executed"
 ;; https://vxlabs.com/2021/03/21/gnupg-pinentry-via-the-emacs-minibuffer/
 (setq epa-pinentry-mode 'loopback)
 
+(use-package pass
+  :custom (pass-show-keybindings nil))
+
 (defun ff/restart-ssh-agent ()
   "Add all known ssh-keys from pass."
   (interactive)
@@ -359,9 +362,6 @@ COMMAND: command to be executed"
     (message "Wrong password. GPG key is not unlocked.")))
 
 (global-set-key (kbd "C-c C-g") 'ff/unlock-key)
-
-(use-package pass
-  :custom (pass-show-keybindings nil))
 
 ;; -------------------------------------------------------------------
 ;; Open files externally
