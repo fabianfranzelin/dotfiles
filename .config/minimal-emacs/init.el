@@ -3,40 +3,17 @@
 ;;; Commentary:
 ;;; Code:
 
-;; -------------------------------------------------------------------
-;; Package Management - straight.el
-
-;; use latest develop for straight itself; check
-;; https://github.com/radian-software/straight.el/issues/1059
-(customize-set-variable 'straight-repository-branch "develop")
-
-;; set actual repository user from github, so that pull straight works
-;; with given recipe from
-;; https://github.com/radian-software/straight.el#overriding-recipes
-(customize-set-variable 'straight-repository-user "radian-software")
-
-;; Download straight directly from github
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 5))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-
-;; replace builtin use-package by straights version
-(straight-use-package 'use-package)
-
-;; ensure all packages to be installed
-(customize-set-variable 'straight-use-package-by-default t)
+(require 'package)
+(setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+                         ("melpa" . "https://melpa.org/packages/")
+                         ("melpa-stable" . "https://stable.melpa.org/packages/")))
+(package-initialize)
+;; (package-refresh-contents)
 
 ;; -------------------------------------------------------------------
 ;; Before we do anything, set up the no littering package
+(package-install 'no-littering)
+
 (use-package no-littering
   :custom
   (custom-file (no-littering-expand-etc-file-name "custom.el"))
@@ -97,6 +74,7 @@
 (setq inhibit-startup-screen t)
 
 ;; -------------------------------------------------------------------
+(package-install 'doom-themes)
 (use-package doom-themes
   :custom
   (doom-themes-enable-bold t)    ; if nil, bold is universally disabled
@@ -116,8 +94,28 @@
   (set-face-background 'fringe (face-attribute 'default :background)))
 
 ;; -------------------------------------------------------------------
+(package-install 'vertico)
+(use-package vertico
+  :custom
+  (vertico-count 10)
+  (vertico-cycle t)
+  :init
+  (vertico-mode t)
+  ;; Enable recursive minibuffers
+  (setq enable-recursive-minibuffers t)
+  :config
+  (custom-set-faces '(vertico-current ((t (:background "#3a3f5a")))))
+  :bind (:map vertico-map
+              ("C-f" . vertico-exit)
+              ("C-j" . vertico-exit-input)
+              :map minibuffer-local-map
+              ("C-l" . ff/minibuffer-backward-kill)
+              ("C-a" . (lambda() (interactive) (ff/minibuffer-move-to-dir "/")))
+              ("C-o" . (lambda() (interactive) (ff/minibuffer-move-to-dir "~/")))))
+
+;; -------------------------------------------------------------------
 (use-package dired
-  :straight nil
+  :ensure nil
   :custom
   (dired-auto-revert-buffer nil) ; Auto update when buffer is revisited
   (dired-dwim-target t)
@@ -144,6 +142,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;           Version control           ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(package-install 'magit)
 (use-package magit
   :commands magit
   :custom
