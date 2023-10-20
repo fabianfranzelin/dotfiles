@@ -7,4 +7,4 @@
 
 Here comes an example on how to write academic papers with org-mode.
 
-This is a helpful guide called [[https://github.com/vikasrawal/orgpaper/blob/master/orgpapers.org][orgpapers]].
+This is a helpful guide called [[https://github.com/vikasrawal/orgpaper/blob/master/orgpapers.org][orgpapers]]. And [[https://github.com/fniessen/refcard-org-mode][here]] is another one.
