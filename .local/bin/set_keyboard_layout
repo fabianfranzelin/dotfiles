@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+# Set keyboard layout to German and disable Caps-Lock
+setxkbmap -layout de -option ctrl:nocaps

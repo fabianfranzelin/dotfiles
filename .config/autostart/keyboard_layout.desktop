@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Set Keyboard Layout
+GenericName=Sets the keyboard layout to my personal setting
+Exec=~/.local/bin/set_keyboard_layout
+Terminal=false
+Type=Application
+X-GNOME-Autostart-enabled=true
