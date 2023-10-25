@@ -12,4 +12,4 @@ eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
 export SSH_AUTH_SOCK
 
 # set my own keyboard layout
-set_default_keyboard_layout
+~/.local/bin/set_keyboard_layout
