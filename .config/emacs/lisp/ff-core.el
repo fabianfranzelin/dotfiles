@@ -368,22 +368,22 @@ COMMAND: command to be executed"
 ;; -------------------------------------------------------------------
 (use-package openwith
   :if (display-graphic-p)
-  :custom
-  (openwith-associations
-   (list
-    (list (openwith-make-extension-regexp
-           '("mpg" "mpeg" "mp3" "mp4"
-             "avi" "wmv" "wav" "mov" "flv"
-             "ogm" "ogg" "mkv"))
-          "vlc" '(file))
-    (list (openwith-make-extension-regexp
-           '("xbm" "pbm" "pgm" "ppm" "pnm"
-             "png" "gif" "bmp" "tif" "jpeg"
-             "jpg"))
-          "eog" '(file))
-    (list (openwith-make-extension-regexp
-           '("html" "htm" "svg"))
-          "firefox" '(file)))))
+  :config
+  (customize-set-variable 'openwith-associations
+                          (list
+                           (list (openwith-make-extension-regexp
+                                  '("mpg" "mpeg" "mp3" "mp4"
+                                    "avi" "wmv" "wav" "mov" "flv"
+                                    "ogm" "ogg" "mkv"))
+                                 "vlc" '(file))
+                           (list (openwith-make-extension-regexp
+                                  '("xbm" "pbm" "pgm" "ppm" "pnm"
+                                    "png" "gif" "bmp" "tif" "jpeg"
+                                    "jpg"))
+                                 "eog" '(file))
+                           (list (openwith-make-extension-regexp
+                                  '("html" "htm" "svg"))
+                                 "firefox" '(file)))))
 
 ;; -------------------------------------------------------------------
 ;; Auto-saving changed files when they lose focus
