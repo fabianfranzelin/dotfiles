@@ -444,6 +444,10 @@ under the current directory."
     "Start the fuzzy find in the current directory.
 DIR: directory"
     (affe-find dir))
+  (defun ff/affe-grep (dir)
+    "Start the fuzzy grep in the current directory.
+DIR: directory"
+    (affe-grep dir))
   :after embark
   ;; search also in hidden and ignored files by git
   :custom
@@ -466,7 +470,8 @@ DIR: directory"
   (("C-x a f" . affe-find)
    ("C-x a g" . affe-grep)
    :map embark-file-map
-   ("a" . ff/affe-find)))
+   ("a" . ff/affe-find)
+   ("g" . ff/affe-grep)))
 
 ;; -------------------------------------------------------------------
 ;; Dogears: automatically bookmarks positions in buffers
