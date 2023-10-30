@@ -180,3 +180,6 @@ flycheck_*
 
 ### Docker ###
 /.docker/config.json
+/.docker/.token_seed
+/.docker/buildx/
+/.docker/.token_seed.lock
