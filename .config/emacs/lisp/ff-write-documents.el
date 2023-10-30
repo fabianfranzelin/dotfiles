@@ -62,6 +62,9 @@
   (ff/ensure-python-package "esbonio==0.15" nil "esbonio")
   (add-to-list 'eglot-server-programs `(rst-mode . ("python3" "-m" "esbonio"))))
 
+;; RST backend for org-export
+(use-package ox-rst)
+
 ;; -------------------------------------------------------------------
 ;; Plantuml & Graphviz mode
 ;; -------------------------------------------------------------------
