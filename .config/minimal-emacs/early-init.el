@@ -50,10 +50,12 @@
 ;;; UI configuration
 ;; Remove some unneeded UI elements (the user can turn back on anything they wish)
 (setq inhibit-startup-message t)
-(push '(tool-bar-lines . 0) default-frame-alist)
-(push '(menu-bar-lines . 0) default-frame-alist)
-(push '(vertical-scroll-bars) default-frame-alist)
-(push '(mouse-color . "white") default-frame-alist)
+
+(when (display-graphic-p)
+  (push '(tool-bar-lines . 0) default-frame-alist)
+  (push '(menu-bar-lines . 0) default-frame-alist)
+  (push '(vertical-scroll-bars) default-frame-alist)
+  (push '(mouse-color . "white") default-frame-alist))
 
 ;; Make the initial buffer load faster by setting its mode to fundamental-mode
 (customize-set-variable 'initial-major-mode 'fundamental-mode)
