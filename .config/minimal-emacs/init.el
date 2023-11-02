@@ -65,9 +65,10 @@
 ;;                 GUI                 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; disable scrollbar
-(scroll-bar-mode -1) ; disbale scrollbar
-(menu-bar-mode -1) ; disable menu bar
-(tool-bar-mode -1) ; disbale tool bar
+(when (display-graphic-p)
+  (scroll-bar-mode -1)
+  (menu-bar-mode -1)
+  (tool-bar-mode -1))
 
 ;; set cursor style to filled bar
 (setq-default cursor-type 'box)
