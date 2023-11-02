@@ -126,6 +126,9 @@ DIR: directory path"
 ;; https://github.com/abo-abo/org-download
 (use-package org-download
   :after org
+  :hook
+  ;; enables drag-and-drop in dired
+  (dired-mode . org-download-enable)
   :custom
   (org-download-method 'directory)
   (org-download-image-org-width 600)
