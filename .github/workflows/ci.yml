@@ -25,11 +25,19 @@ jobs:
           rm ~/.bashrc ~/.profile
           sudo apt-get update
           ./configure -i
-      - name: Run Emacs
+      - name: Run Emacs (minimal)
         run: |
           echo "------------------------------------------------"
           emacs --version
           echo "------------------------------------------------"
-          printf "%s\n%s\n%s\n" "(add-to-list 'load-path \"~/.config/emacs\")" "(require 'early-init)" "(require 'init)" | tee "test.el"
-          emacs --script "test.el"
+          printf "%s\n%s\n%s\n" "(add-to-list 'load-path \"~/.config/minimal-emacs\")" "(require 'early-init)" "(require 'init)" | tee "test-minimal.el"
+          emacs --script "test-minimal.el"
+          test $? -eq 0 || exit 1
+      - name: Run Emacs (full)
+        run: |
+          echo "------------------------------------------------"
+          emacs --version
+          echo "------------------------------------------------"
+          printf "%s\n%s\n%s\n" "(add-to-list 'load-path \"~/.config/emacs\")" "(require 'early-init)" "(require 'init)" | tee "test-full.el"
+          emacs --script "test-full.el"
           test $? -eq 0 || exit 1
