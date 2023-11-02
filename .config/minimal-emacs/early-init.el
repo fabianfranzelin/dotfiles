@@ -29,6 +29,7 @@
 
 ;; -------------------------------------------------------------------
 ;; configure native compilation
+(setq native-comp-eln-load-path '())
 
 ;; store the eln-cache into the standard paths of the no-littering
 ;; package
@@ -39,7 +40,6 @@
 
 (when (featurep 'native-compile)
   ;; Set the right directory to store the native compilation cache
-  (setq native-comp-eln-load-path '())
   (add-to-list 'native-comp-eln-load-path (expand-file-name "var/eln-cache/" user-emacs-directory))
 
   ;; Silence compiler warnings as they can be pretty disruptive
@@ -52,11 +52,10 @@
 ;; Remove some unneeded UI elements (the user can turn back on anything they wish)
 (setq inhibit-startup-message t)
 
-(when (display-graphic-p)
-  (push '(tool-bar-lines . 0) default-frame-alist)
-  (push '(menu-bar-lines . 0) default-frame-alist)
-  (push '(vertical-scroll-bars) default-frame-alist)
-  (push '(mouse-color . "white") default-frame-alist))
+(push '(tool-bar-lines . 0) default-frame-alist)
+(push '(menu-bar-lines . 0) default-frame-alist)
+(push '(vertical-scroll-bars) default-frame-alist)
+(push '(mouse-color . "white") default-frame-alist)
 
 ;; Make the initial buffer load faster by setting its mode to fundamental-mode
 (customize-set-variable 'initial-major-mode 'fundamental-mode)
