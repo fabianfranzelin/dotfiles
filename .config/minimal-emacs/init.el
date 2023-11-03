@@ -152,6 +152,11 @@
    ("l" . dired-up-directory)
    ("TAB" . dired-find-file)))
 
+(package-install 'run-command)
+(use-package run-command
+  :custom (run-command-default-runner #'run-command-run\
+ner-compile))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;           Version control           ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
