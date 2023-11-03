@@ -262,29 +262,26 @@ DIR: directory path"
       "\n\n* %?"
       :target (file+head "%<%Y%m%d%H%M>-${slug}.org"
                          "#+title: ${title}\n#+filetags: :%^{project}:\n\n")
+      :unarrowed t)
+     ("t" "task" plain
+      "* TODO ${title}\n\n%?"
+      :target (file+head "journal/%<%Y%m%d%H%M>-${slug}.org"
+                         "#+title: ${title} (%<%Y-%m-%d %a>)\n#+CATEGORY: Task\n\n")
+      :unnarrowed t)
+     ("m" "meeting" plain
+      "* Participants\n\n+ Fabian Franzelin\n\n* Notes\n\n%?\n\n* Todos"
+      :target (file+head "journal/%<%Y%m%d%H%M>-${slug}.org"
+                         "#+title: ${title} (%<%Y-%m-%d %a>)\n#+CATEGORY: Meeting\n\n")
+
       :unarrowed t)))
   ;; org-roam-dailies
   (org-roam-dailies-directory (expand-file-name "journal" org-roam-directory))
   (org-roam-dailies-capture-templates
-   '(("d" "default" plain
-      "* %?"
-      :target (file+head "%<%Y%m%d>.org" "#+title: %<%Y-%m-%d %a>\n\n")
-      :unarrowed t)
-     ("f" "fleeting note" plain
-      "** TODO %^{Note title}\n %U\n %i\n%?"
+   '(("f" "fleeting note" plain
+      "* TODO %^{Note title}\n %U\n %i\n%?"
       :target (file+head+olp "inbox.org"
                              "#+title: Inbox\n\n"
                              ("%(format-time-string \"%B, %d.%m\")"))
-      :unarrowed t)
-     ("t" "task" entry
-      "* TODO %^{Todo title}\n %U\n %i\n%?"
-      :target (file+head "%<%Y%m%d%H%M>-todo.org"
-                         "#+title: %<%Y-%m-%d %a>\n#+CATEGORY: Task\n\n")
-      :unarrowed t)
-     ("m" "meeting" entry
-      "* %<%I:%M %p> - %^{Meeting Title}  :meetings:\n\n** Participants\n\n+ Fabian Franzelin\n\n** Notes\n\n%?\n\n** Todos"
-      :target (file+head "%<%Y%m%d%H%M>-meeting.org"
-                         "#+title: %<%Y-%m-%d %a>\n#+CATEGORY: Meeting\n\n")
       :unarrowed t)
      ("w" "workday" plain
       "** %<[w%V] %a (%d.%m)> \n\n%?"
