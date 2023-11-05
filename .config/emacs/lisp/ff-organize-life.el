@@ -264,7 +264,7 @@ DIR: directory path"
                          "#+title: ${title}\n#+filetags: :%^{project}:\n\n")
       :unarrowed t)
      ("t" "task" plain
-      "* TODO ${title}\n\n%?"
+      "* TODO ${title}\n%U\n\n%?"
       :target (file+head "journal/%<%Y%m%d%H%M>-${slug}.org"
                          "#+title: ${title} (%<%Y-%m-%d %a>)\n#+CATEGORY: Task\n\n")
       :unnarrowed t)
