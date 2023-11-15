@@ -376,9 +376,7 @@ DIR: directory path"
 
 (defun ff/citar-reference-notes-absolute-path ()
   "Load the absolute path to all literature notes."
-  (concat org-roam-directory
-          (if citar-org-roam-subdir
-              (concat "/" citar-org-roam-subdir))))
+  (concat org-roam-directory "/references"))
 
 (use-package citar
   :commands citar-open
@@ -392,7 +390,6 @@ DIR: directory path"
   (org-cite-activate-processor 'citar)
   (org-cite-global-bibliography `(,(file-truename (expand-file-name "bib/references.bib" org-directory))))
   (citar-bibliography `(,(file-truename (expand-file-name "bib/references.bib" org-directory))))
-  (citar-org-roam-subdir "references")
   (citar-notes-paths `(,org-roam-directory))
   (citar-at-point-function 'embark-act)
   :config
