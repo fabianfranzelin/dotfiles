@@ -131,6 +131,9 @@ build/
 /examples/org-project/content/*.rel
 /examples/org-project/content/*.toc
 /examples/org-project/content/*.synctex.gz
+/examples/org-project/README.pdf
+/examples/org-project/README.tex
+
 
 ### Python ###
 __pycache__
