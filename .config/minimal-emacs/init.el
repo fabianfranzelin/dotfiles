@@ -61,6 +61,11 @@
 (electric-pair-mode t)
 (electric-indent-mode nil)
 
+;; just kill the current buffer and not ask for selection
+(global-set-key (kbd "C-x k") #'(lambda ()
+                                  (interactive)
+                                  (kill-buffer (current-buffer))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                 GUI                 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
