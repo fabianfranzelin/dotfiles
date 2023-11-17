@@ -152,11 +152,6 @@
    ("l" . dired-up-directory)
    ("TAB" . dired-find-file)))
 
-(package-install 'run-command)
-(use-package run-command
-  :custom (run-command-default-runner #'run-command-run\
-ner-compile))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;           Version control           ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -167,6 +162,32 @@ ner-compile))
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
   ;; Show word based diff
   (magit-diff-refine-hunk 'all))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;           Project                  ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(package-install 'run-command)
+(use-package run-command
+  :custom (run-command-default-runner #'run-command-runner-compile))
+
+(defun ff/project-magit ()
+  "Show the Git status of the current project."
+  (interactive)
+  (magit-status (locate-dominating-file (project-root (project-current t)) ".git")))
+
+(use-package project
+  :custom
+  (project-switch-commands '((project-find-file "Find file")
+                             (project-find-dir "Find directory")
+                             (ff/project-magit "Magit")
+                             (project-dired "Dired")
+                             (project-vc-dir "VC-Dir")))
+  (project-vc-extra-root-markers '(".project.el"))
+  (project-vc-ignores '("build/" "install/" ".*cache/" "__pycache__"))
+  :bind
+  (:map project-prefix-map
+        ("g" . ff/project-magit)
+        ("v" . project-vc-dir)))
 
 ;; -------------------------------------------------------------------
 
