@@ -66,6 +66,22 @@
                                   (interactive)
                                   (kill-buffer (current-buffer))))
 
+;; -------------------------------------------------------------------
+;; Credential management
+;; -------------------------------------------------------------------
+(require 'auth-source-pass)
+(auth-source-pass-enable)
+
+(require 'auth-source)
+;; Do not allow unencrypted auth-sources. Use GPG
+(setq auth-sources `(password-store ,(expand-file-name "~/.password-store/authinfo.gpg")))
+;; Use the Emacs minibuffer for GPG pinentry
+;; https://vxlabs.com/2021/03/21/gnupg-pinentry-via-the-emacs-minibuffer/
+(setq epa-pinentry-mode 'loopback)
+
+(use-package pass
+  :custom (pass-show-keybindings nil))
+
 (defun ff/unlock-key ()
   "Unlock gpg key."
   (interactive)
