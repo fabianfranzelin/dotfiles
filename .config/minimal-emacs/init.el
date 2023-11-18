@@ -79,6 +79,7 @@
 ;; https://vxlabs.com/2021/03/21/gnupg-pinentry-via-the-emacs-minibuffer/
 (setq epa-pinentry-mode 'loopback)
 
+(package-install 'pass)
 (use-package pass
   :custom (pass-show-keybindings nil))
 
