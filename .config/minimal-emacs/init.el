@@ -66,6 +66,15 @@
                                   (interactive)
                                   (kill-buffer (current-buffer))))
 
+(defun ff/unlock-key ()
+  "Unlock gpg key."
+  (interactive)
+  (if (password-store-get "usernames/public@github")
+      (message "GPG key is unlocked")
+    (message "Wrong password. GPG key is not unlocked.")))
+
+(global-set-key (kbd "C-c C-g") 'ff/unlock-key)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                 GUI                 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -161,12 +170,23 @@
 ;;           Version control           ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (package-install 'magit)
+
+(defun ff/stage-commit-push-all ()
+  "Stage, commit, and push all changed files in a Git repo."
+  (interactive)
+  (magit-stage-modified)
+  (magit-commit-create '("-m" "update some stuff"))
+  (magit-push-current-to-upstream nil))
+
 (use-package magit
   :commands magit
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
   ;; Show word based diff
-  (magit-diff-refine-hunk 'all))
+  (magit-diff-refine-hunk 'all)
+  :bind
+  (:map magit-mode-map
+        ("C-c C-a" . ff/stage-commit-push-all)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;           Project                  ;
