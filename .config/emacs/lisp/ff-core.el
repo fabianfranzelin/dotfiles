@@ -272,6 +272,7 @@ COMMAND: command to be executed"
   (delete-by-moving-to-trash t)
   (dired-listing-switches "-agho --group-directories-first")
   (dired-hide-details-hide-symlink-targets nil)
+  (dired-mouse-drag-files t)
   :init
   (require 'dired-x)
   (autoload 'dired-omit-mode "dired-x")

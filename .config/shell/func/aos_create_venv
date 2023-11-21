@@ -35,7 +35,8 @@ aos_create_venv() {
                 sphinx_copybutton \
                 sphinx_panels \
                 sphinxcontrib_svg2pdfconverter \
-                esbonio==0.15
+                esbonio==0.15 \
+                sphinx_autodoc_typehints
 
         deactivate
     )
