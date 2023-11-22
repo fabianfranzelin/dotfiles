@@ -130,6 +130,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          texlive-base \
          texlive-science \
          texlive-bibtex-extra \
+         texlive-lang-german \
          biber \
          doxygen
 
