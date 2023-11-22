@@ -11,7 +11,7 @@
                             :working-dir project-dir))
                     (when-let* ((project-dir (locate-dominating-file default-directory "configure")))
                       (list :command-name "sh:configure & install"
-                            :command-line "./configure -i --skip-emacs-build"
+                            :command-line "./configure -i --skip-emacs-build --skip-qtile-installation"
                             :working-dir project-dir
                             :runner 'ff/run-command-runner-vterm)))))
          ;; Docs ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
