@@ -18,7 +18,9 @@
   (magit-diff-refine-hunk 'all)
   :bind
   (:map magit-mode-map
-        ("C-c C-a" . ff/stage-commit-push-all)))
+        ("C-c C-a" . ff/stage-commit-push-all)
+        :map magit-section-mode-map
+        ("C-<tab>" . nil)))
 
 (use-package magit-lfs)
 
