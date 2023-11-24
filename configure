@@ -91,11 +91,13 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
     sudo apt remove -y python3-venv
 
     # Update python setuptools to latest release from pypi
-    python3 -m pip install --upgrade \
-            setuptools \
+    python3 -m pip install --upgrade \            
             pip \
             wheel
-
+	    
+    python3 -m pip install \
+	    setuptools==68.2.2 \
+    
     sudo apt-get install -y \
          xclip \
          apt-transport-https \
