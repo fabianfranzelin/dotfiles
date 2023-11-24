@@ -3,11 +3,9 @@
   // window settings
   "window.title": "${activeEditorMedium}${separator}${rootName}",
   "window.titleBarStyle": "custom",
-  "window.zoomLevel": 0,
-  "workbench.editor.showTabs": true,
+  "workbench.editor.showTabs": "multiple",
   "workbench.sideBar.location": "left",
   "workbench.statusBar.visible": true,
-  "workbench.activityBar.visible": true,
   "window.menuBarVisibility": "compact",
   "breadcrumbs.enabled": true,
   "editor.renderControlCharacters": false,

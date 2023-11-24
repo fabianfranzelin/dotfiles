@@ -19,13 +19,19 @@ aos_create_venv() {
 
         # install command line tool
         python3 -m pip install "_tools/aos_cli"
-        python3 -m pip install -r "_tools/docker/aos_user_ubuntu2004/requirements.txt"
-        python3 -m pip install -r "_tools/docker/aos_dev_ubuntu2004/requirements.txt"
+        # python3 -m pip install -r "_tools/docker/aos_user_ubuntu2004/requirements.txt"
+        # python3 -m pip install -r "_tools/docker/aos_dev_ubuntu2004/requirements.txt"
 
-        # Workarounds
-        python3 -m pip install pycryptodomex gnupg rospkg
+        # # Workarounds
+        python3 -m pip install pycryptodomex \
+                gnupg \
+                rospkg \
+                poetry==1.5.1 \
+                colorlog \
+                mock \
+                tqdm
 
-        # other stuff that helps working
+        # # other stuff that helps working
         python3 -m pip install ipdb ipython
 
         python3 -m pip install \

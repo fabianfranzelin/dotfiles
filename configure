@@ -267,6 +267,16 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
     )
 
     #------------------------------------------------------------------------------#
+    # install dependencies gdb
+    (
+        cd "/tmp"
+        GLIBC_NAME="glibc-2.38"
+        wget "https://ftp.gnu.org/gnu/libc/${GLIBC_TAR_FILE}.tar.gz"
+        tar -zxvf "${GLIBC_TAR_FILE}.tar.gz"
+        mv "${GLIBC_NAME}" "${HOME}/.local/share"
+    )
+
+    #------------------------------------------------------------------------------#
     # install dependencies for vscode
     if ( __is_linux ) then
        # note that vscode is mounted from Windows in WSL and not
