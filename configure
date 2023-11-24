@@ -93,9 +93,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
     # Update python setuptools to latest release from pypi
     python3 -m pip install --upgrade \            
             pip \
-            wheel
-	    
-    python3 -m pip install \
+            wheel \
 	    setuptools==68.2.2 \
     
     sudo apt-get install -y \
