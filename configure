@@ -95,7 +95,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
             pip \
             wheel \
 	    setuptools==68.2.2
-    
+
     sudo apt-get install -y \
          xclip \
          apt-transport-https \
@@ -330,38 +330,38 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
 
       # Install Qtile window manager
       if [ -z "${SKIP_QTILE_INSTALL}" ]; then
-  	echo -e "${__COLOR_INFO}INFO: Install X configs for Qtile${__COLOR_RESET}"
+  	  echo -e "${__COLOR_INFO}INFO: Install X configs for Qtile${__COLOR_RESET}"
 
-  	# Create xsessions entry for qtile according to
-  	# https://docs.qtile.org/en/latest/manual/install/index.html#starting-qtile
-  	XSESSIONS_PATH="/usr/share/xsessions"
-  	if [ -d "${XSESSIONS_PATH}" ]; then
+  	  # Create xsessions entry for qtile according to
+  	  # https://docs.qtile.org/en/latest/manual/install/index.html#starting-qtile
+  	  XSESSIONS_PATH="/usr/share/xsessions"
+  	  if [ -d "${XSESSIONS_PATH}" ]; then
               QTILE_DESKTOP_FILE_PATH="${XSESSIONS_PATH}/qtile.desktop"
               if [ ! -f "${QTILE_DESKTOP_FILE_PATH}" ]; then
-  		echo "[Desktop Entry]
+  		  echo "[Desktop Entry]
 Name=Qtile
 Comment=Qtile Session
 Exec=startqtile
 Type=Application
 Keywords=wm;tiling" | sudo tee "${QTILE_DESKTOP_FILE_PATH}"
               else
-  		echo -e "${__COLOR_WARN}The file '${QTILE_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
+  		  echo -e "${__COLOR_WARN}The file '${QTILE_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
               fi
 
               CUSTOM_DESKTOP_FILE_PATH="${XSESSIONS_PATH}/custom.desktop"
               if [ ! -f "${CUSTOM_DESKTOP_FILE_PATH}" ]; then
-  		echo "[Desktop Entry]
+  		  echo "[Desktop Entry]
 Name=Qtile
 Comment=Qtile Session
 Exec=/etc/X11/Xsession
 Type=Application
 Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
               else
-  		echo -e "${__COLOR_WARN}The file '${CUSTOM_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
+  		  echo -e "${__COLOR_WARN}The file '${CUSTOM_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
               fi
-  	else
+  	  else
               echo -e "${__COLOR_INFO}INFO: skipping xsession configuration for qtile"
-  	fi
+  	  fi
       fi
 
       sudo apt-get install -y \
@@ -371,21 +371,20 @@ Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
 
       # Install nyxt
       if [ -n "${INSTALL_NYXT}" ]; then
-      (
-          # install Nyxt
-          TMP_NYXT_SRC=$(mktemp -d)
-          cd "${TMP_NYXT_SRC}" || exit 1
-          NYXT_VERSION="3.8.0"
-          NYXT_SRC_FILE_NAME="nyxt-${NYXT_VERSION}-source-with-submodules.tar.xz"
-          wget "https://github.com/atlas-engineer/nyxt/releases/download/${NYXT_VERSION}/${NYXT_SRC_FILE_NAME}"
-          tar -xvf "${NYXT_SRC_FILE_NAME}"
-          make all
-          make install
-      )
-      fi
-
-    else
-      echo -e "${__COLOR_WARN}WARN: Skip installation of GTK tools.${__COLOR_RESET}"
+          (
+              # install Nyxt
+              TMP_NYXT_SRC=$(mktemp -d)
+              cd "${TMP_NYXT_SRC}" || exit 1
+              NYXT_VERSION="3.9.2"
+              NYXT_SRC_FILE_NAME="nyxt-${NYXT_VERSION}-source-with-submodules.tar.xz"
+              wget "https://github.com/atlas-engineer/nyxt/releases/download/${NYXT_VERSION}/${NYXT_SRC_FILE_NAME}"
+              tar -xvf "${NYXT_SRC_FILE_NAME}"
+              make all
+              make install
+          )
+       else
+           echo -e "${__COLOR_WARN}WARN: Skip installation of GTK tools.${__COLOR_RESET}"
+       fi
     fi
 
     #------------------------------------------------------------------------------#
