@@ -91,7 +91,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
     sudo apt remove -y python3-venv
 
     # Update python setuptools to latest release from pypi
-    python3 -m pip install --upgrade \            
+    python3 -m pip install --upgrade \
             pip \
             wheel \
 	    setuptools==68.2.2
