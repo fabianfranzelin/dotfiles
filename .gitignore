@@ -109,6 +109,7 @@ build/
 /.local/share/direnv/
 /.local/share/man/
 /.local/share/CMakeTools/
+/.local/share/glibc-*
 
 /.config/znt/
 /.config/configstore/

@@ -271,9 +271,9 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
     (
         cd "/tmp"
         GLIBC_NAME="glibc-2.38"
-        wget "https://ftp.gnu.org/gnu/libc/${GLIBC_TAR_FILE}.tar.gz"
-        tar -zxvf "${GLIBC_TAR_FILE}.tar.gz"
-        mv "${GLIBC_NAME}" "${HOME}/.local/share"
+        wget "https://ftp.gnu.org/gnu/libc/${GLIBC_NAME}.tar.gz"
+        tar -zxvf "${GLIBC_NAME}.tar.gz"
+        mv -n "${GLIBC_NAME}" "${HOME}/.local/share"
     )
 
     #------------------------------------------------------------------------------#
