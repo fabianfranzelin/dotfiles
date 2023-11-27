@@ -197,8 +197,9 @@
 (require 'proced)
 
 ;; make the buffer auto-update every 5 seconds
-(setq-default proced-auto-update-flag t)
-(setq proced-auto-update-interval 5)
+(customize-set-variable 'proced-auto-update-flag nil)
+(customize-set-variable 'proced-auto-update-interval 5)
+
 
 ;; alter the output format
 (add-to-list
