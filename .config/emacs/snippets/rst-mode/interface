@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: Intreface (AOS)
+# name: Interface (AOS)
 # key: interface
 # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 # --
