@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: Component (AOS)
+# key: component
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# --
+
+.. component:: ${1:Title}
+   :id: COMPONENT_${2:ID}
+   :tags: ${3:Tags}
+   :collapse: false
+   :safety_integrity:
+   :contains:
+   :realizes:
+   :uses:
+
+   $0
