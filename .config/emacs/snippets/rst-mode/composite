@@ -6,11 +6,7 @@
 
 .. composite:: ${1:Title}
    :id: COMPOSITE_${2:ID}
-   :status: open
    :tags: ${3:Tags}
-   :collapse: false
-   :da_safety_integrity:
-   :da_safety_relevance:
    :contains:
 
   $0
