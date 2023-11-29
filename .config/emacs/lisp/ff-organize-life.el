@@ -261,7 +261,7 @@ DIR: directory path"
      ("p" "project note" entry
       "\n\n* %?"
       :target (file+head "%<%Y%m%d%H%M>-${slug}.org"
-                         "#+title: ${title}\n\n#+CATEGORY: Project note\n#+filetags: :%^{project}:\n\n")
+                         "#+title: ${title}\n\n#+CATEGORY: Project\n#+filetags: :%^{project}:\n\n")
       :unarrowed t)
      ("t" "task" plain
       "* TODO ${title}\n%U\n\n%?"
