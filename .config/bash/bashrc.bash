@@ -38,6 +38,10 @@ export BASHDOTDIR="${XDG_CONFIG_HOME}/bash"
 . "${HOME}/.profile"
 
 #------------------------------------------------------------------------------#
+# vterm setup
+. "${BASHDOTDIR}/vterm.bash"
+
+#------------------------------------------------------------------------------#
 # ros setup
 
 for ROS_VERSION in "noetic" "humble"; do

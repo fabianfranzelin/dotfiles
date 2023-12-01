@@ -149,6 +149,8 @@ https://github.com/akermu/emacs-libvterm/issues/518"
   :config
   (add-hook 'vterm-exit-functions (lambda(_ _) (kill-buffer-and-window)))
   (add-to-list 'vterm-keymap-exceptions "M-:")
+  ;; this is required for directory tracking in zsh
+  (add-to-list 'vterm-eval-cmds '("update-pwd" (lambda (path) (setq default-directory path))))
   :bind (("C-x j" . ff/start-vterm)
          :map vterm-mode-map
          ("C-q" . vterm-send-next-key)
