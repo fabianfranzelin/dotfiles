@@ -36,8 +36,7 @@ export LC_COLLATE="C"
 # expand path to include local bin directory
 export PATH="${HOME}/opt/bin:${HOME}/.local/bin:${HOME}/.local/share/npm/bin:/usr/lib/ccache:${PATH}"
 
-# Fix for docker /dev/shm issue: https://github.com/docker/buildx/issues/418
-export DOCKER_BUILDKIT=0
+export DOCKER_BUILDKIT=1
 
 # Add some default directories to LD_LIBRARY_PATH
 export LD_LIBRARY_PATH="/usr/local/lib:${LD_LIBRARY_PATH}"

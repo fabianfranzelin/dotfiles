@@ -1,8 +1,8 @@
 {
   "proxies": {
     "default": {
-      "httpProxy": "http://127.0.0.1:3128",
-      "httpsProxy": "http://127.0.0.1:3128",
+      "httpProxy": "http://172.17.0.1:3128",
+      "httpsProxy": "http://172.17.0.1:3128",
       "noProxy": "bosch.com"
     }
   }
