@@ -382,7 +382,10 @@ COMMAND: command to be executed"
                                  "eog" '(file))
                            (list (openwith-make-extension-regexp
                                   '("html" "htm" "svg"))
-                                 "firefox" '(file)))))
+                                 "firefox" '(file))
+                           (list (openwith-make-extension-regexp
+                                  '("pdf" "PDF"))
+                                 "xdg-open" '(file)))))
 
 ;; -------------------------------------------------------------------
 ;; Auto-saving changed files when they lose focus
