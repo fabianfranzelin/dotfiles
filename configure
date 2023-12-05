@@ -132,7 +132,8 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          texlive-bibtex-extra \
          texlive-lang-german \
          biber \
-         doxygen
+         doxygen \
+         evince
 
     if ( __is_wsl ) then
        # install wslview for xdg-open so that firefox calls are

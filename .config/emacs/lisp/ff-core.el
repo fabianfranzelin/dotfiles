@@ -385,7 +385,7 @@ COMMAND: command to be executed"
                                  "firefox" '(file))
                            (list (openwith-make-extension-regexp
                                   '("pdf" "PDF"))
-                                 "xdg-open" '(file)))))
+                                 "evince" '(file)))))
 
 ;; -------------------------------------------------------------------
 ;; Auto-saving changed files when they lose focus
