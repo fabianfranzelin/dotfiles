@@ -44,7 +44,8 @@ aos_create_venv() {
                 sphinxcontrib_plantuml \
                 sphinx_needs \
                 esbonio==0.15 \
-                sphinx_autodoc_typehints
+                sphinx_autodoc_typehints \
+                sphinx-jsonschema
 
         deactivate
     )
