@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+# Set keyboard layout to German
+setxkbmap -layout de -option
