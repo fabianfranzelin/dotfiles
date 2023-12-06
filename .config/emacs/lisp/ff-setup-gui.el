@@ -196,10 +196,19 @@
 ;; https://laurencewarne.github.io/emacs/programming/2022/12/26/exploring-proced.html
 (require 'proced)
 
+;; Add shortcut to copy PID from proced
+(defun ff/proced-pid-at-point ()
+  "Copy PID at point in proced."
+  (interactive)
+  (let ((pid (proced-pid-at-point)))
+    (kill-new (format "%s" pid))
+    (message "PID %s copied." pid)))
+
+(define-key proced-mode-map "c" 'ff/proced-pid-at-point)
+
 ;; make the buffer auto-update every 5 seconds
 (customize-set-variable 'proced-auto-update-flag nil)
 (customize-set-variable 'proced-auto-update-interval 5)
-
 
 ;; alter the output format
 (add-to-list
