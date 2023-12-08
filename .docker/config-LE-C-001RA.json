@@ -1,4 +1,5 @@
 {
+  "credsStore": "pass",
   "proxies": {
     "default": {
       "httpProxy": "http://172.17.0.1:3128",
