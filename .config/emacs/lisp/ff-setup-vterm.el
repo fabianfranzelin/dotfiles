@@ -159,6 +159,7 @@ https://github.com/akermu/emacs-libvterm/issues/518"
          ("C-x 3" . ff/open-vterm-right)
          ("C-M-p" . ff/vterm-send-password)
          ("C-c C-t" . vterm-copy-mode)
+         ("M-y" . vterm-yank-pop)
          ("C-c t" . (lambda()
                       (interactive)
                       (ff/start-vterm)
