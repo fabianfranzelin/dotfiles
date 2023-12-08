@@ -89,8 +89,6 @@ the need to update my project hierarchy."
   (advice-add 'eglot--current-project :before-until
               #'ff/eglot-find-local-project))
 
-(use-package consult-eglot)
-
 ;; -------------------------------------------------------------
 ;; use built-in tree-sitter
 ;; -------------------------------------------------------------
