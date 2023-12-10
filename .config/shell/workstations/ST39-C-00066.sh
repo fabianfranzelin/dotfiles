@@ -14,6 +14,9 @@ export HTTPS_PROXY="http://127.0.0.1:3128"
 # Set default browser use `xdg-open` to call it
 export BROWSER=firefox
 
+# keyboard layout
+"${HOME}/.local/bin/set_keyboard_layout"
+
 #------------------------------------------------------------------------------#
 # AOS
 export AOS_BASE_HOME="${HOME}/workspace/aos"

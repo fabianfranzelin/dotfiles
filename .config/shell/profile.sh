@@ -45,9 +45,6 @@ if ! pgrep ssh-agent > /dev/null; then
     export SSH_AUTH_SOCK
 fi
 
-# keyboard layout
-"${HOME}/.local/bin/set_keyboard_layout"
-
 #------------------------------------------------------------------------------#
 # history
 
