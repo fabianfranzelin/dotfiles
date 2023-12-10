@@ -29,20 +29,20 @@ named arguments:
   (let* ((url (format "https://www.%s.com/%s" fetcher repo))
          (iname (when name (intern name)))
          (pac-name (or iname (intern (file-name-base repo)))))
-    (cond ((and name
-                (not (package-installed-p name)))
-           (package-vc-install name))
-          ((and repo
-                (not (package-installed-p pac-name)))
-           (package-vc-install url iname rev backend))
-          (t
-           (message "Do not do anything for %s" name)))))
+    (unless (package-installed-p pac-name)
+      (cond (iname
+	     (package-vc-install iname))
+	    (repo
+	     (package-vc-install url iname rev backend))
+	    (t
+	     (message "Do not do anything for %s" name))
+      ))))
 
 ;; -------------------------------------------------------------------
 ;; Before we do anything, set up the no littering package
-(package-install 'no-littering)
 
 (use-package no-littering
+  :preface (ff/vc-install :name "no-littering")
   :custom
   (custom-file (no-littering-expand-etc-file-name "custom.el"))
   :init
@@ -105,8 +105,8 @@ named arguments:
 ;; https://vxlabs.com/2021/03/21/gnupg-pinentry-via-the-emacs-minibuffer/
 (setq epa-pinentry-mode 'loopback)
 
-(package-install 'pass)
 (use-package pass
+  :preface (ff/vc-install :name "pass")
   :custom (pass-show-keybindings nil))
 
 (defun ff/unlock-key ()
@@ -134,8 +134,8 @@ named arguments:
 (setq inhibit-startup-screen t)
 
 ;; -------------------------------------------------------------------
-(package-install 'doom-themes)
 (use-package doom-themes
+  :preface (ff/vc-install :name "doom-themes")
   :custom
   (doom-themes-enable-bold t)    ; if nil, bold is universally disabled
   (doom-themes-enable-italic t) ; if nil, italics is universally disabled
@@ -154,8 +154,8 @@ named arguments:
   (set-face-background 'fringe (face-attribute 'default :background)))
 
 ;; -------------------------------------------------------------------
-(package-install 'vertico)
 (use-package vertico
+  :preface (ff/vc-install :name "vertico")
   :custom
   (vertico-count 10)
   (vertico-cycle t)
@@ -173,16 +173,16 @@ named arguments:
               ("C-a" . (lambda() (interactive) (ff/minibuffer-move-to-dir "/")))
               ("C-o" . (lambda() (interactive) (ff/minibuffer-move-to-dir "~/")))))
 
-(package-install 'orderless)
 (use-package orderless
+  :preface (ff/vc-install :name "orderless")
   :custom
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles basic partial-completion)))))
 
 ;; Save history during sessions so that vertico can pick up the latest
 ;; used ones
-(package-install 'savehist)
 (use-package savehist
+  :preface (ff/vc-install :name "savehist")
   :init (savehist-mode t))
 
 ;; -------------------------------------------------------------------
@@ -212,7 +212,6 @@ named arguments:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;           Version control           ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(package-install 'magit)
 
 (defun ff/stage-commit-push-all ()
   "Stage, commit, and push all changed files in a Git repo."
@@ -222,6 +221,7 @@ named arguments:
   (magit-push-current-to-upstream nil))
 
 (use-package magit
+  :preface (ff/vc-install :name "magit")
   :commands magit
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
@@ -234,8 +234,8 @@ named arguments:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;           Project                  ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(package-install 'run-command)
 (use-package run-command
+  :preface (ff/vc-install :name "run-command")
   :custom (run-command-default-runner #'run-command-runner-compile))
 
 (defun ff/project-magit ()
