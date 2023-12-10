@@ -35,8 +35,7 @@ named arguments:
 	    (repo
 	     (package-vc-install url iname rev backend))
 	    (t
-	     (message "Do not do anything for %s" name))
-      ))))
+	     (message "Do not do anything for %s" name))))))
 
 ;; -------------------------------------------------------------------
 ;; Before we do anything, set up the no littering package
@@ -154,6 +153,50 @@ named arguments:
   (set-face-background 'fringe (face-attribute 'default :background)))
 
 ;; -------------------------------------------------------------------
+
+(defun ff/minibuffer-backward-kill (arg)
+  "Delete parent folder completely when hitting it with the cursor.
+ARG: position"
+  (interactive "p")
+  (if minibuffer-completing-file-name
+      (progn
+        ;; Expand the home path when hitting ~/ and continue
+        (when (string-match-p "^~/$" (minibuffer-contents))
+          (delete-minibuffer-contents)
+          (insert (expand-file-name "~/")))
+
+        ;; Expand home path when hitting tilde with tramp
+        (when (string-match-p "^/.*:.*:~/$" (minibuffer-contents))
+          (zap-up-to-char (- arg) ?~)
+          (delete-char -1)
+          (insert (expand-file-name "~/")))
+
+        ;; Continue
+        (cond ((string-match-p "^/.*:.*:.*/.*/$" (minibuffer-contents))
+               (zap-up-to-char (- arg) ?/))
+              ((string-match-p "^/.*:.*:.*/$" (minibuffer-contents))
+               (zap-up-to-char (- (+ arg 1)) ?:))
+              ((string-match-p "^/.*:.*:.*/$" (minibuffer-contents))
+               (zap-up-to-char (- arg) ?:))
+              ((string-match-p "^/.*:$" (minibuffer-contents))
+               (zap-up-to-char (- arg) ?/))
+              ((or (string-match-p "^/.*/$" (minibuffer-contents))
+                   (string-match-p "^~/.*/$" (minibuffer-contents)))
+               (zap-up-to-char (- arg) ?/))
+              (t ;; default
+               (delete-char -1))))
+    (delete-char -1)))
+
+(defun ff/minibuffer-move-to-dir (dir)
+  "Go the the specified directory when completing file names.
+DIR: directory"
+  (interactive "p")
+  (cond (minibuffer-completing-file-name
+         (delete-minibuffer-contents)
+         (insert (substitute-in-file-name dir)))
+        (t
+         (move-beginning-of-line 0))))
+
 (use-package vertico
   :preface (ff/vc-install :name "vertico")
   :custom
