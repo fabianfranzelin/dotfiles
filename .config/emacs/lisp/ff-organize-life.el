@@ -278,7 +278,7 @@ DIR: directory path"
   (org-roam-dailies-directory (expand-file-name "journal" org-roam-directory))
   (org-roam-dailies-capture-templates
    '(("f" "fleeting note" plain
-      "* TODO %^{Note title}\n %U\n %i\n%?"
+      "** TODO %^{Note title}\n %U\n %i\n%?"
       :target (file+head+olp "inbox.org"
                              "#+title: Inbox\n\n"
                              ("%(format-time-string \"%B, %d.%m\")"))
