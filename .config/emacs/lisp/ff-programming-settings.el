@@ -234,6 +234,14 @@ FORCE: force update of grammars"
 (require 'ff-programming-python)
 
 ;; -------------------------------------------------------------------
+;; Jupyter  notebook
+;; -------------------------------------------------------------------
+
+(use-package ein
+  :config
+  (setq ein:use-auto-complete t))
+
+;; -------------------------------------------------------------------
 ;; Shell
 ;; -------------------------------------------------------------------
 ;; part of the lsp-mode configuration
