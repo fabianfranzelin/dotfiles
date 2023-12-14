@@ -73,6 +73,7 @@ DIR: directory path"
   :hook
   ;; clocking
   (org-timer-set . org-clock-in)
+  (org-babel-after-execute . org-display-inline-images)
   :bind
   (("C-c C-x b" . ff/org-switch-directory)
    :map org-mode-map
@@ -105,7 +106,9 @@ DIR: directory path"
      (latex . t)
      (dot . t)
      (gnuplot . t)
-     (plantuml . t)))
+     (plantuml . t)
+     (jupyter . t)))
+  (org-babel-jupyter-override-src-block "python")
   (push '("conf-unix" . conf-unix) org-src-lang-modes)
 
   ;; do not ask each time whether a source block should be evaluated
