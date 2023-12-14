@@ -147,7 +147,6 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
     # install dependencies for Emacs
     sudo apt-get install -y \
          markdown \
-         pandoc \
          graphviz \
          fonts-cantarell \
          cmake \
@@ -265,6 +264,16 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
         wget "${DOCKER_CRED_PASS_URL}"
         chmod 755 "${DOCKER_CRED_PASS_BIN}"
         mv -f "${DOCKER_CRED_PASS_BIN}" "${HOME}/.local/bin/docker-credential-pass"
+    )
+
+    # install pandoc
+    PANDOC_VER="3.1.10"
+    PANDOC_BIN="pandoc-${PANDOC_VER}-1-amd64.deb"
+    PANDOC_URL="https://github.com/jgm/pandoc/releases/download/${PANDOC_VER}/${PANDOC_BIN}"
+    (
+        cd "/tmp"
+        wget "${PANDOC_URL}"
+        sudo dpkg -i "${PANDOC_BIN}"
     )
 
     #------------------------------------------------------------------------------#

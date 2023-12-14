@@ -233,6 +233,17 @@ FORCE: force update of grammars"
 ;; -------------------------------------------------------------------
 (require 'ff-programming-python)
 
+;; Jupyter notebook
+;; https://sqrtminusone.xyz/posts/2021-05-01-org-python
+;; https://martibosch.github.io/jupyter-emacs-universe/
+;; https://github.com/martibosch/snakemacs/blob/code-cells-org/main.el
+(use-package jupyter)
+
+(defun ff/jupyter-refresh-kernelspecs ()
+  "Refresh Jupyter kernelspecs."
+  (interactive)
+  (jupyter-available-kernelspecs t))
+
 ;; -------------------------------------------------------------------
 ;; Shell
 ;; -------------------------------------------------------------------
