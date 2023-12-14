@@ -95,8 +95,9 @@ the need to update my project hierarchy."
 (use-package treesit
   :straight nil
   :preface
-  (defun ff/setup-install-grammars ()
-    "Install Tree-sitter grammars if they are absent."
+  (defun ff/treesit-install-grammars (&optional force)
+    "Install Tree-sitter grammars if they are absent.
+FORCE: force update of grammars"
     (interactive)
     (dolist (grammar
              '((bash "https://github.com/tree-sitter/tree-sitter-bash")
@@ -119,11 +120,15 @@ the need to update my project hierarchy."
       ;; Only install `grammar' if we don't already have it
       ;; installed. However, if you want to *update* a grammar then
       ;; this obviously prevents that from happening.
-      (unless (treesit-language-available-p (car grammar))
+      (when (or force (not (treesit-language-available-p (car grammar))))
         (message "Install tree sitter language grammar for %s" (car grammar))
         (treesit-install-language-grammar (car grammar)))))
+
+  (defun ff/treesit-update-grammars ()
+    (interactive)
+    (ff/treesit-setup-install-grammars t))
   :config
-  (ff/setup-install-grammars)
+  (ff/treesit-install-grammars)
   (add-to-list 'treesit-extra-load-path
                (expand-file-name ".cache/emacs/tree-sitter" (getenv "HOME"))))
 
