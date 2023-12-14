@@ -81,10 +81,5 @@ alias emacs_start="eds"
 alias emacs_restart="edr"
 alias ff='find_file'
 
-
-
-# SSH logins
-alias ssh_ws='sshpass -p "$(pass passwords/$(pass usernames/bosch)@nt)" ssh ws'
-
 # unlock gpg key
 alias unlock_key="pass usernames/public@github > /dev/null"
