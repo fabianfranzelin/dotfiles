@@ -224,6 +224,20 @@
 ;; enable remote support via tramp
 (setq proced-show-remote-processes t)
 
+;; -------------------------------------------------------------
+;; center the text for the corresponding modes; writing documentation
+;; is easier with this setting.
+(use-package olivetti
+  :custom (olivetti-body-width 0.66)
+  :hook
+  (org-mode . olivetti-mode)
+  (rst-mode . olivetti-mode)
+  (markdown-mode . olivetti-mode)
+  (LaTeX-mode . olivetti-mode)
+  :bind (:map olivetti-mode-map
+              ("C-c }" . nil)
+              ("C-c {" . nil)))
+
 (provide 'ff-setup-gui)
 
 ;;; ff-setup-gui.el ends here

@@ -214,17 +214,6 @@ COMMAND: command to be executed"
   :custom (which-key-idle-delay 1)
   :init (which-key-mode 1))
 
-;; -------------------------------------------------------------
-;; center the text for the corresponding modes; writing documentation
-;; is easier with this setting.
-(use-package olivetti
-  :custom (olivetti-body-width 0.66)
-  :hook
-  (org-mode . olivetti-mode)
-  (rst-mode . olivetti-mode)
-  (markdown-mode . olivetti-mode)
-  (LaTeX-mode . olivetti-mode))
-
 ;; -------------------------------------------------------------------
 ;; Tramp
 (use-package tramp
