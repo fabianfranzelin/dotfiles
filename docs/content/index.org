@@ -1,4 +1,4 @@
-TITLE: dotfiles
+#+TITLE: dotfiles
 #+AUTHOR: Fabian Franzelin
 #+EMAIL: fabian.franzelin@gmail.com
 #+CREATOR: Fabian Franzelin
