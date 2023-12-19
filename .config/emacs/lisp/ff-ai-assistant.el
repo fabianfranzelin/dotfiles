@@ -26,6 +26,13 @@
   (setq gptel-api-key #'ff/get-openai-token
         gptel-default-mode 'org-mode))
 
+
+(use-package copilot
+  :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
+  :hook ((prog-mode . copilot-mode))
+  :bind (:map copilot-completion-map
+              ("C-e" . copilot-accept-completion)))
+
 (provide 'ff-ai-assistant)
 
 ;;; ff-ai-assistant.el ends here
