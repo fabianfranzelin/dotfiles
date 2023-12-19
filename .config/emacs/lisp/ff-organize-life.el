@@ -145,7 +145,6 @@ DIR: directory path"
 ;; -------------------------------------------------------------------
 (use-package org-modern
   :hook
-  (org-mode . org-modern-mode)
   (org-agenda-finalize . org-modern-agenda)
   :custom
   ;; Edit settings
