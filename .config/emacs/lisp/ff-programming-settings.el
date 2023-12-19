@@ -415,6 +415,14 @@ FORCE: force update of grammars"
 (define-key sqlite-mode-map "+" 'sqlite-mode-extras-add-row)
 (define-key sqlite-mode-map "g" 'sqlite-mode-extras-refresh)
 
+;; -------------------------------------------------------------------
+;; Jinja mode
+;; -------------------------------------------------------------------
+(use-package jinja2-mode
+  :mode (("\\.tpl$" . jinja2-mode))
+  :bind (:map jinja2-mode-map
+              ("M-o" . nil)))
+
 (provide 'ff-programming-settings)
 
 ;;; ff-programming-settings.el ends here
