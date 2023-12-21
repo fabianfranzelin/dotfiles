@@ -48,22 +48,18 @@
               (add-hook 'ediff-suspend-hook restore-window-configuration 'append))))
 
 ;; diff of directories; diff of files via ediff
-(straight-use-package
- '(ztree
-   :type git
-   :host codeberg
-   :repo "fourier/ztree"))
+(use-package ztree
+  :straight (ztree :type git :host codeberg :repo "fourier/ztree")
+  :config
+  (setq ztree-diff-additional-options '("-w" "-i"))
 
-(require 'ztree)
-(setq ztree-diff-additional-options '("-w" "-i"))
-
-;; define my default navigation keys for ztree-mode
-(define-key ztree-mode-map "n" 'ztree-next-line)
-(define-key ztree-mode-map "p" 'ztree-previous-line)
-(define-key ztree-mode-map "f" 'ztree-jump-side)
-(define-key ztree-mode-map "b" 'ztree-jump-side)
-(define-key ztree-mode-map (kbd "<tab>") 'ztree-perform-action)
-(define-key ztree-mode-map "l" 'ztree-move-up-in-tree)
+  ;; define my default navigation keys for ztree-mode
+  (define-key ztree-mode-map "n" 'ztree-next-line)
+  (define-key ztree-mode-map "p" 'ztree-previous-line)
+  (define-key ztree-mode-map "f" 'ztree-jump-side)
+  (define-key ztree-mode-map "b" 'ztree-jump-side)
+  (define-key ztree-mode-map (kbd "<tab>") 'ztree-perform-action)
+  (define-key ztree-mode-map "l" 'ztree-move-up-in-tree))
 
 (provide 'ff-version-control)
 
