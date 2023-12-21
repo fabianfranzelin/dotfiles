@@ -32,6 +32,13 @@
          (c++-ts-mode . copilot-mode)
          (c-ts-mode . copilot-mode)
          (emacs-lisp-mode . copilot-mode))
+  :config
+  ;; fix indentation offset for emacs-lisp; the default depends on the
+  ;; the length of the function name and cannot be set in general. I
+  ;; only make it here explicit for copilot.
+  (setq ff/lisp-indent-offset 2)
+  (setf (alist-get 'emacs-lisp-mode copilot--indentation-alist) '(ff/lisp-indent-offset))
+  (setf (alist-get 'lisp-mode copilot--indentation-alist) '(ff/lisp-indent-offset))
   :bind (:map copilot-completion-map
               ("C-e" . copilot-accept-completion)))
 
