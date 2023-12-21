@@ -146,12 +146,15 @@ DIR: directory"
   :bind (("C-c a p" . completion-at-point) ;; capf
          ("C-c a t" . complete-tag)        ;; etags
          ("C-c a d" . cape-dabbrev)        ;; or dabbrev-completion
+         ("C-c a h" . cape-history)
          ("C-c a f" . cape-file)
          ("C-c a k" . cape-keyword)
-         ("C-c a s" . cape-symbol)
+         ("C-c a s" . cape-elisp-symbol)
+         ("C-c a e" . cape-elisp-block)
          ("C-c a a" . cape-abbrev)
          ("C-c a l" . cape-line)
          ("C-c a w" . cape-dict)
+         ("C-c a :" . cape-emoji)
          ("C-c a \\" . cape-tex)
          ("C-c a _" . cape-tex)
          ("C-c a ^" . cape-tex)
@@ -159,16 +162,9 @@ DIR: directory"
          ("C-c a r" . cape-rfc1345))
   :init
   ;; Add `completion-at-point-functions', used by `completion-at-point'.
-  (add-to-list 'completion-at-point-functions #'cape-file)
-  ;; (add-to-list 'completion-at-point-functions #'cape-tex)
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-  (add-to-list 'completion-at-point-functions #'cape-keyword)
-  ;; (add-to-list 'completion-at-point-functions #'cape-sgml)
-  ;; (add-to-list 'completion-at-point-functions #'cape-rfc1345)
-  ;; (add-to-list 'completion-at-point-functions #'cape-abbrev)
-  ;; (add-to-list 'completion-at-point-functions #'cape-dict)
-  ;; (add-to-list 'completion-at-point-functions #'cape-line)
-  (add-to-list 'completion-at-point-functions #'cape-symbol))
+  (add-to-list 'completion-at-point-functions #'cape-file)
+  (add-to-list 'completion-at-point-functions #'cape-elisp-block))
 
 ;; -------------------------------------------------------------------
 ;; Consult
