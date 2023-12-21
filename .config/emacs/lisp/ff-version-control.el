@@ -50,16 +50,21 @@
 ;; diff of directories; diff of files via ediff
 (use-package ztree
   :straight (ztree :type git :host codeberg :repo "fourier/ztree")
+  :demand t
   :config
   (setq ztree-diff-additional-options '("-w" "-i"))
-
-  ;; define my default navigation keys for ztree-mode
-  (define-key ztree-mode-map "n" 'ztree-next-line)
-  (define-key ztree-mode-map "p" 'ztree-previous-line)
-  (define-key ztree-mode-map "f" 'ztree-jump-side)
-  (define-key ztree-mode-map "b" 'ztree-jump-side)
-  (define-key ztree-mode-map (kbd "<tab>") 'ztree-perform-action)
-  (define-key ztree-mode-map "l" 'ztree-move-up-in-tree))
+  :bind
+  (:map ztree-mode-map
+        ("C-<tab>" . nil)
+        ("C-c C-c" . ztree-perform-action)
+        ("C-c C-d" . ztree-diff)
+        ;; define my default navigation keys for ztree-mode
+        ("n" . ztree-next-line)
+        ("p" . ztree-previous-line)
+        ("f" . ztree-jump-side)
+        ("b" . ztree-jump-side)
+        ("TAB" . ztree-perform-action)
+        ("l" . ztree-move-up-in-tree)))
 
 (provide 'ff-version-control)
 
