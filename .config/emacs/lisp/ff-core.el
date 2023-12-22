@@ -127,6 +127,22 @@ COMMAND: command to be executed"
 (global-set-key (kbd "<Scroll_Lock>") 'do-nothing)
 (defvar scroll-lock-mode nil)
 
+(defun ff/split-window-right ()
+  "Split window right and move to the new window."
+  (interactive)
+  (split-window-right)
+  (other-window 1))
+
+(global-set-key (kbd "C-x 3") 'ff/split-window-right)
+
+(defun ff/split-window-below ()
+  "Split window right and move to the new window."
+  (interactive)
+  (split-window-below)
+  (other-window 1))
+
+(global-set-key (kbd "C-x 2") 'ff/split-window-below)
+
 ;; window movement
 (defvar-keymap ff/window-key-map
   :doc "Bindings for managing windows, configured to be repeatable."
