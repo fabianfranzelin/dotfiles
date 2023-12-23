@@ -210,9 +210,6 @@ FORCE: force update of grammars"
                                                     (other-window 1)
                                                     (ielm)))
 
-;; set default indentation to 2 spaces
-(customize-set-variable 'lisp-indent-offset nil)
-
 ;; -------------------------------------------------------------------
 ;; C/C++
 ;; -------------------------------------------------------------------
