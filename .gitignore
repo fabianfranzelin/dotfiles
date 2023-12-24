@@ -118,6 +118,7 @@ build/
 /.config/wslu/
 /.config/QtProject.conf
 /.config/emacs/elpa/
+/.config/github-copilot/
 
 ### Docs ###
 /docs/public/

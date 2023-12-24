@@ -102,6 +102,7 @@
 
 (dolist (mode '(term-mode-hook
                 vterm-mode-hook
+                dired-mode-hook
                 compilation-mode-hook
                 pdf-view-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
