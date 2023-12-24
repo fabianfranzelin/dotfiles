@@ -126,7 +126,7 @@ FORCE: force update of grammars"
 
   (defun ff/treesit-update-grammars ()
     (interactive)
-    (ff/treesit-setup-install-grammars t))
+    (ff/treesit-install-grammars t))
   :config
   (ff/treesit-install-grammars)
   (add-to-list 'treesit-extra-load-path
