@@ -155,11 +155,11 @@ COMMAND: command to be executed"
   "n" 'windmove-down
   "p" 'windmove-up
   "B" 'windmove-swap-states-left
-  "F" 'windmove-swate-states-right
-  "N" 'windmove-swate-states-down
+  "F" 'windmove-swap-states-right
+  "N" 'windmove-swap-states-down
   "P" 'windmove-swap-states-up)
 
-(global-set-key (kbd "C-c w") ff/window-key-map)
+(global-set-key (kbd "C-q") ff/window-key-map)
 
 ;; winner mode for for redo/undo window configurations
 (winner-mode 1)
