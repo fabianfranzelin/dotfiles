@@ -110,6 +110,10 @@ build/
 /.local/share/man/
 /.local/share/CMakeTools/
 /.local/share/glibc-*
+/.local/share/applications/jupyter-notebook.desktop
+/.local/share/applications/jupyterlab.desktop
+/.local/share/icons/
+/.local/share/jupyter/
 
 /.config/znt/
 /.config/configstore/
