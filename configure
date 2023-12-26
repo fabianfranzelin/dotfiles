@@ -189,7 +189,8 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
             robotframework-tidy \
             ipython \
             gitpython \
-            pytest
+            pytest \
+            jupyter
 
     # additional npm dependencies
     echo "Install npm dependencies"
