@@ -69,7 +69,9 @@ PACKAGE-NAME: log message context"
   "Switch dictionary from American English to German an vice versa."
   (interactive)
   (let* ((dic ispell-current-dictionary)
-         (change (if (string= dic "de_DE") "en_US" "de_DE")))
+         (change (cond ((string= dic "de_DE") "en_US")
+                       ((string= dic "en_US") "es")
+                       ((string= dic "es") "de_DE"))))
     (ispell-change-dictionary change)
     (languagetool-set-language (replace-regexp-in-string "_" "-" change))
     (message "[languagetool, ispell] Dictionary switched from %s to %s" dic change)))
@@ -88,6 +90,7 @@ _: ignored parameters"
   (ff/ensure-apt-package "aspell" "aspell")
   (ff/ensure-apt-package "aspell-en" "/usr/lib/aspell/en_US.multi")
   (ff/ensure-apt-package "aspell-de" "/usr/lib/aspell/de_DE.multi")
+  (ff/ensure-apt-package "aspell-es" "/usr/lib/aspell/es.multi")
 
   (setq ispell-dictionary "en_US"
         ispell-local-dictionary "en_US"

@@ -151,7 +151,10 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          fonts-cantarell \
          cmake \
          libtool-bin \
-         aspell aspell-de aspell-en \
+         aspell \
+         aspell-de \
+         aspell-en \
+         aspell-es \
          clang-format \
          clang-tidy \
          clangd \
