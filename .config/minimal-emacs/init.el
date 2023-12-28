@@ -82,6 +82,9 @@ named arguments:
 ;; Iterate through CamelCase
 (global-subword-mode t)
 
+;; enable visual line mode to truncate long line
+(global-visual-line-mode t)
+
 ;; enable auto pair mode globally
 (electric-pair-mode t)
 (electric-indent-mode nil)
