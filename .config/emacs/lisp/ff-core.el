@@ -492,7 +492,8 @@ DIR: directory"
   ;; These bindings are optional, of course:
   :bind
   (:map global-map
-        ("M-g d" . dogears-go)))
+        ("M-g M-b" . (lambda () (interactive) (ff/repeat-command 'dogears-back)))
+        ("M-g M-f" . (lambda () (interactive) (ff/repeat-command 'dogears-forward)))))
 
 ;; -------------------------------------------------------------------
 ;; Drag stuff around with M-up/down
