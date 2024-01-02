@@ -47,7 +47,8 @@ aos_create_venv() {
                 sphinx_autodoc_typehints \
                 sphinx-jsonschema \
                 sphinxcontrib-ditaa \
-                sphinx_design
+                sphinx_design \
+                sphinxcontrib.moderncmakedomain
 
         deactivate
     )

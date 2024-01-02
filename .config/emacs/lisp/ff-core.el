@@ -13,10 +13,10 @@
 (customize-set-variable 'enable-remote-dir-locals t)
 
 ;; dont warn for following symlinked files
-(setq vc-follow-symlinks t)
+(customize-set-variable 'vc-follow-symlinks t)
 
 ;; disable lockfiles
-(setq create-lockfiles nil)
+(customize-set-variable 'create-lockfiles nil)
 
 ;; revert buffers when the underlying file has changed
 (global-auto-revert-mode 1)
@@ -28,7 +28,7 @@
 (customize-set-variable 'ring-bell-function 'ignore)
 
 ;; let me confirm emacs before killing it
-(setq confirm-kill-emacs 'yes-or-no-p)
+(customize-set-variable 'confirm-kill-emacs 'yes-or-no-p)
 
 (defun ff/ask-before-closing-frame ()
   "Close only if y was pressed."
@@ -83,12 +83,12 @@
 (save-place-mode)
 
 ;; Create backup files in cache
-(setq backup-directory-alist `(("." . ,(expand-file-name "saves" no-littering-var-directory))))
-(setq backup-by-copying nil)
-(setq delete-old-versions t
-      kept-new-versions 6
-      kept-old-versions 2
-      version-control t)
+(customize-set-variable 'backup-directory-alist `(("." . ,(expand-file-name "saves" no-littering-var-directory))))
+(customize-set-variable 'backup-by-copying nil)
+(customize-set-variable 'delete-old-versions t)
+(customize-set-variable 'kept-new-versions 6)
+(customize-set-variable 'kept-old-versions 2)
+(customize-set-variable 'version-control t)
 
 (defun ff/sudo-shell-command (command)
   "Launch sudo command asynchronously with tramp.
@@ -100,7 +100,7 @@ COMMAND: command to be executed"
     (async-shell-command command)))
 
 ;; add newline with C-n when at end of buffer.
-(setq next-line-add-newlines nil)
+(customize-set-variable 'next-line-add-newlines nil)
 
 ;; -------------------------------------------------------------------
 ;; Global key bindings
@@ -239,15 +239,14 @@ COMMAND: command to be executed"
   (tramp-default-method "ssh")
   (tramp-use-ssh-controlmaster-options nil)
   (vc-handled-backends '(Git))
+  (tramp-verbose 3)
+  (tramp-auto-save-directory (expand-file-name "tramp/backups" no-littering-var-directory))
+  (tramp-persistency-file-name (expand-file-name "tramp/persistency_data" no-littering-var-directory))
+  ;; make sure vc stuff is not making tramp slower
+  (vc-ignore-dir-regexp (format "%s\\|%s"
+		                vc-ignore-dir-regexp
+		                tramp-file-name-regexp))
   :config
-  (setq tramp-verbose 3
-        tramp-auto-save-directory (expand-file-name "tramp/backups" no-littering-var-directory)
-        tramp-persistency-file-name (expand-file-name "tramp/persistency_data" no-littering-var-directory)
-        ;; make sure vc stuff is not making tramp slower
-        vc-ignore-dir-regexp
-        (format "%s\\|%s"
-		vc-ignore-dir-regexp
-		tramp-file-name-regexp))
   (put 'temporary-file-directory 'standard-value '("/tmp"))
   ;; Use remote PATH on tramp
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
@@ -332,10 +331,10 @@ COMMAND: command to be executed"
 ;; Undo tree - make undos more powerful
 ;; -------------------------------------------------------------------
 (use-package undo-tree
+  :custom
+  (undo-limit 8000000)
   :init
-  (global-undo-tree-mode)
-  :config
-  (setq undo-limit 8000000))
+  (global-undo-tree-mode))
 
 ;; -------------------------------------------------------------------
 ;; Credential management
@@ -345,10 +344,10 @@ COMMAND: command to be executed"
 
 (require 'auth-source)
 ;; Do not allow unencrypted auth-sources. Use GPG
-(setq auth-sources `(password-store ,(expand-file-name "~/.password-store/authinfo.gpg")))
+(customize-set-variable 'auth-sources `(password-store ,(expand-file-name "~/.password-store/authinfo.gpg")))
 ;; Use the Emacs minibuffer for GPG pinentry
 ;; https://vxlabs.com/2021/03/21/gnupg-pinentry-via-the-emacs-minibuffer/
-(setq epa-pinentry-mode 'loopback)
+(customize-set-variable 'epa-pinentry-mode 'loopback)
 
 (use-package pass
   :custom (pass-show-keybindings nil))
@@ -395,7 +394,7 @@ COMMAND: command to be executed"
 ;; -------------------------------------------------------------------
 ;; Auto-saving changed files when they lose focus
 ;; -------------------------------------------------------------------
-(setq auto-save-default nil)
+(customize-set-variable 'auto-save-default nil)
 
 (use-package super-save
   :custom (super-save-auto-save-when-idle nil)
@@ -583,9 +582,10 @@ TEXT: title"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Save kill ring over various sessions
 (require 'savekill)
-(setq save-kill-file-name (expand-file-name
-                           "kill-ring.el"
-                           no-littering-etc-directory))
+(customize-set-variable 'save-kill-file-name
+                        (expand-file-name
+                         "kill-ring.el"
+                         no-littering-etc-directory))
 
 (provide 'ff-core)
 

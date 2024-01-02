@@ -13,25 +13,25 @@
   (defun ff/get-openai-token ()
     "Load and return the OpenAI token."
     (password-store-get "tokens/fabian.franzelin@openAI.com"))
-  :commands (gptel gptel-mode)
-  :bind (("C-c g" . gptel))
-  :config
+  :custom
+  (gptel-api-key #'ff/get-openai-token)
+  (gptel-default-mode 'org-mode)
+  :hook
   ;; move cursor to next heading when response is posted
-  (add-hook 'gptel-post-response-hook #'(lambda ()
-                                          (when (derived-mode-p 'org-mode)
-                                            (org-forward-element)
-                                            (org-end-of-line))))
-
-  (setq gptel-api-key #'ff/get-openai-token
-        gptel-default-mode 'org-mode))
+  (gptel-post-response . (lambda ()
+                           (when (derived-mode-p 'org-mode)
+                             (org-forward-element)
+                             (org-end-of-line))))
+  :bind (("C-c g" . gptel)))
 
 ;; GitHub copilot
 (use-package copilot
   :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
-  :hook ((python-ts-mode . copilot-mode)
-         (c++-ts-mode . copilot-mode)
-         (c-ts-mode . copilot-mode)
-         (emacs-lisp-mode . copilot-mode))
+  :hook
+  (python-ts-mode . copilot-mode)
+  (c++-ts-mode . copilot-mode)
+  (c-ts-mode . copilot-mode)
+  (emacs-lisp-mode . copilot-mode)
   :config
   ;; fix indentation offset for emacs-lisp; the default depends on the
   ;; the length of the function name and cannot be set in general. I
