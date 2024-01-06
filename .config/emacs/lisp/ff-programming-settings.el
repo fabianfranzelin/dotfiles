@@ -262,14 +262,13 @@ FORCE: force update of grammars"
 ;; yaml mode
 ;; -------------------------------------------------------------------
 (use-package yaml-mode
-  :mode
-  ("\\.yml$" . yaml-mode)
-  ("\\.yaml$" . yaml-mode)
-  :init
+  :preface
   ;; install system dependencies
   (ff/ensure-python-package "yamllint" nil "yamllint")
-  (ff/ensure-npm-package "yaml-language-server" "yaml-language-server"))
-
+  (ff/ensure-npm-package "yaml-language-server" "yaml-language-server")
+  :mode
+  ("\\.yml$" . yaml-mode)
+  ("\\.yaml$" . yaml-mode))
 ;; -------------------------------------------------------------------
 ;; Dockerfile
 ;; -------------------------------------------------------------------
@@ -358,10 +357,10 @@ FORCE: force update of grammars"
 ;; Robot Framework
 ;; -------------------------------------------------------------------
 (use-package robot-mode
+  :preface
+  (ff/ensure-python-package "robotframework-tidy" nil "robotidy")
   :mode
-  ("\\.robot" . robot-mode)
-  :init
-  (ff/ensure-python-package "robotframework-tidy" nil "robotidy"))
+  ("\\.robot" . robot-mode))
 
 (defcustom ff/robotidy-config nil
   "Path to robotidy configuration file."

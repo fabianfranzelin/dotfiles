@@ -55,7 +55,7 @@
 
 ;; magit like interface to pytest
 (use-package python-pytest
-  :init
+  :preface
   (ff/ensure-python-package "pytest" nil "pytest")
   :config
   ;; add option to increase verbosity after the "-x" option.

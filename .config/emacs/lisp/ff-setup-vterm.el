@@ -135,17 +135,17 @@ https://github.com/akermu/emacs-libvterm/issues/518"
       (clear-this-command-keys))))
 
 (use-package vterm
-  :custom
-  (vterm-shell "/bin/zsh")
-  (vterm-max-scrollback 100000)
-  (vterm-always-compile-module t)
-  (vterm-kill-buffer-on-exit t)
-  :init
+  :preface
   ;; ensure system packages
   (ff/ensure-apt-package "cmake" "cmake")
   (ff/ensure-python-package "cmake")
   (ff/ensure-apt-package "libtool-bin" "libtool")
   (ff/ensure-apt-package "zsh" "zsh")
+  :custom
+  (vterm-shell "/bin/zsh")
+  (vterm-max-scrollback 100000)
+  (vterm-always-compile-module t)
+  (vterm-kill-buffer-on-exit t)
   :config
   (add-hook 'vterm-exit-functions (lambda(_ _) (kill-buffer-and-window)))
   (add-to-list 'vterm-keymap-exceptions "M-:")
