@@ -63,7 +63,8 @@
   (add-to-list 'eglot-server-programs `(rst-mode . ("python3" "-m" "esbonio"))))
 
 ;; RST backend for org-export
-(use-package ox-rst)
+(use-package ox-rst
+  :after org)
 
 ;; -------------------------------------------------------------------
 ;; Plantuml & Graphviz mode
@@ -106,14 +107,14 @@ JAR-PATH: expected binary file in the extracted folder."
 (use-package plantuml-mode
   :after org
   :commands plantuml-preview
+  :preface
+  ;; install system dependencies
+  (ff/ensure-apt-package "graphviz" "dot")
+  ;; Consider using (plantuml-download-jar) as alternative
   :mode (("\\.puml" . plantuml-mode)
          ("\\.iuml" . plantuml-mode)
          ("\\.uml" . plantuml-mode))
   :init
-  ;; install system dependencies
-  (ff/ensure-apt-package "graphviz" "dot")
-
-  ;; Consider using (plantuml-download-jar) as alternative
   (defvar plantuml-version "1.2023.13"
     "Version number of plantuml binary")
   (defvar plantuml-name (concat "plantuml-" plantuml-version ".jar")
@@ -150,8 +151,10 @@ JAR-PATH: expected binary file in the extracted folder."
 
 ;; Graphviz mode
 (use-package graphviz-dot-mode
-  :custom (graphviz-dot-indent-width 4)
-  :init (ff/ensure-apt-package "graphviz" "dot"))
+  :preface
+  (ff/ensure-apt-package "graphviz" "dot")
+  :custom
+  (graphviz-dot-indent-width 4))
 
 ;; -------------------------------------------------------------------
 ;; Latex

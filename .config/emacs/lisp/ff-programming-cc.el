@@ -118,7 +118,7 @@ REPLACE-STR: string that replaces all regex matches"
 (ff/ensure-python-package "cmake_language_server" nil "cmake_language_server")
 
 (use-package cmake-mode
-  :init
+  :preface
   ;; install system dependencies
   (ff/ensure-python-package "cmake_language_server" nil "cmake_language_server")
   :mode (("\\.cmake$" . cmake-mode)))

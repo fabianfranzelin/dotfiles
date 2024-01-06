@@ -317,7 +317,7 @@ COMMAND: command to be executed"
   (dired-rainbow-define-chmod executable-unix "#38c172" "-.*x.*"))
 
 (use-package dired-hide-dotfiles
-  :after (dired)
+  :after dired
   :bind
   (:map dired-mode-map
         ("H" . dired-hide-dotfiles-mode)))
@@ -428,8 +428,9 @@ COMMAND: command to be executed"
 ;; Ripgrep integration
 ;; -------------------------------------------------------------------
 (use-package rg
-  :init
+  :preface
   (ff/ensure-apt-package "ripgrep" "rg")
+  :init
   (rg-enable-menu)
   :config
   (rg-define-search ff/rg-current-dir
@@ -525,7 +526,7 @@ TEXT: title"
   (("C-c C-y" . yas-insert-snippet)))
 
 (use-package yasnippet-snippets
-  :after (yasnippet))
+  :after yasnippet)
 
 (with-eval-after-load 'yasnippet-snippets
   (require 'yasnippet)

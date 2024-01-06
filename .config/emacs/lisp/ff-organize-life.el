@@ -6,7 +6,6 @@
 ;; -------------------------------------------------------------------
 ;; Org
 ;; -------------------------------------------------------------------
-
 (defun ff/create-folder-and-return (dir)
   "Create folder if it does not exist and return its name.
 DIR: directory path"
@@ -56,6 +55,9 @@ DIR: directory path"
       (message "Update main org folder to %s" ff/org-directory))))
 
 (use-package org
+  :preface
+  ;; for some reason, this is needed to make org-mode work
+  (setq org-directory (ff/create-folder-and-return "~/workspace/org"))
   :custom
   (org-directory (ff/create-folder-and-return "~/workspace/org"))
   (org-agenda-files `(,(ff/create-folder-and-return (expand-file-name "notes" org-directory))
@@ -206,7 +208,8 @@ DIR: directory path"
   (org-present-next)
   (dw/org-present-prepare-slide))
 
-(use-package org-appear)
+(use-package org-appear
+  :after org)
 
 (use-package org-present
   :after org-appear
@@ -346,6 +349,7 @@ DIR: directory path"
 
 
 (use-package consult-org-roam
+  :after org-roam
   :custom
   ;; Use `ripgrep' for searching with `consult-org-roam-search'
   (consult-org-roam-grep-func #'consult-ripgrep)
@@ -364,7 +368,8 @@ DIR: directory path"
 ;; -------------------------------------------------------------------
 ;; Citations for org-files
 ;; -------------------------------------------------------------------
-(use-package citeproc)
+(use-package citeproc
+  :after org)
 
 (with-eval-after-load 'ox-latex
   (add-to-list 'org-latex-classes
@@ -518,6 +523,7 @@ FILE-PAGE: page at which the annotation refers to"
       (ff/citar-capture-org-roam-literature-note-for-entry citekey))))
 
 (use-package citar-org-roam
+  :after org-roam
   :commands citar-org-roam-mode
   :config
   (citar-org-roam-mode)
