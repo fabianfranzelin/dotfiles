@@ -235,6 +235,10 @@ DIR: directory path"
 
 (use-package org-roam
   :after org
+  :demand t
+  :preface
+  (setq org-roam-directory (expand-file-name "notes" org-directory))
+  (setq org-roam-dailies-directory (expand-file-name "journal" org-roam-directory))
   :hook
   (org-mode . ff/configure-org-roam-mode)
   :custom

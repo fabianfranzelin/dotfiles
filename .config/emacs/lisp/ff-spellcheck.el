@@ -69,9 +69,9 @@ PACKAGE-NAME: log message context"
   "Switch dictionary from American English to German an vice versa."
   (interactive)
   (let* ((dic ispell-current-dictionary)
-         (change (cond ((string= dic "de_DE") "en_US")
-                       ((string= dic "en_US") "es")
-                       ((string= dic "es") "de_DE"))))
+         (change (cond ((string= dic "en_US") "de_DE")
+                       ((string= dic "de_DE") "es")
+                       ((string= dic "es") "en_US"))))
     (ispell-change-dictionary change)
     (languagetool-set-language (replace-regexp-in-string "_" "-" change))
     (message "[languagetool, ispell] Dictionary switched from %s to %s" dic change)))
