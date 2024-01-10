@@ -389,7 +389,7 @@ Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
               # install Nyxt
               TMP_NYXT_SRC=$(mktemp -d)
               cd "${TMP_NYXT_SRC}" || exit 1
-              NYXT_VERSION="3.9.2"
+              NYXT_VERSION="3.11.0"
               NYXT_SRC_FILE_NAME="nyxt-${NYXT_VERSION}-source-with-submodules.tar.xz"
               wget "https://github.com/atlas-engineer/nyxt/releases/download/${NYXT_VERSION}/${NYXT_SRC_FILE_NAME}"
               tar -xvf "${NYXT_SRC_FILE_NAME}"
