@@ -416,6 +416,19 @@ FORCE: force update of grammars"
 (define-key sqlite-mode-map "+" 'sqlite-mode-extras-add-row)
 (define-key sqlite-mode-map "g" 'sqlite-mode-extras-refresh)
 
+;; Open sqlite data bases with sqlite-open-file
+(defun ff/sqlite-view-file-magically ()
+  "Run `sqlite-mode-open-file' on the file in the current buffer."
+  (require 'sqlite-mode)
+  (let ((file-name buffer-file-name))
+    (kill-current-buffer)
+    (sqlite-mode-open-file file-name)))
+
+;; Load all files that start with "SQLite format 3" with sqlite-mode
+;; and not in binary mode
+(add-to-list 'magic-mode-alist
+             '("SQLite format 3\x00" . ff/sqlite-view-file-magically))
+
 ;; -------------------------------------------------------------------
 ;; Jinja mode
 ;; -------------------------------------------------------------------
