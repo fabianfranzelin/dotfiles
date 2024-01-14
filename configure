@@ -286,7 +286,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
         cd "/tmp"
         GLIBC_NAME="glibc-2.38"
         wget "https://ftp.gnu.org/gnu/libc/${GLIBC_NAME}.tar.gz"
-        tar -zxvf "${GLIBC_NAME}.tar.gz"
+        tar -zxf "${GLIBC_NAME}.tar.gz"
         mv -n "${GLIBC_NAME}" "${HOME}/.local/share"
     )
 
@@ -386,15 +386,18 @@ Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
       # Install nyxt
       if [ -n "${INSTALL_NYXT}" ]; then
           (
+              # install dependencies for compilation of Nyxt
+              sudo apt install -y \
+                   libfixposix-dev
               # install Nyxt
               TMP_NYXT_SRC=$(mktemp -d)
               cd "${TMP_NYXT_SRC}" || exit 1
               NYXT_VERSION="3.11.0"
               NYXT_SRC_FILE_NAME="nyxt-${NYXT_VERSION}-source-with-submodules.tar.xz"
               wget "https://github.com/atlas-engineer/nyxt/releases/download/${NYXT_VERSION}/${NYXT_SRC_FILE_NAME}"
-              tar -xvf "${NYXT_SRC_FILE_NAME}"
+              tar -xf "${NYXT_SRC_FILE_NAME}"
               make all
-              make install
+              sudo make install
           )
        else
            echo -e "${__COLOR_WARN}WARN: Skip installation of GTK tools.${__COLOR_RESET}"

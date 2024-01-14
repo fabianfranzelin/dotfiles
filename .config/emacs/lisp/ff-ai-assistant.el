@@ -37,8 +37,8 @@
   ;; the length of the function name and cannot be set in general. I
   ;; only make it here explicit for copilot.
   (setq ff/lisp-indent-offset 2)
-  (setf (alist-get 'emacs-lisp-mode copilot--indentation-alist) '(ff/lisp-indent-offset))
-  (setf (alist-get 'lisp-mode copilot--indentation-alist) '(ff/lisp-indent-offset))
+  (setf (alist-get 'emacs-lisp-mode copilot-indentation-alist) '(ff/lisp-indent-offset))
+  (setf (alist-get 'lisp-mode copilot-indentation-alist) '(ff/lisp-indent-offset))
   :bind (:map copilot-completion-map
               ("C-e" . copilot-accept-completion)))
 
