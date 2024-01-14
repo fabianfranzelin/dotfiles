@@ -6,7 +6,7 @@
                    (list
                     (when-let* ((project-dir (locate-dominating-file default-directory ".clangd")))
                       (list :command-name "cc:cmake main"
-                            :command-line "mkdir build && cd build && cmake .."
+                            :command-line "mkdir -p build && cd build && cmake .."
                             :working-dir project-dir))
                     (when-let* ((project-dir (locate-dominating-file default-directory "build"))
                                 (build-dir (expand-file-name "build" project-dir)))
