@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+count() {
+    find "${1}" -type f --exec wc -l {} +
+}
