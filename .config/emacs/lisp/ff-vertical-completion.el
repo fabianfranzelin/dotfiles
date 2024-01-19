@@ -266,7 +266,7 @@ DIR: directory"
                  nil
                  (window-parameters (mode-line-format . none))))
   :bind (("C-." . embark-act)
-         ("C-h b" . embark-bindings)
+         ("C-h B" . embark-bindings)
          :map minibuffer-local-map
          ("C-." . embark-act)
          :map embark-file-map
