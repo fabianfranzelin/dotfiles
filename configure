@@ -227,8 +227,7 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
 
     # install other npm packages
     npm install -g \
-        yarn \
-        node
+        yarn
 
     # install Emacs. First, just the regular version.
     if ! command -v emacs &> /dev/null
