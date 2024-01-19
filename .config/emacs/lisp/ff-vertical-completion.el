@@ -266,12 +266,13 @@ DIR: directory"
                  nil
                  (window-parameters (mode-line-format . none))))
   :bind (("C-." . embark-act)
+         ("C-," . embark-act-all)
          ("C-h B" . embark-bindings)
          :map minibuffer-local-map
          ("C-." . embark-act)
+         ("C-," . embark-act-all)
          :map embark-file-map
-         ("S" . sudo-find-file)
-         ("s" . sqlite-mode-open-file)))
+         ("S" . sudo-find-file)))
 
 ;; Nice which key integration that allows to list the which-key
 ;; options via C-h. See
@@ -320,7 +321,10 @@ targets."
   ;; if you want to have consult previews as you move around an
   ;; auto-updating embark collect buffer
   :hook
-  (embark-collect-mode . consult-preview-at-point-mode))
+  (embark-collect-mode . consult-preview-at-point-mode)
+  :bind (:map embark-file-map
+              ("g" . consult-ripgrep)))
+
 
 (provide 'ff-vertical-completion)
 
