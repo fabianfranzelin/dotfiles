@@ -24,7 +24,7 @@ error occurs.
 There are two options to get Emacs. The first one is to download the
 source code from an official server.
 
-The following code works for all officially released Emacs version.
+The following code works for all officially released Emacs versions.
 It downloads and extracts Emacs.
 
 #+begin_src shell
@@ -210,7 +210,7 @@ Emacs version. The default one is currently 29.
   }
 
   # Emacs version to be installed
-  __EMACS_VERSION="29.1"
+  __EMACS_VERSION="29.2"
 
   # Loop through arguments and process them
   while [ $# -gt 0 ]; do
