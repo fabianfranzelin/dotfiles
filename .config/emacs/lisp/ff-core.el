@@ -475,7 +475,9 @@ DIR: directory"
 
   :bind
   (("C-x a f" . affe-find)
-   ("C-x a g" . affe-grep)))
+   ("C-x a g" . affe-grep)
+   :map embark-file-map
+   ("a" . affe-find)))
 
 ;; -------------------------------------------------------------------
 ;; Dogears: automatically bookmarks positions in buffers
