@@ -475,7 +475,9 @@ DIR: directory"
 
   :bind
   (("C-x a f" . affe-find)
+   ("C-x a F" . (lambda () (interactive) (ff/affe-find default-directory)))
    ("C-x a g" . affe-grep)
+   ("C-x a G" . (lambda () (interactive) (ff/affe-grep default-directory)))
    :map embark-file-map
    ("a" . ff/affe-find)))
 
@@ -561,7 +563,9 @@ TEXT: title"
 ;; Ace window: select windows based on numbers
 ;; -------------------------------------------------------------------
 (use-package ace-window
-  :bind (("M-o" . ace-window)))
+  :bind (("M-o" . ace-window)
+         :map diff-mode-map
+         ("M-o" . nil)))
 
 ;; -------------------------------------------------------------------
 ;; Avy: Jump in buffer with three key strokes
