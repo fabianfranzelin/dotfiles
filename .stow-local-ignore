@@ -12,6 +12,7 @@ fonts
 ^/.*\.md
 LICENSE
 ^/.*\.bak
+^/.*\.PNG
 examples
 node_modules
 package.json

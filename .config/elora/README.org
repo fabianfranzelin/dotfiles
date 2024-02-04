@@ -1,0 +1,14 @@
+* Keymaps for Elora v1 keyboard
+
+** Configuration
+
++ Connect your Elora board to your computer
++ Download and install [[https://get.vial.today/][vial]]
++ Start the application and start configuring your keyboard
++ The keys will be updated automatically
+
+** Layers
+
+[[./elora_layer_0.PNG][Layer 0]]
+[[./elora_layer_2.PNG][Layer 2]]
+[[./elora_layer_5.PNG][Layer 5]]
