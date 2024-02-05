@@ -9,6 +9,6 @@
 
 ** Layers
 
-[[./elora_layer_0.PNG][Layer 0]]
-[[./elora_layer_2.PNG][Layer 2]]
-[[./elora_layer_5.PNG][Layer 5]]
+[[file:elora_layer_0.PNG][Layer 0]]
+[[file:elora_layer_2.PNG][Layer 2]]
+[[file:elora_layer_5.PNG][Layer 5]]
