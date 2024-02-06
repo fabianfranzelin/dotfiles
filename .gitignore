@@ -191,3 +191,8 @@ flycheck_*
 /.docker/.token_seed
 /.docker/buildx/
 /.docker/.token_seed.lock
+
+
+### Elora ###
+/.config/elora/README.pdf
+/.config/elora/README.tex

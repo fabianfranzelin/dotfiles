@@ -7,8 +7,15 @@
 + Start the application and start configuring your keyboard
 + The keys will be updated automatically
 
+#+begin_export latex
+  \clearpage
+#+end_export
+
 ** Layers
 
-[[file:elora_layer_0.PNG][Layer 0]]
-[[file:elora_layer_2.PNG][Layer 2]]
-[[file:elora_layer_5.PNG][Layer 5]]
+#+ATTR_LATEX: :width \textwidth
+[[file:elora_layer_0.PNG]]
+#+ATTR_LATEX: :width \textwidth
+[[file:elora_layer_2.PNG]]
+#+ATTR_LATEX: :width \textwidth
+[[file:elora_layer_5.PNG]]
