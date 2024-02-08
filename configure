@@ -402,6 +402,17 @@ Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
        else
            echo -e "${__COLOR_WARN}WARN: Skip installation of GTK tools.${__COLOR_RESET}"
        fi
+
+      # install Vial for Elora
+      # https://get.vial.today/manual/linux-udev.html
+      echo "Install Vial to configure Elora keyboard"
+      VIAL_UDEV_FILE="/etc/udev/rules.d/99-vial.rules"
+      if [ ! -f "${VIAL_UDEV_FILE}" ]; then
+  	  echo '# splitkb.com Elora
+KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="8d1d", ATTRS{idProduct}=="9d9d", MODE="0660", GROUP="users", TAG+="uaccess", TAG+="udev-acl"' | sudo tee "${VIAL_UDEV_FILE}"
+      else
+  	  echo -e "${__COLOR_WARN}The file '${VIAL_UDEV_FILE}' already exists. Skip creation. ${__COLOR_RESET}"
+      fi
     fi
 
     #------------------------------------------------------------------------------#
