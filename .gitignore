@@ -196,3 +196,4 @@ flycheck_*
 ### Elora ###
 /.config/elora/README.pdf
 /.config/elora/README.tex
+/.config/elora/README.synctex.gz
