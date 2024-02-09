@@ -322,10 +322,10 @@ COMMAND: command to be executed"
   (:map dired-mode-map
         ("H" . dired-hide-dotfiles-mode)))
 
-(use-package dired-rsync
-  :bind
-  (:map dired-mode-map
-        ("C" . dired-rsync)))
+(use-package async
+  :init
+  (require 'dired-async)
+  (dired-async-mode 1))
 
 ;; -------------------------------------------------------------------
 ;; Undo tree - make undos more powerful
