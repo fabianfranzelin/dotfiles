@@ -18,10 +18,8 @@
   (gptel-default-mode 'org-mode)
   :hook
   ;; move cursor to next heading when response is posted
-  (gptel-post-response-functions . (lambda ()
-                                     (when (derived-mode-p 'org-mode)
-                                       (org-forward-element)
-                                       (org-end-of-line))))
+  (gptel-post-stream . gptel-auto-scroll)
+  (gptel-post-response-functions . gptel-end-of-response)
   :bind (("C-c g" . gptel)))
 
 ;; GitHub copilot
