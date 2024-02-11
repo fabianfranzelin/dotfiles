@@ -7,7 +7,6 @@
 
 .. interface:: ${1:Title}
    :id: INTERFACE_${2:ID}
-   :status: open
    :tags: ${3:Tags}
 
    $0

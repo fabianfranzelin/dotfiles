@@ -16,6 +16,7 @@
   :custom
   (gptel-api-key #'ff/get-openai-token)
   (gptel-default-mode 'org-mode)
+  (gptel-model "gpt-3.5-turbo")
   :config
   ;; auto scroll as ChatGPT provides new responses
   (add-hook 'gptel-post-stream 'gptel-auto-scroll)

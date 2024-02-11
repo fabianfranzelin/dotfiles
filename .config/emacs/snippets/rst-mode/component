@@ -7,8 +7,6 @@
 .. component:: ${1:Title}
    :id: COMPONENT_${2:ID}
    :tags: ${3:Tags}
-   :collapse: false
-   :safety_integrity:
    :contains:
    :realizes:
    :uses:
