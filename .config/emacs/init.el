@@ -82,6 +82,7 @@
 (require 'ff-setup-gui)
 (require 'ff-spellcheck)
 (require 'ff-ai-assistant)
+(require 'ff-multimedia)
 ;; -------------------------------------------------------------------
 
 (provide 'init)
