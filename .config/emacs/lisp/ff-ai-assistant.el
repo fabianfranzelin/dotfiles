@@ -16,10 +16,11 @@
   :custom
   (gptel-api-key #'ff/get-openai-token)
   (gptel-default-mode 'org-mode)
-  :hook
+  :config
+  ;; auto scroll as ChatGPT provides new responses
+  (add-hook 'gptel-post-stream 'gptel-auto-scroll)
   ;; move cursor to next heading when response is posted
-  (gptel-post-stream . gptel-auto-scroll)
-  (gptel-post-response-functions . gptel-end-of-response)
+  (add-hook 'gptel-post-response-functions 'gptel-end-of-response)
   :bind (("C-c g" . gptel)))
 
 ;; GitHub copilot
