@@ -173,8 +173,10 @@ COMMAND: command to be executed"
     (repeat nil)))
 
 ;; make the undo/redo functions repeatable
-(global-set-key (kbd "C-c p") #'(lambda () (interactive) (ff/repeat-command 'winner-undo)))
-(global-set-key (kbd "C-c n") #'(lambda () (interactive) (ff/repeat-command 'winner-redo)))
+(tab-bar-history-mode 1)
+(setq tab-bar-history-limit 100)
+(global-set-key (kbd "C-c p") #'(lambda () (interactive) (ff/repeat-command 'tab-bar-history-back)))
+(global-set-key (kbd "C-c n") #'(lambda () (interactive) (ff/repeat-command 'tab-bar-history-forward)))
 
 ;; highlight current line
 (global-set-key (kbd "C-c h") 'global-hl-line-mode)
