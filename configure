@@ -165,7 +165,8 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          ripgrep \
          fd-find \
          shellcheck \
-         poppler-utils
+         poppler-utils \
+         mpv
 
     # emacs pdf-tools dependencies
     sudo apt-get install -y \
