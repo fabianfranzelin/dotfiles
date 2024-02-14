@@ -55,12 +55,28 @@
   (rst-mode . pyvenv-mode) ;; enable support of virtual environments
   (rst-mode . ff/configure-rst-mode))
 
+;; Check documentation
+;; https://docs.esbon.io/en/release/lsp/reference/configuration.html#lsp-configuration
+;; https://docs.esbon.io/en/esbonio-language-server-v0.16.4/lsp/getting-started.html?package-manager=conda
 (with-eval-after-load 'eglot
   ;; Sphinx, rst-mode
   ;; make esbonio the default lsp server for rst-mode
   ;; currently only version 0.15 works
-  (ff/ensure-python-package "esbonio==0.15" nil "esbonio")
-  (add-to-list 'eglot-server-programs `(rst-mode . ("python3" "-m" "esbonio"))))
+  (ff/ensure-python-package "esbonio==0.16.4" nil "esbonio")
+
+  (defclass eglot-esbonio (eglot-lsp-server) ()
+    :documentation "Esbonio Language Server.")
+
+  (cl-defmethod eglot-initialization-options ((server eglot-esbonio))
+    "Passes the initializationOptions required to run the server."
+    `(:sphinx (:confDir "${workspaceRoot}"
+                        :buildDir "${workspaceRoot}/_build"
+                        :srcDir "${confDir}" )
+              :server (:logLevel "debug" :enableLivePreview t :enableScrollSync t)))
+
+  (add-to-list 'eglot-server-programs
+               `(rst-mode . (eglot-esbonio
+                             "python3" "-m" "esbonio"))))
 
 ;; RST backend for org-export
 (use-package ox-rst
