@@ -38,7 +38,7 @@
    ("C-c l r" . eglot-rename)
    ("C-c l d" . flymake-show-buffer-diagnostics)
    ("C-h ." . eldoc)
-   ("C-c l e" . eglot-stderr-buffer)
+   ("C-c l e" . eglot-events-buffer)
    ("C-c l c" . eglot-show-workspace-configuration)))
 
 (with-eval-after-load 'eglot
