@@ -26,5 +26,5 @@ configure script of the repository
 
 * Beyond Configurations
 
-+ [[file:examples/README.org][Examples: Python, C++, org, Sphinx, Typescript/React]]
++ [[file:examples/README.org][Examples: Python, C++, org, Typescript/React]]
 + [[file:wsl.org][WSL setup]]

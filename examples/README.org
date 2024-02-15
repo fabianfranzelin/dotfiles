@@ -25,19 +25,3 @@ Then install all the npm dependencies before you start the development server
   npm install
   yarn start
 #+end_src
-
-** Sphinx and Esbonio
-
-To setup esbonio in your actual project, use this snippet as a
-template for your =.dir-locals.el= file
-
-#+begin_src emacs-lisp
-  ((rst-mode
-    . ((eglot-workspace-configuration
-        . (:sphinx
-           (:builderName "html"
-                         :buildDir "./build"
-                         :confDir "./source")
-           :server
-           (:logLevel "debug"))))))
-#+end_src

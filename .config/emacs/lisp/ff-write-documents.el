@@ -70,7 +70,7 @@
   (cl-defmethod eglot-initialization-options ((server eglot-esbonio))
     "Passes the initializationOptions required to run the server."
     `(:sphinx (:confDir "${workspaceRoot}"
-                        :buildDir "${workspaceRoot}/_build"
+                        :buildDir "${workspaceRoot}/build"
                         :srcDir "${confDir}" )
               :server (:logLevel "debug" :enableLivePreview t :enableScrollSync t)))
 
