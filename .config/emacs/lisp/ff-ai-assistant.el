@@ -26,7 +26,7 @@
 
 ;; GitHub copilot
 (use-package copilot
-  :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
+  :straight (:host github :repo "copilot-emacs/copilot.el" :files ("dist" "*.el"))
   :hook
   (python-ts-mode . copilot-mode)
   (c++-ts-mode . copilot-mode)
