@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: for (:)
+# key: for (:)
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# --
+
+for (auto& ${1}: ${2})
+{
+  $0
+}
