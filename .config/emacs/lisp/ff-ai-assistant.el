@@ -26,6 +26,7 @@
 
 ;; GitHub copilot
 (use-package copilot
+  :if (string= (system-name) "ABT-C-002NY")
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("dist" "*.el"))
   :hook
   (python-ts-mode . copilot-mode)
