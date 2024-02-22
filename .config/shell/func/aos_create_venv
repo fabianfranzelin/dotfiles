@@ -48,7 +48,8 @@ aos_create_venv() {
                 sphinx-jsonschema \
                 sphinxcontrib-ditaa \
                 sphinx_design \
-                sphinxcontrib.moderncmakedomain
+                sphinxcontrib.moderncmakedomain \
+                gcovr
 
         deactivate
     )
