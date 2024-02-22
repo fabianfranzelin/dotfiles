@@ -134,7 +134,8 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
          texlive-luatex \
          biber \
          doxygen \
-         evince
+         evince \
+         gcovr
 
     if ( __is_wsl ) then
        # install wslview for xdg-open so that firefox calls are
