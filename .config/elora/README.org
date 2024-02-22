@@ -16,6 +16,6 @@
 #+ATTR_LATEX: :width \textwidth
 [[file:elora_layer_0.PNG]]
 #+ATTR_LATEX: :width \textwidth
-[[file:elora_layer_2.PNG]]
+[[file:elora_layer_2.jpg]]
 #+ATTR_LATEX: :width \textwidth
-[[file:elora_layer_5.PNG]]
+[[file:elora_layer_5.jpg]]
