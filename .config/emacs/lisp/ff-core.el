@@ -366,6 +366,11 @@ COMMAND: command to be executed"
       (message "GPG key is unlocked")
     (message "Wrong password. GPG key is not unlocked.")))
 
+(defun ff/kill-gpg-agent ()
+  "Kill gpg-agent."
+  (interactive)
+  (async-shell-command "gpgconf --kill gpg-agent"))
+
 (global-set-key (kbd "C-c C-g") 'ff/unlock-key)
 
 ;; -------------------------------------------------------------------
