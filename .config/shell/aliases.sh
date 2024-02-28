@@ -83,3 +83,4 @@ alias ff='find_file'
 
 # unlock gpg key
 alias unlock_key="pass usernames/public@github > /dev/null"
+alias kill_gpg_agent="gpgconf --kill gpg-agent"
