@@ -4,12 +4,12 @@ aos_create_venv() {
     (
         cd "${HOME}/workspace/aos" || exit 1
         VIRTUALENV_NAME="aos"
+        VIRTUALENV_PATH="${HOME}/.virtualenvs/${VIRTUALENV_NAME}"
         VIRTUALENV_ACTIVATE_FILEPATH="${HOME}/.virtualenvs/${VIRTUALENV_NAME}/bin/activate"
 
-        if [ ! -f "${VIRTUALENV_ACTIVATE_FILEPATH}" ]; then
-            echo "Create virtualenv ${VIRTUALENV_NAME}"
-            python3 -m venv "${HOME}/.virtualenvs/${VIRTUALENV_NAME}"
-        fi
+        echo "Create virtualenv ${VIRTUALENV_NAME}"
+        rm -rf "${VIRTUALENV_PATH}"
+        python3 -m venv "${VIRTUALENV_PATH}"
 
         echo "Activate virtualenv"
 
@@ -49,6 +49,7 @@ aos_create_venv() {
                 sphinxcontrib-ditaa \
                 sphinx_design \
                 sphinxcontrib.moderncmakedomain \
+                sphinx_markdown_builder \
                 gcovr
 
         deactivate
