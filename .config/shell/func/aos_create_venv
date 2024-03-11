@@ -51,7 +51,8 @@ aos_create_venv() {
                 sphinxcontrib.moderncmakedomain \
                 sphinx_markdown_builder \
                 gcovr \
-                pandas
+                pandas \
+                jira
 
         deactivate
     )
