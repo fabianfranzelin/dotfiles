@@ -50,7 +50,8 @@ aos_create_venv() {
                 sphinx_design \
                 sphinxcontrib.moderncmakedomain \
                 sphinx_markdown_builder \
-                gcovr
+                gcovr \
+                pandas
 
         deactivate
     )

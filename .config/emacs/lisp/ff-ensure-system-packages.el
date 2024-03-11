@@ -49,6 +49,13 @@ PACKAGE-NAME: name of the package to be installed.
 EXECUTABLE: just install if the executable does not exist."
   (ff/ensure-system-package "apt install -y" package-name executable t))
 
+(defun ff/ensure-snap-package (package-name &optional executable)
+  "Ensure that the provided snap package is installed.
+
+PACKAGE-NAME: name of the package to be installed.
+EXECUTABLE: just install if the executable does not exist."
+  (ff/ensure-system-package "snap install" package-name executable t))
+
 (defun ff/ensure-npm-package (package-name &optional executable)
   "Ensure that the provided apt package is installed.
 
