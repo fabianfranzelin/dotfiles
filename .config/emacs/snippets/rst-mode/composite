@@ -9,5 +9,4 @@
    :tags: ${3:Tags}
    :contains:
 
-  $0
-
+   $0
