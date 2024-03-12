@@ -52,7 +52,8 @@ aos_create_venv() {
                 sphinx_markdown_builder \
                 gcovr \
                 pandas \
-                jira
+                jira \
+                junitparser
 
         deactivate
     )
