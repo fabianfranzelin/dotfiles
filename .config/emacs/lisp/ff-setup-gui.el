@@ -231,6 +231,12 @@
 ;; enable remote support via tramp
 (setq proced-show-remote-processes t)
 
+(use-package proced-narrow
+  :ensure t
+  :after proced
+  :bind (:map proced-mode-map
+              ("/" . proced-narrow)))
+
 ;; -------------------------------------------------------------
 ;; center the text for the corresponding modes; writing documentation
 ;; is easier with this setting.
