@@ -243,5 +243,9 @@
         "key": "ctrl+shift+r",
         "command": "-editor.action.refactor",
         "when": "editorHasCodeActionsProvider && editorTextFocus && !editorReadonly"
+    },
+    {
+      "key": "ctrl+e",
+      "command": "-workbench.action.quickOpen"
     }
 ]

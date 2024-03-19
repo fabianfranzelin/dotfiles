@@ -214,5 +214,7 @@
     "editor.formatOnSave": true
   },
   "cmake.showOptionsMovedNotification": false,
-  "git.openRepositoryInParentFolders": "always"
+  "git.openRepositoryInParentFolders": "always",
+  "git.autofetch": true,
+  "githubPullRequests.pullBranch": "never"
 }
