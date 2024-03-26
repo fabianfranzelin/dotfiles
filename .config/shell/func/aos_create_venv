@@ -53,7 +53,8 @@ aos_create_venv() {
                 gcovr \
                 pandas \
                 jira \
-                junitparser
+                junitparser \
+                matplotlib
 
         deactivate
     )
