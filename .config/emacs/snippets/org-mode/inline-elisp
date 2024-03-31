@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: inline-emacs-lisp
-# key: inline-emacs-lisp
+# name: inline-elisp
+# key: inline-elisp
 # --
-src_emacs-lisp[:session]{$0}
+src_elisp[:session]{$0}
