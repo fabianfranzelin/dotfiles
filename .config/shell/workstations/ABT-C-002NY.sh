@@ -46,6 +46,6 @@ export REQUESTS_CA_BUNDLE="${HOME}/.local/share/certificates/bosch/azure-bosch-c
 
 #------------------------------------------------------------------------------#
 # Ford
-if [ -f "${HOME}/.forddat3/devcontainer" ]; then
-    . "${HOME}/.forddat3/devcontainer"
+ if [ -f "${HOME}/.acp/devcontainer" ]; then
+    . "${HOME}/.acp/devcontainer"
 fi
