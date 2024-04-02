@@ -277,8 +277,21 @@ install_emacs()
     )
 }
 
+#------------------------------------------------------------------------------#
 
-# -------------------------------------------------
+if [ -n "${INSTALL_DEPENDENCIES}" ]; then
+    install_third_party_dependencies
+
+    if [ -z "${SKIP_NPM_INSTALL}" ]; then
+        install_npm_dependencies
+    fi
+
+    if [ -z "${SKIP_EMACS_BUILD}" ]; then
+        install_emacs
+    fi
+fi
+
+#------------------------------------------------------------------------------#
 # Docker setup
 if command -v docker > /dev/null
 then
@@ -500,20 +513,6 @@ fi
         echo -e "${__COLOR_INFO}No specific docker configuration for $(hostname) available. I'll leave it empty.${__COLOR_RESET}"
     fi
 )
-
-#------------------------------------------------------------------------------#
-
-if [ -n "${INSTALL_DEPENDENCIES}" ]; then
-    install_third_party_dependencies
-
-    if [ -z "${SKIP_NPM_INSTALL}" ]; then
-        install_npm_dependencies
-    fi
-
-    if [ -z "${SKIP_EMACS_BUILD}" ]; then
-        install_emacs
-    fi
-fi
 
 #------------------------------------------------------------------------------#
 # setup symbolic links
