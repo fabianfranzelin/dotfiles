@@ -84,187 +84,220 @@ done
 #------------------------------------------------------------------------------#
 # install required packages
 install_third_party_dependencies() {
-    (
-        echo -e "${__COLOR_INFO}INFO: Installing minimal required packages for setup...${__COLOR_RESET}"
-        sudo apt-get install -y \
-             python3-pip
+    echo -e "${__COLOR_INFO}INFO: Installing minimal required packages for setup...${__COLOR_RESET}"
+    sudo apt-get install -y \
+         python3-pip
 
-        # Remove PyQt5 if installed via pip. This package is buggy. It is
-        # installed afterwards again via Ubuntu package sources.
-        # python3 -m pip uninstall PyQt5
+    # Remove PyQt5 if installed via pip. This package is buggy. It is
+    # installed afterwards again via Ubuntu package sources.
+    # python3 -m pip uninstall PyQt5
 
-        # Make sure that there is just one venv package installed. We do
-        # this via pip
-        sudo apt remove -y python3-venv
+    # Make sure that there is just one venv package installed. We do
+    # this via pip
+    sudo apt remove -y python3-venv
 
-        # Update python setuptools to latest release from pypi
-        python3 -m pip install --upgrade \
-                pip \
-                wheel \
-	        setuptools
+    # Update python setuptools to latest release from pypi
+    python3 -m pip install --upgrade \
+            pip \
+            wheel \
+	    setuptools
 
-        sudo apt-get install -y \
-             xclip \
-             apt-transport-https \
-             python3-pyqt5 \
-             zsh \
-             direnv \
-             gnome-keyring \
-             openjdk-17-jdk \
-             zip \
-             wget \
-             unzip \
-             stow \
-             compton \
-             nitrogen \
-             dmenu \
-             rofi \
-             vim \
-             git-lfs \
-             ccache \
-             gnuplot \
-             pass \
-             gnupg \
-             terminator \
-	     fzf \
-             htop \
-             ssh \
-             sshpass \
-             dos2unix \
-	     openssl \
-	     libssl-dev \
-             scons \
-             texlive-base \
-             texlive-science \
-             texlive-bibtex-extra \
-             texlive-lang-german \
-             texlive-luatex \
-             biber \
-             doxygen \
-             evince \
-             gcovr
+    sudo apt-get install -y \
+         xclip \
+         apt-transport-https \
+         python3-pyqt5 \
+         zsh \
+         direnv \
+         gnome-keyring \
+         openjdk-17-jdk \
+         zip \
+         wget \
+         unzip \
+         compton \
+         nitrogen \
+         dmenu \
+         rofi \
+         vim \
+         git-lfs \
+         ccache \
+         gnuplot \
+         pass \
+         gnupg \
+         terminator \
+	 fzf \
+         htop \
+         ssh \
+         sshpass \
+         dos2unix \
+	 openssl \
+	 libssl-dev \
+         scons \
+         texlive-base \
+         texlive-science \
+         texlive-bibtex-extra \
+         texlive-lang-german \
+         texlive-luatex \
+         biber \
+         doxygen \
+         evince \
+         gcovr
 
-        if ( __is_wsl ) then
-           # install wslview for xdg-open so that firefox calls are
-           # forwarded to host system
-           sudo apt install -y \
-                wslu
-        fi
+    if ( __is_wsl ) then
+       # install wslview for xdg-open so that firefox calls are
+       # forwarded to host system
+       sudo apt install -y \
+            wslu
+    fi
 
-           # ---------------------------------------------------------
-           # install dependencies for Emacs
-           sudo apt-get install -y \
-                markdown \
-                graphviz \
-                fonts-cantarell \
-                cmake \
-                libtool-bin \
-                aspell \
-                aspell-de \
-                aspell-en \
-                aspell-es \
-                clang-format \
-                clang-tidy \
-                clangd \
-                clangd-12 \
-                clang \
-                clang-12 \
-                valgrind \
-                ripgrep \
-                fd-find \
-                shellcheck \
-                poppler-utils \
-                mpv
+       # ---------------------------------------------------------
+       # install dependencies for Emacs
+       sudo apt-get install -y \
+            markdown \
+            graphviz \
+            fonts-cantarell \
+            cmake \
+            libtool-bin \
+            aspell \
+            aspell-de \
+            aspell-en \
+            aspell-es \
+            clang-format \
+            clang-tidy \
+            clangd \
+            clangd-12 \
+            clang \
+            clang-12 \
+            valgrind \
+            ripgrep \
+            fd-find \
+            shellcheck \
+            poppler-utils \
+            mpv
+       # install gtk tools
+       sudo apt-get install -y \
+            vlc \
+            firefox \
+            eog
 
-           # emacs pdf-tools dependencies
-           sudo apt-get install -y \
-                libpng-dev \
-	        zlib1g-dev \
-                libpoppler-glib-dev \
-                libpoppler-private-dev \
-                imagemagick
+       # emacs pdf-tools dependencies
+       sudo apt-get install -y \
+            libpng-dev \
+	    zlib1g-dev \
+            libpoppler-glib-dev \
+            libpoppler-private-dev \
+            imagemagick
 
-           # additional python dependencies
-           python3 -m pip install --upgrade \
-                   virtualenv \
-                   ptvsd \
-                   black \
-                   isort \
-                   yamllint \
-                   mdformat \
-                   cmake \
-                   cmake_language_server \
-                   "python-lsp-server[all]" \
-                   pylsp-mypy \
-                   python-lsp-black \
-                   esbonio==0.16.4 \
-                   robotframework-tidy \
-                   ipython \
-                   gitpython \
-                   pytest \
-                   jupyter
-    )
+       # additional python dependencies
+       python3 -m pip install --upgrade \
+               virtualenv \
+               ptvsd \
+               black \
+               isort \
+               yamllint \
+               mdformat \
+               cmake \
+               cmake_language_server \
+               "python-lsp-server[all]" \
+               pylsp-mypy \
+               python-lsp-black \
+               esbonio==0.16.4 \
+               robotframework-tidy \
+               ipython \
+               gitpython \
+               pytest \
+               jupyter
+
+       # install pandoc
+       PANDOC_VER="3.1.12.3"
+       PANDOC_BIN="pandoc-${PANDOC_VER}-1-amd64.deb"
+       PANDOC_URL="https://github.com/jgm/pandoc/releases/download/${PANDOC_VER}/${PANDOC_BIN}"
+       (
+           cd "/tmp"
+           wget "${PANDOC_URL}"
+           sudo dpkg -i "${PANDOC_BIN}"
+       )
+
+       #------------------------------------------------------------------------------#
+       # install dependencies gdb
+       (
+           cd "/tmp"
+           GLIBC_NAME="glibc-2.39"
+           wget "https://ftp.gnu.org/gnu/libc/${GLIBC_NAME}.tar.gz"
+           tar -zxf "${GLIBC_NAME}.tar.gz"
+           mv -n "${GLIBC_NAME}" "${HOME}/.local/share"
+       )
+
+       #------------------------------------------------------------------------------#
+       # install dependencies for vscode
+       if ( __is_linux )
+       then
+           # note that vscode is mounted from Windows in WSL and not
+           # installed via apt. Ignore when code cannot be found
+           sudo apt-get install -y code || true
+           if command -v snap > /dev/null
+           then
+               sudo snap install --classic code || true
+           fi
+       fi
 }
 
 install_npm_dependencies()
 {
-    (
-        # additional npm dependencies
-        echo "Install npm dependencies"
-        NVM_VERSION="0.39.5"
-        export NVM_DIR="${HOME}/.config/nvm"
-        if [ ! -d "${NVM_DIR}" ]
-        then
-            # use nvm to install node, npm, etc. See
-            # https://github.com/nvm-sh/nvm for details.
-            wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v${NVM_VERSION}/install.sh | bash
-        fi
+    # additional npm dependencies
+    echo "Install npm dependencies"
+    NVM_VERSION="0.39.5"
+    export NVM_DIR="${HOME}/.config/nvm"
+    if [ ! -d "${NVM_DIR}" ]
+    then
+        # use nvm to install node, npm, etc. See
+        # https://github.com/nvm-sh/nvm for details.
+        wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v${NVM_VERSION}/install.sh | bash
+    fi
 
-        # load nvm paths
-        [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-        if ! command -v nvm &> /dev/null
-        then
-            echo "Something went wrong with the installation nvm. Please check 'https://github.com/nvm-sh/nvm' for details.."
-        fi
+    # load nvm paths
+    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+    if ! command -v nvm &> /dev/null
+    then
+        echo "Something went wrong with the installation nvm. Please check 'https://github.com/nvm-sh/nvm' for details.."
+    fi
 
-        # install npm v16 as default
-        nvm install 18
-        nvm use 18
+    # install npm v16 as default
+    nvm install 18
+    nvm use 18
 
-        # install lsp servers, linters, etc.
-        if ! command -v npm &> /dev/null
-        then
-            echo "Something went wrong with the installation of npm via nvm. Please call 'nvm install 18 && nvm use 18' manually."
-        fi
+    # install lsp servers, linters, etc.
+    if ! command -v npm &> /dev/null
+    then
+        echo "Something went wrong with the installation of npm via nvm. Please call 'nvm install 18 && nvm use 18' manually."
+    fi
 
-        npm install -g \
-            yaml-language-server \
-            bash-language-server \
-            typescript \
-            typescript-language-server \
-            dockerfile-language-server-nodejs \
-            jsonlint \
-            vscode-langservers-extracted \
-            prettier-json \
-            eslint
+    npm install -g \
+        yaml-language-server \
+        bash-language-server \
+        typescript \
+        typescript-language-server \
+        dockerfile-language-server-nodejs \
+        jsonlint \
+        vscode-langservers-extracted \
+        prettier-json \
+        eslint
 
-        # install other npm packages
-        npm install -g \
-            yarn
-    )
+    # install other npm packages
+    npm install -g \
+        yarn
 }
 
 install_emacs()
 {
-    (
-        # install Emacs. First, just the regular version.
-        if ! command -v emacs &> /dev/null
-        then
-            echo "Install default Emacs from package sources."
-            sudo apt-get install -y \
-                 emacs
-        fi
+    # install Emacs. First, just the regular version.
+    if ! command -v emacs &> /dev/null
+    then
+        echo "Install default Emacs from package sources."
+        sudo apt-get install -y \
+             emacs
+    fi
 
+    (
         # now, install the newest version available by building and
         # installing it manually
         cd "${DOTFILES}/.config/emacs" || exit 1
@@ -277,75 +310,40 @@ install_emacs()
     )
 }
 
-#------------------------------------------------------------------------------#
-
-if [ -n "${INSTALL_DEPENDENCIES}" ]; then
-    install_third_party_dependencies
-
-    if [ -z "${SKIP_NPM_INSTALL}" ]; then
-        install_npm_dependencies
-    fi
-
-    if [ -z "${SKIP_EMACS_BUILD}" ]; then
-        install_emacs
-    fi
-fi
-
-#------------------------------------------------------------------------------#
-# Docker setup
-if command -v docker > /dev/null
-then
-    sudo usermod -a -G docker "${USER}"
-    sudo chmod 660 "/var/run/docker.sock"
-fi
-
-# Install docker-credential-pass
-DOCKER_CRED_PASS_VER="0.8.1"
-DOCKER_CRED_PASS_BIN="docker-credential-pass-v${DOCKER_CRED_PASS_VER}.linux-amd64"
-DOCKER_CRED_PASS_URL="https://github.com/docker/docker-credential-helpers/releases/download/v${DOCKER_CRED_PASS_VER}/${DOCKER_CRED_PASS_BIN}"
-(
-    cd "/tmp"
-    wget "${DOCKER_CRED_PASS_URL}"
-    chmod 755 "${DOCKER_CRED_PASS_BIN}"
-    mv -f "${DOCKER_CRED_PASS_BIN}" "${HOME}/.local/bin/docker-credential-pass"
-)
-
-# install pandoc
-PANDOC_VER="3.1.12.3"
-PANDOC_BIN="pandoc-${PANDOC_VER}-1-amd64.deb"
-PANDOC_URL="https://github.com/jgm/pandoc/releases/download/${PANDOC_VER}/${PANDOC_BIN}"
-(
-    cd "/tmp"
-    wget "${PANDOC_URL}"
-    sudo dpkg -i "${PANDOC_BIN}"
-)
-
-#------------------------------------------------------------------------------#
-# install dependencies gdb
-(
-    cd "/tmp"
-    GLIBC_NAME="glibc-2.39"
-    wget "https://ftp.gnu.org/gnu/libc/${GLIBC_NAME}.tar.gz"
-    tar -zxf "${GLIBC_NAME}.tar.gz"
-    mv -n "${GLIBC_NAME}" "${HOME}/.local/share"
-)
-
-#------------------------------------------------------------------------------#
-# install dependencies for vscode
-if ( __is_linux )
-then
-    # note that vscode is mounted from Windows in WSL and not
-    # installed via apt. Ignore when code cannot be found
-    sudo apt-get install -y code || true
-    if command -v snap > /dev/null
+install_docker()
+{
+    if command -v docker > /dev/null
     then
-        sudo snap install --classic code || true
+        sudo usermod -a -G docker "${USER}"
+        sudo chmod 660 "/var/run/docker.sock"
     fi
-fi
 
-#------------------------------------------------------------------------------#
-# Install Qtile window manager
-if [ -z "${SKIP_QTILE_INSTALL}" ]; then
+    # Install docker-credential-pass
+    DOCKER_CRED_PASS_VER="0.8.1"
+    DOCKER_CRED_PASS_BIN="docker-credential-pass-v${DOCKER_CRED_PASS_VER}.linux-amd64"
+    DOCKER_CRED_PASS_URL="https://github.com/docker/docker-credential-helpers/releases/download/v${DOCKER_CRED_PASS_VER}/${DOCKER_CRED_PASS_BIN}"
+    (
+        cd "/tmp"
+        wget "${DOCKER_CRED_PASS_URL}"
+        chmod 755 "${DOCKER_CRED_PASS_BIN}"
+        mv -f "${DOCKER_CRED_PASS_BIN}" "${HOME}/.local/bin/docker-credential-pass"
+    )
+
+    #------------------------------------------------------------------------------#
+    # Hack: setup workstation specific config for docker using extra symlink
+    (
+        cd "${DOTFILES}/.docker"
+        TARGET_DOCKER_CONFIG="config-$(hostname).json"
+        if [ -f "${TARGET_DOCKER_CONFIG}" ]; then
+            ln -s -f "${TARGET_DOCKER_CONFIG}" "config.json"
+        else
+            echo -e "${__COLOR_INFO}No specific docker configuration for $(hostname) available. I'll leave it empty.${__COLOR_RESET}"
+        fi
+    )
+}
+
+install_qtile()
+{
     echo -e "${__COLOR_INFO}INFO: Install Qtile desktop manager${__COLOR_RESET}"
     QTILE_PYTHON_HOME="${HOME}/.cache/qtile/python"
     QTILE_PYTHON_FILEPATH="${QTILE_PYTHON_HOME}/bin/python3"
@@ -376,16 +374,9 @@ if [ -z "${SKIP_QTILE_INSTALL}" ]; then
     ${QTILE_PYTHON_FILEPATH} -m pip install --upgrade git+https://github.com/qtile/qtile.git
     # Install dependencies for widgets
     ${QTILE_PYTHON_FILEPATH} -m pip install --upgrade psutil
-fi
 
-if ( __is_linux )
-then
-    # Install tools that solely work on Ubuntu desktop. Note
-    # that this is not working for Docker or WSL.
-    echo -e "${__COLOR_INFO}INFO: Install GTK tools${__COLOR_RESET}"
-
-    # Install Qtile window manager
-    if [ -z "${SKIP_QTILE_INSTALL}" ]; then
+    if ( __is_linux )
+    then
         echo -e "${__COLOR_INFO}INFO: Install X configs for Qtile${__COLOR_RESET}"
 
         # Create xsessions entry for qtile according to
@@ -415,65 +406,83 @@ Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
             else
   	        echo -e "${__COLOR_WARN}The file '${CUSTOM_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
             fi
-        else
-            echo -e "${__COLOR_INFO}INFO: skipping xsession configuration for qtile"
         fi
     fi
+}
 
-    sudo apt-get install -y \
-         vlc \
-         firefox \
-         eog
+install_nyxt()
+{
+    (
+        # install dependencies for compilation of Nyxt
+        sudo apt install -y \
+             libfixposix-dev
+        # install Nyxt
+        TMP_NYXT_SRC=$(mktemp -d)
+        cd "${TMP_NYXT_SRC}" || exit 1
+        NYXT_VERSION="3.11.5"
+        NYXT_SRC_FILE_NAME="nyxt-${NYXT_VERSION}-source-with-submodules.tar.xz"
+        wget "https://github.com/atlas-engineer/nyxt/releases/download/${NYXT_VERSION}/${NYXT_SRC_FILE_NAME}"
+        tar -xf "${NYXT_SRC_FILE_NAME}"
+        make all
+        sudo make install
+    )
+}
 
-    # Install nyxt
-    if [ -n "${INSTALL_NYXT}" ]; then
-        (
-            # install dependencies for compilation of Nyxt
-            sudo apt install -y \
-                 libfixposix-dev
-            # install Nyxt
-            TMP_NYXT_SRC=$(mktemp -d)
-            cd "${TMP_NYXT_SRC}" || exit 1
-            NYXT_VERSION="3.11.5"
-            NYXT_SRC_FILE_NAME="nyxt-${NYXT_VERSION}-source-with-submodules.tar.xz"
-            wget "https://github.com/atlas-engineer/nyxt/releases/download/${NYXT_VERSION}/${NYXT_SRC_FILE_NAME}"
-            tar -xf "${NYXT_SRC_FILE_NAME}"
-            make all
-            sudo make install
-        )
-    else
-        echo -e "${__COLOR_WARN}WARN: Skip installation of GTK tools.${__COLOR_RESET}"
+install_zsh()
+{
+    #------------------------------------------------------------------------------#
+    # install oh-my-zsh if required
+    export ZSH="${HOME}/.cache/oh-my-zsh"
+    if [[ ! -f "${ZSH}/oh-my-zsh.sh" ]]; then
+        sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+        # This script creates a .zshrc file in your home directory. We
+        # won't need it, since we have a preconfigured one in this repo
+        rm "${HOME}/.zshrc"
     fi
-fi
 
+    POWERLEVEL10K_HOME=${ZSH}/custom/themes/powerlevel10k
+    if [[ ! -d "${POWERLEVEL10K_HOME}" ]]; then
+        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${POWERLEVEL10K_HOME}"
+    fi
+
+    ZSH_AUTOSUGGESTION_HOME=${ZSH}/custom/plugins/zsh-autosuggestions
+    if [[ ! -d "${ZSH_AUTOSUGGESTION_HOME}" ]]; then
+        git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_AUTOSUGGESTION_HOME}"
+    fi
+
+    ZSH_SYNTAX_HIGHLIGHTING=${ZSH}/custom/plugins/zsh-syntax-highlighting
+    if [[ ! -d "${ZSH_SYNTAX_HIGHLIGHTING}" ]]; then
+        git clone https://github.com/zsh-users/zsh-syntax-highlighting "${ZSH_SYNTAX_HIGHLIGHTING}"
+    fi
+
+    ZSH_YOU_SHOULD_USE=${ZSH}/custom/plugins/you-should-use
+    if [[ ! -d "${ZSH_YOU_SHOULD_USE}" ]]; then
+        git clone https://github.com/MichaelAquilina/zsh-you-should-use "${ZSH_YOU_SHOULD_USE}"
+    fi
+}
 #------------------------------------------------------------------------------#
-# install oh-my-zsh if required
-export ZSH="${HOME}/.cache/oh-my-zsh"
-if [[ ! -f "${ZSH}/oh-my-zsh.sh" ]]; then
-    sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-    # This script creates a .zshrc file in your home directory. We
-    # won't need it, since we have a preconfigured one in this repo
-    rm "${HOME}/.zshrc"
-fi
 
-POWERLEVEL10K_HOME=${ZSH}/custom/themes/powerlevel10k
-if [[ ! -d "${POWERLEVEL10K_HOME}" ]]; then
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${POWERLEVEL10K_HOME}"
-fi
+if [ -n "${INSTALL_DEPENDENCIES}" ]; then
+    install_third_party_dependencies
 
-ZSH_AUTOSUGGESTION_HOME=${ZSH}/custom/plugins/zsh-autosuggestions
-if [[ ! -d "${ZSH_AUTOSUGGESTION_HOME}" ]]; then
-    git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_AUTOSUGGESTION_HOME}"
-fi
+    if [ -z "${SKIP_NPM_INSTALL}" ]; then
+        install_npm_dependencies
+    fi
 
-ZSH_SYNTAX_HIGHLIGHTING=${ZSH}/custom/plugins/zsh-syntax-highlighting
-if [[ ! -d "${ZSH_SYNTAX_HIGHLIGHTING}" ]]; then
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting "${ZSH_SYNTAX_HIGHLIGHTING}"
-fi
+    if [ -z "${SKIP_EMACS_BUILD}" ]; then
+        install_emacs
+    fi
 
-ZSH_YOU_SHOULD_USE=${ZSH}/custom/plugins/you-should-use
-if [[ ! -d "${ZSH_YOU_SHOULD_USE}" ]]; then
-    git clone https://github.com/MichaelAquilina/zsh-you-should-use "${ZSH_YOU_SHOULD_USE}"
+    if [ -z "${SKIP_QTILE_INSTALL}" ]; then
+        install_qtile
+    fi
+
+    if [ -n "${INSTALL_NYXT}" ]; then
+        install_nyxt
+    fi
+
+    install_docker
+    install_zsh
 fi
 
 #------------------------------------------------------------------------------#
@@ -499,18 +508,6 @@ fi
     else
         echo -e "${__COLOR_INFO}No specific npm configuration for $(hostname) available. Using the default one.${__COLOR_RESET}"
         ln -s -f "npmrc.default" "npmrc"
-    fi
-)
-
-#------------------------------------------------------------------------------#
-# Hack: setup workstation specific config for docker using extra symlink
-(
-    cd "${DOTFILES}/.docker"
-    TARGET_DOCKER_CONFIG="config-$(hostname).json"
-    if [ -f "${TARGET_DOCKER_CONFIG}" ]; then
-        ln -s -f "${TARGET_DOCKER_CONFIG}" "config.json"
-    else
-        echo -e "${__COLOR_INFO}No specific docker configuration for $(hostname) available. I'll leave it empty.${__COLOR_RESET}"
     fi
 )
 
