@@ -118,7 +118,6 @@ install_third_party_dependencies() {
          dmenu \
          rofi \
          vim \
-         git-lfs \
          ccache \
          gnuplot \
          pass \
@@ -142,103 +141,75 @@ install_third_party_dependencies() {
          evince \
          gcovr
 
-    if ( __is_wsl ) then
+    if ( __is_wsl )
+    then
        # install wslview for xdg-open so that firefox calls are
        # forwarded to host system
        sudo apt install -y \
             wslu
     fi
 
-       # ---------------------------------------------------------
-       # install dependencies for Emacs
-       sudo apt-get install -y \
-            markdown \
-            graphviz \
-            fonts-cantarell \
+    # install gtk tools
+    if ( __is_linux )
+    then
+        sudo apt-get install -y \
+             vlc \
+             firefox \
+             eog
+    fi
+
+    # additional python dependencies
+    python3 -m pip install --upgrade \
+            virtualenv \
+            ptvsd \
+            black \
+            isort \
+            yamllint \
+            mdformat \
             cmake \
-            libtool-bin \
-            aspell \
-            aspell-de \
-            aspell-en \
-            aspell-es \
-            clang-format \
-            clang-tidy \
-            clangd \
-            clangd-12 \
-            clang \
-            clang-12 \
-            valgrind \
-            ripgrep \
-            fd-find \
-            shellcheck \
-            poppler-utils \
-            mpv
-       # install gtk tools
-       sudo apt-get install -y \
-            vlc \
-            firefox \
-            eog
+            cmake_language_server \
+            "python-lsp-server[all]" \
+            pylsp-mypy \
+            python-lsp-black \
+            esbonio==0.16.4 \
+            robotframework-tidy \
+            ipython \
+            gitpython \
+            pytest \
+            jupyter
 
-       # emacs pdf-tools dependencies
-       sudo apt-get install -y \
-            libpng-dev \
-	    zlib1g-dev \
-            libpoppler-glib-dev \
-            libpoppler-private-dev \
-            imagemagick
+    # install pandoc
+    PANDOC_VER="3.1.12.3"
+    PANDOC_BIN="pandoc-${PANDOC_VER}-1-amd64.deb"
+    PANDOC_URL="https://github.com/jgm/pandoc/releases/download/${PANDOC_VER}/${PANDOC_BIN}"
+    (
+        cd "/tmp"
+        wget "${PANDOC_URL}"
+        sudo dpkg -i "${PANDOC_BIN}"
+    )
 
-       # additional python dependencies
-       python3 -m pip install --upgrade \
-               virtualenv \
-               ptvsd \
-               black \
-               isort \
-               yamllint \
-               mdformat \
-               cmake \
-               cmake_language_server \
-               "python-lsp-server[all]" \
-               pylsp-mypy \
-               python-lsp-black \
-               esbonio==0.16.4 \
-               robotframework-tidy \
-               ipython \
-               gitpython \
-               pytest \
-               jupyter
+    #------------------------------------------------------------------------------#
+    # install dependencies gdb
+    (
+        cd "/tmp"
+        GLIBC_NAME="glibc-2.39"
+        wget "https://ftp.gnu.org/gnu/libc/${GLIBC_NAME}.tar.gz"
+        tar -zxf "${GLIBC_NAME}.tar.gz"
+        mv -n "${GLIBC_NAME}" "${HOME}/.local/share"
+    )
 
-       # install pandoc
-       PANDOC_VER="3.1.12.3"
-       PANDOC_BIN="pandoc-${PANDOC_VER}-1-amd64.deb"
-       PANDOC_URL="https://github.com/jgm/pandoc/releases/download/${PANDOC_VER}/${PANDOC_BIN}"
-       (
-           cd "/tmp"
-           wget "${PANDOC_URL}"
-           sudo dpkg -i "${PANDOC_BIN}"
-       )
-
-       #------------------------------------------------------------------------------#
-       # install dependencies gdb
-       (
-           cd "/tmp"
-           GLIBC_NAME="glibc-2.39"
-           wget "https://ftp.gnu.org/gnu/libc/${GLIBC_NAME}.tar.gz"
-           tar -zxf "${GLIBC_NAME}.tar.gz"
-           mv -n "${GLIBC_NAME}" "${HOME}/.local/share"
-       )
-
-       #------------------------------------------------------------------------------#
-       # install dependencies for vscode
-       if ( __is_linux )
-       then
-           # note that vscode is mounted from Windows in WSL and not
-           # installed via apt. Ignore when code cannot be found
-           sudo apt-get install -y code || true
-           if command -v snap > /dev/null
-           then
-               sudo snap install --classic code || true
-           fi
-       fi
+    #------------------------------------------------------------------------------#
+    # install dependencies for vscode
+    if ( __is_linux )
+    then
+        # note that vscode is mounted from Windows in WSL and not
+        # installed via apt. Ignore when code cannot be found
+        sudo apt-get install -y code || true
+        if command -v snap > /dev/null
+        then
+            sudo snap install --classic code || true
+        fi
+    fi
 }
 
 install_npm_dependencies()
@@ -285,6 +256,19 @@ install_npm_dependencies()
     # install other npm packages
     npm install -g \
         yarn
+
+    #------------------------------------------------------------------------------#
+    # Hack: setup workstation specific config for npm using extra symlink
+    (
+        cd "${DOTFILES}/.config/npm"
+        TARGET_NPM_CONFIG="npmrc.$(hostname)"
+        if [ -f "${TARGET_NPM_CONFIG}" ]; then
+            ln -s -f "${TARGET_NPM_CONFIG}" "npmrc"
+        else
+            echo -e "${__COLOR_INFO}No specific npm configuration for $(hostname) available. Using the default one.${__COLOR_RESET}"
+            ln -s -f "npmrc.default" "npmrc"
+        fi
+    )
 }
 
 install_emacs()
@@ -296,6 +280,39 @@ install_emacs()
         sudo apt-get install -y \
              emacs
     fi
+
+    # ---------------------------------------------------------
+    # install dependencies for Emacs
+    sudo apt-get install -y \
+         markdown \
+         graphviz \
+         fonts-cantarell \
+         cmake \
+         libtool-bin \
+         aspell \
+         aspell-de \
+         aspell-en \
+         aspell-es \
+         clang-format \
+         clang-tidy \
+         clangd \
+         clangd-12 \
+         clang \
+         clang-12 \
+         valgrind \
+         ripgrep \
+         fd-find \
+         shellcheck \
+         poppler-utils \
+         mpv
+
+    # emacs pdf-tools dependencies
+    sudo apt-get install -y \
+         libpng-dev \
+	 zlib1g-dev \
+         libpoppler-glib-dev \
+         libpoppler-private-dev \
+         imagemagick
 
     (
         # now, install the newest version available by building and
@@ -309,6 +326,27 @@ install_emacs()
         ./install.sh || exit 1
     )
 }
+
+install_git()
+{
+    sudo apt install -y \
+         git \
+         git-lfs
+
+    #------------------------------------------------------------------------------#
+    # Hack: setup workstation specific config for git using extra symlink
+    (
+        cd "${DOTFILES}/.config/git"
+        TARGET_GIT_CONFIG="config.$(hostname)"
+        if [ -f "${TARGET_GIT_CONFIG}" ]; then
+            ln -s -f "${TARGET_GIT_CONFIG}" "config.workstation"
+        else
+            echo -e "${__COLOR_INFO}No specific git configuration for $(hostname) available. Using the default one.${__COLOR_RESET}"
+            ln -s -f "config.default" "config.workstation"
+        fi
+    )
+}
+
 
 install_docker()
 {
@@ -464,6 +502,7 @@ install_zsh()
 
 if [ -n "${INSTALL_DEPENDENCIES}" ]; then
     install_third_party_dependencies
+    install_git
 
     if [ -z "${SKIP_NPM_INSTALL}" ]; then
         install_npm_dependencies
@@ -484,32 +523,6 @@ if [ -n "${INSTALL_DEPENDENCIES}" ]; then
     install_docker
     install_zsh
 fi
-
-#------------------------------------------------------------------------------#
-# Hack: setup workstation specific config for git using extra symlink
-(
-    cd "${DOTFILES}/.config/git"
-    TARGET_GIT_CONFIG="config.$(hostname)"
-    if [ -f "${TARGET_GIT_CONFIG}" ]; then
-        ln -s -f "${TARGET_GIT_CONFIG}" "config.workstation"
-    else
-        echo -e "${__COLOR_INFO}No specific git configuration for $(hostname) available. Using the default one.${__COLOR_RESET}"
-        ln -s -f "config.default" "config.workstation"
-    fi
-)
-
-#------------------------------------------------------------------------------#
-# Hack: setup workstation specific config for npm using extra symlink
-(
-    cd "${DOTFILES}/.config/npm"
-    TARGET_NPM_CONFIG="npmrc.$(hostname)"
-    if [ -f "${TARGET_NPM_CONFIG}" ]; then
-        ln -s -f "${TARGET_NPM_CONFIG}" "npmrc"
-    else
-        echo -e "${__COLOR_INFO}No specific npm configuration for $(hostname) available. Using the default one.${__COLOR_RESET}"
-        ln -s -f "npmrc.default" "npmrc"
-    fi
-)
 
 #------------------------------------------------------------------------------#
 # setup symbolic links
