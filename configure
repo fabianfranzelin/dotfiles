@@ -15,6 +15,8 @@ DESCRIPTION
               Print this help message
        -i --install-all
               Install all third-party dependencies
+       --skip-stow
+              Skip stowing links
        --install-base
               Install base packages
        --skip-base
@@ -75,6 +77,10 @@ while [ "${#}" -gt 0 ]; do
             ;;
         '-i'|'--install-all')
             INSTALL_ALL=1
+            shift # past argument
+            ;;
+        '--skip-stow')
+            SKIP_STOW=1
             shift # past argument
             ;;
         '--install-base')
@@ -558,6 +564,32 @@ install_zsh()
         git clone https://github.com/MichaelAquilina/zsh-you-should-use "${ZSH_YOU_SHOULD_USE}"
     fi
 }
+
+create_symlinks()
+{
+    # Setup all symlinks with GNU stow
+    if ! command -v stow &> /dev/null
+    then
+        echo "Install GNU stow."
+        sudo apt-get update && sudo apt-get install -y stow
+    fi
+
+    echo -e "${__COLOR_INFO}INFO: Setup symbolic links with GNU stow.${__COLOR_RESET}"
+    (
+        cd "${DOTFILES}"
+        stow . -t "${HOME}"
+    )
+    # -------------------------------------------------
+    # GNUPG setup
+
+    # To fix the " gpg: WARNING: unsafe permissions on homedir '/home/path/to/user/.gnupg' " error
+    # Make sure that the .gnupg directory and its contents is accessibile by your user.
+    chown -R "$(whoami)" "${HOME}/.gnupg/"
+
+    # Also correct the permissions and access rights on the directory
+    chmod 700 "${HOME}/.gnupg"
+}
+
 #------------------------------------------------------------------------------#
 
 if { [ -n "${INSTALL_ALL}" ] && [ -z "${SKIP_BASE}" ]; } || [ -n "${INSTALL_BASE}" ]
@@ -596,28 +628,7 @@ then
     install_nyxt
 fi
 
-#------------------------------------------------------------------------------#
-# setup symbolic links
-#------------------------------------------------------------------------------#
-# Setup all symlinks with GNU stow
-if ! command -v stow &> /dev/null
+if [ -z "${SKIP_STOW}" ]
 then
-    echo "Install GNU stow."
-    sudo apt-get update && sudo apt-get install -y stow
+    create_symlinks
 fi
-
-echo -e "${__COLOR_INFO}INFO: Setup symbolic links with GNU stow.${__COLOR_RESET}"
-(
-    cd "${DOTFILES}"
-    stow . -t "${HOME}"
-)
-
-# -------------------------------------------------
-# GNUPG setup
-
-# To fix the " gpg: WARNING: unsafe permissions on homedir '/home/path/to/user/.gnupg' " error
-# Make sure that the .gnupg directory and its contents is accessibile by your user.
-chown -R "$(whoami)" "${HOME}/.gnupg/"
-
-# Also correct the permissions and access rights on the directory
-chmod 700 "${HOME}/.gnupg"

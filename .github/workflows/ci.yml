@@ -22,25 +22,25 @@ jobs:
           git fetch --all
       - name: Install base
         run: |
-          ./configure --install-base
+          ./configure --install-base --skip-stow
       - name: Install NPM
         run: |
-          ./configure --install-npm
+          ./configure --install-npm --skip-stow
       - name: Install ZSH
         run: |
-          ./configure --install-zsh
+          ./configure --install-zsh --skip-stow
       - name: Install Emacs
         run: |
-          ./configure --install-emacs
+          ./configure --install-emacs --skip-stow
       - name: Install docker
         run: |
-          ./configure --install-docker
+          ./configure --install-docker --skip-stow
       - name: Install qtile
         run: |
-          ./configure --install-qtile
+          ./configure --install-qtile --skip-stow
       - name: Install nyxt
         run: |
-          ./configure --install-nyxt
+          ./configure --install-nyxt --skip-stow
       - name: Create symbolic links to home
         run: |
           rm ~/.bashrc ~/.profile
