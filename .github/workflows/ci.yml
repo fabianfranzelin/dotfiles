@@ -20,11 +20,31 @@ jobs:
           git config --global user.name "${GIT_USER_NAME}"
           git config --global user.email "${GIT_USER_EMAIL}"
           git fetch --all
-      - name: Configure dotfiles and install third-party dependencies
+      - name: Install base
+        run: |
+          ./configure --install-base
+      - name: Install NPM
+        run: |
+          ./configure --install-npm
+      - name: Install ZSH
+        run: |
+          ./configure --install-zsh
+      - name: Install Emacs
+        run: |
+          ./configure --install-emacs
+      - name: Install docker
+        run: |
+          ./configure --install-docker
+      - name: Install qtile
+        run: |
+          ./configure --install-qtile
+      - name: Install nyxt
+        run: |
+          ./configure --install-nyxt
+      - name: Create symbolic links to home
         run: |
           rm ~/.bashrc ~/.profile
-          sudo apt-get update
-          ./configure -i
+          ./configure
       - name: Run Emacs (minimal)
         run: |
           echo "------------------------------------------------"

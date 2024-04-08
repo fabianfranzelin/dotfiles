@@ -13,16 +13,36 @@ DESCRIPTION
 
        -h --help
               Print this help message
-       -i --install
-              Install third-party dependencies
-       --skip-npm-installation
-              Skip installation of npm packages
-       --skip-emacs-build
-              Skip building Emacs from source
-       --skip-qtile-installation
-              Skip installation of qtile desktop manager
+       -i --install-all
+              Install all third-party dependencies
+       --install-base
+              Install base packages
+       --skip-base
+              Skip base installation
+       --install-npm
+              Install npm packages
+       --skip-npm
+              Skip npm installation
+       --install-zsh
+              Install ZSH
+       --skip-zsh
+              Skip ZSH installation
+       --install-emacs
+              Install Emacs
+       --skip-emacs
+              Skip Emacs installation
+       --install-docker
+              Install Docker
+       --skip-docker
+              Skip Docker installation
+       --install-qtile
+              Install Qtile
+       --skip-qtile
+              Skip Qtile installation
        --install-nyxt
-              Install nyxt browser
+              Install nyxt
+       --skip-nyxt
+              Skip nyxt installation
 "
 
 #------------------------------------------------------------------------------#
@@ -53,24 +73,64 @@ while [ "${#}" -gt 0 ]; do
             echo -e "${__COLOR_INFO}${usage}${__COLOR_RESET}"
             exit 0
             ;;
-        '-i'|'--install')
-            INSTALL_DEPENDENCIES=1
+        '-i'|'--install-all')
+            INSTALL_ALL=1
             shift # past argument
             ;;
-        '--skip-npm-installation')
-            SKIP_NPM_INSTALL=1
+        '--install-base')
+            INSTALL_BASE=1
             shift # past argument
             ;;
-        '--skip-emacs-build')
-            SKIP_EMACS_BUILD=1
+        '--skip-base')
+            SKIP_BASE=1
             shift # past argument
             ;;
-        '--skip-qtile-installation')
-            SKIP_QTILE_INSTALL=1
+        '--install-npm')
+            INSTALL_NPM=1
+            shift # past argument
+            ;;
+        '--skip-npm')
+            SKIP_NPM=1
+            shift # past argument
+            ;;
+        '--install-emacs')
+            INSTALL_EMACS=1
+            shift # past argument
+            ;;
+        '--skip-emacs')
+            SKIP_EMACS=1
+            shift # past argument
+            ;;
+        '--install-docker')
+            INSTALL_DOCKER=1
+            shift # past argument
+            ;;
+        '--skip-docker')
+            SKIP_DOCKER=1
+            shift # past argument
+            ;;
+        '--install-qtile')
+            INSTALL_QTILE=1
+            shift # past argument
+            ;;
+        '--skip-qtile')
+            SKIP_QTILE=1
             shift # past argument
             ;;
         '--install-nyxt')
             INSTALL_NYXT=1
+            shift # past argument
+            ;;
+        '--skip-nyxt')
+            SKIP_NYXT=1
+            shift # past argument
+            ;;
+        '--install-zsh')
+            INSTALL_ZSH=1
+            shift # past argument
+            ;;
+        '--skip-zsh')
+            SKIP_ZSH=1
             shift # past argument
             ;;
         *)
@@ -83,7 +143,7 @@ done
 
 #------------------------------------------------------------------------------#
 # install required packages
-install_third_party_dependencies() {
+install_base() {
     echo -e "${__COLOR_INFO}INFO: Installing minimal required packages for setup...${__COLOR_RESET}"
     sudo apt-get install -y \
          python3-pip
@@ -212,7 +272,7 @@ install_third_party_dependencies() {
     fi
 }
 
-install_npm_dependencies()
+install_npm()
 {
     # additional npm dependencies
     echo "Install npm dependencies"
@@ -500,28 +560,40 @@ install_zsh()
 }
 #------------------------------------------------------------------------------#
 
-if [ -n "${INSTALL_DEPENDENCIES}" ]; then
-    install_third_party_dependencies
+if { [ -n "${INSTALL_ALL}" ] && [ -z "${SKIP_BASE}" ]; } || [ -n "${INSTALL_BASE}" ]
+then
+    install_base
     install_git
+fi
 
-    if [ -z "${SKIP_NPM_INSTALL}" ]; then
-        install_npm_dependencies
-    fi
-
-    if [ -z "${SKIP_EMACS_BUILD}" ]; then
-        install_emacs
-    fi
-
-    if [ -z "${SKIP_QTILE_INSTALL}" ]; then
-        install_qtile
-    fi
-
-    if [ -n "${INSTALL_NYXT}" ]; then
-        install_nyxt
-    fi
-
-    install_docker
+if { [ -n "${INSTALL_ALL}" ] && [ -z "${SKIP_ZSH}" ]; } || [ -n "${INSTALL_ZSH}" ]
+then
     install_zsh
+fi
+
+if { [ -n "${INSTALL_ALL}" ] && [ -z "${SKIP_NPM}" ]; } || [ -n "${INSTALL_NPM}" ]
+then
+    install_npm
+fi
+
+if { [ -n "${INSTALL_ALL}" ] && [ -z "${SKIP_EMACS}" ]; } || [ -n "${INSTALL_EMACS}" ]
+then
+    install_emacs
+fi
+
+if { [ -n "${INSTALL_ALL}" ] && [ -z "${SKIP_QTILE}" ]; } || [ -n "${INSTALL_QTILE}" ]
+then
+    install_qtile
+fi
+
+if { [ -n "${INSTALL_ALL}" ] && [ -z "${SKIP_DOCKER}" ]; } || [ -n "${INSTALL_DOCKER}" ]
+then
+    install_docker
+fi
+
+if { [ -n "${INSTALL_ALL}" ] && [ -z "${SKIP_NYXT}" ]; } || [ -n "${INSTALL_NYXT}" ]
+then
+    install_nyxt
 fi
 
 #------------------------------------------------------------------------------#
