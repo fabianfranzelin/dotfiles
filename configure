@@ -519,7 +519,9 @@ install_nyxt()
     (
         # install dependencies for compilation of Nyxt
         sudo apt install -y \
-             libfixposix-dev
+             libfixposix-dev \
+             sbcl
+
         # install Nyxt
         TMP_NYXT_SRC=$(mktemp -d)
         cd "${TMP_NYXT_SRC}" || exit 1
@@ -608,11 +610,6 @@ then
     install_npm
 fi
 
-if { [ -n "${INSTALL_ALL}" ] && [ -z "${SKIP_EMACS}" ]; } || [ -n "${INSTALL_EMACS}" ]
-then
-    install_emacs
-fi
-
 if { [ -n "${INSTALL_ALL}" ] && [ -z "${SKIP_QTILE}" ]; } || [ -n "${INSTALL_QTILE}" ]
 then
     install_qtile
@@ -626,6 +623,11 @@ fi
 if { [ -n "${INSTALL_ALL}" ] && [ -z "${SKIP_NYXT}" ]; } || [ -n "${INSTALL_NYXT}" ]
 then
     install_nyxt
+fi
+
+if { [ -n "${INSTALL_ALL}" ] && [ -z "${SKIP_EMACS}" ]; } || [ -n "${INSTALL_EMACS}" ]
+then
+    install_emacs
 fi
 
 if [ -z "${SKIP_STOW}" ]

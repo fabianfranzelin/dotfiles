@@ -29,9 +29,6 @@ jobs:
       - name: Install ZSH
         run: |
           ./configure --install-zsh --skip-stow
-      - name: Install Emacs
-        run: |
-          ./configure --install-emacs --skip-stow
       - name: Install docker
         run: |
           ./configure --install-docker --skip-stow
@@ -41,6 +38,9 @@ jobs:
       - name: Install nyxt
         run: |
           ./configure --install-nyxt --skip-stow
+      - name: Install Emacs
+        run: |
+          ./configure --install-emacs --skip-stow
       - name: Create symbolic links to home
         run: |
           rm ~/.bashrc ~/.profile
