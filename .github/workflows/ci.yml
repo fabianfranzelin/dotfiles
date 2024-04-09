@@ -46,6 +46,8 @@ jobs:
           rm ~/.bashrc ~/.profile
           ./configure
       - name: Run Emacs (minimal)
+        env:
+          LD_LIBRARY_PATH: /usr/lib:/usr/local/lib
         run: |
           echo "------------------------------------------------"
           emacs --version
@@ -54,6 +56,8 @@ jobs:
           emacs --script "test-minimal.el"
           test $? -eq 0 || exit 1
       - name: Run Emacs (full)
+        env:
+          LD_LIBRARY_PATH: /usr/lib:/usr/local/lib
         run: |
           echo "------------------------------------------------"
           emacs --version
