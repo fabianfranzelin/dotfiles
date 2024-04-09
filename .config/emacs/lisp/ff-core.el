@@ -266,10 +266,14 @@ COMMAND: command to be executed"
 ;; -------------------------------------------------------------------
 ;; Set up dired with async
 ;; -------------------------------------------------------------------
+;; mainly required for dired-async
+(use-package async)
+
 ;; rename buffer content: C-x C-q, (wdired) C-c C-c to apply and C-c
 ;; ESC to cancel copy path of file: 0 w in dired buffer
 (use-package dired
   :straight nil
+  :after async
   :custom
   (dired-auto-revert-buffer nil) ; Auto update when buffer is revisited
   (dired-dwim-target t)
@@ -282,6 +286,8 @@ COMMAND: command to be executed"
   :init
   (require 'dired-x)
   (autoload 'dired-omit-mode "dired-x")
+  (require 'dired-async)
+  (dired-async-mode 1)
   :hook
   (dired-mode . auto-revert-mode)
   (dired-mode . dired-hide-details-mode)
