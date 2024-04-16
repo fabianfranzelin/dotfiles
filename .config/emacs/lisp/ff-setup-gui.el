@@ -232,7 +232,6 @@
 (setq proced-show-remote-processes t)
 
 (use-package proced-narrow
-  :ensure t
   :after proced
   :bind (:map proced-mode-map
               ("/" . proced-narrow)))
