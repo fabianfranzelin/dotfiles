@@ -67,6 +67,8 @@ aos_create_venv() {
                 robotremoteserver==1.1.1 \
                 robotframework-jsonlibrary==0.5
 
+        rfbrowser init
+
         deactivate
     )
 }
