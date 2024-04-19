@@ -30,22 +30,8 @@ export CONAN_DISABLE_STRICT_MODE=1
 export SWT_GTK3=0
 export FLEXLM_TIMEOUT=3000000
 
-# make sure that there is a conan cache folder is not available
-export CONAN_USER_HOME="${HOME}/.aos_conan_download_cache"
-export AOS_WORKDIR="${HOME}/.aos_conan_download_cache"
-mkdir -p "${AOS_WORKDIR}"
-export DISABLE_RECOMPUTE_DEPENDENCY_CHECK=1
-
-#------------------------------------------------------------------------------#
-# PJ-Rec
-
 #------------------------------------------------------------------------------#
 # Azure DevOps
 # Run cat BOSCH-CA-DE_pem.cer /opt/az/lib/python3.6/site-packages/certifi/cacert.pem > azure-bosch-cert.pem
 export REQUESTS_CA_BUNDLE="${HOME}/.local/share/certificates/bosch/azure-bosch-cert.pem"
 
-#------------------------------------------------------------------------------#
-# Ford
- if [ -f "${HOME}/.acp/devcontainer" ]; then
-    . "${HOME}/.acp/devcontainer"
-fi
