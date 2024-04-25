@@ -131,7 +131,7 @@ JAR-PATH: expected binary file in the extracted folder."
          ("\\.iuml" . plantuml-mode)
          ("\\.uml" . plantuml-mode))
   :init
-  (defvar plantuml-version "1.2023.13"
+  (defvar plantuml-version "1.2024.4"
     "Version number of plantuml binary")
   (defvar plantuml-name (concat "plantuml-" plantuml-version ".jar")
     "Name of plantuml executable")
