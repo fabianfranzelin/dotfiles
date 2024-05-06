@@ -533,7 +533,7 @@ install_nyxt()
         # install Nyxt
         TMP_NYXT_SRC=$(mktemp -d)
         cd "${TMP_NYXT_SRC}" || exit 1
-        NYXT_VERSION="3.11.5"
+        NYXT_VERSION="3.11.6"
         NYXT_SRC_FILE_NAME="nyxt-${NYXT_VERSION}-source-with-submodules.tar.xz"
         wget "https://github.com/atlas-engineer/nyxt/releases/download/${NYXT_VERSION}/${NYXT_SRC_FILE_NAME}"
         tar -xf "${NYXT_SRC_FILE_NAME}"
