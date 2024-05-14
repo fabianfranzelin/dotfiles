@@ -335,6 +335,11 @@ COMMAND: command to be executed"
   (require 'dired-async)
   (dired-async-mode 1))
 
+(use-package casual-dired
+  :straight (:host github :repo "kickingvegas/casual-dired")
+  :bind (:map dired-mode-map
+              ("C-o" . casual-dired-tmenu)))
+
 ;; -------------------------------------------------------------------
 ;; Undo tree - make undos more powerful
 ;; -------------------------------------------------------------------
@@ -603,6 +608,14 @@ TEXT: title"
                         (expand-file-name
                          "kill-ring.el"
                          no-littering-etc-directory))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Calc
+
+(use-package casual
+  :straight (:host github :repo "kickingvegas/casual")
+  :bind (:map calc-mode-map
+              ("C-o" . casual-main-menu)))
 
 (provide 'ff-core)
 
