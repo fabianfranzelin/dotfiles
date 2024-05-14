@@ -170,6 +170,8 @@ install_base() {
 
     sudo apt-get install -y \
          xclip \
+         xsel \
+         wl-clipboard \
          apt-transport-https \
          python3-pyqt5 \
          zsh \
@@ -528,7 +530,8 @@ install_nyxt()
         # install dependencies for compilation of Nyxt
         sudo apt install -y \
              libfixposix-dev \
-             sbcl
+             sbcl \
+             gstreamer1.0-plugins-bad
 
         # install Nyxt
         TMP_NYXT_SRC=$(mktemp -d)
