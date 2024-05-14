@@ -1,3 +1,7 @@
+;; prompt-buffer
+(define-configuration prompt-buffer
+  ((hide-single-source-header-p t)))
+
 ;; emacs keybindings
 (define-configuration buffer
   ((default-modes
