@@ -343,11 +343,8 @@ COMMAND: command to be executed"
 ;; -------------------------------------------------------------------
 ;; Undo tree - make undos more powerful
 ;; -------------------------------------------------------------------
-(use-package undo-tree
-  :custom
-  (undo-limit 8000000)
-  :init
-  (global-undo-tree-mode))
+(use-package vundo
+  :bind ("C-x u" . vundo))
 
 ;; -------------------------------------------------------------------
 ;; Credential management
