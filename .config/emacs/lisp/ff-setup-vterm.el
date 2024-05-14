@@ -112,7 +112,8 @@ https://github.com/akermu/emacs-libvterm/issues/518"
     (let ((last-shell-command (ff/read-last-command-from-shell-history)))
       (cond ((or (string-match ".*sudo.*" last-shell-command)
                  (string-match "init" last-shell-command)
-                 (string-match ".*configure -i.*" last-shell-command))
+                 (string-match ".*configure -i.*" last-shell-command)
+                 (string-match ".*configure --install.*" last-shell-command))
              (let* ((pwd-store-entry (format "passwords/sudo@%s" system-name))
                     (pwd (password-store-get pwd-store-entry)))
                (if pwd
