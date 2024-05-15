@@ -86,6 +86,10 @@ export NVM_DIR="${HOME}/.config/nvm"
 [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 #------------------------------------------------------------------------------#
+# pass
+export PASSWORD_STORE_DIR="${XDG_DATA_HOME}/password-store"
+
+#------------------------------------------------------------------------------#
 # Load specific settings per workstation
 __HOST_SETTINGS="${__SHELL_LIB}/workstations/$(hostname).sh"
 [ -f "${__HOST_SETTINGS}" ] && . "${__HOST_SETTINGS}"

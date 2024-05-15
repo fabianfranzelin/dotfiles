@@ -354,7 +354,7 @@ COMMAND: command to be executed"
 
 (require 'auth-source)
 ;; Do not allow unencrypted auth-sources. Use GPG
-(customize-set-variable 'auth-sources `(password-store ,(expand-file-name "~/.password-store/authinfo.gpg")))
+(customize-set-variable 'auth-sources `(password-store ,(expand-file-name "~/.local/share/password-store/authinfo.gpg")))
 ;; Use the Emacs minibuffer for GPG pinentry
 ;; https://vxlabs.com/2021/03/21/gnupg-pinentry-via-the-emacs-minibuffer/
 (customize-set-variable 'epa-pinentry-mode 'loopback)
