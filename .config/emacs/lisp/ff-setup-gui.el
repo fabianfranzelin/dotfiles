@@ -43,7 +43,12 @@
 ;; line icons display correctly.
 (use-package nerd-icons
   :custom
-  (nerd-icons-font-family "Symbols Nerd Font Mono"))
+  (nerd-icons-font-family "Symbols Nerd Font Mono")
+  :config
+  ;; For some reason, the scheme icons do not work and slow down Emacs
+  ;; significantly. Hence, I just use the Emacs icons here for common
+  ;; lisp files.
+  (add-to-list 'nerd-icons-extension-icon-alist '("lisp" nerd-icons-sucicon "nf-custom-emacs" :face nerd-icons-purple)))
 
 (use-package nerd-icons-dired
   :hook

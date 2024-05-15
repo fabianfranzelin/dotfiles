@@ -168,7 +168,7 @@ FORCE: force update of grammars"
   (fancy-compilation-mode 1))
 
 ;; -------------------------------------------------------------------
-;; Emacs lisp
+;; Emacs lisp and common lisp
 ;; -------------------------------------------------------------------
 (add-to-list 'auto-mode-alist '("\\.el\\'" . emacs-lisp-mode))
 (add-to-list 'auto-mode-alist '("\\.dir-locals\\.el$" . emacs-lisp-mode))
@@ -180,7 +180,8 @@ FORCE: force update of grammars"
 ;; enable rainbow delimiters for emacs lisp
 (use-package rainbow-delimiters
   :hook
-  (emacs-lisp-mode . rainbow-delimiters-mode))
+  (emacs-lisp-mode . rainbow-delimiters-mode)
+  (lisp-mode . rainbow-delimiters-mode))
 
 ;; define shortcut that launches ielm
 (define-key emacs-lisp-mode-map (kbd "C-c C-p") #'(lambda ()
