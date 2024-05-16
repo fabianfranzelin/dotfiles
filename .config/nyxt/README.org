@@ -1,3 +1,4 @@
 * Interesting Links
 
 [[https://nyxt.atlas.engineer/article/auto-mode.org][auto-mode]]
+[[https://discourse.atlas.engineer/t/automatic-proxy/171/4][auto-mode-rules-path]]
