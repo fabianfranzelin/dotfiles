@@ -1,0 +1,3 @@
+* Interesting Links
+
+[[https://nyxt.atlas.engineer/article/auto-mode.org][auto-mode]]
