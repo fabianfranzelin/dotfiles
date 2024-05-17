@@ -6,9 +6,11 @@
 
 (defvar *web-buffer-modes*
   '(:emacs-mode
-    :blocker-mode :force-https-mode
+    :blocker-mode
+    :force-https-mode
     :reduce-tracking-mode
-    :user-script-mode :bookmarklets-mode)
+    :user-script-mode
+    :bookmarklets-mode)
   "The modes to enable in any web-buffer by default.
 Extension files (like dark-reader.lisp) are to append to this list.
 
@@ -16,7 +18,7 @@ Why the variable? Because it's too much hassle copying it everywhere.")
 
 ;;; Loading files from the same directory.
 (define-nyxt-user-system-and-load nyxt-user/basic-config
-  :components ("keybindings"))
+  :components ("keybindings" "status"))
 
 ;;; Loading extensions and third-party-dependent configs. See the
 ;;; matching files for where to find those extensions.
@@ -31,6 +33,40 @@ loads."
 
 (defextsystem :nx-search-engines "search-engines")
 
+(define-configuration :prompt-buffer
+  "Make the attribute widths adjust to the content in them.
+
+It's not exactly necessary on master, because there are more or less
+intuitive default widths, but these are sometimes inefficient (and
+note that I made this feature so I want to have it :P)."
+  ((dynamic-attribute-width-p t)))
+
+(define-configuration :web-buffer
+  ((download-engine
+    :renderer
+    :doc "This overrides download engine to use WebKit instead of Nyxt-native
+Dexador-based download engine. I don't remember why I switched,
+though.")
+   (search-always-auto-complete-p
+    nil
+    :doc "I don't like search completion when I don't need it.")
+   (global-history-p
+    t
+    :doc "It was disabled after 2.2.4, while being a useful feature.
+I'm forcing it here, because I'm getting lost in buffer-local
+histories otherwise...")))
+
+(define-configuration :prompt-buffer
+  ((hide-single-source-header-p
+    t
+    :doc "This is to hide the header is there's only one source.
+There also used to be other settings to make prompt-buffer a bit
+more minimalist, but those are internal APIs :(")))
+
+(defmethod files:resolve ((profile nyxt:nyxt-profile) (file nyxt/mode/bookmark:bookmarks-file))
+  "Reroute the bookmarks to the config directory."
+  #p"~/.config/nyxt/bookmarks.lisp")
+
 ;;; Those are settings that every type of buffer should share.
 (define-configuration (:modable-buffer :prompt-buffer :editor-buffer)
   "Set up Emacs keybindings everywhere possible."
@@ -42,4 +78,4 @@ loads."
 
 (define-configuration :browser
   "Set new buffer URL (a.k.a. start page, new tab page)."
-  ((default-new-buffer-url (quri:uri "nyxt:nyxt/mode/repl:repl"))))
+  ((default-new-buffer-url (quri:uri "nyxt:new"))))
