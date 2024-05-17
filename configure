@@ -565,6 +565,15 @@ install_nyxt()
         make all
         sudo make install
     )
+
+    (
+        # Install some extensions
+        # The ~/.local/share/nyxt/extensions/ is the default path Nyxt looks
+        # for extensions in. Change to wherever you set your extension path.
+        NYXT_EXTENSION_PATH="${HOME}/.local/share/nyxt/extensions"
+        mkdir -p "${NYXT_EXTENSION_PATH}"
+        git clone https://github.com/aartaka/nx-search-engines "${NYXT_EXTENSION_PATH}/nx-search-engines"
+    )
 }
 
 install_zsh()
