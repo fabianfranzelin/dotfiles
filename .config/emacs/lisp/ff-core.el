@@ -197,7 +197,8 @@ COMMAND: command to be executed"
                                             "HTTP_PROXY"
                                             "HTTPS_PROXY"
                                             "BROWSER"
-                                            "HISTFILE"))
+                                            "HISTFILE"
+                                            "PASSWORD_STORE_DIR"))
   :init (exec-path-from-shell-initialize))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -353,11 +354,8 @@ COMMAND: command to be executed"
 (auth-source-pass-enable)
 
 (require 'auth-source)
-;; make sure that the environment variable that is used by pass is set
-(setq ff/password-store-path (expand-file-name "~/.local/share/password-store/authinfo.gpg"))
-(setenv "PASSWORD_STORE_DIR" ff/password-store-path)
 ;; Do not allow unencrypted auth-sources. Use GPG
-(customize-set-variable 'auth-sources `(password-store ,ff/password-store-path))
+(customize-set-variable 'auth-sources `(password-store ,(expand-file-name "authinfo.gpg" (getenv "PASSWORD_STORE_DIR"))))
 ;; Use the Emacs minibuffer for GPG pinentry
 ;; https://vxlabs.com/2021/03/21/gnupg-pinentry-via-the-emacs-minibuffer/
 (customize-set-variable 'epa-pinentry-mode 'loopback)
