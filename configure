@@ -552,6 +552,8 @@ install_nyxt()
         # install dependencies for compilation of Nyxt
         sudo apt install -y \
              libfixposix-dev \
+             libgstreamer1.0-0 \
+             gir1.2-gst-plugins-base-1.0 \
              gstreamer1.0-plugins-bad \
              libwebkit2gtk-4.0-37
 
