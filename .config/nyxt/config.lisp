@@ -1,8 +1,6 @@
 (in-package #:nyxt-user)
 
-;;; Reset ASDF registries to allow loading Lisp systems from
-;;; everywhere.
-#+nyxt-3 (reset-asdf-registries)
+(setf (uiop/os:getenv "WEBKIT_DISABLE_COMPOSITING_MODE") "1")
 
 (defvar *web-buffer-modes*
   '(:emacs-mode

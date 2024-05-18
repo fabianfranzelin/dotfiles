@@ -38,7 +38,7 @@
     (message "Canceled frame close")))
 
 (when (daemonp)
-  (global-set-key (kbd "C-x C-c") 'ff/ask-before-closing-frame))
+  (keymap-global-set "C-x C-c" 'ff/ask-before-closing-frame))
 
 ;; Support wheel mouse scrolling
 (mouse-wheel-mode t)
@@ -115,16 +115,16 @@ COMMAND: command to be executed"
   (interactive)
   (kill-buffer (current-buffer)))
 
-(global-set-key (kbd "C-x k") #'(lambda ()
-                                  (interactive)
-                                  (ff/repeat-command 'ff/kill-buffer-current)))
+(keymap-global-set "C-x k" #'(lambda ()
+                               (interactive)
+                               (ff/repeat-command 'ff/kill-buffer-current)))
 
 ;; make ESC quit prompts
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+(keymap-global-set "<escape>" 'keyboard-escape-quit)
 
 ;; disable scroll lock mode permanently
 (defun do-nothing () "Does simply nothing." (interactive))
-(global-set-key (kbd "<Scroll_Lock>") 'do-nothing)
+(keymap-global-set "<Scroll_Lock>" 'do-nothing)
 (defvar scroll-lock-mode nil)
 
 (defun ff/split-window-right ()
@@ -133,7 +133,7 @@ COMMAND: command to be executed"
   (split-window-right)
   (other-window 1))
 
-(global-set-key (kbd "C-x 3") 'ff/split-window-right)
+(keymap-global-set "C-x 3" 'ff/split-window-right)
 
 (defun ff/split-window-below ()
   "Split window right and move to the new window."
@@ -141,7 +141,7 @@ COMMAND: command to be executed"
   (split-window-below)
   (other-window 1))
 
-(global-set-key (kbd "C-x 2") 'ff/split-window-below)
+(keymap-global-set "C-x 2" 'ff/split-window-below)
 
 ;; window movement
 (defvar-keymap ff/window-key-map
@@ -159,7 +159,14 @@ COMMAND: command to be executed"
   "N" 'windmove-swap-states-down
   "P" 'windmove-swap-states-up)
 
-(global-set-key (kbd "C-q") ff/window-key-map)
+(keymap-global-set "C-q" ff/window-key-map)
+
+;; try to simply use the arrow keys for window movement. With a split
+;; keyboard, this is feasible
+(keymap-global-set "<right>" 'windmove-right)
+(keymap-global-set "<left>" 'windmove-left)
+(keymap-global-set "<up>" 'windmove-up)
+(keymap-global-set "<down>" 'windmove-down)
 
 ;; winner mode for for redo/undo window configurations
 (winner-mode 1)
@@ -175,14 +182,14 @@ COMMAND: command to be executed"
 ;; make the undo/redo functions repeatable
 (tab-bar-history-mode 1)
 (setq tab-bar-history-limit 100)
-(global-set-key (kbd "C-c p") #'(lambda () (interactive) (ff/repeat-command 'tab-bar-history-back)))
-(global-set-key (kbd "C-c n") #'(lambda () (interactive) (ff/repeat-command 'tab-bar-history-forward)))
+(keymap-global-set "C-c p" #'(lambda () (interactive) (ff/repeat-command 'tab-bar-history-back)))
+(keymap-global-set "C-c n" #'(lambda () (interactive) (ff/repeat-command 'tab-bar-history-forward)))
 
 ;; highlight current line
-(global-set-key (kbd "C-c h") 'global-hl-line-mode)
+(keymap-global-set "C-c h" 'global-hl-line-mode)
 
 ;; newline and indent
-(global-set-key (kbd "C-j") 'newline-and-indent)
+(keymap-global-set "C-j" 'newline-and-indent)
 
 ;; -------------------------------------------------------------
 ;; Core packages
@@ -380,7 +387,7 @@ COMMAND: command to be executed"
   (interactive)
   (async-shell-command "gpgconf --kill gpg-agent"))
 
-(global-set-key (kbd "C-c C-g") 'ff/unlock-key)
+(keymap-global-set "C-c C-g" 'ff/unlock-key)
 
 ;; -------------------------------------------------------------------
 ;; Open files externally

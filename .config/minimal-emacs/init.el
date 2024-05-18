@@ -90,9 +90,9 @@ named arguments:
 (electric-indent-mode nil)
 
 ;; just kill the current buffer and not ask for selection
-(global-set-key (kbd "C-x k") #'(lambda ()
-                                  (interactive)
-                                  (kill-buffer (current-buffer))))
+(keymap-global-set "C-x k" #'(lambda ()
+                               (interactive)
+                               (kill-buffer (current-buffer))))
 
 ;; -------------------------------------------------------------------
 ;; Credential management
@@ -118,7 +118,7 @@ named arguments:
       (message "GPG key is unlocked")
     (message "Wrong password. GPG key is not unlocked.")))
 
-(global-set-key (kbd "C-c C-g") 'ff/unlock-key)
+(keymap-global-set "C-c C-g" 'ff/unlock-key)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                 GUI                 ;
