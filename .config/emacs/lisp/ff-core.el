@@ -352,7 +352,9 @@ COMMAND: command to be executed"
 ;; Undo tree - make undos more powerful
 ;; -------------------------------------------------------------------
 (use-package vundo
-  :bind ("C-x u" . vundo))
+  :bind (("C-x u" . vundo)
+         ("C-_" . undo)
+         ("M-_" . undo-redo)))
 
 ;; -------------------------------------------------------------------
 ;; Credential management
@@ -458,7 +460,7 @@ COMMAND: command to be executed"
   :config
   (rg-define-search ff/rg-current-dir
     "Search for thing at point in files matching the current file
-under the current directory."
+    under the current directory."
     :query ask
     :format literal
     :dir current
@@ -472,11 +474,11 @@ under the current directory."
   :preface
   (defun ff/affe-find (dir)
     "Start the fuzzy find in the current directory.
-DIR: directory"
+    DIR: directory"
     (affe-find dir))
   (defun ff/affe-grep (dir)
     "Start the fuzzy grep in the current directory.
-DIR: directory"
+    DIR: directory"
     (affe-grep dir))
   :after embark
   ;; search also in hidden and ignored files by git
@@ -535,7 +537,7 @@ DIR: directory"
 ;; -------------------------------------------------------------------
 (defun yas-rst-mode-labels (text)
   "Create labels for sections in rst.
-TEXT: title"
+    TEXT: title"
   (downcase (replace-regexp-in-string " \\|:\\|-" "_" text)))
 
 (use-package yasnippet
