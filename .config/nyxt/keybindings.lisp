@@ -9,4 +9,6 @@
       (list "C-x p p" 'copy-password
             "C-x p u" 'copy-username
             "C-c y" 'autofill
-            "C-s" 'search-buffer)))))
+            "M-_" 'redo
+            "C-_" 'undo
+            "C-c h" 'go-to-homepage)))))
