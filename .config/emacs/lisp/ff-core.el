@@ -292,6 +292,7 @@ COMMAND: command to be executed"
   (dired-hide-details-hide-symlink-targets nil)
   (dired-mouse-drag-files t)
   :init
+  (setq dired-vc-rename-file t)
   (require 'dired-x)
   (autoload 'dired-omit-mode "dired-x")
   (require 'dired-async)

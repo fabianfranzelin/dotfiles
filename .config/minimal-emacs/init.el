@@ -243,6 +243,7 @@ DIR: directory"
   (dired-listing-switches "-agho --group-directories-first")
   (dired-hide-details-hide-symlink-targets nil)
   :init
+  (setq dired-vc-rename-file t)
   (require 'dired-x)
   (autoload 'dired-omit-mode "dired-x")
   :hook
