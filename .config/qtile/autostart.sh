@@ -5,7 +5,7 @@
 # setxkbmap -layout de -option ctrl:nocaps && xmodmap -e "keycode 111 = Alt_L Meta_L Alt_L Meta_L"
 
 # Network manager applet
-nm-applet &
+[ -x "$(command -v nm-applet)" ] && nm-applet &
 
 ### UNCOMMENT ONLY ONE OF THE FOLLOWING THREE OPTIONS! ###
 # 1. Uncomment to restore last saved wallpaper
@@ -17,4 +17,4 @@ nitrogen --set-zoom-fill \
          "$HOME/.local/share/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg" &
 
 # The osd-toolkit is optional. It can be ignored if not available
-osd-toolkit || true
+[ -x "$(command -v osd-toolkit)" ] && osd-toolkit &
