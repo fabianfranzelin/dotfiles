@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+terminator -x osd-vpn-disconnect && osd-vpn-connect -k
