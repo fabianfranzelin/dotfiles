@@ -6,8 +6,7 @@
 This document describes how I install Emacs. It supports two modes:
 
 1. Installation of an official release: It downloads, extracts and
-   installs a specified version that is pre-packed and available
-   [[http://ftp.halifax.rwth-aachen.de/gnu/emacs][online.]]
+   installs a specified version that is pre-packed and available [[https://de.freedif.org/gnu/emacs/][online.]]
 2. Installation from feature branch of [[https://git.savannah.gnu.org/git/emacs.git][Savannah repository]]: It checks
    out the corresponding feature branch of Emacs, builds and installs
    it.
@@ -35,7 +34,7 @@ It downloads and extracts Emacs.
 
           cd "${__TMP_DIR}" || exit 1
           __EMACS_TAR_FILENAME="emacs-${__EMACS_VERSION}.tar.gz"
-          wget "http://ftp.halifax.rwth-aachen.de/gnu/emacs/${__EMACS_TAR_FILENAME}"
+          wget "https://de.freedif.org/gnu/emacs/${__EMACS_TAR_FILENAME}"
           tar -xvf "${__EMACS_TAR_FILENAME}" -C "${__XDG_CACHE_HOME}"
           if [ ! -d "${__EMACS_SRC}" ]
           then
