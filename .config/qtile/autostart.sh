@@ -16,5 +16,8 @@
 nitrogen --set-zoom-fill \
          "$HOME/.local/share/backgrounds/samuel-ferrara-uOi3lg8fGl4-unsplash.jpg" &
 
-# The osd-toolkit is optional. It can be ignored if not available
-[ -x "$(command -v osd-toolkit)" ] && osd-toolkit &
+if [ "$(hostname)" = "ABT-C-002NY" ]
+then
+    # Use this widget to create vpn session
+    osd-toolkit &
+fi
