@@ -11,7 +11,10 @@ if ( __is_linux ) then
    alias logout="loginctl terminate-session ${MY_LOGIN_SESSION}"
 
    # Seahorse
-   alias gnome_keyring_daemon="gnome-keyring-daemon --replace --components=pkcs11,secrets,ssh && seahorse"
+   alias restart_gnome_keyring_daemon="gnome-keyring-daemon --replace --components=pkcs11,secrets,ssh && seahorse"
+
+   # vpn
+   alias vpn_reconnect="/usr/bin/gnome-terminal -- bash -c \"osd-vpn-disconnect && osd-vpn-connect -k\""
 fi
 
 alias cp='cp -i -P'
