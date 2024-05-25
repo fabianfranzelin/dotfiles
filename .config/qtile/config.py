@@ -4,10 +4,10 @@ import subprocess
 from pathlib import Path
 from typing import Any, List
 
-from libqtile import bar, hook, layout, qtile, widget
-from libqtile.config import Click, Drag, Group, Key, Match, Screen
-from libqtile.dgroups import simple_key_binder
-from libqtile.lazy import lazy
+from libqtile import bar, hook, layout, qtile, widget  # type: ignore
+from libqtile.config import Click, Drag, Group, Key, Match, Screen  # type: ignore
+from libqtile.dgroups import simple_key_binder  # type: ignore
+from libqtile.lazy import lazy  # type: ignore
 
 mod = "mod4"
 my_term = "terminator"
@@ -96,9 +96,9 @@ layout_theme = {
 }
 
 layouts = [
-    layout.MonadTall(**layout_theme),  # type: ignore
-    layout.Columns(**layout_theme),  # type: ignore
-    layout.Max(**layout_theme),  # type: ignore
+    layout.MonadTall(**layout_theme),
+    layout.Columns(**layout_theme),
+    layout.Max(**layout_theme),
     layout.Floating(),
 ]
 
@@ -114,7 +114,7 @@ groups = [
 # https://docs.qtile.org/en/stable/manual/config/groups.html MOD4 +
 # index Number : Switch to Group[index] MOD4 + shift + index Number :
 # Send active window to another Group
-dgroups_key_binder = simple_key_binder(mod)  # type: ignore
+dgroups_key_binder = simple_key_binder(mod)
 
 # --------------------------------------------------------
 
@@ -203,7 +203,7 @@ def init_widgets_list() -> List[Any]:
         widget.CPU(
             foreground=my_colors["fg"],
             background=my_colors["bg"],
-            mouse_callbacks={"Button1": lambda: qtile.cmd_spawn(my_term + " -e htop")},  # type: ignore
+            mouse_callbacks={"Button1": lambda: qtile.cmd_spawn(my_term + " -e htop")},
         ),
         widget.TextBox("|", background=my_colors["bg"]),
         widget.Clock(
@@ -217,7 +217,7 @@ def init_widgets_list() -> List[Any]:
 
 screens = [
     Screen(
-        top=bar.Bar(  # type: ignore
+        top=bar.Bar(
             widgets=init_widgets_list(),
             opacity=1.0,
             size=20,
