@@ -1,4 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+# shellcheck disable=SC1090,SC1091,SC3001
+
+# set as a default for configurations
+. "${HOME}/.profile"
 
 QTILE_PYTHON_FILEPATH="${HOME}/.cache/qtile/python/bin/python3"
 QTILE_BIN_FILEPATH="${HOME}/.cache/qtile/python/bin/qtile"

@@ -80,7 +80,14 @@ keys = [
     Key([mod, "shift"], "r", lazy.restart(), desc="Restart Qtile"),
     Key([mod, "shift"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "r", lazy.spawn("rofi -show run"), desc="Run Rofi"),
-    Key([mod], "s", lazy.spawn(str(Path("~/.local/bin/rofi-shutdown").expanduser()))),
+    Key([mod], "a", lazy.spawn(str(Path("~/.local/bin/rofi-main").expanduser()))),
+    Key(
+        [mod],
+        "s",
+        lazy.spawn(
+            str(Path("rofi -show p -modi p:~/.local/bin/rofi-power-menu").expanduser())
+        ),
+    ),
     # Groups
     Key([mod, "control"], "Left", lazy.screen.prev_group()),
     Key([mod, "control"], "Right", lazy.screen.next_group()),
