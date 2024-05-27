@@ -185,7 +185,6 @@ install_base() {
          compton \
          nitrogen \
          dmenu \
-         rofi \
          vim \
          ccache \
          gnuplot \
@@ -521,6 +520,23 @@ Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
             else
   	        echo -e "${__COLOR_WARN}The file '${CUSTOM_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
             fi
+        fi
+
+        # Install rofi
+        suto apt-get install -y \
+             rofi
+
+        ROFI_POWER_MENU="${HOME}/.local/bin/rofi-power-menu"
+        if [ ! -f "${ROFI_POWER_MENU}" ]
+        then
+            (
+                # Install Rofi power menu
+                TMP_SRC=$(mktemp -d)
+                cd "${TMP_SRC}" || exit 1
+                git clone https://github.com/jluttine/rofi-power-menu.git
+                cd rofi-power-menu || exit 1
+                cp rofi-power-menu "${ROFI_POWER_MENU}"
+            )
         fi
     fi
 }

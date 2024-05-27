@@ -4,9 +4,6 @@
 # control
 # setxkbmap -layout de -option ctrl:nocaps && xmodmap -e "keycode 111 = Alt_L Meta_L Alt_L Meta_L"
 
-# Network manager applet
-[ -x "$(command -v nm-applet)" ] && nm-applet &
-
 ### UNCOMMENT ONLY ONE OF THE FOLLOWING THREE OPTIONS! ###
 # 1. Uncomment to restore last saved wallpaper
 # xargs xwallpaper --stretch < ~/.cache/wall &
@@ -21,3 +18,6 @@ then
     # Use this widget to create vpn session
     osd-toolkit &
 fi
+
+# Network manager applet
+[ -x "$(command -v nm-applet)" ] && nm-applet &

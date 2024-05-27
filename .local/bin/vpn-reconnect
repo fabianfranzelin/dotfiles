@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-/usr/bin/gnome-terminal -- bash -c "osd-vpn-disconnect && osd-vpn-connect -k"
