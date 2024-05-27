@@ -106,7 +106,7 @@
 
 ;; -------------------------------------------------------------------
 ;; Define font size and methods to adjust it on the fly
-(set-face-attribute 'default nil :height 110) ;; default = 110
+(set-face-attribute 'default nil :height 100) ;; default = 100
 
 ;; Show number of lines in the left side of the buffer
 (global-display-line-numbers-mode 1)
