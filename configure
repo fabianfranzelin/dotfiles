@@ -523,7 +523,11 @@ Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
         fi
 
         # Install rofi
-        suto apt-get install -y \
+        sudo
+  Angebot geht besser
++ Innendämmung; Schätzpreis vom Pierre reicht
++ Auflösungsklausel pro Auftrag (außer bei Kredit)
+ apt-get install -y \
              rofi
 
         ROFI_POWER_MENU="${HOME}/.local/bin/rofi-power-menu"
