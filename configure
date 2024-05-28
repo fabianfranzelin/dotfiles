@@ -487,7 +487,7 @@ install_qtile()
     sudo apt-get install -y libpangocairo-1.0-0
     ${QTILE_PYTHON_FILEPATH} -m pip install --upgrade git+https://github.com/qtile/qtile.git
     # Install dependencies for widgets
-    ${QTILE_PYTHON_FILEPATH} -m pip install --upgrade psutil
+    ${QTILE_PYTHON_FILEPATH} -m pip install --upgrade psutil pulsectl-asyncio dbus-next
 
     if ( __is_linux )
     then

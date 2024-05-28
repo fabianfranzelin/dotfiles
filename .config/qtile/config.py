@@ -91,6 +91,18 @@ keys = [
     # Groups
     Key([mod, "control"], "Left", lazy.screen.prev_group()),
     Key([mod, "control"], "Right", lazy.screen.next_group()),
+    # Volume
+    Key([], "XF86AudioMute", lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle")),
+    Key(
+        [],
+        "XF86AudioLowerVolume",
+        lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ -5%"),
+    ),
+    Key(
+        [],
+        "XF86AudioRaiseVolume",
+        lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ +5%"),
+    ),
 ]
 
 # --------------------------------------------------------
@@ -204,6 +216,9 @@ def init_widgets_list() -> List[Any]:
         ),
         widget.Systray(padding=5),
         widget.Sep(linewidth=0, padding=6),
+        widget.PulseVolume(),
+        widget.TextBox("|", background=my_colors["bg"]),
+        widget.Bluetooth(),
         widget.BatteryIcon(),
         widget.Battery(),
         widget.TextBox(text="|", background=my_colors["bg"]),
