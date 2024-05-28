@@ -520,6 +520,15 @@ Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
             else
   	        echo -e "${__COLOR_WARN}The file '${CUSTOM_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
             fi
+
+            # Update power management: ignore lid close
+            # https://askubuntu.com/questions/15520/how-can-i-tell-ubuntu-to-do-nothing-when-i-close-my-laptop-lid
+            LOGIND="/etc/systemd/logind.conf"
+            if [ -f "${LOGIND}" ]
+            then
+                echo "Ignore when lid is closed"
+                echo "HandleLidSwitch=ignore" | sudo tee "${LOGIND}"
+            fi
         fi
 
         # Install rofi
