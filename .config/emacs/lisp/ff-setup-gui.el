@@ -60,6 +60,54 @@
   (nerd-icons-completion-mode)
   (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
 
+;; -------------------------------------------------------------
+;; present a nice dashboard on startup
+(use-package grid
+  :straight (:host github :repo "ichernyshovvv/grid.el"))
+
+(use-package enlight
+  :straight (:host github :repo "ichernyshovvv/enlight")
+  :preface
+  (defface ff/enlight-yellow-bold
+    '((t (:foreground "#cabf00" :bold t)))
+    "Yellow bold face")
+
+  (defvar ff/enlight-guix
+    (propertize
+     " ..                             `.
+ `--..```..`           `..```..--`
+   .-:///-:::.       `-:::///:-.
+      ````.:::`     `:::.````
+           -//:`    -::-
+            ://:   -::-
+            `///- .:::`
+             -+++-:::.
+              :+/:::-
+              `-....`                "
+     'face 'ff/enlight-yellow-bold))
+  :custom
+  (initial-buffer-choice #'enlight)
+  (enlight-content
+   (concat
+    (grid-get-box `(
+                    :align center
+                    :content ,ff/enlight-guix
+                    :width 100))
+    (grid-get-box `(
+                    :align center
+                    :content ,(concat
+                               "\n\n\n"
+                               (enlight-menu
+                                '(("Org"
+                                   ("Org-Agenda (dashboard)" (org-agenda nil "d") "a"))
+                                  ("Projects"
+                                   ("Dotfiles" (ff/project-switch-project "~/workspace/dotfiles") "d")
+                                   ("Org" (ff/project-switch-project "~/workspace/org") "o"))
+                                  ("Folders"
+                                   ("Home" (dired "~") "h")
+                                   ("Workspace" (dired "~/workspace") "a")))))
+                    :width 100)))))
+
 ;; -------------------------------------------------------------------
 ;; Doom Color themes
 (use-package doom-themes
@@ -115,7 +163,8 @@
                 vterm-mode-hook
                 dired-mode-hook
                 compilation-mode-hook
-                pdf-view-mode-hook))
+                pdf-view-mode-hook
+                enlight-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 ;; show column numbers on the modeline
@@ -126,36 +175,6 @@
 
 (dolist (mode '(proced-mode-hook))
   (add-hook mode (lambda () (visual-line-mode 0))))
-
-;; -------------------------------------------------------------
-;; present a nice dashboard on startup
-
-(use-package page-break-lines)
-
-(use-package dashboard
-  :after (nerd-icons page-break-lines)
-  :custom
-  ;; Content is not centered by default. To center, set
-  (dashboard-center-content t)
-  ;; To disable shortcut "jump" indicators for each section, set
-  (dashboard-show-shortcuts t)
-  (dashboard-items '((projects . 5)
-                     (agenda . 10)
-                     (recents  . 5)))
-  (dashboard-set-heading-icons t)
-  (dashboard-set-file-icons t)
-  (dashboard-set-init-info t)
-  (dashboard-week-agenda t)
-  (dashboard-filter-agenda-entry 'dashboard-no-filter-agenda)
-  ;; Show dashboard for newly created frames
-  (initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
-  ;; set the project backend to project.el
-  (dashboard-projects-backend `project-el)
-  (dashboard-icon-type `nerd-icons)
-  ;; filter agenda entries
-  (dashboard-match-agenda-entry "TODO=\"TODO\"|TODO=\"IN-PROGRESS\"")
-  :config
-  (dashboard-setup-startup-hook))
 
 ;; Icons for corfu completion
 (use-package kind-icon

@@ -55,6 +55,7 @@ DIR: directory path"
       (message "Update main org folder to %s" ff/org-directory))))
 
 (use-package org
+  :demand t
   :preface
   ;; for some reason, this is needed to make org-mode work
   (setq org-directory (ff/create-folder-and-return "~/workspace/org"))
@@ -108,9 +109,7 @@ DIR: directory path"
      (latex . t)
      (dot . t)
      (gnuplot . t)
-     (plantuml . t)
-     (jupyter . t)))
-  (org-babel-jupyter-override-src-block "python")
+     (plantuml . t)))
   (push '("conf-unix" . conf-unix) org-src-lang-modes)
 
   ;; do not ask each time whether a source block should be evaluated

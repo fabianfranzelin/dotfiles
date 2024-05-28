@@ -88,10 +88,11 @@ DIR: root directory of project"
       (tab-rename project-name))
     (tab-bar-switch-to-tab project-name)))
 
-(defun ff/project-switch-project ()
-  "Switch to a workspace with the project name."
+(defun ff/project-switch-project (&optional project)
+  "Switch to a workspace with the project name.
+PROJECT: path to project"
   (interactive)
-  (let* ((project-dir (project-prompt-project-dir))
+  (let* ((project-dir (or project (project-prompt-project-dir)))
          (project-name (ff/project-name project-dir)))
     (unless (member project-name (ff/tab-bar--names))
       (tab-bar-new-tab)
