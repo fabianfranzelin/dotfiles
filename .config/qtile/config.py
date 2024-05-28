@@ -75,6 +75,7 @@ keys = [
     Key(
         [mod, "shift"], "e", lazy.spawn("emacsclient -c -a emacs"), desc="Launch Emacs"
     ),
+    Key([mod, "shift"], "d", lazy.spawn("emacs --daemon"), desc="Launch Emacs server"),
     Key([mod, "shift"], "Return", lazy.spawn(my_term), desc="Launch my terminal"),
     Key([mod, "shift"], "b", lazy.spawn(my_browser), desc="Launch my browser"),
     Key([mod, "shift"], "r", lazy.restart(), desc="Restart Qtile"),
@@ -88,10 +89,13 @@ keys = [
             str(Path("rofi -show p -modi p:~/.local/bin/rofi-power-menu").expanduser())
         ),
     ),
+    # Keyboard layout and screen layout
+    Key([mod, "control"], "k", lazy.spawn("set_keyboard_layout")),
+    Key([mod, "control"], "s", lazy.spawn("set_screen_layout")),
     # Groups
     Key([mod, "control"], "Left", lazy.screen.prev_group()),
     Key([mod, "control"], "Right", lazy.screen.next_group()),
-    # Volume
+    # Audio
     Key([], "XF86AudioMute", lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle")),
     Key(
         [],
