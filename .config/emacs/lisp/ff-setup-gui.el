@@ -85,6 +85,20 @@
               :+/:::-
               `-....`                "
      'face 'ff/enlight-yellow-bold))
+
+  (defun ff/enlight-menu-creator (entries fun)
+    "Creates a menu of projects if available.
+ENTRIES-LIST: list of entries that contains (name, path, shortcut), all as strings
+FUN: function to be called on the entry's path"
+    (mapcar (lambda (entry)
+              (if (stringp entry)
+                  entry
+                (let ((name (car entry))
+                      (path (car (cdr entry)))
+                      (shortcut (car (cdr (cdr entry)))))
+                  (when (file-exists-p path)
+                    `(,name (,fun ,path) ,shortcut)))))
+            entries))
   :custom
   (initial-buffer-choice #'enlight)
   (enlight-content
@@ -98,14 +112,20 @@
                     :content ,(concat
                                "\n\n\n"
                                (enlight-menu
-                                '(("Org"
-                                   ("Org-Agenda (dashboard)" (org-agenda nil "d") "a"))
-                                  ("Projects"
-                                   ("Dotfiles" (ff/project-switch-project "~/workspace/dotfiles") "d")
-                                   ("Org" (ff/project-switch-project "~/workspace/org") "o"))
-                                  ("Folders"
-                                   ("Home" (dired "~") "h")
-                                   ("Workspace" (dired "~/workspace") "a")))))
+                                `(("Org"
+                                   ("Org-Agenda (dashboard)" (org-agenda nil "d") "A"))
+                                  ,(ff/enlight-menu-creator
+                                    '("Projects"
+                                      ("Dotfiles" "~/workspace/dotfiles" "d")
+                                      ("Org" "~/workspace/org" "o")
+                                      ("AOS" "~/workspace/aos" "a"))
+                                    #'ff/project-switch-project)
+                                  ,(ff/enlight-menu-creator
+                                    '("Folders"
+                                      ("Home" "~" "h")
+                                      ("Workspace" "~/workspace" "w")
+                                      ("Downloads" "~/Downloads" "D"))
+                                    #'dired))))
                     :width 100)))))
 
 ;; -------------------------------------------------------------------
