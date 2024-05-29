@@ -90,15 +90,16 @@
     "Creates a menu of projects if available.
 ENTRIES-LIST: list of entries that contains (name, path, shortcut), all as strings
 FUN: function to be called on the entry's path"
-    (mapcar (lambda (entry)
-              (if (stringp entry)
-                  entry
-                (let ((name (car entry))
-                      (path (car (cdr entry)))
-                      (shortcut (car (cdr (cdr entry)))))
-                  (when (file-exists-p path)
-                    `(,name (,fun ,path) ,shortcut)))))
-            entries))
+    (delq nil
+          (mapcar (lambda (entry)
+                    (if (stringp entry)
+                        entry
+                      (let ((name (car entry))
+                            (path (car (cdr entry)))
+                            (shortcut (car (cdr (cdr entry)))))
+                        (when (file-exists-p path)
+                          `(,name (,fun ,path) ,shortcut)))))
+                  entries)))
   :custom
   (initial-buffer-choice #'enlight)
   (enlight-content
