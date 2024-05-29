@@ -119,6 +119,7 @@ FUN: function to be called on the entry's path"
                                     '("Projects"
                                       ("Dotfiles" "~/workspace/dotfiles" "d")
                                       ("Org" "~/workspace/org" "o")
+                                      ("Org (personal)" "~/workspace/org_personal" "p")
                                       ("AOS" "~/workspace/aos" "a"))
                                     #'ff/project-switch-project)
                                   ,(ff/enlight-menu-creator
