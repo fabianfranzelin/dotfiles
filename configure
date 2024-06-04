@@ -54,7 +54,14 @@ DESCRIPTION
 set -e
 
 export DOTFILES
-DOTFILES=$(git rev-parse --show-toplevel)
+if command -v git > /dev/null
+then
+    DOTFILES=$(git rev-parse --show-toplevel)
+else
+    SCRIPT_NAME=$(readlink -f "${BASH_SOURCE[0]}")
+    DOTFILES=$(realpath "$(dirname "${SCRIPT_NAME}")")
+fi
+
 export __SHELL_LIB
 __SHELL_LIB="${DOTFILES}/.config/shell"
 
@@ -247,7 +254,7 @@ install_base() {
             jupyter
 
     # install pandoc
-    PANDOC_VER="3.1.12.3"
+    PANDOC_VER="3.2"
     PANDOC_BIN="pandoc-${PANDOC_VER}-1-amd64.deb"
     PANDOC_URL="https://github.com/jgm/pandoc/releases/download/${PANDOC_VER}/${PANDOC_BIN}"
     (
@@ -433,7 +440,7 @@ install_docker()
     fi
 
     # Install docker-credential-pass
-    DOCKER_CRED_PASS_VER="0.8.1"
+    DOCKER_CRED_PASS_VER="0.8.2"
     DOCKER_CRED_PASS_BIN="docker-credential-pass-v${DOCKER_CRED_PASS_VER}.linux-amd64"
     DOCKER_CRED_PASS_URL="https://github.com/docker/docker-credential-helpers/releases/download/v${DOCKER_CRED_PASS_VER}/${DOCKER_CRED_PASS_BIN}"
     (
@@ -553,13 +560,13 @@ Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
 install_nyxt()
 {
     (
-        sudo apt install -y \
+        sudo apt-get install -y \
              sbcl
 
         # Download latest sbcl
         TMP_SBCL_SRC=$(mktemp -d)
         cd "${TMP_SBCL_SRC}" || exit 1
-        SBCL_VERSION="2.4.4"
+        SBCL_VERSION="2.4.5"
         SBCL_SRC_FILE_NAME="sbcl-${SBCL_VERSION}-source.tar.bz2"
         wget "http://prdownloads.sourceforge.net/sbcl/${SBCL_SRC_FILE_NAME}"
         tar -xf "${SBCL_SRC_FILE_NAME}"
@@ -567,6 +574,7 @@ install_nyxt()
 
         # Actually compile and install it
         SBCL_INSTALL_DIR="${HOME}/.cache/common-lisp/sbcl-${SBCL_VERSION}.debian-linux-x64"
+        mkdir -p "${SBCL_INSTALL_DIR}"
         sh make.sh --prefix="${SBCL_INSTALL_DIR}"
         sh install.sh
 
@@ -576,7 +584,7 @@ install_nyxt()
     )
     (
         # install dependencies for compilation of Nyxt
-        sudo apt install -y \
+        sudo apt-get install -y \
              libfixposix-dev \
              libgstreamer1.0-0 \
              gir1.2-gst-plugins-base-1.0 \
@@ -587,7 +595,7 @@ install_nyxt()
         # install Nyxt
         TMP_NYXT_SRC=$(mktemp -d)
         cd "${TMP_NYXT_SRC}" || exit 1
-        NYXT_VERSION="3.11.6"
+        NYXT_VERSION="3.11.7"
         NYXT_SRC_FILE_NAME="nyxt-${NYXT_VERSION}-source-with-submodules.tar.xz"
         wget "https://github.com/atlas-engineer/nyxt/releases/download/${NYXT_VERSION}/${NYXT_SRC_FILE_NAME}"
         tar -xf "${NYXT_SRC_FILE_NAME}"
