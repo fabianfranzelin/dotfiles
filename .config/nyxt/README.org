@@ -2,3 +2,17 @@
 
 [[https://nyxt.atlas.engineer/article/auto-mode.org][auto-mode]]
 [[https://discourse.atlas.engineer/t/automatic-proxy/171/4][auto-mode-rules-path]]
+
+* Install via Docker
+
+#+begin_src bash :results output :shebang #!/usr/bin/env bash
+  docker build \
+         --build-arg DOCKER_USER=$(whoami) \
+         --build-arg UID=$(id -u $(whoami)) \
+         --build-arg GID=$(id -g $(whoami)) \
+         -t nyxt .
+#+end_src
+
+#+begin_src bash :results output :shebang #!/usr/bin/env bash
+  docker run --user $(whoami) -it nyxt
+#+end_src

@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+
+install_nyxt()
+{
+    (
+        echo -e "${__COLOR_INFO}INFO: Installing common lisp from package repository${__COLOR_RESET}"
+        sudo apt-get install -y \
+             sbcl
+
+        # Download latest sbcl
+        TMP_SBCL_SRC=$(mktemp -d)
+        cd "${TMP_SBCL_SRC}" || exit 1
+        SBCL_VERSION="2.4.5"
+        SBCL_SRC_FILE_NAME="sbcl-${SBCL_VERSION}-source.tar.bz2"
+
+        echo -e "${__COLOR_INFO}INFO: Installing common lisp v${SBCL_VERSION}${__COLOR_RESET}"
+        wget "http://prdownloads.sourceforge.net/sbcl/${SBCL_SRC_FILE_NAME}"
+        tar -xf "${SBCL_SRC_FILE_NAME}"
+        cd "sbcl-${SBCL_VERSION}" || exit 1
+
+        # Actually compile and install it
+        SBCL_INSTALL_DIR="${HOME}/.cache/common-lisp/sbcl-${SBCL_VERSION}.debian-linux-x64"
+        mkdir -p "${SBCL_INSTALL_DIR}"
+        sh make.sh --prefix="${SBCL_INSTALL_DIR}"
+        sh install.sh
+
+        # Use update alternatives to set the right version
+        sudo update-alternatives --install "/usr/bin/sbcl" sbcl "${SBCL_INSTALL_DIR}/bin/sbcl" 100
+        sudo update-alternatives --auto sbcl
+    )
+    (
+        # install dependencies for compilation of Nyxt
+        sudo apt-get install -y \
+             libfixposix-dev \
+             libgstreamer1.0-0 \
+             gir1.2-gst-plugins-base-1.0 \
+             gir1.2-gst-plugins-bad-1.0 \
+             gstreamer1.0-plugins-bad \
+             libwebkit2gtk-4.0-37
+
+        # install Nyxt
+
+        TMP_NYXT_SRC=$(mktemp -d)
+        cd "${TMP_NYXT_SRC}" || exit 1
+        NYXT_VERSION="3.11.7"
+        NYXT_SRC_FILE_NAME="nyxt-${NYXT_VERSION}-source-with-submodules.tar.xz"
+
+        echo -e "${__COLOR_INFO}INFO: Downloading nyxt v${NYXT_VERSION}${__COLOR_RESET}"
+        wget "https://github.com/atlas-engineer/nyxt/releases/download/${NYXT_VERSION}/${NYXT_SRC_FILE_NAME}"
+        tar -xf "${NYXT_SRC_FILE_NAME}"
+        make all
+        sudo make install
+    )
+
+    (
+        # Install some extensions
+        # The ~/.local/share/nyxt/extensions/ is the default path Nyxt looks
+        # for extensions in. Change to wherever you set your extension path.
+        NYXT_EXTENSION_PATH="${HOME}/.local/share/nyxt/extensions"
+        mkdir -p "${NYXT_EXTENSION_PATH}"
+        git clone https://github.com/aartaka/nx-search-engines "${NYXT_EXTENSION_PATH}/nx-search-engines"
+    )
+}

@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+install_git()
+{
+    sudo apt-get install -y \
+         git \
+         git-lfs
+
+    #------------------------------------------------------------------------------#
+    # Hack: setup workstation specific config for git using extra symlink
+    (
+        cd "${DOTFILES}/.config/git" || exit 1
+        TARGET_GIT_CONFIG="config.$(hostname)"
+        if [ -f "${TARGET_GIT_CONFIG}" ]; then
+            ln -s -f "${TARGET_GIT_CONFIG}" "config.workstation"
+        else
+            echo -e "${__COLOR_INFO}No specific git configuration for $(hostname) available. Using the default one.${__COLOR_RESET}"
+            ln -s -f "config.default" "config.workstation"
+        fi
+    )
+}

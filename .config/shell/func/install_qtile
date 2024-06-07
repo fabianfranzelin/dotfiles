@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+
+install_qtile()
+{
+    echo -e "${__COLOR_INFO}INFO: Install Qtile desktop manager${__COLOR_RESET}"
+    QTILE_PYTHON_HOME="${HOME}/.cache/qtile/python"
+    QTILE_PYTHON_FILEPATH="${QTILE_PYTHON_HOME}/bin/python3"
+
+    # Install the right Python version for qtile (>=3.10)
+    if [ ! -f "${QTILE_PYTHON_FILEPATH}" ]; then
+        (
+            # Install Python
+            TMP_PYTHON_SRC=$(mktemp -d)
+            cd "${TMP_PYTHON_SRC}" || exit 1
+            QTILE_PYTHON_VERSION="3.10.12"
+            wget "http://www.python.org/ftp/python/${QTILE_PYTHON_VERSION}/Python-${QTILE_PYTHON_VERSION}.tgz"
+            tar -zxvf "Python-${QTILE_PYTHON_VERSION}.tgz"
+            cd "Python-${QTILE_PYTHON_VERSION}" || exit 1
+
+            mkdir -p "${QTILE_PYTHON_HOME}"
+            ./configure --prefix="${QTILE_PYTHON_HOME}"
+            make -j"$(nproc)"
+            make install
+        )
+    fi
+
+    # install qtile and its dependencies for this exact version
+    ${QTILE_PYTHON_FILEPATH} -m pip install --upgrade pip wheel setuptools
+    ${QTILE_PYTHON_FILEPATH} -m pip install --upgrade xcffib
+    ${QTILE_PYTHON_FILEPATH} -m pip install --upgrade --no-cache-dir cairocffi
+    sudo apt-get install -y libpangocairo-1.0-0
+    ${QTILE_PYTHON_FILEPATH} -m pip install --upgrade git+https://github.com/qtile/qtile.git
+    # Install dependencies for widgets
+    ${QTILE_PYTHON_FILEPATH} -m pip install --upgrade psutil pulsectl-asyncio dbus-next
+
+    if ( __is_linux )
+    then
+        echo -e "${__COLOR_INFO}INFO: Install X configs for Qtile${__COLOR_RESET}"
+
+        # Create xsessions entry for qtile according to
+        # https://docs.qtile.org/en/latest/manual/install/index.html#starting-qtile
+        XSESSIONS_PATH="/usr/share/xsessions"
+        if [ -d "${XSESSIONS_PATH}" ]; then
+            QTILE_DESKTOP_FILE_PATH="${XSESSIONS_PATH}/qtile.desktop"
+            if [ ! -f "${QTILE_DESKTOP_FILE_PATH}" ]; then
+  	        echo "[Desktop Entry]
+Name=Qtile
+Comment=Qtile Session
+Exec=startqtile
+Type=Application
+Keywords=wm;tiling" | sudo tee "${QTILE_DESKTOP_FILE_PATH}"
+            else
+  	        echo -e "${__COLOR_WARN}The file '${QTILE_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
+            fi
+
+            CUSTOM_DESKTOP_FILE_PATH="${XSESSIONS_PATH}/custom.desktop"
+            if [ ! -f "${CUSTOM_DESKTOP_FILE_PATH}" ]; then
+  	        echo "[Desktop Entry]
+Name=Qtile
+Comment=Qtile Session
+Exec=/etc/X11/Xsession
+Type=Application
+Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
+            else
+  	        echo -e "${__COLOR_WARN}The file '${CUSTOM_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
+            fi
+
+            # Update power management: ignore lid close
+            # https://askubuntu.com/questions/15520/how-can-i-tell-ubuntu-to-do-nothing-when-i-close-my-laptop-lid
+            LOGIND="/etc/systemd/logind.conf"
+            if [ -f "${LOGIND}" ]
+            then
+                echo "Ignore when lid is closed"
+                echo "HandleLidSwitch=ignore" | sudo tee "${LOGIND}"
+            fi
+        fi
+
+        # Install rofi
+        sudo apt-get install -y \
+             rofi
+
+        ROFI_POWER_MENU="${HOME}/.local/bin/rofi-power-menu"
+        if [ ! -f "${ROFI_POWER_MENU}" ]
+        then
+            (
+                # Install Rofi power menu
+                TMP_SRC=$(mktemp -d)
+                cd "${TMP_SRC}" || exit 1
+                git clone https://github.com/jluttine/rofi-power-menu.git
+                cd rofi-power-menu || exit 1
+                cp rofi-power-menu "${ROFI_POWER_MENU}"
+            )
+        fi
+    fi
+}

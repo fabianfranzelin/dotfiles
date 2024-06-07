@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+install_emacs()
+{
+    # install Emacs. First, just the regular version.
+    if ! command -v emacs &> /dev/null
+    then
+        echo "Install default Emacs from package sources."
+        sudo apt-get install -y \
+             emacs
+    fi
+
+    # ---------------------------------------------------------
+    # install dependencies for Emacs
+    sudo apt-get install -y \
+         markdown \
+         graphviz \
+         fonts-cantarell \
+         cmake \
+         libtool-bin \
+         aspell \
+         aspell-de \
+         aspell-en \
+         aspell-es \
+         clang-format \
+         clang-tidy \
+         clangd \
+         clangd-12 \
+         clang \
+         clang-12 \
+         valgrind \
+         ripgrep \
+         fd-find \
+         shellcheck \
+         poppler-utils \
+         mpv
+
+    # emacs pdf-tools dependencies
+    sudo apt-get install -y \
+         libpng-dev \
+	 zlib1g-dev \
+         libpoppler-glib-dev \
+         libpoppler-private-dev \
+         imagemagick
+
+    (
+        # now, install the newest version available by building and
+        # installing it manually
+        cd "${DOTFILES}/.config/emacs" || exit 1
+        # This creates the install script for Emacs
+        emacs -Q --batch \
+              --eval "(require 'org)" \
+              --eval '(org-babel-tangle-file "README.org")'
+        # Actually install Emacs via update-alternatives
+        ./install.sh || exit 1
+    )
+}
