@@ -58,6 +58,13 @@ install_nyxt()
         # for extensions in. Change to wherever you set your extension path.
         NYXT_EXTENSION_PATH="${HOME}/.local/share/nyxt/extensions"
         mkdir -p "${NYXT_EXTENSION_PATH}"
-        git clone https://github.com/aartaka/nx-search-engines "${NYXT_EXTENSION_PATH}/nx-search-engines"
+
+        NYXT_SEARCH_ENGINES="${NYXT_EXTENSION_PATH}/nx-search-engines"
+        if [[ ! -d "${NYXT_SEARCH_ENGINES}" ]]; then
+            git clone https://github.com/aartaka/nx-search-engines "${NYXT_SEARCH_ENGINES}"
+        else
+            cd "${NYXT_SEARCH_ENGINES}" || exit 1
+            git pull
+        fi
     )
 }
