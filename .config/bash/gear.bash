@@ -13,7 +13,6 @@ for __DIR in "${__DIRS[@]}"; do
         # is folder empty?
         if [ -n "$(ls -A "${__DIR}/func")" ]; then
             for __FILE in "${__DIR}/func/"*; do
-		echo "Source ${__FILE}"
                 source "${__FILE}";
             done
         fi
