@@ -70,7 +70,7 @@ __SHELL_LIB="${DOTFILES}/.config/shell"
 # load gear to call install functions
 export BASHDOTDIR
 BASHDOTDIR="${DOTFILES}/.config/bash"
-# shellcheck source=gear.bash
+ls -altr "${BASHDOTDIR/gear.bash}"
 . "${BASHDOTDIR}/gear.bash"
 
 #------------------------------------------------------------------------------#
