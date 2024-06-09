@@ -67,11 +67,15 @@ __SHELL_LIB="${DOTFILES}/.config/shell"
 . "${__SHELL_LIB}/formatting.sh"
 . "${__SHELL_LIB}/faq.sh"
 
-# load gear to call install functions
-export BASHDOTDIR
-BASHDOTDIR="${DOTFILES}/.config/bash"
-ls -altr "${BASHDOTDIR/gear.bash}"
-. "${BASHDOTDIR}/gear.bash"
+# load gear
+. "${__SHELL_LIB}/func/install_base"
+. "${__SHELL_LIB}/func/install_git"
+. "${__SHELL_LIB}/func/install_npm"
+. "${__SHELL_LIB}/func/install_docker"
+. "${__SHELL_LIB}/func/install_emacs"
+. "${__SHELL_LIB}/func/install_nyxt"
+. "${__SHELL_LIB}/func/install_qtile"
+. "${__SHELL_LIB}/func/install_zsh"
 
 #------------------------------------------------------------------------------#
 # make sure that default environment variables are set correctly
