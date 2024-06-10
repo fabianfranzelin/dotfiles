@@ -21,3 +21,6 @@ fi
 
 # Network manager applet
 [ -x "$(command -v nm-applet)" ] && nm-applet &
+
+# Start Emacs server
+emacs --daemon
