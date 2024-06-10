@@ -28,6 +28,7 @@ install_base() {
          python3-pyqt5 \
          zsh \
          direnv \
+         openjdk-17-jdk \
          zip \
          wget \
          unzip \
