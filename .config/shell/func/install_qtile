@@ -91,5 +91,9 @@ Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
                 cp rofi-power-menu "${ROFI_POWER_MENU}"
             )
         fi
+
+        # install autorandr for automatic detection of screen setups
+        sudo apt-get install -y \
+             autorandr
     fi
 }
