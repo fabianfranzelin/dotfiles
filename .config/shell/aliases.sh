@@ -2,7 +2,8 @@
 
 # shellcheck disable=SC1090,SC2139
 
-if ( __is_linux ) then
+if ( __is_linux )
+then
    # these aliases require systemd running, hence it just works on
    # native Linux
    alias reboot='systemctl reboot'
