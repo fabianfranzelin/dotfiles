@@ -209,7 +209,7 @@ Emacs version. The default one is currently 29.
   }
 
   # Emacs version to be installed
-  __EMACS_VERSION="29.4"
+  __EMACS_VERSION="30"
 
   # Loop through arguments and process them
   while [ $# -gt 0 ]; do
