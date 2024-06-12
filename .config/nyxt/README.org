@@ -10,7 +10,8 @@
          --build-arg DOCKER_USER=$(whoami) \
          --build-arg UID=$(id -u $(whoami)) \
          --build-arg GID=$(id -g $(whoami)) \
-         -t nyxt .
+         -t nyxt . \
+         --progress=plain
 #+end_src
 
 #+begin_src bash :results output :shebang #!/usr/bin/env bash

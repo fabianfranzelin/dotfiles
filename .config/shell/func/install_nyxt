@@ -35,12 +35,17 @@ install_nyxt()
              libgstreamer1.0-0 \
              gir1.2-gst-plugins-base-1.0 \
              gir1.2-gst-plugins-bad-1.0 \
-             gstreamer1.0-plugins-bad \
-             libwebkit2gtk-4.0-37
+             gstreamer1.0-plugins-bad
+
+        # This works on Ubuntu 20.04
+        sudo apt-get install libwebkit2gtk-4.0-37 || true
+
+        # This works for > Ubuntu 22.04
+        sudo apt-get install libwebkit2gtk-4.1-0 || true
 
         # install Nyxt
-
-        TMP_NYXT_SRC=$(mktemp -d)
+        TMP_NYXT_SRC="${HOME}/.cache/nyxt"
+        mkdir -p "${TMP_NYXT_SRC}"
         cd "${TMP_NYXT_SRC}" || exit 1
         NYXT_VERSION="3.11.7"
         NYXT_SRC_FILE_NAME="nyxt-${NYXT_VERSION}-source-with-submodules.tar.xz"
@@ -60,7 +65,7 @@ install_nyxt()
         mkdir -p "${NYXT_EXTENSION_PATH}"
 
         NYXT_SEARCH_ENGINES="${NYXT_EXTENSION_PATH}/nx-search-engines"
-        if [[ ! -d "${NYXT_SEARCH_ENGINES}" ]]; then
+        if [ ! -d "${NYXT_SEARCH_ENGINES}" ]; then
             git clone https://github.com/aartaka/nx-search-engines "${NYXT_SEARCH_ENGINES}"
         else
             cd "${NYXT_SEARCH_ENGINES}" || exit 1
