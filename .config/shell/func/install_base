@@ -31,6 +31,8 @@ install_base() {
          openjdk-17-jdk \
          zip \
          wget \
+         tar \
+         bzip2 \
          unzip \
          compton \
          nitrogen \

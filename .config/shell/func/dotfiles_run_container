@@ -14,5 +14,5 @@ dotfiles_run_container() {
            --group-add sudo \
            --shm-size 4g \
            --workdir /tmp/user/dotfiles \
-           ubuntu:22.04
+           ubuntu:latest
 }
