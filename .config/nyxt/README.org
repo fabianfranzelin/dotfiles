@@ -1,3 +1,6 @@
+#+TITLE: Nyxt Installation Instructions
+#+PROPERTY: header-args :tangle install.sh :shebang #!/usr/bin/env bash
+
 * Interesting Links
 
 [[https://nyxt.atlas.engineer/article/auto-mode.org][auto-mode]]
@@ -5,15 +8,20 @@
 
 * Install via Docker
 
-#+begin_src bash :results output :shebang #!/usr/bin/env bash
+#+begin_src bash :tangle build.sh :shebang #!/usr/bin/env bash
+  export DOTFILES
+  DOTFILES=$(git rev-parse --show-toplevel)
+
   docker build \
-         --build-arg DOCKER_USER=$(whoami) \
-         --build-arg UID=$(id -u $(whoami)) \
-         --build-arg GID=$(id -g $(whoami)) \
-         -t nyxt . \
+         --build-arg DOCKER_USER="$(whoami)" \
+         --build-arg UID="$(id -u "$(whoami)")" \
+         --build-arg GID="$(id -g "$(whoami)")" \
+         -f "Dockerfile" \
+         -t nyxt \
+         "${DOTFILES}" \
          --progress=plain
 #+end_src
 
-#+begin_src bash :results output :shebang #!/usr/bin/env bash
-  docker run --user $(whoami) -it nyxt
+#+begin_src bash :tangle run.sh :shebang #!/usr/bin/env bash
+  docker run --user "$(whoami)" -it nyxt
 #+end_src

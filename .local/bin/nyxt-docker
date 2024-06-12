@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+docker run -it --rm --entrypoint /bin/bash \
+       --net host \
+       -e http_proxy \
+       -e https_proxy \
+       -e DISPLAY \
+       -e XAUTHORITY="/tmp/.Xauthority" \
+       -e DEBIAN_FRONTEND="noninteractive" \
+       -v "${HOME}/.Xauthority:/tmp/.Xauthority" \
+       -v "/tmp/.X11-unix:/tmp/.X11-unix" \
+       -v "/var/run/docker.sock:/var/run/docker.sock" \
+       --user "$(whoami)" \
+       nyxt:latest
