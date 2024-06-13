@@ -199,3 +199,6 @@ flycheck_*
 /.config/elora/README.pdf
 /.config/elora/README.tex
 /.config/elora/README.synctex.gz
+
+### Nyxt ###
+/.config/nyxt/build.sh
