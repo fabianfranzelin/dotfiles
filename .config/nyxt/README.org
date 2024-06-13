@@ -13,15 +13,10 @@
   DOTFILES=$(git rev-parse --show-toplevel)
 
   docker build \
-         --build-arg DOCKER_USER="$(whoami)" \
+         --build-arg USERNAME="$(whoami)" \
          --build-arg UID="$(id -u "$(whoami)")" \
-         --build-arg GID="$(id -g "$(whoami)")" \
          -f "Dockerfile" \
          -t nyxt \
          "${DOTFILES}" \
          --progress=plain
-#+end_src
-
-#+begin_src bash :tangle run.sh :shebang #!/usr/bin/env bash
-  docker run --user "$(whoami)" -it nyxt
 #+end_src

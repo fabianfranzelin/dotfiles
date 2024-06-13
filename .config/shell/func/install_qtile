@@ -97,6 +97,10 @@ Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
         # --save <name> to create a new screen profile. Use autorandr
         # --load <name> to load it again.
         sudo apt-get install -y \
-             autorandr
+             autorandr \
+             brightnessctl
+
+        # Make sure that you can run brightnessctl without sudo
+        usermod -a -G video "${USER}"
     fi
 }

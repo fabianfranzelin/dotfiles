@@ -12,7 +12,7 @@ ENV http_proxy="http://127.0.0.1:3128"
 ENV https_proxy="http://127.0.0.1:3128"
 
 # create a group and user
-RUN useradd -m -u $UID -U --shell /bin/bash $USERNAME
+RUN echo "Add user ${USERNAME} with ${UID}" && useradd -m -u $UID -U --shell /bin/bash $USERNAME
 
 RUN apt-get update && \
     apt-get install -y \
@@ -37,6 +37,7 @@ RUN apt-get update && \
     gsettings-desktop-schemas \
     xclip \
     enchant-2 \
+    gtk3.0 \
     libgtk-3-0 \
     libpangocairo-1.0-0 \
     libcairo2 \
