@@ -101,6 +101,6 @@ Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
              brightnessctl
 
         # Make sure that you can run brightnessctl without sudo
-        usermod -a -G video "${USER}"
+        sudo usermod -a -G video "${USER}"
     fi
 }
