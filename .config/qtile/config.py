@@ -96,7 +96,7 @@ keys = [
     Key([mod, "control"], "Left", lazy.screen.prev_group()),
     Key([mod, "control"], "Right", lazy.screen.next_group()),
     # Brightness
-    Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl set -10%")),
+    Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl set 10%-")),
     Key([], "XF86MonBrightnessUp", lazy.spawn("brightnessctl set +10%")),
     # Audio
     Key([], "XF86AudioMute", lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle")),
