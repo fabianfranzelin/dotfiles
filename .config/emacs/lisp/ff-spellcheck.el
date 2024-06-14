@@ -5,6 +5,20 @@
 
 ;;; Code:
 
+;; ----------------------
+;; On the fly spell check
+;; ----------------------
+(use-package jinx
+  :preface
+  (ff/ensure-apt-package "enchant-2" "enchant-2")
+  (ff/ensure-apt-package "aspell" "aspell")
+  (ff/ensure-apt-package "aspell-en" "/usr/lib/aspell/en_US.multi")
+  (ff/ensure-apt-package "aspell-de" "/usr/lib/aspell/de_DE.multi")
+  (ff/ensure-apt-package "aspell-es" "/usr/lib/aspell/es.multi")
+  :hook (emacs-startup . global-jinx-mode)
+  :bind (("M-$" . jinx-correct)
+         ("C-M-$" . jinx-languages)))
+
 ;; --------------------------------------------------------
 ;; Static spell check with languagetool
 ;; --------------------------------------------------------
