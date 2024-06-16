@@ -620,10 +620,10 @@ COMMAND: command to be executed"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Calc
 
-(use-package casual
-  :straight (:host github :repo "kickingvegas/casual")
+(use-package casual-calc
+  :straight (:host github :repo "kickingvegas/casual-calc")
   :bind (:map calc-mode-map
-              ("C-o" . casual-main-menu)))
+              ("C-o" . casual-calc-tmenu)))
 
 (provide 'ff-core)
 
