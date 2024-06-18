@@ -108,7 +108,7 @@ named arguments:
 (setq epa-pinentry-mode 'loopback)
 
 (use-package pass
-  :preface (ff/vc-install :name "pass")
+  :preface (ff/vc-install :repo "NicolasPetton" :name "pass")
   :custom (pass-show-keybindings nil))
 
 (defun ff/unlock-key ()
