@@ -34,7 +34,7 @@ It downloads and extracts Emacs.
 
           cd "${__TMP_DIR}" || exit 1
           __EMACS_TAR_FILENAME="emacs-${__EMACS_VERSION}.tar.gz"
-          wget "https://de.freedif.org/gnu/emacs/${__EMACS_TAR_FILENAME}"
+          wget "https://ftp.gnu.org/gnu/emacs/${__EMACS_TAR_FILENAME}"
           tar -xvf "${__EMACS_TAR_FILENAME}" -C "${__XDG_CACHE_HOME}"
           if [ ! -d "${__EMACS_SRC}" ]
           then
