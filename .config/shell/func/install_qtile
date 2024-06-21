@@ -70,8 +70,14 @@ Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
             LOGIND="/etc/systemd/logind.conf"
             if [ -f "${LOGIND}" ]
             then
-                echo "Ignore when lid is closed"
+                echo "Ignore when lid is closed (systemd)"
                 echo "HandleLidSwitch=ignore" | sudo tee "${LOGIND}"
+            fi
+            UPOWER="/etc/UPower/UPower.conf"
+            if [ -f "${UPOWER}" ]
+            then
+                echo "Ignore when lid is closed (upower)"
+                sudo sed -i "s/IgnoreLid=false/IgnoreLid=true/g" "${UPOWER}"
             fi
         fi
 
