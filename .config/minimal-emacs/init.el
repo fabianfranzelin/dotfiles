@@ -268,8 +268,7 @@ DIR: directory"
   (magit-push-current-to-upstream nil))
 
 (use-package magit
-  :preface (ff/vc-install :name "magit")
-  :commands magit
+  :ensure t
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
   ;; Show word based diff
