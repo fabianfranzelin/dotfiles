@@ -35,7 +35,8 @@ install_emacs()
          poppler-utils \
          mpv \
          enchant-2 \
-         libenchant-2-dev
+         libenchant-2-dev \
+         libgit2-dev
 
     # emacs pdf-tools dependencies
     sudo apt-get install -y \
