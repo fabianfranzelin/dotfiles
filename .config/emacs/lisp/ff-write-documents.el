@@ -344,6 +344,16 @@ JAR-PATH: expected binary file in the extracted folder."
   :config
   (add-hook 'pdf-view-mode-hook 'pdf-view-restore-mode))
 
+
+;; -------------------------------------------------------------------
+;; Reverso: Translate text and find synonyms
+(use-package reverso
+  :bind (:map global-map
+              ("C-c r s" . reverso-synonyms)
+              ("C-c r t" . reverso-translate)
+              ("C-c r c" . reverso-context)
+              ("C-c r c" . reverso-conjugation)))
+
 (provide 'ff-write-documents)
 
 ;;; ff-write-documents.el ends here
