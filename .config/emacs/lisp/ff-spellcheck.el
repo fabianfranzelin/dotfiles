@@ -17,6 +17,8 @@
   (ff/ensure-apt-package "aspell-de" "/usr/lib/aspell/de_DE.multi")
   (ff/ensure-apt-package "aspell-es" "/usr/lib/aspell/es.multi")
   :hook (emacs-startup . global-jinx-mode)
+  :custom
+  (jinx-save-languages nil)
   :bind (("M-$" . jinx-correct)
          ("C-M-$" . jinx-languages)))
 
@@ -80,126 +82,17 @@ PACKAGE-NAME: log message context"
          ("C-x 4 p" . languagetool-correct-at-point)
          ("C-x 4 b" . languagetool-correct-buffer)))
 
-(defun ff/switch-dictionary()
-  "Switch dictionary from American English to German an vice versa."
-  (interactive)
-  (let* ((dic ispell-current-dictionary)
-         (change (cond ((string= dic "en_US") "de_DE")
-                       ((string= dic "de_DE") "es")
-                       ((string= dic "es") "en_US"))))
-    (ispell-change-dictionary change)
-    (languagetool-set-language (replace-regexp-in-string "_" "-" change))
-    (message "[languagetool, ispell] Dictionary switched from %s to %s" dic change)))
 
-;; --------------------------------------------------------
-;; On the fly spell check with aspell and flyspell
-;; --------------------------------------------------------
-(defun flyspell-buffer-after-pdict-save (&rest _)
-  "Ignore parameters for `ispell-pdict-save'.
+(with-eval-after-load 'jinx
 
-_: ignored parameters"
-  (flyspell-buffer))
+  (defun ff/switch-dictionary(LANGS &optional GLOBAL)
+    "Switch dictionary for non-jinx packages to currently selected by jinx.
+This includes ispell and languagetool."
+    (let* ((dic jinx-languages))
+      (ispell-change-dictionary dic)
+      (languagetool-set-language (replace-regexp-in-string "_" "-" dic))))
 
-(use-package ispell
-  :preface
-  (ff/ensure-apt-package "aspell" "aspell")
-  (ff/ensure-apt-package "aspell-en" "/usr/lib/aspell/en_US.multi")
-  (ff/ensure-apt-package "aspell-de" "/usr/lib/aspell/de_DE.multi")
-  (ff/ensure-apt-package "aspell-es" "/usr/lib/aspell/es.multi")
-  :init
-  (setq ispell-dictionary "en_US"
-        ispell-local-dictionary "en_US"
-        ispell-program-name "/usr/bin/aspell"
-        ispell-extra-args '("--dont-tex-check-comments")
-        ispell-current-dictionary "en_US"
-        ispell-silently-savep t
-        ispell-list-command "--list")
-
-  ;; Run flyspell-buffer after change to dictionary
-  (advice-add 'ispell-pdict-save :after #'flyspell-buffer-after-pdict-save)
-
-  ;; clear local dictionary list and set it up properly for /de_DE.UTF-8 richtig
-  (setq ispell-local-dictionary-alist nil)
-  (add-to-list 'ispell-local-dictionary-alist
-	       '("de_DE"
- 	         "[[:alpha:]]" "[^[:alpha:]]"
-	         "[']" t
-	         ("-C" "-d" "de_DE")
- 	         "~latin1" iso-8859-1))
-
-  ;; skip code blocks in org
-  (add-to-list 'ispell-skip-region-alist '("^#+BEGIN_SRC" . "^#+END_SRC"))
-  :bind (("C-c d" . ff/switch-dictionary)))
-
-;; flyspell mode
-(defun ff/flyspell-on-for-buffer-type ()
-  "Enable Flyspell appropriately for the major mode of the current buffer.
-
-  Uses `flyspell-prog-mode' for modes derived from
-`prog-mode', so only strings and comments get checked.  All other
-buffers get `flyspell-mode' to check all text.  If flyspell is
-already enabled, does nothing."
-  (interactive)
-  (when (not (symbol-value flyspell-mode)) ; if not already on
-    (if (derived-mode-p 'prog-mode)
-        (progn
-	  (message "Flyspell on (code)")
-	  (flyspell-prog-mode))
-      (progn
-	(message "Flyspell on (text)")
-	(flyspell-mode t)))))
-
-(defun ff/flyspell-toggle ()
-  "Turn Flyspell on if it is off, or off if it is on.
-
-  When turning on, it uses `flyspell-on-for-buffer-type' so
-code-vs-text is handled appropriately."
-  (interactive)
-  (if (symbol-value flyspell-mode)
-      (progn ; flyspell is on, turn it off
-	(message "Flyspell off")
-	(flyspell-mode -1))
-    ;; else - flyspell is off, turn it on
-    (ff/flyspell-on-for-buffer-type)))
-
-(use-package flyspell
-  :hook
-  (prog-mode . flyspell-prog-mode)
-  (text-mode . flyspell-mode)
-  (latex-mode . flyspell-mode)
-  (rst-mode . flyspell-mode)
-  (htm-mode . flyspell-mode)
-  (html-mode . flyspell-mode)
-  (org-mode . flyspell-mode)
-  (emacs-lisp-mode . flyspell-mode)
-  :bind
-  (("C-c f" . ff/flyspell-toggle)
-   ;; disable default key since it is used by embark
-   :map flyspell-mode-map
-   ("C-." . nil)
-   ;; disable this one because it is used otherwise in org-mode
-   ("M-TAB" . nil)))
-
-(use-package flyspell-correct
-  :after flyspell
-  :bind (:map flyspell-mode-map ("C-#" . flyspell-correct-wrapper)))
-
-(use-package flyspell-correct-popup
-  :after flyspell-correct)
-
-(put 'LaTeX-mode 'flyspell-mode-predicate 'auctex-mode-flyspell-verify)
-(defun auctex-mode-flyspell-verify ()
-  "Function used for `flyspell-generic-check-word-predicate' in auctex mode."
-  (save-excursion
-    (forward-word -2)
-    (not (looking-at "bibliographystyle{"))))
-
-(add-hook 'LaTeX-mode-hook
-          (lambda () (setq flyspell-generic-check-word-predicate
-                           'auctex-mode-flyspell-verify)))
-
-(autoload 'flyspell-mode "flyspell" "On-the-fly spelling checking" t)
-(autoload 'global-flyspell-mode "flyspell" "On-the-fly spelling" t)
+  (advice-add 'jinx-languages :after #'ff/switch-dictionary))
 
 (provide 'ff-spellcheck)
 
