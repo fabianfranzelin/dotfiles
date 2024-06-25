@@ -59,7 +59,8 @@ install_base() {
          biber \
          doxygen \
          evince \
-         gcovr
+         gcovr \
+         xdg-utils
 
     if ( __is_wsl )
     then
