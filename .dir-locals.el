@@ -75,4 +75,4 @@
  ;;                 Docs                ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
  ("docs"
-  . ((nil . ((compile-command . "cd docs && ./build.el && ./publish.sh"))))))
+  . ((nil . ((compile-command . "cd docs && ./build.el"))))))
