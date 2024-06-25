@@ -129,6 +129,7 @@ build/
 ### Docs ###
 /docs/public/
 /docs/.packages/
+!/docs/themes/readtheorg.html
 
 ### Examples ###
 /examples/org-project/content/index.pdf
