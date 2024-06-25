@@ -20,6 +20,10 @@
 ;; Install dependencies
 (package-install 'htmlize)
 
+;; always confirm org-babel evaluation
+(require 'org)
+(customize-set-variable 'org-confirm-babel-evaluate nil)
+
 ;; Load the publishing system
 (require 'ox-publish)
 
