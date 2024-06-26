@@ -330,8 +330,15 @@ DIR: directory"
 ;;           org-mode                  ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'org)
-(customize-set-variable 'org-confirm-babel-evaluate nil)
+(customize-set-variable
+ 'org-confirm-babel-evaluate nil)
 
+;; for some reason, this is needed to make org-mode work
+(customize-set-variable
+ 'org-directory "~/workspace/org")
+(customize-set-variable
+ 'org-agenda-files `(,(expand-file-name "notes" org-directory)
+                     ,(expand-file-name "notes/journal" org-directory)))
 (provide 'init)
 
 ;;; init.el ends here
