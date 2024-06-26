@@ -7,7 +7,7 @@
 ;;; Code:
 
 (setq user-full-name "Fabian Franzelin"
-      user-mail-address "fabian.franzelin@de.bosch.com"
+      user-mail-address "fabian.franzelin@gmail.com"
       inhibit-startup-echo-area-message (getenv "USER"))
 
 ;; -------------------------------------------------------------------
