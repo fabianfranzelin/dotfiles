@@ -89,6 +89,20 @@ named arguments:
 (electric-pair-mode t)
 (electric-indent-mode nil)
 
+;; https://www.emacswiki.org/emacs/Repeatable
+(defun ff/repeat-command (command)
+  "Repeat COMMAND."
+  (let ((repeat-previous-repeated-command  command)
+        (repeat-message-function           #'ignore)
+        (last-repeatable-command           'repeat))
+    (repeat nil)))
+
+;; make the undo/redo functions repeatable
+(tab-bar-history-mode 1)
+(setq tab-bar-history-limit 100)
+(keymap-global-set "C-c p" #'(lambda () (interactive) (ff/repeat-command 'tab-bar-history-back)))
+(keymap-global-set "C-c n" #'(lambda () (interactive) (ff/repeat-command 'tab-bar-history-forward)))
+
 ;; just kill the current buffer and not ask for selection
 (keymap-global-set "C-x k" #'(lambda ()
                                (interactive)

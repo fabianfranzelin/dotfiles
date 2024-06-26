@@ -168,9 +168,6 @@ COMMAND: command to be executed"
 (keymap-global-set "<up>" 'windmove-up)
 (keymap-global-set "<down>" 'windmove-down)
 
-;; winner mode for for redo/undo window configurations
-(winner-mode 1)
-
 ;; https://www.emacswiki.org/emacs/Repeatable
 (defun ff/repeat-command (command)
   "Repeat COMMAND."
