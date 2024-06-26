@@ -100,24 +100,28 @@ install_base() {
             jupyter
 
     # install pandoc
-    PANDOC_VER="3.2"
+    PANDOC_VER="3.2.1"
     PANDOC_BIN="pandoc-${PANDOC_VER}-1-amd64.deb"
     PANDOC_URL="https://github.com/jgm/pandoc/releases/download/${PANDOC_VER}/${PANDOC_BIN}"
     (
-        cd "/tmp"
+        cd "/tmp" || exit 1
         wget "${PANDOC_URL}"
         sudo dpkg -i "${PANDOC_BIN}"
     )
 
     #------------------------------------------------------------------------------#
     # install dependencies gdb
-    (
-        cd "/tmp"
-        GLIBC_NAME="glibc-2.39"
-        wget "https://ftp.gnu.org/gnu/libc/${GLIBC_NAME}.tar.gz"
-        tar -zxf "${GLIBC_NAME}.tar.gz"
-        mv -n "${GLIBC_NAME}" "${HOME}/.local/share"
-    )
+    GLIBC_NAME="glibc-2.39"
+    GLIBC_PATH="${HOME}/.local/share/${GLIBC_NAME}"
+    if [ ! -d "${GLIBC_PATH}" ]
+    then
+        (
+            cd "/tmp" || exit 1
+            wget "https://ftp.gnu.org/gnu/libc/${GLIBC_NAME}.tar.gz"
+            tar -zxf "${GLIBC_NAME}.tar.gz"
+            mv -n "${GLIBC_NAME}" "${HOME}/.local/share"
+        )
+    fi
 
     #------------------------------------------------------------------------------#
     # install dependencies for vscode
