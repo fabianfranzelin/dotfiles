@@ -436,7 +436,8 @@ COMMAND: command to be executed"
                               magit-process-mode
                               help-mode
                               helpful-mode
-                              compilation-mode))
+                              compilation-mode
+                              reverso-result-mode))
   ;; group poppers by project.el projects
   (popper-group-function #'popper-group-by-project)
   :init
