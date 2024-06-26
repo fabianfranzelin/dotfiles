@@ -89,6 +89,9 @@ named arguments:
 (electric-pair-mode t)
 (electric-indent-mode nil)
 
+(require 'repeat)
+(repeat-mode 1)
+
 ;; https://www.emacswiki.org/emacs/Repeatable
 (defun ff/repeat-command (command)
   "Repeat COMMAND."
@@ -103,10 +106,15 @@ named arguments:
 (keymap-global-set "C-c p" #'(lambda () (interactive) (ff/repeat-command 'tab-bar-history-back)))
 (keymap-global-set "C-c n" #'(lambda () (interactive) (ff/repeat-command 'tab-bar-history-forward)))
 
-;; just kill the current buffer and not ask for selection
+;; Kill this buffer, instead of prompting for which one to kill
+(defun ff/kill-buffer-current ()
+  "Kill current buffer."
+  (interactive)
+  (kill-buffer (current-buffer)))
+
 (keymap-global-set "C-x k" #'(lambda ()
                                (interactive)
-                               (kill-buffer (current-buffer))))
+                               (ff/repeat-command 'ff/kill-buffer-current)))
 
 ;; -------------------------------------------------------------------
 ;; Credential management
