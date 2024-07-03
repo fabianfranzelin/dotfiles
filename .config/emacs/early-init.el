@@ -1,4 +1,4 @@
-;;; early-init.el -*- lexical-binding: t; -*-
+;;; early-init.el --- Early initialization file before init.el is loaded -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 ;; Check https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
@@ -19,7 +19,7 @@
 (customize-set-variable 'package-enable-at-startup nil)
 
 ;; -------------------------------------------------------------------
-;; Change my user emacs directory to non-default location since it is
+;; Change my user Emacs directory to non-default location since it is
 ;; under version control
 (setq user-emacs-directory (expand-file-name "~/.cache/emacs"))
 
@@ -41,9 +41,9 @@
   (add-to-list 'native-comp-eln-load-path (expand-file-name "var/eln-cache/" user-emacs-directory))
 
   ;; Silence compiler warnings as they can be pretty disruptive
-  (setq native-comp-async-report-warnings-errors nil)
+  (customize-set-variable 'native-comp-async-report-warnings-errors nil)
   ;; Make native compilation happens asynchronously
-  (setq native-comp-deferred-compilation t))
+  (setq native-comp-jit-compilation t))
 
 ;; -------------------------------------------------------------------
 ;;; UI configuration

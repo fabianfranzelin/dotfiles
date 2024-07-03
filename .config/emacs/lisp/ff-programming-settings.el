@@ -1,4 +1,4 @@
-;;; ff-programming-settings.el --- Setup all programming settings
+;;; ff-programming-settings.el --- Setup all programming settings -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 ;; Configuration for all programming settings
@@ -93,7 +93,7 @@ the need to update my project hierarchy."
 ;; use built-in tree-sitter
 ;; -------------------------------------------------------------
 (use-package treesit
-  :straight nil
+  :straight (:type built-in)
   :preface
   (defun ff/treesit-install-grammars (&optional force)
     "Install Tree-sitter grammars if they are absent.

@@ -1,4 +1,4 @@
-;;; ff-core.el --- Setup all basic settings
+;;; ff-core.el --- Setup all basic settings -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 ;; Configuration for basic settings
@@ -12,7 +12,7 @@
 ;; dir-local variables will be applied to remote files.
 (customize-set-variable 'enable-remote-dir-locals t)
 
-;; dont warn for following symlinked files
+;; don't warn for following symlinked files
 (customize-set-variable 'vc-follow-symlinks t)
 
 ;; disable lockfiles
@@ -27,7 +27,7 @@
 ;; ignore bell function
 (customize-set-variable 'ring-bell-function 'ignore)
 
-;; let me confirm emacs before killing it
+;; let me confirm Emacs before killing it
 (customize-set-variable 'confirm-kill-emacs 'yes-or-no-p)
 
 (defun ff/ask-before-closing-frame ()
@@ -240,7 +240,7 @@ COMMAND: command to be executed"
 ;; -------------------------------------------------------------------
 ;; Tramp
 (use-package tramp
-  :straight nil
+  :straight (:type built-in)
   :custom
   (tramp-terminal-type "dumb")
   (tramp-default-method "ssh")
@@ -277,7 +277,7 @@ COMMAND: command to be executed"
 ;; rename buffer content: C-x C-q, (wdired) C-c C-c to apply and C-c
 ;; ESC to cancel copy path of file: 0 w in dired buffer
 (use-package dired
-  :straight nil
+  :straight (:type built-in)
   :after async
   :custom
   (dired-auto-revert-buffer nil) ; Auto update when buffer is revisited
@@ -536,7 +536,7 @@ COMMAND: command to be executed"
 ;; -------------------------------------------------------------------
 (defun yas-rst-mode-labels (text)
   "Create labels for sections in rst.
-    TEXT: title"
+TEXT: title"
   (downcase (replace-regexp-in-string " \\|:\\|-" "_" text)))
 
 (use-package yasnippet

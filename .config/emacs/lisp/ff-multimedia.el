@@ -1,4 +1,4 @@
-;;; ff-multimedia.el --- Setup multimedia apps
+;;; ff-multimedia.el --- Setup multimedia apps -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 ;;

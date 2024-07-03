@@ -1,4 +1,4 @@
-;;; ff-organize-life --- Set up Org-Mode
+;;; ff-organize-life --- Set up Org-Mode for Emacs -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;;; Sets up org-mode for Emacs
 
@@ -13,6 +13,7 @@ DIR: directory path"
   (expand-file-name dir))
 
 (defun ff/org-switch-directory ()
+  "Switch between personal and work org directory."
   (interactive)
   (when-let ((ff/org-directory
               (if (string= (f-filename org-directory) "org")
@@ -178,6 +179,7 @@ DIR: directory path"
   (org-show-children))
 
 (defun dw/org-present-hook ()
+  "Hook for org-present-mode."
   (setq-local face-remapping-alist '((default (:height 1.5) variable-pitch)
                                      (header-line (:height 4.5) variable-pitch)
                                      (org-document-title (:height 1.75) org-document-title)
@@ -191,6 +193,7 @@ DIR: directory path"
   (dw/org-present-prepare-slide))
 
 (defun dw/org-present-quit-hook ()
+  "Undo change made by `dw/org-present-hook'."
   (setq-local face-remapping-alist '((default variable-pitch default)))
   (setq header-line-format nil)
   (org-present-small)
@@ -198,11 +201,13 @@ DIR: directory path"
   (org-appear-mode 1))
 
 (defun dw/org-present-prev ()
+  "Go to previous slide."
   (interactive)
   (org-present-prev)
   (dw/org-present-prepare-slide))
 
 (defun dw/org-present-next ()
+  "Go to next slide."
   (interactive)
   (org-present-next)
   (dw/org-present-prepare-slide))

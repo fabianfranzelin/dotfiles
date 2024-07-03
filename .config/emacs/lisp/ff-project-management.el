@@ -1,4 +1,4 @@
-;;; ff-project-management.el --- Setup project.el, etc.
+;;; ff-project-management.el --- Setup project.el, etc. -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 ;; Configuration for project.el and surrounding stuff
@@ -28,7 +28,12 @@
 (defun ff/run-command-runner-vterm (command-line buffer-base-name output-buffer)
   "Command runner based on `vterm-mode'.
 
-Executes COMMAND-LINE in buffer OUTPUT-BUFFER.  Name the process BUFFER-BASE-NAME."
+Executes COMMAND-LINE in buffer OUTPUT-BUFFER.  Name the process
+BUFFER-BASE-NAME.
+
+COMMAND-LINE: command to run
+BUFFER-BASE-NAME: name of the buffer
+OUTPUT-BUFFER: buffer to run the command in"
   (require 'vterm)
   (let ((vterm-buffer-name (ff/vterm-buffer-name (substring (buffer-name output-buffer) 7 -1))))
     (with-current-buffer output-buffer
@@ -48,11 +53,10 @@ Executes COMMAND-LINE in buffer OUTPUT-BUFFER.  Name the process BUFFER-BASE-NAM
            :command-line "make"
            :working-dir build-dir))
    ;; cmake from current directory
-   (let ((cmake-lists-file (expand-file-name "CMakeLists.txt" default-directory)))
-     (when (f-file-p cmake-lists-file)
-       (list :command-name "build:cmake"
-             :command-line "mkdir -p build && cd build && cmake .."
-             :working-dir default-directory)))))
+   (when-let ((cmake-lists-file (expand-file-name "CMakeLists.txt" default-directory)))
+     (list :command-name "build:cmake"
+           :command-line "mkdir -p build && cd build && cmake .."
+           :working-dir default-directory))))
 
 (use-package run-command
   :custom (run-command-default-runner #'run-command-runner-compile))

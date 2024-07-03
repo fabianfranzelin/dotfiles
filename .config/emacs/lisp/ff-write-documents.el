@@ -1,4 +1,4 @@
-;;; ff-write-documents.el --- Latex setup
+;;; ff-write-documents.el --- Latex setup and other document writing tools -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 ;; All the configuration for writing documents.  This includes Latex,
@@ -175,7 +175,21 @@ JAR-PATH: expected binary file in the extracted folder."
 ;; -------------------------------------------------------------------
 ;; Latex
 ;; -------------------------------------------------------------------
+(defun ff/straight--auctex-compile ()
+  "Compile auctex package after it is cloned.
+
+This is actually related to straight that downloads the sources directly
+from github where generated Emacs Lisp libraries are not checked in but
+rather generated on the fly.  See for details
+https://github.com/radian-software/straight.el/issues/240"
+  (let* ((auctex-package-dir (expand-file-name "straight/repos/auctex" straight-base-dir))
+         (autogen-file (expand-file-name "autogen.sh" auctex-package-dir))
+         (commands `(,autogen-file "make")))
+    (set-file-modes autogen-file #o755)
+    (ff/straight--package-compile "auctex" commands)))
+
 (use-package auctex
+  :straight (:pre-build (ff/straight--auctex-compile))
   :commands LaTeX-mode
   :hook
   (LaTeX-mode . TeX-fold-mode)
