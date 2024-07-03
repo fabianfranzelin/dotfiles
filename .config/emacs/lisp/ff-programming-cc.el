@@ -1,4 +1,4 @@
-;;; ff-programming-cc.el --- C/C++ setup
+;;; ff-programming-cc.el --- C/C++ setup -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 ;; all the configuration for C/C++ projects

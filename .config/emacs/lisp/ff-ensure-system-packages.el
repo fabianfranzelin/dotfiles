@@ -1,4 +1,4 @@
-;;; ff-ensure-system-packages --- Install system packages
+;;; ff-ensure-system-packages --- Install system packages easily -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;;; Provides simple helper functions to install system packages.
 
@@ -9,10 +9,7 @@
 
 (defun ff/python-interpreter-version ()
   "Provide version of python interpreter."
-  (let* ((python-command (if (boundp 'python-shell-interpreter)
-                             (eval python-shell-interpreter)
-                           "python"))
-         (python-interpreter-versions
+  (let* ((python-interpreter-versions
           (split-string (car (cdr (split-string
                                    (shell-command-to-string "python3 --version")
                                    " "))) "\\.")))

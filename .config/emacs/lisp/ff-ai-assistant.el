@@ -1,12 +1,11 @@
-;;; ff-ai-assistant.el --- Setup AI assistant
+;;; ff-ai-assistant.el --- Setup AI assistant  -*- lexical-binding: t; -*-
 
 ;;; Commentary:
-;; Setup Chagpt as AI assistant
+;; Setup ChaGPT and Copilot as AI assistant
 
 ;;; Code:
 
-
-;; Chagpt
+;; ChaGPT
 (use-package gptel
   :straight (:host github :repo "karthink/gptel")
   :preface

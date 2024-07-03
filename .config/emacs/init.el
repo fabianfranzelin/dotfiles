@@ -18,38 +18,6 @@
   (server-start))
 
 ;; -------------------------------------------------------------------
-;; Package Management - straight.el
-
-;; use latest develop for straight itself; check
-;; https://github.com/radian-software/straight.el/issues/1059
-(customize-set-variable 'straight-repository-branch "develop")
-
-;; set actual repository user from github, so that pull straight works
-;; with given recipe from
-;; https://github.com/radian-software/straight.el#overriding-recipes
-(customize-set-variable 'straight-repository-user "radian-software")
-
-;; Download straight directly from github
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 5))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-
-;; replace builtin use-package by straights version
-(straight-use-package 'use-package)
-
-;; ensure all packages to be installed
-(customize-set-variable 'straight-use-package-by-default t)
-
-;; -------------------------------------------------------------------
 ;; define path of local lisp packages that are part of the dotfiles
 ;; repo
 (defvar emacs-config-home (expand-file-name ".config/emacs" (getenv "HOME"))
@@ -57,6 +25,10 @@
 (defvar local-lisp-path (expand-file-name "lisp" emacs-config-home)
   "Load path for local Emacs configurations.")
 (add-to-list 'load-path local-lisp-path)
+
+;; -------------------------------------------------------------------
+;; Package Management - straight.el
+(require 'ff-straight)
 
 ;; -------------------------------------------------------------------
 ;; Before we do anything, set up the no littering package

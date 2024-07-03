@@ -1,4 +1,4 @@
-;;; ff-programming-python.el --- Python setup
+;;; ff-programming-python.el --- Python setup -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 ;; all the configuration for Python projects
