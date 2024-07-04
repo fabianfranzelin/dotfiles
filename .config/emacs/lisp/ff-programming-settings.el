@@ -9,6 +9,7 @@
 ;; LSP Client Eglot
 ;; -------------------------------------------------------------------
 (use-package eglot
+  :straight (:type built-in)
   :commands eglot-ensure
   :hook
   (c++-ts-mode . eglot-ensure)
@@ -20,7 +21,7 @@
   (json-ts-mode . eglot-ensure)
   (yaml-ts-mode . eglot-ensure)
   (bash-ts-mode . eglot-ensure)
-  (cmake-ts-mode . eglot-ensure)
+  (cmake-mode . eglot-ensure)
   (dockerfile-ts-mode . eglot-ensure)
   (rst-mode . eglot-ensure)
   :custom

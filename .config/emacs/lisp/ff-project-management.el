@@ -117,6 +117,7 @@ PROJECT-ROOT: Path to the root directory of the current project."
   (ff/start-vterm-in-dir (project-root (project-current t))))
 
 (use-package project
+  :straight (:type built-in)
   :custom
   (project-switch-commands '((project-find-file "Find file")
                              (project-find-dir "Find directory")
