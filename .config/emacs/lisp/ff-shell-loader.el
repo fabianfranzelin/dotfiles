@@ -1,4 +1,4 @@
-;;; ff-shell-loader --- Setup shell loader package
+;;; ff-shell-loader --- Setup shell loader package  -*- lexical-binding: t; -*-
 ;;; Commentary:
 
 ;;; The shell loader package is designed to open all available shells

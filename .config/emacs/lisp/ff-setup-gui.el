@@ -1,4 +1,4 @@
-;;; ff-setup-gui.el --- Setup user interface
+;;; ff-setup-gui.el --- Setup user interface -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 ;; Configuration for user interface

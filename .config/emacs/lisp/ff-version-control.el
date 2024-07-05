@@ -1,4 +1,4 @@
-;;; ff-version-control.el --- Magit and ediff setup
+;;; ff-version-control.el --- Magit and ediff setup  -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 ;; Configuration for magit and ediff

@@ -1,4 +1,4 @@
-;;; ff-vertical-completion --- Set up vertical completion system with Vertico.
+;;; ff-vertical-completion --- Set up vertical completion system with Vertico.  -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;;; Sets up vertical completion system for Emacs
 ;;; https://github.com/daviwil/dotfiles/blob/master/Emacs.org#completion-system

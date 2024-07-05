@@ -615,6 +615,9 @@ TEXT: title"
                          "kill-ring.el"
                          no-littering-etc-directory))
 
+;; save the first 500 entries of the kill ring
+(customize-set-variable 'savekill-max-saved-items 500)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Calc
 

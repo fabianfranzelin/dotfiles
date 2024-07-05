@@ -1,4 +1,4 @@
-;;; ff-spellcheck.el --- Spellchecker setup
+;;; ff-spellcheck.el --- Spellchecker setup  -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 ;; Initialize generic spell checker for any type of files.

@@ -1,4 +1,4 @@
-;;; ff-setup-vterm --- Set up vterm
+;;; ff-setup-vterm --- Set up vterm  -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;;; Sets up vterm config for Emacs.  Note that the features listed
 ;;; here, require a shell integration that is done in vterm.sh in the
