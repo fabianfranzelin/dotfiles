@@ -51,13 +51,13 @@ keys = [
         [mod, "control"],
         "l",
         lazy.screen.next_group(skip_empty=True),
-        desc="Move to next group",
+        desc="Navigate to next group",
     ),
     Key(
         [mod, "control"],
         "j",
         lazy.screen.prev_group(),
-        desc="Move to previous group",
+        desc="Navigate to previous group",
     ),
     Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
     # Toggle between split and unsplit sides of stack.
@@ -140,13 +140,23 @@ groups = [
     Group("Browse", layout="monadtall"),
 ]
 
-
 # Allow MODKEY+[0 through 9] to bind to groups, see
 # https://docs.qtile.org/en/stable/manual/config/groups.html MOD4 +
 # index Number : Switch to Group[index] MOD4 + shift + index Number :
 # Send active window to another Group
 dgroups_key_binder = simple_key_binder(mod)
 
+for i, group in enumerate(groups):
+    keys.extend(
+        [
+            Key(
+                [mod, "shift"],
+                f"{i}",
+                lazy.window.togroup(group),
+                desc=f"Move active window to group {group}",
+            )
+        ]
+    )
 # --------------------------------------------------------
 
 # Based on the Emacs Doom vibrant theme
