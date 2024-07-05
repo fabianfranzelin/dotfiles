@@ -71,8 +71,14 @@
                             (eval . (add-to-list 'flycheck-disabled-checkers 'sh-posix-dash))
                             (eval . (add-to-list 'flycheck-disabled-checkers 'sh-posix-bash))
                             (eval . (add-to-list 'flycheck-disabled-checkers 'sh-bash))))
- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
  ;;                 Docs                ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
  ("docs"
-  . ((nil . ((compile-command . "cd docs && ./build.el"))))))
+  . ((nil . ((compile-command . "cd docs && ./build.el")))))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ;;                 Qtile               ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ (".config/qtile"
+  . ((nil . ((python-interpreter . "~/.cache/qtile/python/bin/python3")
+             (python-shell-interpreter . "~/.cache/qtile/python/bin/ipython3"))))))
