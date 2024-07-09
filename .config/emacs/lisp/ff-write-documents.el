@@ -185,8 +185,9 @@ https://github.com/radian-software/straight.el/issues/240"
   (let* ((auctex-package-dir (expand-file-name "straight/repos/auctex" straight-base-dir))
          (autogen-file (expand-file-name "autogen.sh" auctex-package-dir))
          (commands `(,autogen-file "make")))
-    (set-file-modes autogen-file #o755)
-    (ff/straight--package-compile "auctex" commands)))
+    (when (file-exists-p autogen-file)
+      (set-file-modes autogen-file #o755)
+      (ff/straight--package-compile "auctex" commands))))
 
 (use-package auctex
   :straight (:pre-build (ff/straight--auctex-compile))
