@@ -117,6 +117,9 @@ gmail.com"
                                (interactive)
                                (ff/repeat-command 'ff/kill-buffer-current)))
 
+;; save cursor position in files even when buffers are killed
+(save-place-mode)
+
 ;; -------------------------------------------------------------------
 ;; Credential management
 ;; -------------------------------------------------------------------
@@ -339,6 +342,57 @@ DIR: directory"
 (customize-set-variable
  'org-agenda-files `(,(expand-file-name "notes" org-directory)
                      ,(expand-file-name "notes/journal" org-directory)))
+
+;; Todo types
+;;     TODO - A task that should be done at some point
+;;     NEXT - This task should be done next (in the Getting Things Done sense)
+;;     WAIT - Waiting for someone else to be actionable again
+;;     DONE - It's done!
+(customize-set-variable
+ 'org-todo-keywords
+ '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "|" "DONE(d!)" "DISCARD(c)")))
+
+(customize-set-variable
+ 'org-todo-keyword-faces
+ '(("NEXT" . (:foreground "orange red" :weight bold))
+   ("WAIT" . (:foreground "HotPink2" :weight bold))))
+
+;; Customize org-agenda
+(customize-set-variable 'org-agenda-window-setup 'current-window)
+(customize-set-variable 'org-agenda-span 'week)
+(customize-set-variable 'org-agenda-start-with-log-mode t)
+
+;; Make done tasks show up in the agenda log
+(customize-set-variable 'org-log-done 'time)
+(customize-set-variable 'org-log-into-drawer t)
+
+(customize-set-variable
+ 'org-columns-default-format
+ "%20CATEGORY(Category) %65ITEM(Task) %TODO %6Effort(Estim){:}  %6CLOCKSUM(Clock) %TAGS")
+
+(customize-set-variable
+ 'org-agenda-custom-commands
+ `(("d" "Dashboard"
+    ((agenda "" ((org-deadline-warning-days 14)))
+     (todo "NEXT"
+           ((org-agenda-overriding-header "Next Actions")
+            (org-agenda-max-todos nil)))
+     (todo "WAIT"
+           ((org-agenda-overriding-header "Waiting for Action")
+            (org-agenda-max-todos nil)))
+     (todo "TODO"
+           ((org-agenda-overriding-header "Unprocessed Inbox Tasks")
+            (org-agenda-files '(,(expand-file-name "notes/journal/inbox.org" org-directory)))
+            (org-agenda-text-search-extra-files nil)))
+     (alltodo "")))
+   ("n" "Next Tasks"
+    ((agenda "" ((org-deadline-warning-days 7)))
+     (todo "NEXT"
+           ((org-agenda-overriding-header "Next Tasks")))))
+   ("A" "Agenda and all TODOs"
+    ((agenda "")
+     (alltodo "")))))
+
 (provide 'init)
 
 ;;; init.el ends here
