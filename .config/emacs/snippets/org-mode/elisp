@@ -2,6 +2,6 @@
 # name: elisp
 # key: elisp
 # --
-#+begin_src emacs-lisp :session
+#+BEGIN_SRC emacs-lisp :session
 $0
-#+end_src
+#+END_SRC

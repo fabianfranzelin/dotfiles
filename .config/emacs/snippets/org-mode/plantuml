@@ -2,6 +2,6 @@
 # name: plantuml
 # key: plantuml
 # --
-#+begin_src plantuml :file images/`(file-name-sans-extension (file-name-nondirectory buffer-file-name))`_${1}.png
+#+BEGIN_SRC plantuml :file images/`(file-name-sans-extension (file-name-nondirectory buffer-file-name))`_${1}.png
 $0
-#+end_src
+#+END_SRC

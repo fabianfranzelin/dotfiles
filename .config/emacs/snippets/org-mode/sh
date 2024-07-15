@@ -2,6 +2,6 @@
 # name: sh
 # key: sh
 # --
-#+begin_src sh :session execute-asynchronously :async
+#+BEGIN_SRC sh :session execute-asynchronously :async
 $0
-#+end_src
+#+END_SRC

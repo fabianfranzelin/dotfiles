@@ -2,6 +2,6 @@
 # name: bash
 # key: bash
 # --
-#+begin_src bash :results output :shebang #!/usr/bin/env bash
+#+BEGIN_SRC bash :results output :shebang #!/usr/bin/env bash
 $0
-#+end_src
+#+END_SRC
