@@ -163,7 +163,7 @@ gmail.com"
 
 ;; -------------------------------------------------------------------
 (use-package doom-themes
-  :preface (ff/vc-install :name "doom-themes")
+  :preface (ff/vc-install :repo "doomemacs" :name "doom-themes")
   :custom
   (doom-themes-enable-bold t)    ; if nil, bold is universally disabled
   (doom-themes-enable-italic t) ; if nil, italics is universally disabled
