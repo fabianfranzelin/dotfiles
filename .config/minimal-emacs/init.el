@@ -282,6 +282,30 @@ DIR: directory"
    ("l" . dired-up-directory)
    ("TAB" . dired-find-file)))
 
+;; -------------------------------------------------------------------
+;; Tramp
+(use-package tramp
+  :straight (:type built-in)
+  :custom
+  (tramp-terminal-type "dumb")
+  (tramp-default-method "ssh")
+  (tramp-use-ssh-controlmaster-options nil)
+  (vc-handled-backends '(Git))
+  (tramp-verbose 3)
+  (tramp-auto-save-directory (expand-file-name "tramp/backups" no-littering-var-directory))
+  (tramp-persistency-file-name (expand-file-name "tramp/persistency_data" no-littering-var-directory))
+  ;; make sure vc stuff is not making tramp slower
+  (vc-ignore-dir-regexp (format "%s\\|%s"
+		                vc-ignore-dir-regexp
+		                tramp-file-name-regexp))
+  ;; https://www.gnu.org/software/emacs/manual/html_node/tramp/Password-handling.html
+  (ange-ftp-netrc-filename (expand-file-name "authinfo.gpg" (getenv "PASSWORD_STORE_DIR")))
+  :config
+  (put 'temporary-file-directory 'standard-value '("/tmp"))
+  ;; Use remote PATH on tramp
+  (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+  (make-directory tramp-auto-save-directory t))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;           Version control           ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
