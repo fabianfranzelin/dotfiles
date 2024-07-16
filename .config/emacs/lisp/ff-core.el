@@ -253,6 +253,8 @@ COMMAND: command to be executed"
   (vc-ignore-dir-regexp (format "%s\\|%s"
 		                vc-ignore-dir-regexp
 		                tramp-file-name-regexp))
+  ;; https://www.gnu.org/software/emacs/manual/html_node/tramp/Password-handling.html
+  (ange-ftp-netrc-filename (expand-file-name "authinfo.gpg" (getenv "PASSWORD_STORE_DIR")))
   :config
   (put 'temporary-file-directory 'standard-value '("/tmp"))
   ;; Use remote PATH on tramp
