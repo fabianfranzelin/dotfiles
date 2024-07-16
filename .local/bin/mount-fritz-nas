@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+# shellcheck disable=SC1090
+
+USERNAME="$(pass usernames/fritz.box)"
+PASSWORD="$(pass passwords/fritz.box)"
+NAS_DIR="${HOME}/fritz_nas"
+FTP_URL="ftp://franzelin.dynv6.net"
+
+curlftpfs -o user=${USERNAME}:${PASSWORD} ${FTP_URL} ${NAS_DIR}
