@@ -285,7 +285,7 @@ DIR: directory"
 ;; -------------------------------------------------------------------
 ;; Tramp
 (use-package tramp
-  :straight (:type built-in)
+  :ensure nil
   :custom
   (tramp-terminal-type "dumb")
   (tramp-default-method "ssh")
