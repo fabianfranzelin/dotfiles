@@ -354,7 +354,8 @@ DIR: directory"
   :bind
   (:map project-prefix-map
         ("g" . ff/project-magit)
-        ("v" . project-vc-dir)))
+        ("v" . project-vc-dir)
+        ("C" . run-command)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;           org-mode                  ;
