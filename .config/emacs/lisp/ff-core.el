@@ -486,11 +486,11 @@ COMMAND: command to be executed"
   :custom
   (affe-find-command
    (cond
-    ((executable-find "rg") "rg --color=never --files -uu")
+    ((executable-find "rg") "rg --color=never --files -uu -s")
     (t "find -not ( -wholename */.* -prune ) -type f")))
   (affe-grep-command
    (cond
-    ((executable-find "rg") "rg -uu --null --color=never --max-columns=1000 --no-heading --line-number -v ^$ .")
+    ((executable-find "rg") "rg -uu -s --null --color=never --max-columns=1000 --no-heading --line-number -v ^$ .")
     (t "grep -I -r --exclude=.* --exclude-dir=.* --null --color=never --line-number -v ^$")))
   :config
   ;; use orderless as expression compiler

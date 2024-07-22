@@ -2,5 +2,6 @@
 
 # shellcheck disable=SC1090
 
-# Shutdown and reboot with rofi
+# Note: if some desktop applications do not show up, make sure that
+# the 'NoDisplay' key is false
 rofi -show drun -run-shell-command '{terminal} -e zsh -ic "{cmd} && read"'

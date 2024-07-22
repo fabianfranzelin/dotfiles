@@ -2,5 +2,5 @@
 
 # shellcheck disable=SC1090
 
-# Shutdown and reboot with rofi
+# Create a rofi menu for my own shortcuts
 bash -i -c "$(echo "logout|reboot|shutdown|emacs_start|emacs_stop|emacs_restart|restart_gnome_keyring_daemon|set_keyboard_layout" | rofi -sep "|" -dmenu)"
