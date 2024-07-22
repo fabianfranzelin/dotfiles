@@ -137,7 +137,11 @@ layouts = [
 
 groups = [
     Group("Dev", layout="monadtall"),
-    Group("Browse", layout="monadtall"),
+    Group(
+        "Com",
+        layout="monadtall",
+        matches=[Match(title=["Microsoft Teams", "Outlook (PWA)"])],
+    ),
 ]
 
 # Allow MODKEY+[0 through 9] to bind to groups, see
