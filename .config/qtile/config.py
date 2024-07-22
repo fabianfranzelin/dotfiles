@@ -56,7 +56,7 @@ keys = [
     Key(
         [mod, "control"],
         "j",
-        lazy.screen.prev_group(),
+        lazy.screen.prev_group(skip_empty=True),
         desc="Navigate to previous group",
     ),
     Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
