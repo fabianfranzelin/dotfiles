@@ -1,0 +1,11 @@
+[Default Applications]
+x-scheme-handler/msteams=teams.desktop
+text/html=firefox.desktop
+application/x-web-browser=firefox.desktop
+x-scheme-handler/http=firefox.desktop
+
+[Added Associations]
+application/pdf=evince.desktop;
+
+[Removed Associations]
+x-scheme-handler/mailto=microsoft-edge.desktop
