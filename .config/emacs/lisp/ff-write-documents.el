@@ -351,7 +351,12 @@ https://github.com/radian-software/straight.el/issues/240"
   :bind (:map pdf-view-mode-map
               ("C-s" . isearch-forward)
               ("c c" . ff/org-roam-capture-pdf-note)
-              ("c o" . ff/org-roam-open-pdf-note)))
+              ("c o" . ff/org-roam-open-pdf-note)
+              ;; disable arrow keys, we are in Emacs
+              ("<left>" . nil)
+              ("<right>" . nil)
+              ("<up>" . nil)
+              ("<down>" . nil)))
 
 ;; restore positions of pdfs when reopened
 (use-package pdf-view-restore
