@@ -188,6 +188,10 @@ COMMAND: command to be executed"
 ;; newline and indent
 (keymap-global-set "C-j" 'newline-and-indent)
 
+;; let firefox be the default browser
+(ff/ensure-apt-package "firefox" "firefox")
+(customize-set-variable 'browse-url-browser-function 'browse-url-firefox)
+
 ;; -------------------------------------------------------------
 ;; Core packages
 ;; -------------------------------------------------------------
