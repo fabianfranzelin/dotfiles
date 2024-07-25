@@ -121,7 +121,7 @@ keys = [
 
 layout_theme = {
     "border_width": 1,
-    "margin": 0,
+    "margin": 5,
     "border_focus": "e1acff",
     "border_normal": "1D2330",
 }
@@ -242,9 +242,9 @@ def init_widgets_list() -> List[Any]:
         ),
         widget.Systray(padding=5),
         widget.Sep(linewidth=0, padding=6),
-        widget.TextBox("V:", background=my_colors["bg"]),
+        widget.TextBox("V:", background=my_colors["bg"], foreground=my_colors["fg"]),
         widget.PulseVolume(),
-        widget.TextBox("B:", background=my_colors["bg"]),
+        widget.TextBox("B:", background=my_colors["bg"], foreground=my_colors["fg"]),
         widget.Backlight(backlight_name="intel_backlight"),
         widget.TextBox("|", background=my_colors["bg"]),
         widget.Bluetooth(),
