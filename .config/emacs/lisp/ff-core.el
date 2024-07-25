@@ -199,15 +199,18 @@ COMMAND: command to be executed"
 ;; make sure that the path environment from shell is available
 (use-package exec-path-from-shell
   :unless (string-equal system-type "windows-nt")
-  :custom (exec-path-from-shell-variables '("PATH"
-                                            "MANPATH"
-                                            "SSH_AUTH_SOCK"
-                                            "HTTP_PROXY"
-                                            "HTTPS_PROXY"
-                                            "BROWSER"
-                                            "HISTFILE"
-                                            "PASSWORD_STORE_DIR"))
-  :init (exec-path-from-shell-initialize))
+  :demand t
+  :custom
+  (exec-path-from-shell-variables '("PATH"
+                                    "MANPATH"
+                                    "SSH_AUTH_SOCK"
+                                    "HTTP_PROXY"
+                                    "HTTPS_PROXY"
+                                    "BROWSER"
+                                    "HISTFILE"
+                                    "PASSWORD_STORE_DIR"))
+  :config
+  (exec-path-from-shell-initialize))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Let kill operate on the whole line when no region is selected
@@ -216,13 +219,15 @@ COMMAND: command to be executed"
 
 ;; volatile highlights - temporarily highlight changes from pasting
 (use-package volatile-highlights
-  :init (volatile-highlights-mode t))
+  :hook
+  (after-init . volatile-highlights-mode))
 
 ;; -------------------------------------------------------------
 ;; Delete trailing white spaces only for lines that are touched. This
 ;; replaces the obvious, more intrusive, approach of
 (use-package ws-butler
-  :init (ws-butler-global-mode t))
+  :hook
+  (after-init . ws-butler-global-mode))
 
 ;; -------------------------------------------------------------
 ;; Better help
@@ -238,8 +243,10 @@ COMMAND: command to be executed"
 ;; -------------------------------------------------------------
 ;; Show available keybindings
 (use-package which-key
-  :custom (which-key-idle-delay 1)
-  :init (which-key-mode 1))
+  :custom
+  (which-key-idle-delay 1)
+  :hook
+  (after-init . which-key-mode))
 
 ;; -------------------------------------------------------------------
 ;; Tramp
@@ -272,13 +279,16 @@ COMMAND: command to be executed"
 ;; Transpose frame
 ;; -------------------------------------------------------------------
 (use-package transpose-frame
-  :bind (("C-c b t" . transpose-frame)))
+  :bind (:map global-map
+              ("C-c b t" . transpose-frame)))
 
 ;; -------------------------------------------------------------------
 ;; Set up dired with async
 ;; -------------------------------------------------------------------
 ;; mainly required for dired-async
-(use-package async)
+(use-package async
+  :hook
+  (after-init . dired-async-mode))
 
 ;; rename buffer content: C-x C-q, (wdired) C-c C-c to apply and C-c
 ;; ESC to cancel copy path of file: 0 w in dired buffer
@@ -295,23 +305,23 @@ COMMAND: command to be executed"
   (dired-hide-details-hide-symlink-targets nil)
   (dired-mouse-drag-files t)
   :init
-  (setq dired-vc-rename-file t)
   (require 'dired-x)
   (autoload 'dired-omit-mode "dired-x")
-  (require 'dired-async)
-  (dired-async-mode 1)
+  :config
+  (setq dired-vc-rename-file t)
   :hook
   (dired-mode . auto-revert-mode)
   (dired-mode . dired-hide-details-mode)
   (dired-mode . hl-line-mode)
   :bind
-  (("C-x C-j" . dired-jump)
-   :map dired-mode-map
-   ("l" . dired-up-directory)
-   ("TAB" . dired-find-file)))
+  (:map global-map
+        ("C-x C-j" . dired-jump)
+        :map dired-mode-map
+        ("l" . dired-up-directory)
+        ("TAB" . dired-find-file)))
 
 (use-package dired-hacks
-  :after (dired)
+  :after dired
   :config
   (require 'dired-rainbow)
 
@@ -342,13 +352,9 @@ COMMAND: command to be executed"
   (:map dired-mode-map
         ("H" . dired-hide-dotfiles-mode)))
 
-(use-package async
-  :init
-  (require 'dired-async)
-  (dired-async-mode 1))
-
 (use-package casual-dired
   :straight (:host github :repo "kickingvegas/casual-dired")
+  :after dired
   :bind (:map dired-mode-map
               ("C-o" . casual-dired-tmenu)))
 
@@ -396,43 +402,22 @@ COMMAND: command to be executed"
 (keymap-global-set "C-c C-g" 'ff/unlock-key)
 
 ;; -------------------------------------------------------------------
-;; Open files externally
-;; -------------------------------------------------------------------
-(use-package openwith
-  :if (display-graphic-p)
-  :config
-  (customize-set-variable 'openwith-associations
-                          (list
-                           (list (openwith-make-extension-regexp
-                                  '("mpg" "mpeg" "mp3" "mp4"
-                                    "avi" "wmv" "wav" "mov" "flv"
-                                    "ogm" "ogg" "mkv"))
-                                 "vlc" '(file))
-                           (list (openwith-make-extension-regexp
-                                  '("xbm" "pbm" "pgm" "ppm" "pnm"
-                                    "png" "gif" "bmp" "tif" "jpeg"
-                                    "jpg"))
-                                 "eog" '(file))
-                           (list (openwith-make-extension-regexp
-                                  '("html" "htm" "svg"))
-                                 "firefox" '(file))
-                           (list (openwith-make-extension-regexp
-                                  '("pdf" "PDF"))
-                                 "evince" '(file)))))
-
-;; -------------------------------------------------------------------
 ;; Auto-saving changed files when they lose focus
 ;; -------------------------------------------------------------------
 (customize-set-variable 'auto-save-default nil)
 
 (use-package super-save
-  :custom (super-save-auto-save-when-idle nil)
-  :init (super-save-mode t))
+  :custom
+  (super-save-auto-save-when-idle nil)
+  :hook
+  (after-init . super-save-mode))
 
 ;; -------------------------------------------------------------------
 ;; Popper - handle pop up buffers nicely
 ;; -------------------------------------------------------------------
 (use-package popper
+  ;; required for pooper-group-function
+  :after project
   :custom
   (popper-reference-buffers '("\\*Messages\\*"
                               "Output\\*$"
@@ -446,9 +431,9 @@ COMMAND: command to be executed"
                               reverso-result-mode))
   ;; group poppers by project.el projects
   (popper-group-function #'popper-group-by-project)
-  :init
-  (popper-mode t)
-  (popper-echo-mode t)
+  :hook
+  (after-init . popper-mode)
+  (after-init . popper-echo-mode)
   :bind
   (("C-*" . popper-toggle)
    ("M-*" . popper-cycle)
@@ -460,8 +445,8 @@ COMMAND: command to be executed"
 (use-package rg
   :preface
   (ff/ensure-apt-package "ripgrep" "rg")
-  :init
-  (rg-enable-menu)
+  :hook
+  (after-init . rg-enable-menu)
   :config
   (rg-define-search ff/rg-current-dir
     "Search for thing at point in files matching the current file
@@ -476,6 +461,7 @@ COMMAND: command to be executed"
 ;; files that are not under version control
 ;; -------------------------------------------------------------------
 (use-package affe
+  :after embark
   :preface
   (defun ff/affe-find (dir)
     "Start the fuzzy find in the current directory.
@@ -485,7 +471,6 @@ COMMAND: command to be executed"
     "Start the fuzzy grep in the current directory.
     DIR: directory"
     (affe-grep dir))
-  :after embark
   ;; search also in hidden and ignored files by git
   :custom
   (affe-find-command
@@ -502,24 +487,24 @@ COMMAND: command to be executed"
     (setq input (orderless-pattern-compiler input))
     (cons input (apply-partially #'orderless--highlight input t)))
   (setq affe-regexp-compiler #'affe-orderless-regexp-compiler)
-
   :bind
-  (("C-x a f" . affe-find)
-   ("C-x a F" . (lambda () (interactive) (ff/affe-find default-directory)))
-   ("C-x a g" . affe-grep)
-   ("C-x a G" . (lambda () (interactive) (ff/affe-grep default-directory)))
-   :map embark-file-map
-   ("a" . ff/affe-find)))
+  (:map global-map
+        ("C-x a f" . affe-find)
+        ("C-x a F" . (lambda () (interactive) (ff/affe-find default-directory)))
+        ("C-x a g" . affe-grep)
+        ("C-x a G" . (lambda () (interactive) (ff/affe-grep default-directory)))
+        :map embark-file-map
+        ("a" . ff/affe-find)))
 
 ;; -------------------------------------------------------------------
 ;; Dogears: automatically bookmarks positions in buffers
 ;; -------------------------------------------------------------------
 (use-package dogears
+  :hook
+  (after-init . dogears-mode)
   :custom
   (dogears-idle 0.2)
   (dogears-limit 50)
-  :init
-  (dogears-mode t)
   ;; These bindings are optional, of course:
   :bind
   (:map global-map
@@ -532,10 +517,11 @@ COMMAND: command to be executed"
 (use-package drag-stuff
   :config (drag-stuff-global-mode t)
   :bind
-  (("M-p" . drag-stuff-up)
-   ("M-<up>" . drag-stuff-up)
-   ("M-n" . drag-stuff-down)
-   ("M-<down>" . drag-stuff-down)))
+  (:map global-map
+        ("M-p" . drag-stuff-up)
+        ("M-<up>" . drag-stuff-up)
+        ("M-n" . drag-stuff-down)
+        ("M-<down>" . drag-stuff-down)))
 
 ;; -------------------------------------------------------------------
 ;; Yasnippet
@@ -548,9 +534,9 @@ TEXT: title"
 (use-package yasnippet
   :custom
   (yas-wrap-around-region t)
-  :init
+  :hook
   ;; enable yas everywhere
-  (yas-global-mode 1)
+  (after-init . yas-global-mode)
   :config
   (setq yas-verbosity 1)
   :bind
@@ -593,9 +579,11 @@ TEXT: title"
 ;; Ace window: select windows based on numbers
 ;; -------------------------------------------------------------------
 (use-package ace-window
-  :bind (("M-o" . ace-window)
-         :map diff-mode-map
-         ("M-o" . nil)))
+  :bind
+  (:map global-map
+        ("M-o" . ace-window)
+        :map diff-mode-map
+        ("M-o" . nil)))
 
 ;; -------------------------------------------------------------------
 ;; Avy: Jump in buffer with three key strokes
@@ -604,14 +592,16 @@ TEXT: title"
   :custom
   (avy-timeout 0.1)
   :bind
-  (("M-g c" . avy-goto-char-timer)))
+  (:map global-map
+        ("M-g c" . avy-goto-char-timer)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Zoom globally for all buffers
 (use-package zoom-frm
   :bind
-  (("C-c +" . (lambda () (interactive) (ff/repeat-command 'zoom-frm-in)))
-   ("C-c -" . (lambda () (interactive) (ff/repeat-command 'zoom-frm-out)))))
+  (:map global-map
+        ("C-c +" . (lambda () (interactive) (ff/repeat-command 'zoom-frm-in)))
+        ("C-c -" . (lambda () (interactive) (ff/repeat-command 'zoom-frm-out)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Save kill ring over various sessions

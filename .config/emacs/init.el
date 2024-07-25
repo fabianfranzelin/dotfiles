@@ -33,12 +33,12 @@
 ;; -------------------------------------------------------------------
 ;; Before we do anything, set up the no littering package
 (use-package no-littering
+  :demand t
   :custom
   (custom-file (no-littering-expand-etc-file-name "custom.el"))
-  :init
+  :config
   ;; setup a new custom file and load it
   (load custom-file t)
-  :config
   ;; this sets the path right for undo-tree, auto-save and backup files
   (no-littering-theme-backups))
 
