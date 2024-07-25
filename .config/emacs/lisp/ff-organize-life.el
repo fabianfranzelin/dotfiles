@@ -60,6 +60,10 @@ DIR: directory path"
   :preface
   ;; for some reason, this is needed to make org-mode work
   (setq org-directory (ff/create-folder-and-return "~/workspace/org"))
+  :hook
+  ;; clocking
+  (org-timer-set . org-clock-in)
+  (org-babel-after-execute . org-display-inline-images)
   :custom
   (org-directory (ff/create-folder-and-return "~/workspace/org"))
   (org-agenda-files `(,(ff/create-folder-and-return (expand-file-name "notes" org-directory))
@@ -74,30 +78,11 @@ DIR: directory path"
   (org-link-file-path-type 'relative)
   ;; highlight latex
   (org-highlight-latex-and-related '(latex))
-  :hook
-  ;; clocking
-  (org-timer-set . org-clock-in)
-  (org-babel-after-execute . org-display-inline-images)
-  :bind
-  (("C-c C-x b" . ff/org-switch-directory)
-   :map org-mode-map
-   ;; disable these two keys since they are taken by zoom-frm
-   ("C-c +" . nil)
-   ("C-c -" . nil)))
-
-(with-eval-after-load 'org
+  :config
   (require 'org-indent)
   (require 'org-habit)
   (add-to-list 'org-modules 'org-habit)
   (customize-set-variable 'org-habit-graph-column 60)
-
-  ;; This is needed as of Org 9.2
-  (require 'org-tempo)
-
-  (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
-  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-  (add-to-list 'org-structure-template-alist '("py" . "src python"))
-  (add-to-list 'org-structure-template-alist '("cc" . "src c++"))
 
   ;; org-babel
   (org-babel-do-load-languages
@@ -117,7 +102,14 @@ DIR: directory path"
   (customize-set-variable 'org-confirm-babel-evaluate nil)
 
   ;; yas-snippet
-  (define-key org-mode-map (kbd "C-c C-y") 'yas-insert-snippet))
+  (define-key org-mode-map (kbd "C-c C-y") 'yas-insert-snippet)
+  :bind
+  (:map global-map
+        ("C-c C-x b" . ff/org-switch-directory)
+        :map org-mode-map
+        ;; disable these two keys since they are taken by zoom-frm
+        ("C-c +" . nil)
+        ("C-c -" . nil)))
 
 ;; use pdf-tools for org links
 (use-package org-pdfview
@@ -335,15 +327,16 @@ DIR: directory path"
       (with-temp-buffer
         (write-file file-name))))
   :bind
-  (("C-x n i" . org-roam-node-insert)
-   ("C-x n c" . org-roam-capture)
-   ("C-x n C" . org-roam-dailies-capture-today)
-   ("C-x n f" . org-roam-node-find)
-   ("C-x n t" . org-roam-buffer-toggle)
-   ("C-x n a" . org-agenda)
-   :map org-mode-map
-   ("C-M-i" . completion-at-point)
-   ("C-c C-x t" . org-roam-tag-add)))
+  (:map global-map
+        ("C-x n i" . org-roam-node-insert)
+        ("C-x n c" . org-roam-capture)
+        ("C-x n C" . org-roam-dailies-capture-today)
+        ("C-x n f" . org-roam-node-find)
+        ("C-x n t" . org-roam-buffer-toggle)
+        ("C-x n a" . org-agenda)
+        :map org-mode-map
+        ("C-M-i" . completion-at-point)
+        ("C-c C-x t" . org-roam-tag-add)))
 
 (use-package org-roam-ui
   :custom
@@ -353,7 +346,8 @@ DIR: directory path"
   (org-roam-ui-open-on-start nil)
   (org-roam-ui-update-on-save t)
   :bind
-  (("C-x n u" . org-roam-ui-open)))
+  (:map global-map
+        ("C-x n u" . org-roam-ui-open)))
 
 
 (use-package consult-org-roam
@@ -368,10 +362,11 @@ DIR: directory path"
   ;; Activate the minor mode
   (consult-org-roam-mode 1)
   :bind
-  (("C-x n g" . consult-org-roam-search)
-   :map org-mode-map
-   ("C-x n n" . consult-org-roam-backlinks)
-   ("C-x n p" . consult-org-roam-forward-links)))
+  (:map global-map
+        ("C-x n g" . consult-org-roam-search)
+        :map org-mode-map
+        ("C-x n n" . consult-org-roam-backlinks)
+        ("C-x n p" . consult-org-roam-forward-links)))
 
 ;; -------------------------------------------------------------------
 ;; Citations for org-files
@@ -394,8 +389,8 @@ DIR: directory path"
   (concat org-roam-directory "/references"))
 
 (use-package citar
-  :commands citar-open
   :after org-roam org
+  :demand t
   :hook
   (LaTeX-mode . citar-capf-setup)
   (org-mode . citar-capf-setup)
@@ -415,14 +410,17 @@ DIR: directory path"
         (write-file file-name))))
   ;; optional: org-cite-insert is also bound to C-c C-x C-@
   :bind
-  (("C-c c o" . citar-open)
-   ("C-c c e" . citar-open-entry)
-   ("C-c c f" . citar-open-files)
-   (:map org-mode-map :package org
-         ("C-c c i" . org-cite-insert))))
+  (:map global-map
+        ("C-c c o" . citar-open)
+        ("C-c c e" . citar-open-entry)
+        ("C-c c f" . citar-open-files)
+        :map org-mode-map :package org
+        ("C-c c i" . org-cite-insert)))
 
 (use-package citar-embark
-  :config (citar-embark-mode))
+  :after citar
+  :hook
+  (after-init . citar-embark-mode))
 
 (defun ff/load-all-bibliography-pdf-file-entries ()
   "Load all bibliography entries that contain a pdf file as file link."
@@ -431,6 +429,7 @@ DIR: directory path"
                (mapcar (lambda (file)
                          (when (string-equal (file-name-extension file) "pdf")
                            (add-to-list 'all-entries-alist `(,(file-name-nondirectory file) . ,citekey))))
+
                        files))
              (citar-get-files))
     all-entries-alist))
@@ -533,11 +532,12 @@ FILE-PAGE: page at which the annotation refers to"
 (use-package citar-org-roam
   :after org-roam
   :commands citar-org-roam-mode
-  :config
-  (citar-org-roam-mode)
+  :hook
+  (after-init . citar-org-roam-mode)
   :bind
-  (("C-x n l" . ff/org-roam-capture-literature-note)
-   ("C-x n o" . ff/org-roam-open-literature-note)))
+  (:map global-map
+        ("C-x n l" . ff/org-roam-capture-literature-note)
+        ("C-x n o" . ff/org-roam-open-literature-note)))
 
 ;; -------------------------------------------------------------------
 ;; Organizing tasks and agenda

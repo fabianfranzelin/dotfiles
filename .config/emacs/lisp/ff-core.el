@@ -80,7 +80,7 @@
   (add-hook mode (lambda () (electric-pair-local-mode 0))))
 
 ;; save cursor position in files even when buffers are killed
-(save-place-mode)
+(save-place-mode t)
 
 ;; Create backup files in cache
 (customize-set-variable 'backup-directory-alist `(("." . ,(expand-file-name "saves" no-littering-var-directory))))
@@ -233,12 +233,13 @@ COMMAND: command to be executed"
 ;; Better help
 (use-package helpful
   :bind
-  (("C-h f" . helpful-callable)
-   ("C-h v" . helpful-variable)
-   ("C-h k" . helpful-key)
-   ("C-c C-d" . helpful-at-point)
-   ("C-h F" . helpful-function)
-   ("C-h C" . helpful-command)))
+  (:map global-map
+        ("C-h f" . helpful-callable)
+        ("C-h v" . helpful-variable)
+        ("C-h k" . helpful-key)
+        ("C-c C-d" . helpful-at-point)
+        ("C-h F" . helpful-function)
+        ("C-h C" . helpful-command)))
 
 ;; -------------------------------------------------------------
 ;; Show available keybindings
@@ -279,8 +280,9 @@ COMMAND: command to be executed"
 ;; Transpose frame
 ;; -------------------------------------------------------------------
 (use-package transpose-frame
-  :bind (:map global-map
-              ("C-c b t" . transpose-frame)))
+  :bind
+  (:map global-map
+        ("C-c b t" . transpose-frame)))
 
 ;; -------------------------------------------------------------------
 ;; Set up dired with async
@@ -362,9 +364,11 @@ COMMAND: command to be executed"
 ;; Undo tree - make undos more powerful
 ;; -------------------------------------------------------------------
 (use-package vundo
-  :bind (("C-x u" . vundo)
-         ("C-_" . undo)
-         ("M-_" . undo-redo)))
+  :bind
+  (:map global-map
+        ("C-x u" . vundo)
+        ("C-_" . undo)
+        ("M-_" . undo-redo)))
 
 ;; -------------------------------------------------------------------
 ;; Credential management
@@ -416,8 +420,6 @@ COMMAND: command to be executed"
 ;; Popper - handle pop up buffers nicely
 ;; -------------------------------------------------------------------
 (use-package popper
-  ;; required for pooper-group-function
-  :after project
   :custom
   (popper-reference-buffers '("\\*Messages\\*"
                               "Output\\*$"
@@ -429,15 +431,18 @@ COMMAND: command to be executed"
                               helpful-mode
                               compilation-mode
                               reverso-result-mode))
-  ;; group poppers by project.el projects
-  (popper-group-function #'popper-group-by-project)
   :hook
   (after-init . popper-mode)
   (after-init . popper-echo-mode)
+  :config
+  ;; group poppers by project.el projects
+  (with-eval-after-load 'project
+    (customize-set-variable 'popper-group-function #'popper-group-by-project))
   :bind
-  (("C-*" . popper-toggle)
-   ("M-*" . popper-cycle)
-   ("C-M-*" . popper-toggle-type)))
+  (:map global-map
+        ("C-*" . popper-toggle)
+        ("M-*" . popper-cycle)
+        ("C-M-*" . popper-toggle-type)))
 
 ;; -------------------------------------------------------------------
 ;; Ripgrep integration
@@ -540,7 +545,8 @@ TEXT: title"
   :config
   (setq yas-verbosity 1)
   :bind
-  (("C-c C-y" . yas-insert-snippet)))
+  (:map global-map
+        ("C-c C-y" . yas-insert-snippet)))
 
 (use-package yasnippet-snippets
   :after yasnippet)
@@ -619,8 +625,9 @@ TEXT: title"
 
 (use-package casual-calc
   :straight (:host github :repo "kickingvegas/casual-calc")
-  :bind (:map calc-mode-map
-              ("C-o" . casual-calc-tmenu)))
+  :bind
+  (:map calc-mode-map
+        ("C-o" . casual-calc-tmenu)))
 
 (provide 'ff-core)
 
