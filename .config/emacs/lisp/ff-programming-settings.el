@@ -24,6 +24,7 @@
   (cmake-mode . eglot-ensure)
   (dockerfile-ts-mode . eglot-ensure)
   (rst-mode . eglot-ensure)
+  (markdown-mode . eglot-ensure)
   :custom
   (eglot-events-buffer-size 10)
   :config

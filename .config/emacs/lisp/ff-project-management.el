@@ -9,18 +9,19 @@
 ;; Tab bar: one tab per project
 ;; -------------------------------------------------------------------
 (use-package tab-bar
+  :hook
+  (after-init . tab-bar-mode)
   :custom
   ;; Don't turn on tab-bar-mode when tabs are created
   (tab-bar-show nil)
-  :init
-  (tab-bar-mode t)
   :bind
-  (("C-x t n" . tab-new)
-   ;; after a tab is closed, the *scratch* tab appears
-   ;; automatically; Hence, we close that one as well after
-   ;; closing the actually intended one to actually get to the
-   ;; previous user tab.
-   ("C-x t w" . tab-close)))
+  (:map global-map
+        ("C-x t n" . tab-new)
+        ;; after a tab is closed, the *scratch* tab appears
+        ;; automatically; Hence, we close that one as well after
+        ;; closing the actually intended one to actually get to the
+        ;; previous user tab.
+        ("C-x t w" . tab-close)))
 
 ;; -------------------------------------------------------------------
 ;; Tasks
@@ -59,7 +60,8 @@ OUTPUT-BUFFER: buffer to run the command in"
            :working-dir default-directory))))
 
 (use-package run-command
-  :custom (run-command-default-runner #'run-command-runner-compile))
+  :custom
+  (run-command-default-runner #'run-command-runner-compile))
 
 ;; -------------------------------------------------------------------
 ;; Project (built in project handling mode; similar to projectile)

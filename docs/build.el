@@ -8,9 +8,11 @@
 ;; Set the package installation directory so that packages aren't stored in the
 ;; ~/.emacs.d/elpa path.
 (require 'package)
-(setq package-user-dir (expand-file-name ".packages-org-html-export" (temporary-file-directory)))
-(setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ("elpa" . "https://elpa.gnu.org/packages/")))
+(customize-set-variable 'package-user-dir
+                        (expand-file-name ".packages-org-html-export" (temporary-file-directory)))
+(customize-set-variable 'package-archives
+                        '(("melpa" . "https://melpa.org/packages/")
+                          ("elpa" . "https://elpa.gnu.org/packages/")))
 
 ;; Initialize the package system
 (package-initialize)

@@ -152,26 +152,28 @@ https://github.com/akermu/emacs-libvterm/issues/518"
   (add-to-list 'vterm-keymap-exceptions "M-:")
   ;; this is required for directory tracking in zsh
   (add-to-list 'vterm-eval-cmds '("update-pwd" (lambda (path) (setq default-directory path))))
-  :bind (("C-x j" . ff/start-vterm)
-         :map vterm-mode-map
-         ;; disable these key bindings, since I use only the Emacs native ones
-         ("<right>" . nil)
-         ("<left>" . nil)
-         ("<up>" . nil)
-         ("<down>" . nil)
-         ;; my own key bindings
-         ("C-q" . vterm-send-next-key)
-         ("C-y" . vterm-yank)
-         ("C-x 2" . ff/open-vterm-below)
-         ("C-x 3" . ff/open-vterm-right)
-         ("C-M-p" . ff/vterm-send-password)
-         ("C-c C-t" . vterm-copy-mode)
-         ("M-y" . vterm-yank-pop)
-         ("C-c t" . (lambda()
-                      (interactive)
-                      (ff/start-vterm)
-                      (ff/toggle-shell-vertical-alignment)
-                      (ff/start-vterm)))))
+  :bind
+  (:map global-map
+        ("C-x j" . ff/start-vterm)
+        :map vterm-mode-map
+        ;; disable these key bindings, since I use only the Emacs native ones
+        ("<right>" . nil)
+        ("<left>" . nil)
+        ("<up>" . nil)
+        ("<down>" . nil)
+        ;; my own key bindings
+        ("C-q" . vterm-send-next-key)
+        ("C-y" . vterm-yank)
+        ("C-x 2" . ff/open-vterm-below)
+        ("C-x 3" . ff/open-vterm-right)
+        ("C-M-p" . ff/vterm-send-password)
+        ("C-c C-t" . vterm-copy-mode)
+        ("M-y" . vterm-yank-pop)
+        ("C-c t" . (lambda()
+                     (interactive)
+                     (ff/start-vterm)
+                     (ff/toggle-shell-vertical-alignment)
+                     (ff/start-vterm)))))
 
 (provide 'ff-setup-vterm)
 

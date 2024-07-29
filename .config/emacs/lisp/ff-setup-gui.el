@@ -17,10 +17,10 @@
 (tool-bar-mode -1) ; disbale tool bar
 
 ;; set cursor style to filled bar
-(setq-default cursor-type 'box)
+(customize-set-variable 'cursor-type 'box)
 
 ;; no splash screen
-(setq inhibit-startup-screen t)
+(customize-set-variable 'inhibit-startup-screen t)
 
 ;; I want the current user name, the emacs version and the name of the
 ;; file I'm editing to be displayed in the title-bar.
@@ -57,7 +57,7 @@
 (use-package nerd-icons-completion
   :after marginalia
   :config
-  (nerd-icons-completion-mode)
+  (nerd-icons-completion-mode t)
   (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
 
 ;; -------------------------------------------------------------
@@ -153,6 +153,8 @@ FUN: function to be called on the entry's path"
 ;; -------------------------------------------------------------------
 ;; Use doom modeline
 (use-package doom-modeline
+  :hook
+  (after-init . doom-modeline-mode)
   :custom
   (doom-modeline-height 15)
   (doom-modeline-bar-width 6)
@@ -170,9 +172,7 @@ FUN: function to be called on the entry's path"
   (doom-modeline-buffer-modification-icon t)
   (doom-modeline-major-mode-icon t)
   (doom-modeline-buffer-encoding nil)
-  (doom-modeline-vcs-max-length 48)
-  :init
-  (doom-modeline-mode 1))
+  (doom-modeline-vcs-max-length 48))
 
 ;; -------------------------------------------------------------------
 ;; Define font size and methods to adjust it on the fly
@@ -267,34 +267,37 @@ FUN: function to be called on the entry's path"
 (add-to-list
  'proced-format-alist
  '(custom user pid ppid sess tree pcpu pmem rss start time state (args comm)))
-(setq-default proced-format 'custom)
+(customize-set-variable proced-format 'custom)
 
-(setq proced-goal-attribute nil)
+(customize-set-variable 'proced-goal-attribute nil)
 
 ;; enable coloring
-(setq proced-enable-color-flag t)
+(customize-set-variable 'proced-enable-color-flag t)
 
 ;; enable remote support via tramp
-(setq proced-show-remote-processes t)
+(customize-set-variable 'proced-show-remote-processes t)
 
 (use-package proced-narrow
   :after proced
-  :bind (:map proced-mode-map
-              ("/" . proced-narrow)))
+  :bind
+  (:map proced-mode-map
+        ("/" . proced-narrow)))
 
 ;; -------------------------------------------------------------
 ;; center the text for the corresponding modes; writing documentation
 ;; is easier with this setting.
 (use-package olivetti
-  :custom (olivetti-body-width 0.66)
+  :custom
+  (olivetti-body-width 0.66)
   :hook
   (org-mode . olivetti-mode)
   (rst-mode . olivetti-mode)
   (markdown-mode . olivetti-mode)
   (LaTeX-mode . olivetti-mode)
-  :bind (:map olivetti-mode-map
-              ("C-c }" . nil)
-              ("C-c {" . nil)))
+  :bind
+  (:map olivetti-mode-map
+        ("C-c }" . nil)
+        ("C-c {" . nil)))
 
 (provide 'ff-setup-gui)
 

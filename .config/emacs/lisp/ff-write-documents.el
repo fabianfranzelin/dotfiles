@@ -122,15 +122,9 @@ JAR-PATH: expected binary file in the extracted folder."
 
 (use-package plantuml-mode
   :after org
-  :commands plantuml-preview
   :preface
   ;; install system dependencies
   (ff/ensure-apt-package "graphviz" "dot")
-  ;; Consider using (plantuml-download-jar) as alternative
-  :mode (("\\.puml" . plantuml-mode)
-         ("\\.iuml" . plantuml-mode)
-         ("\\.uml" . plantuml-mode))
-  :init
   (defvar plantuml-version "1.2024.5"
     "Version number of plantuml binary")
   (defvar plantuml-name (concat "plantuml-" plantuml-version ".jar")
@@ -143,6 +137,11 @@ JAR-PATH: expected binary file in the extracted folder."
   (defvar plantuml-expected-binary (expand-file-name plantuml-name plantuml-path)
     "Path to java archive of plantuml.")
   (ff/plantuml-download plantuml-url plantuml-expected-binary)
+  ;; Consider using (plantuml-download-jar) as alternative
+  :mode
+  (("\\.puml" . plantuml-mode)
+   ("\\.iuml" . plantuml-mode)
+   ("\\.uml" . plantuml-mode))
   :config
   ;; Sample jar configuration
   (setq plantuml-jar-path plantuml-expected-binary
@@ -156,14 +155,14 @@ JAR-PATH: expected binary file in the extracted folder."
   ;; plantuml setup for org-babel
   (customize-set-variable 'org-plantuml-jar-path plantuml-jar-path)
   (customize-set-variable 'org-plantuml-args plantuml-jar-args)
-
-  :bind (:map plantuml-mode-map
-              ("C-M-i" . plantuml-complete-symbol)
-              ("C-c C-e" . (lambda() (interactive) (ff/plantuml-create-svg (buffer-file-name))))))
+  :bind
+  (:map plantuml-mode-map
+        ("C-M-i" . plantuml-complete-symbol)
+        ("C-c C-e" . (lambda() (interactive) (ff/plantuml-create-svg (buffer-file-name))))))
 
 (use-package flycheck-plantuml
-  :after (plantuml-mode flycheck)
-  :commands (flycheck-plantuml-setup))
+  :after
+  (plantuml-mode flycheck))
 
 ;; Graphviz mode
 (use-package graphviz-dot-mode
@@ -191,11 +190,10 @@ https://github.com/radian-software/straight.el/issues/240"
 
 (use-package auctex
   :straight (:pre-build (ff/straight--auctex-compile))
-  :commands LaTeX-mode
   :hook
   (LaTeX-mode . TeX-fold-mode)
   (LaTeX-mode . outline-minor-mode)
-  :init
+  :config
   ;; Let auctex open pdf files with pdf-tools
   (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
         TeX-source-correlate-start-server t))
@@ -279,12 +277,6 @@ https://github.com/radian-software/straight.el/issues/240"
 ;; http://www.gnu.org/software/auctex/manual/auctex/Adding-Environments.html
 ;; -------------------------------------------------------------------
 
-(use-package texinfo
-  :defines texinfo-section-list
-  :commands texinfo-mode
-  :init
-  (add-to-list 'auto-mode-alist '("\\.texi$" . texinfo-mode)))
-
 ;; -------------------------------------------------------------------
 ;; PDF-tools: Mainly used to display PDFs and to inverse and forward
 ;; jumps for Latex documents
@@ -339,6 +331,7 @@ https://github.com/radian-software/straight.el/issues/240"
   (pdf-view-display-size 'fit-width)
   :init
   (pdf-tools-install t)  ; Standard activation command
+  :config
   ;; With a recent auctex installation, you might want to put the
   ;; following somewhere in your dotemacs, which will revert the
   ;; PDF-buffer after the TeX compilation has finished.
@@ -348,15 +341,16 @@ https://github.com/radian-software/straight.el/issues/240"
   (add-to-list 'auto-mode-alist '("\\.pdf\\'" . pdf-view-mode))
   (add-hook 'pdf-view-mode-hook #'pdf-isearch-minor-mode)
   (add-hook 'pdf-view-mode-hook #'pdf-sync-minor-mode)
-  :bind (:map pdf-view-mode-map
-              ("C-s" . isearch-forward)
-              ("c c" . ff/org-roam-capture-pdf-note)
-              ("c o" . ff/org-roam-open-pdf-note)
-              ;; disable arrow keys, we are in Emacs
-              ("<left>" . nil)
-              ("<right>" . nil)
-              ("<up>" . nil)
-              ("<down>" . nil)))
+  :bind
+  (:map pdf-view-mode-map
+        ("C-s" . isearch-forward)
+        ("c c" . ff/org-roam-capture-pdf-note)
+        ("c o" . ff/org-roam-open-pdf-note)
+        ;; disable arrow keys, we are in Emacs
+        ("<left>" . nil)
+        ("<right>" . nil)
+        ("<up>" . nil)
+        ("<down>" . nil)))
 
 ;; restore positions of pdfs when reopened
 (use-package pdf-view-restore

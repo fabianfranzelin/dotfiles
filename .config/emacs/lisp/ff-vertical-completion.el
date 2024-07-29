@@ -53,22 +53,22 @@ DIR: directory"
          (move-beginning-of-line 0))))
 
 (use-package vertico
+  :hook
+  (after-init . vertico-mode)
   :custom
   (vertico-count 10)
   (vertico-cycle t)
-  :init
-  (vertico-mode t)
-  ;; Enable recursive minibuffers
-  (setq enable-recursive-minibuffers t)
+  (enable-recursive-minibuffers t)
   :config
   (custom-set-faces '(vertico-current ((t (:background "#3a3f5a")))))
-  :bind (:map vertico-map
-              ("C-f" . vertico-exit)
-              ("C-j" . vertico-exit-input)
-              :map minibuffer-local-map
-              ("C-l" . ff/minibuffer-backward-kill)
-              ("C-a" . (lambda() (interactive) (ff/minibuffer-move-to-dir "/")))
-              ("C-o" . (lambda() (interactive) (ff/minibuffer-move-to-dir "~/")))))
+  :bind
+  (:map vertico-map
+        ("C-f" . vertico-exit)
+        ("C-j" . vertico-exit-input)
+        :map minibuffer-local-map
+        ("C-l" . ff/minibuffer-backward-kill)
+        ("C-a" . (lambda() (interactive) (ff/minibuffer-move-to-dir "/")))
+        ("C-o" . (lambda() (interactive) (ff/minibuffer-move-to-dir "~/")))))
 
 ;; install some vertico extensions
 (with-eval-after-load 'vertico
@@ -90,7 +90,8 @@ DIR: directory"
 ;; Save history during sessions so that vertico can pick up the latest
 ;; used ones
 (use-package savehist
-  :init (savehist-mode t))
+  :hook
+  (after-init . savehist-mode))
 
 ;; -------------------------------------------------------------------
 ;; Corfu and Cape
@@ -125,8 +126,8 @@ DIR: directory"
              ("C-p" . corfu-previous)
              ("TAB" . corfu-insert)
              ("C-f" . corfu-insert)))
-                                        ; Use this and enable corfu-separator for fuzzy function finding
-                                        ; ("SPC" . corfu-insert-separator)))
+;; Use this and enable corfu-separator for fuzzy function finding
+;; ("SPC" . corfu-insert-separator)))
 
 ;; enable corfu in terminal mode
 (use-package corfu-terminal
@@ -189,40 +190,41 @@ DIR: directory"
   (setq xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
 
-  :bind (:map global-map
-	      ("C-s" . consult-line)
-              ("C-c i" . consult-imenu)
-              ("M-y" . consult-yank-replace)
-              ;; C-x bindings (ctl-x-map)
-              ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
-              ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
-              ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
-              ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
-              ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
-              ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
-              ;; M-g bindings (goto-map)
-              ("M-g e" . consult-compile-error)
-              ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
-              ;; ("M-g g" . consult-goto-line)             ;; orig. goto-line
-              ;; ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
-              ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
-              ("M-g m" . consult-mark)
-              ("M-g k" . consult-global-mark)
-              ("M-g i" . consult-imenu)
-              ("M-g I" . consult-imenu-multi)
-              ;; M-s bindings (search-map)
-              ("M-s d" . consult-find)
-              ("M-s D" . consult-locate)
-              ("M-s g" . consult-grep)
-              ("M-s G" . consult-git-grep)
-              ("M-s r" . consult-ripgrep)
-              ("M-s l" . consult-line)
-              ("M-s L" . consult-line-multi)
-              ("M-s k" . consult-keep-lines)
-              ("M-s u" . consult-focus-lines)
-              :map minibuffer-local-map
-              ("M-y" . yank-pop)
-              ("C-s" . consult-history)))
+  :bind
+  (:map global-map
+	("C-s" . consult-line)
+        ("C-c i" . consult-imenu)
+        ("M-y" . consult-yank-replace)
+        ;; C-x bindings (ctl-x-map)
+        ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
+        ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+        ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
+        ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
+        ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
+        ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
+        ;; M-g bindings (goto-map)
+        ("M-g e" . consult-compile-error)
+        ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
+        ;; ("M-g g" . consult-goto-line)             ;; orig. goto-line
+        ;; ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
+        ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
+        ("M-g m" . consult-mark)
+        ("M-g k" . consult-global-mark)
+        ("M-g i" . consult-imenu)
+        ("M-g I" . consult-imenu-multi)
+        ;; M-s bindings (search-map)
+        ("M-s d" . consult-find)
+        ("M-s D" . consult-locate)
+        ("M-s g" . consult-grep)
+        ("M-s G" . consult-git-grep)
+        ("M-s r" . consult-ripgrep)
+        ("M-s l" . consult-line)
+        ("M-s L" . consult-line-multi)
+        ("M-s k" . consult-keep-lines)
+        ("M-s u" . consult-focus-lines)
+        :map minibuffer-local-map
+        ("M-y" . yank-pop)
+        ("C-s" . consult-history)))
 
 (use-package consult-dir
   :commands consult-dir
@@ -239,10 +241,9 @@ DIR: directory"
 ;; -------------------------------------------------------------------
 ;; Enable richer annotations using the Marginalia package
 (use-package marginalia
-  :after (vertico)
-  :init
-  (marginalia-mode)
-  :bind (("M-A" . marginalia-cycle)))
+  :after vertico
+  :hook
+  (vertico-mode . marginalia-mode))
 
 (defun sudo-find-file (file)
   "Open FILE as root."
@@ -257,65 +258,67 @@ DIR: directory"
                (concat "/sudo:root@localhost:" (expand-file-name file)))))
 
 (use-package embark
-  :init
+  :ensure t
+  :config
   ;; Optionally replace the key help with a completing-read interface
   (setq prefix-help-command #'embark-prefix-help-command)
-  :config
   ;; Hide the mode line of the Embark live/completions buffers
   (add-to-list 'display-buffer-alist
                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                  nil
                  (window-parameters (mode-line-format . none))))
-  :bind (("C-." . embark-act)
-         ("C-," . embark-act-all)
-         ("C-h B" . embark-bindings)
-         :map minibuffer-local-map
-         ("C-." . embark-act)
-         ("C-," . embark-act-all)
-         :map embark-file-map
-         ("S" . sudo-find-file)))
 
-;; Nice which key integration that allows to list the which-key
-;; options via C-h. See
-;; https://github.com/oantolin/embark/wiki/Additional-Configuration#use-which-key-like-a-key-menu-prompt
-;; for details
-(defun embark-which-key-indicator ()
-  "An embark indicator that displays keymaps using which-key.
+  ;; Nice which key integration that allows to list the which-key
+  ;; options via C-h. See
+  ;; https://github.com/oantolin/embark/wiki/Additional-Configuration#use-which-key-like-a-key-menu-prompt
+  ;; for details
+  (defun embark-which-key-indicator ()
+    "An embark indicator that displays keymaps using which-key.
 The which-key help message will show the type and value of the
 current target followed by an ellipsis if there are further
 targets."
-  (lambda (&optional keymap targets prefix)
-    (if (null keymap)
-        (which-key--hide-popup-ignore-command)
-      (which-key--show-keymap
-       (if (eq (plist-get (car targets) :type) 'embark-become)
-           "Become"
-         (format "Act on %s '%s'%s"
-                 (plist-get (car targets) :type)
-                 (embark--truncate-target (plist-get (car targets) :target))
-                 (if (cdr targets) "…" "")))
-       (if prefix
-           (pcase (lookup-key keymap prefix 'accept-default)
-             ((and (pred keymapp) km) km)
-             (_ (key-binding prefix 'accept-default)))
-         keymap)
-       nil nil t (lambda (binding)
-                   (not (string-suffix-p "-argument" (cdr binding))))))))
+    (lambda (&optional keymap targets prefix)
+      (if (null keymap)
+          (which-key--hide-popup-ignore-command)
+        (which-key--show-keymap
+         (if (eq (plist-get (car targets) :type) 'embark-become)
+             "Become"
+           (format "Act on %s '%s'%s"
+                   (plist-get (car targets) :type)
+                   (embark--truncate-target (plist-get (car targets) :target))
+                   (if (cdr targets) "…" "")))
+         (if prefix
+             (pcase (lookup-key keymap prefix 'accept-default)
+               ((and (pred keymapp) km) km)
+               (_ (key-binding prefix 'accept-default)))
+           keymap)
+         nil nil t (lambda (binding)
+                     (not (string-suffix-p "-argument" (cdr binding))))))))
 
-(setq embark-indicators
-      '(embark-which-key-indicator
-        embark-highlight-indicator
-        embark-isearch-highlight-indicator))
+  (setq embark-indicators
+        '(embark-which-key-indicator
+          embark-highlight-indicator
+          embark-isearch-highlight-indicator))
 
-(defun embark-hide-which-key-indicator (fn &rest args)
-  "Hide the which-key indicator immediately when using the completing-read prompter."
-  (which-key--hide-popup-ignore-command)
-  (let ((embark-indicators
-         (remq #'embark-which-key-indicator embark-indicators)))
-    (apply fn args)))
+  (defun embark-hide-which-key-indicator (fn &rest args)
+    "Hide the which-key indicator immediately when using the completing-read prompter."
+    (which-key--hide-popup-ignore-command)
+    (let ((embark-indicators
+           (remq #'embark-which-key-indicator embark-indicators)))
+      (apply fn args)))
 
-(advice-add #'embark-completing-read-prompter
-            :around #'embark-hide-which-key-indicator)
+  (advice-add #'embark-completing-read-prompter
+              :around #'embark-hide-which-key-indicator)
+  :bind
+  (:map global-map
+        ("C-." . embark-act)
+        ("C-," . embark-act-all)
+        ("C-h B" . embark-bindings)
+        :map minibuffer-local-map
+        ("C-." . embark-act)
+        ("C-," . embark-act-all)
+        :map embark-file-map
+        ("S" . sudo-find-file)))
 
 (use-package embark-consult
   :after (embark consult)
@@ -323,8 +326,9 @@ targets."
   ;; auto-updating embark collect buffer
   :hook
   (embark-collect-mode . consult-preview-at-point-mode)
-  :bind (:map embark-file-map
-              ("g" . consult-ripgrep)))
+  :bind
+  (:map embark-file-map
+        ("g" . consult-ripgrep)))
 
 
 (provide 'ff-vertical-completion)

@@ -6,9 +6,10 @@
 
 ;;; Code:
 
-(setq user-full-name "Fabian Franzelin"
-      user-mail-address "fabian.franzelin@gmail.com"
-      inhibit-startup-echo-area-message (getenv "USER"))
+;; -------------------------------------------------------------------
+(customize-set-variable 'user-full-name "Fabian Franzelin")
+(customize-set-variable 'user-mail-address "fabian.franzelin@gmail.com")
+(customize-set-variable 'inhibit-startup-echo-area-message (getenv "USER"))
 
 ;; -------------------------------------------------------------------
 ;; Daemon settings

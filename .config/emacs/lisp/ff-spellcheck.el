@@ -16,11 +16,14 @@
   (ff/ensure-apt-package "aspell-en" "/usr/lib/aspell/en_US.multi")
   (ff/ensure-apt-package "aspell-de" "/usr/lib/aspell/de_DE.multi")
   (ff/ensure-apt-package "aspell-es" "/usr/lib/aspell/es.multi")
-  :hook (emacs-startup . global-jinx-mode)
+  :hook
+  (after-init . global-jinx-mode)
   :custom
   (jinx-save-languages nil)
-  :bind (("M-$" . jinx-correct)
-         ("C-M-$" . jinx-languages)))
+  :bind
+  (:map global-map
+        ("M-$" . jinx-correct)
+        ("C-M-$" . jinx-languages)))
 
 ;; --------------------------------------------------------
 ;; Static spell check with languagetool
@@ -46,18 +49,9 @@ PACKAGE-NAME: log message context"
       (call-process-shell-command (concat "unzip " temporary-file " -d " extract-to) nil 0))))
 
 (use-package languagetool
-  :commands (languagetool-check
-             languagetool-clear-suggestions
-             languagetool-correct-at-point
-             languagetool-correct-buffer
-             languagetool-set-language
-             languagetool-server-mode
-             languagetool-server-start
-             languagetool-server-stop)
   :preface
   ;; ensure system packages
   (ff/ensure-apt-package "unzip" "unzip")
-  :init
   ;; Create directory for languagetool binaries
   (defvar langtool-version "6.4" "Version of language tool")
   (defvar langtool-name (format "LanguageTool-%s" langtool-version))
@@ -72,19 +66,20 @@ PACKAGE-NAME: log message context"
                                        langtool-commandline
                                        "langtool")
   :config
-  (setq languagetool-java-arguments '("-Dfile.encoding=UTF-8")
-        languagetool-default-language "en-US"
-        languagetool-console-command langtool-commandline
-        languagetool-server-command langtool-server)
+  (customize-set-variable 'languagetool-java-arguments '("-Dfile.encoding=UTF-8"))
+  (customize-set-variable 'languagetool-default-language "en-US")
+  (customize-set-variable 'languagetool-console-command langtool-commandline)
+  (customize-set-variable 'languagetool-server-command langtool-server)
 
-  :bind (("C-x 4 c" . languagetool-check)
-         ("C-x 4 k" . languagetool-clear-suggestions)
-         ("C-x 4 p" . languagetool-correct-at-point)
-         ("C-x 4 b" . languagetool-correct-buffer)))
+  :bind
+  (:map global-map
+        ("C-x 4 c" . languagetool-check)
+        ("C-x 4 k" . languagetool-clear-suggestions)
+        ("C-x 4 p" . languagetool-correct-at-point)
+        ("C-x 4 b" . languagetool-correct-buffer)))
 
 
 (with-eval-after-load 'jinx
-
   (defun ff/switch-dictionary(LANGS &optional GLOBAL)
     "Switch dictionary for non-jinx packages to currently selected by jinx.
 This includes ispell and languagetool."
@@ -97,11 +92,12 @@ This includes ispell and languagetool."
 ;; -------------------------------------------------------------------
 ;; Reverso: Translate text and find synonyms
 (use-package reverso
-  :bind (:map global-map
-              ("C-c r s" . reverso-synonyms)
-              ("C-c r t" . reverso-translate)
-              ("C-c r c" . reverso-context)
-              ("C-c r c" . reverso-conjugation)))
+  :bind
+  (:map global-map
+        ("C-c r s" . reverso-synonyms)
+        ("C-c r t" . reverso-translate)
+        ("C-c r c" . reverso-context)
+        ("C-c r c" . reverso-conjugation)))
 
 (provide 'ff-spellcheck)
 

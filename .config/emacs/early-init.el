@@ -24,7 +24,8 @@
 (setq user-emacs-directory (expand-file-name "~/.cache/emacs"))
 
 ;; put the package downloads into the user emacs directory
-(setq package-user-dir (expand-file-name "elpa" user-emacs-directory))
+(customize-set-variable 'package-user-dir
+                        (expand-file-name "elpa" user-emacs-directory))
 
 ;; -------------------------------------------------------------------
 ;; configure native compilation
