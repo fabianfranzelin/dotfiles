@@ -29,18 +29,19 @@
   :config
   (setq read-process-output-max (* 1024 1024))
   :bind
-  (("C-c l w s" . eglot)
-   ("C-c l w r" . eglot-reconnect)
-   ("C-c l w k" . eglot-shutdown)
-   ("C-c l w a" . eglot-shutdown-all)
-   ("C-c l f" . eglot-format)
-   ("C-c l a" . eglot-code-actions)
-   ("C-c l i" . eglot-code-action-organize-imports)
-   ("C-c l r" . eglot-rename)
-   ("C-c l d" . flymake-show-buffer-diagnostics)
-   ("C-h ." . eldoc)
-   ("C-c l e" . eglot-events-buffer)
-   ("C-c l c" . eglot-show-workspace-configuration)))
+  (:map global-map
+        ("C-c l w s" . eglot)
+        ("C-c l w r" . eglot-reconnect)
+        ("C-c l w k" . eglot-shutdown)
+        ("C-c l w a" . eglot-shutdown-all)
+        ("C-c l f" . eglot-format)
+        ("C-c l a" . eglot-code-actions)
+        ("C-c l i" . eglot-code-action-organize-imports)
+        ("C-c l r" . eglot-rename)
+        ("C-c l d" . flymake-show-buffer-diagnostics)
+        ("C-h ." . eldoc)
+        ("C-c l e" . eglot-events-buffer)
+        ("C-c l c" . eglot-show-workspace-configuration)))
 
 (with-eval-after-load 'eglot
 
@@ -137,13 +138,14 @@ FORCE: force update of grammars"
 ;; -------------------------------------------------------------------
 ;; Additionally to flymake, use flycheck as well for certain modes
 (use-package flycheck
-  :init (global-flycheck-mode))
+  :init
+  (global-flycheck-mode))
 
 ;; -------------------------------------------------------------------
 ;; Debugger
 ;; -------------------------------------------------------------------
 (use-package realgud
-  :after (org)
+  :after org
   :custom
   (realgud:pdb-command-name "python3 -m pdb")
   (realgud-safe-mode nil))
@@ -244,7 +246,7 @@ FORCE: force update of grammars"
 (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-ts-mode))
 
 (use-package docker
-  :after (setup-vterm)
+  :after setup-vterm
   :custom
   (docker-run-default-args '("-i"
                              "-t"
@@ -298,7 +300,8 @@ FORCE: force update of grammars"
 ;; Groovy mode for Jenkins
 ;; -------------------------------------------------------------------
 (use-package groovy-mode
-  :mode (("\\.groovy$" . groovy-mode)))
+  :mode
+  (("\\.groovy$" . groovy-mode)))
 
 ;; -------------------------------------------------------------------
 ;; Java mode
@@ -404,9 +407,11 @@ FORCE: force update of grammars"
 ;; Jinja mode
 ;; -------------------------------------------------------------------
 (use-package jinja2-mode
-  :mode (("\\.tpl$" . jinja2-mode))
-  :bind (:map jinja2-mode-map
-              ("M-o" . nil)))
+  :mode
+  ("\\.tpl$" . jinja2-mode)
+  :bind
+  (:map jinja2-mode-map
+        ("M-o" . nil)))
 
 (provide 'ff-programming-settings)
 

@@ -44,8 +44,9 @@
 
 ;; supports virtual environments. To be set with pyvenv-workon
 (use-package pyvenv
-  :init (pyvenv-mode 1)
-  :config (pyvenv-tracking-mode 1))
+  :hook
+  (after-init . pyvenv-mode)
+  (after-init . pyvenv-tracking-mode))
 
 ;; enable sphinx doc strings support
 ;; C-c M-d sphinx-doc
@@ -63,11 +64,12 @@
     'python-pytest-dispatch
     "-x"
     '("-v" "increase verbosity" "-vvv"))
-  :bind (:map python-ts-mode-map
-              ("C-c t d" . python-pytest-dispatch)
-              ("C-c t l" . python-pytest-function)
-              ("C-c t f" . python-pytest-file-dwim)
-              ("C-c t e" . python-pytest-last-failed)))
+  :bind
+  (:map python-ts-mode-map
+        ("C-c t d" . python-pytest-dispatch)
+        ("C-c t l" . python-pytest-function)
+        ("C-c t f" . python-pytest-file-dwim)
+        ("C-c t e" . python-pytest-last-failed)))
 
 ;; flycheck
 (flycheck-add-mode 'python-pylint 'python-ts-mode)
