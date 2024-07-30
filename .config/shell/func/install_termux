@@ -1,0 +1,111 @@
+#!/usr/bin/env bash
+
+install_termux()
+{
+    ###########################################################################
+    #                                   Init                                  #
+    ###########################################################################
+    termux-setup-storage
+
+    pkg update
+
+    pkg install -y \
+        emacs \
+        git \
+        openssl-tool \
+        pass \gnupg \
+        which \
+        git-lfs \
+        rsync \
+        poppler \
+        termux-api
+
+    mkdir -p "~/.local/bin"
+
+    ###########################################################################
+    #                                   GPG                                   #
+    ###########################################################################
+    GPG_HOME="~/.gnupg"
+    GPG_CONF="${GPG_HOME}/.gpg.conf"
+    GPG_AGENT_CONF="${GPG_HOME}/.gpg-agent.conf"
+    mkdir -p "${GPG_HOME}"
+    echo "personal-digest-preferences SHA256
+cert-digest-algo SHA256
+default-preference-list SHA512 SHA384 SHA256 SHA224 AES256 AES192 AES CAST5 ZLIB BZIP2 ZIP Uncompressed
+auto-key-locate keyserver
+keyserver hkp://pgp.mit.edu" | tee "${GPG_CONF}"
+    echo "# https://superuser.com/questions/624343/keep-gnupg-credentials-cached-for-entire-user-session
+# https://superuser.com/questions/1075404/how-can-i-restart-gpg-agent
+# default-cache-ttl 600 # 10 minutes
+default-cache-ttl 28800 # 20 minutes
+# max-cache-ttl 7200 # 2 hours
+max-cache-ttl 28800 # 8 hours
+# make the console pinentry the default
+# https://superuser.com/questions/520980/how-to-force-gpg-to-use-console-mode-pinentry-to-prompt-for-passwords
+pinentry-program $(which pinentry-curses)
+# this means clients like Emacs can get the password in their own way and push to gpg
+# for this to work with Emacs, set epa-pinentry-mode to 'loopback in Emacs
+allow-emacs-pinentry
+" | tee "${GPG_AGENT_CONF}"
+
+    ###########################################################################
+    #                               Termux-tools                              #
+    ###########################################################################
+    # https://github.com/elpraga/Termux-tools
+    pkg install python poppler ghostscript
+
+    TMP_SRC=$(mktemp -d)
+    cd "${TMP_SRC}" || exit 1
+    git clone "https://github.com/elpraga/Termux-tools.git"
+    cd "Termux-Tools" || exit 1
+    chmod u+x "termux-*"
+    cp "termux-*" "~/.local/bin"
+
+    ###########################################################################
+    #                                   Bash                                  #
+    ###########################################################################
+    BASHRC="~/.bashrc"
+    echo "
+export PASSWORD_STORE='~/.password-store'
+
+alias e='emacs -nw --init-directory=\"~/workspace/dotfiles/.config/minimal-emacs\"
+alias dot='cd ~/workspace/dotfiles/'
+alias pas='cd ~/.password-store/'
+alias org='cd ~/workspace/org'
+
+alias cp='cp -i -P'
+alias mv='mv -i'
+alias grep='grep --color=auto'
+
+alias c='clear'
+# macOS: --color=auto needed for coreutils
+alias l='ls -1F --color=auto'
+alias la='ls -1F --color=auto -a'
+alias ll='ls -1F --color=auto -lh'
+alias lla='ls -1F --color=auto -lha'
+
+alias cp='cp -i -P'
+alias mv='mv -i'
+alias grep='grep --color=auto'
+
+alias c='clear'
+alias l='ls -1F --color=auto'
+alias la='ls -1F --color=auto -a'
+alias ll='ls -1F --color=auto -altrh'
+alias lla='ls -1F --color=auto -lha'
+
+alias .2='cd ../..'
+alias .3='cd ../../..'
+alias .4='cd ../../../..'
+alias .5='cd ../../../../..'
+alias .6='cd ../../../../../..'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias ......='cd ../../../../..'
+
+alias g='git'
+alias unlock_key="pass usernames/public@github > /dev/null"
+" | tee "${BASHRC}"
+}
