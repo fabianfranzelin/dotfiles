@@ -20,7 +20,9 @@ install_termux()
         poppler \
         termux-api
 
-    mkdir -p "~/.local/bin"
+    LOCAL_BIN="~/.local/bin"
+    mkdir -p "${LOCAL_BIN}"
+    export PATH=${PATH}:${LOCAL_BIN}
 
     ###########################################################################
     #                                   GPG                                   #
