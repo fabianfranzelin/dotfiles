@@ -111,6 +111,7 @@ FORCE: force update of grammars"
                (elisp "https://github.com/Wilfred/tree-sitter-elisp")
                (html "https://github.com/tree-sitter/tree-sitter-html")
                (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+               (jsdoc "https://github.com/tree-sitter/tree-sitter-jsdoc")
                (json "https://github.com/tree-sitter/tree-sitter-json")
                (make "https://github.com/alemuller/tree-sitter-make")
                (markdown "https://github.com/ikatyang/tree-sitter-markdown")
