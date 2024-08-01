@@ -1,0 +1,8 @@
+[user]
+    name = "Fabian Franzelin"
+    email = fabian.franzelin@gmail.com
+[credential]
+    helper = cache --timeout=8000000
+    useHttpPath = true
+[credential "https://github.com"]
+    helper = !pass keys/fabianfranzelin@github.com
