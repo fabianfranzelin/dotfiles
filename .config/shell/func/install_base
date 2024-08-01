@@ -60,8 +60,7 @@ install_base() {
          doxygen \
          evince \
          gcovr \
-         xdg-utils \
-         curlftpfs
+         xdg-utils
 
     if ( __is_wsl )
     then
