@@ -142,6 +142,11 @@ groups = [
         layout="monadtall",
         matches=[Match(title=["Microsoft Teams", "Outlook (PWA)"])],
     ),
+    Group(
+        "Remote",
+        layout="monadtall",
+        matches=[Match(title=["FE-V-013VV_S "])],
+    ),
 ]
 
 # Allow MODKEY+[0 through 9] to bind to groups, see
