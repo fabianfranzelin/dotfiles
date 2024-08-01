@@ -18,7 +18,8 @@ install_termux()
         git-lfs \
         rsync \
         poppler \
-        termux-api
+        termux-api \
+	sshpass
 
     LOCAL_BIN="~/.local/bin"
     mkdir -p "${LOCAL_BIN}"
