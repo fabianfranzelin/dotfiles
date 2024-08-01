@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+ssh_pauline() {
+    sshpass -p "$(pass passwords/frf2lr@pauline)" ssh pauline
+}
