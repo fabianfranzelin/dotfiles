@@ -8,6 +8,7 @@
    :id: TC_${2:ID}
    :tests:
    :tags:
+   :responsible: cluster_MRA
    :test_case_summary:
      | ${3:Steps}
    :test_case_precondition:
