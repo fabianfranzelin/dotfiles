@@ -8,14 +8,15 @@
    :id: REQ_SW_${2:ID}
    :da_status: draft
    :da_variant_implemented: AOS
+   :da_general_comment:
    :da_cfr_index: low
    :da_safety_integrity: QM
    :da_safety_relevance: no
    :da_security_relevance: no
-   :derives:
+   :da_verification_criteria: Verification Criteria is described in the Test Specification. This can be seen in the attribute "is tested by".
+   :da_responsible: cluster_MRA
    :tags:
-   :rb_tracker08:
+   :jira:
    :collapse: true
-   :da_general_comment:
 
    $0
