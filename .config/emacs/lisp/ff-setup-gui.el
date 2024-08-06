@@ -174,6 +174,9 @@ FUN: function to be called on the entry's path"
   (doom-modeline-buffer-encoding nil)
   (doom-modeline-vcs-max-length 48))
 
+;; show current time in mode line
+(display-time)
+
 ;; -------------------------------------------------------------------
 ;; Define font size and methods to adjust it on the fly
 (set-face-attribute 'default nil :height 100) ;; default = 100
