@@ -328,7 +328,7 @@ targets."
   (embark-collect-mode . consult-preview-at-point-mode)
   :bind
   (:map embark-file-map
-        ("g" . consult-ripgrep)))
+        ("g" . consult-grep)))
 
 
 (provide 'ff-vertical-completion)
