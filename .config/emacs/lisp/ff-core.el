@@ -430,7 +430,8 @@ COMMAND: command to be executed"
                               help-mode
                               helpful-mode
                               compilation-mode
-                              reverso-result-mode))
+                              reverso-result-mode
+                              special-mode))
   :hook
   (after-init . popper-mode)
   (after-init . popper-echo-mode)
