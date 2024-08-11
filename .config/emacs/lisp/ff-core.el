@@ -5,6 +5,35 @@
 
 ;;; Code:
 
+;; -------------------------------------------------------------------
+(customize-set-variable 'user-full-name "Fabian Franzelin")
+(customize-set-variable 'user-mail-address "fabian.franzelin@gmail.com")
+(customize-set-variable 'inhibit-startup-echo-area-message (getenv "USER"))
+
+;; -------------------------------------------------------------------
+;; Daemon settings
+;; -------------------------------------------------------------------
+(require 'server)
+(unless (server-running-p)
+  (server-start))
+
+;; -------------------------------------------------------------------
+;; Package Management - straight.el
+(require 'ff-straight)
+
+;; -------------------------------------------------------------------
+;; Before we do anything, set up the no littering package
+(use-package no-littering
+  :demand t
+  :custom
+  (custom-file (no-littering-expand-etc-file-name "custom.el"))
+  :config
+  ;; setup a new custom file and load it
+  (load custom-file t)
+  ;; this sets the path right for undo-tree, auto-save and backup files
+  (no-littering-theme-backups))
+
+;; -------------------------------------------------------------------
 (require 'ff-ensure-system-packages)
 
 ;; enables local variables per default
@@ -160,13 +189,6 @@ COMMAND: command to be executed"
   "P" 'windmove-swap-states-up)
 
 (keymap-global-set "C-q" ff/window-key-map)
-
-;; try to simply use the arrow keys for window movement. With a split
-;; keyboard, this is feasible
-(keymap-global-set "<right>" 'windmove-right)
-(keymap-global-set "<left>" 'windmove-left)
-(keymap-global-set "<up>" 'windmove-up)
-(keymap-global-set "<down>" 'windmove-down)
 
 ;; https://www.emacswiki.org/emacs/Repeatable
 (defun ff/repeat-command (command)

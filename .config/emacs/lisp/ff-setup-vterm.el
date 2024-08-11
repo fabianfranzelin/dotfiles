@@ -156,11 +156,6 @@ https://github.com/akermu/emacs-libvterm/issues/518"
   (:map global-map
         ("C-x j" . ff/start-vterm)
         :map vterm-mode-map
-        ;; disable these key bindings, since I use only the Emacs native ones
-        ("<right>" . nil)
-        ("<left>" . nil)
-        ("<up>" . nil)
-        ("<down>" . nil)
         ;; my own key bindings
         ("C-q" . vterm-send-next-key)
         ("C-y" . vterm-yank)

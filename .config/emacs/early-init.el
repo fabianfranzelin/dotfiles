@@ -5,6 +5,16 @@
 
 ;;; Code:
 
+;; -------------------------------------------------------------------
+;; define path of local lisp packages that are part of the dotfiles
+;; repo
+(defvar emacs-config-home (expand-file-name ".config/emacs" (getenv "HOME"))
+  "Location of the Emacs configuration.")
+(defvar local-lisp-path (expand-file-name "lisp" emacs-config-home)
+  "Load path for local Emacs configurations.")
+(add-to-list 'load-path local-lisp-path)
+
+;; -------------------------------------------------------------------
 ;;; Garbage collection
 ;; Increase the GC threshold for faster startup
 ;; The default is 800 kilobytes. Measured in bytes.

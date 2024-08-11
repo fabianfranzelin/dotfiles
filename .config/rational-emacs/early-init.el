@@ -1,0 +1,1 @@
+../emacs/early-init.el

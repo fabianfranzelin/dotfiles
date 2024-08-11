@@ -16,10 +16,6 @@
 (require 'ff-programming-settings)
 (require 'ff-write-documents)
 (require 'ff-setup-gui)
-(require 'ff-spellcheck)
-(require 'ff-ai-assistant)
-(require 'ff-multimedia)
-(require 'ff-elora)
 ;; -------------------------------------------------------------------
 
 (provide 'init)
