@@ -42,7 +42,7 @@
 ;; you’ll need to run `M-x nerd-icons-install-fonts` so that mode
 ;; line icons display correctly.
 (use-package nerd-icons
-  :if (not (display-graphic-p))
+  :if (display-graphic-p)
   :custom
   (nerd-icons-font-family "Symbols Nerd Font Mono")
   :config
@@ -52,12 +52,12 @@
   (add-to-list 'nerd-icons-extension-icon-alist '("lisp" nerd-icons-sucicon "nf-custom-emacs" :face nerd-icons-purple)))
 
 (use-package nerd-icons-dired
-  :if (not (display-graphic-p))
+  :if (display-graphic-p)
   :hook
   (dired-mode . nerd-icons-dired-mode))
 
 (use-package nerd-icons-completion
-  :if (not (display-graphic-p))
+  :if (display-graphic-p)
   :after marginalia
   :config
   (nerd-icons-completion-mode t)
@@ -165,7 +165,6 @@ FUN: function to be called on the entry's path"
   :custom
   (doom-modeline-height 15)
   (doom-modeline-bar-width 6)
-  (doom-modeline-icon t)
   (doom-modeline-modal-icon t)
   (doom-modeline-lsp t)
   (doom-modeline-github nil)
@@ -179,7 +178,11 @@ FUN: function to be called on the entry's path"
   (doom-modeline-buffer-modification-icon t)
   (doom-modeline-major-mode-icon t)
   (doom-modeline-buffer-encoding nil)
-  (doom-modeline-vcs-max-length 48))
+  (doom-modeline-vcs-max-length 48)
+  :config
+  ;; only load icons if kind-icon is available
+  (with-eval-after-load 'kind-icon
+    (customize-set-variable 'doom-modeline-icon t)))
 
 ;; show current time in mode line
 (display-time)
@@ -210,6 +213,7 @@ FUN: function to be called on the entry's path"
 
 ;; Icons for corfu completion
 (use-package kind-icon
+  :if (display-graphic-p)
   :after corfu
   :custom
   (kind-icon-default-face 'corfu-default) ; to compute blended backgrounds correctly
