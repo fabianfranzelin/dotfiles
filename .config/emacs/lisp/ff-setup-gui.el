@@ -66,6 +66,10 @@
   :straight (:host github :repo "ichernyshovvv/grid.el"))
 
 (use-package enlight
+  ;; The splashscreen does not look good on small displays, hence, I
+  ;; disable it there
+  :if (and (> (display-pixel-width) 1000)
+           (> (display-pixel-height) 500))
   :straight (:host github :repo "ichernyshovvv/enlight")
   :preface
   (defface ff/enlight-yellow-bold
