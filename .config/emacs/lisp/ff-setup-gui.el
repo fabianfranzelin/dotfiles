@@ -42,6 +42,7 @@
 ;; you’ll need to run `M-x nerd-icons-install-fonts` so that mode
 ;; line icons display correctly.
 (use-package nerd-icons
+  :if (not (display-graphic-p))
   :custom
   (nerd-icons-font-family "Symbols Nerd Font Mono")
   :config
@@ -51,10 +52,12 @@
   (add-to-list 'nerd-icons-extension-icon-alist '("lisp" nerd-icons-sucicon "nf-custom-emacs" :face nerd-icons-purple)))
 
 (use-package nerd-icons-dired
+  :if (not (display-graphic-p))
   :hook
   (dired-mode . nerd-icons-dired-mode))
 
 (use-package nerd-icons-completion
+  :if (not (display-graphic-p))
   :after marginalia
   :config
   (nerd-icons-completion-mode t)
