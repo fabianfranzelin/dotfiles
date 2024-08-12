@@ -241,6 +241,10 @@ DIR: directory"
 ;; -------------------------------------------------------------------
 ;; Enable richer annotations using the Marginalia package
 (use-package marginalia
+  ;; There is not space for marginalia on small screens, hence, I
+  ;; disable it there
+  :if (and (> (display-pixel-width) 750)
+           (> (display-pixel-height) 500))
   :after vertico
   :hook
   (vertico-mode . marginalia-mode))
