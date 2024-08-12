@@ -14,10 +14,10 @@
 
 (with-eval-after-load 'vterm
   ;; disable the arrow keys in vterm
-  (define-key vterm-mode-map (kbd "<right>") 'ignore)
-  (define-key vterm-mode-map (kbd "<left>") 'ignore)
-  (define-key vterm-mode-map (kbd "<up>") 'ignore)
-  (define-key vterm-mode-map (kbd "<down>") 'ignore))
+  (define-key vterm-mode-map (kbd "<right>") nil)
+  (define-key vterm-mode-map (kbd "<left>") nil)
+  (define-key vterm-mode-map (kbd "<up>") nil)
+  (define-key vterm-mode-map (kbd "<down>") nil))
 
 (provide 'ff-elora)
 
