@@ -16,4 +16,4 @@ set $SHOW_CONTEXT = 1
 set $SHOW_NEST_INSN = 0
 
 # add glibc source path
-dir ~/.local/share/glibc-2.39/sysdeps/unix/sysv/linux/
+dir ~/.local/share/glibc-2.40/sysdeps/unix/sysv/linux/

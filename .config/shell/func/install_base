@@ -101,7 +101,7 @@ install_base() {
             jupyter
 
     # install pandoc
-    PANDOC_VER="3.2.1"
+    PANDOC_VER="3.3"
     PANDOC_BIN="pandoc-${PANDOC_VER}-1-amd64.deb"
     PANDOC_URL="https://github.com/jgm/pandoc/releases/download/${PANDOC_VER}/${PANDOC_BIN}"
     (
@@ -112,7 +112,7 @@ install_base() {
 
     #------------------------------------------------------------------------------#
     # install dependencies gdb
-    GLIBC_NAME="glibc-2.39"
+    GLIBC_NAME="glibc-2.40"
     GLIBC_PATH="${HOME}/.local/share/${GLIBC_NAME}"
     if [ ! -d "${GLIBC_PATH}" ]
     then

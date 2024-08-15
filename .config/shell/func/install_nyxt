@@ -47,7 +47,7 @@ install_nyxt()
         TMP_NYXT_SRC="${HOME}/.cache/nyxt"
         mkdir -p "${TMP_NYXT_SRC}"
         cd "${TMP_NYXT_SRC}" || exit 1
-        NYXT_VERSION="3.11.7"
+        NYXT_VERSION="3.11.8"
         NYXT_SRC_FILE_NAME="nyxt-${NYXT_VERSION}-source-with-submodules.tar.xz"
 
         echo -e "${__COLOR_INFO}INFO: Downloading nyxt v${NYXT_VERSION}${__COLOR_RESET}"
