@@ -27,7 +27,7 @@ aos_create_venv() {
                 conan==1.59.0 \
                 gnupg \
                 rospkg \
-                poetry==1.5.1 \
+                poetry==1.7.0 \
                 colorlog \
                 mock \
                 tqdm
