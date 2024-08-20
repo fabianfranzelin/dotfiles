@@ -131,6 +131,7 @@ layouts = [
     layout.Columns(**layout_theme),
     layout.Max(**layout_theme),
     layout.Floating(),
+    layout.Matrix(),
 ]
 
 # --------------------------------------------------------

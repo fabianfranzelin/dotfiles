@@ -30,7 +30,8 @@ aos_create_venv() {
                 poetry==1.7.0 \
                 colorlog \
                 mock \
-                tqdm
+                tqdm \
+                robotframework
 
         # # other stuff that helps working
         python3 -m pip install ipdb ipython
