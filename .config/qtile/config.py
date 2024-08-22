@@ -164,7 +164,7 @@ for i, group in enumerate(groups):
                 f"{i}",
                 lazy.window.togroup(group),
                 desc=f"Move active window to group {group}",
-            )
+            ),
         ]
     )
 # --------------------------------------------------------
