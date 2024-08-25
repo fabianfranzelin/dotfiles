@@ -244,7 +244,6 @@ DIR: directory path"
            (propertize "${tags:20}" 'face 'org-tag)
            "${category:15}"
            "${backlinkscount:6}"))
-  (org-roam-node-annotation-function (lambda (node) (marginalia--time (org-roam-node-file-mtime node))))
   (org-roam-database-connector 'sqlite-builtin)
   (org-roam-db-gc-threshold most-positive-fixnum)
   (org-roam-capture-templates
@@ -320,6 +319,9 @@ DIR: directory path"
                          (org-roam-node-id node)))))
       (format "[%d]" count)))
 
+  ;; use marginalia when searchinf for notes
+  (with-eval-after-load 'marginalia
+    (customize-set-variable 'org-roam-node-annotation-function (lambda (node) (marginalia--time (org-roam-node-file-mtime node)))))
   ;; create inbox file if it does not already exist
   (dolist (file-name `(,(expand-file-name "inbox.org" org-roam-dailies-directory)))
     (unless (file-exists-p file-name)
