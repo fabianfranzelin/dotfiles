@@ -68,7 +68,12 @@ DIR: directory"
         :map minibuffer-local-map
         ("C-l" . ff/minibuffer-backward-kill)
         ("C-a" . (lambda() (interactive) (ff/minibuffer-move-to-dir "/")))
-        ("C-o" . (lambda() (interactive) (ff/minibuffer-move-to-dir "~/")))))
+        ("C-o" . (lambda() (interactive) (ff/minibuffer-move-to-dir "~/")))
+        ;; disable arrow keys, we are in Emacs
+        ("<left>" . nil)
+        ("<right>" . nil)
+        ("<up>" . nil)
+        ("<down>" . nil)))
 
 ;; install some vertico extensions
 (with-eval-after-load 'vertico

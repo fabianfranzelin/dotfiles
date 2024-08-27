@@ -45,7 +45,7 @@ aos_create_venv() {
                 sphinxcontrib_svg2pdfconverter \
                 sphinxcontrib_plantuml \
                 sphinx_needs \
-                esbonio==0.16.4 \
+                esbonio==0.15 \
                 sphinx_autodoc_typehints \
                 sphinx-jsonschema \
                 sphinxcontrib-ditaa \
@@ -58,18 +58,18 @@ aos_create_venv() {
                 junitparser \
                 matplotlib
 
-        # python3 -m pip install \
-        #         robotframework-assertion-engine==1.0.0 \
-        #         robotframework-browser==17.2.0 \
-        #         robotframework-databaselibrary==1.3.1 \
-        #         robotframework-robocop==4.0.1 \
-        #         robotframework-sshlibrary==3.8.1rc1 \
-        #         robotframework-tidy==4.5.0 \
-        #         robotframework==6.1.1 \
-        #         robotremoteserver==1.1.1 \
-        #         robotframework-jsonlibrary==0.5
+        python3 -m pip install \
+                robotframework-assertion-engine==1.0.0 \
+                robotframework-browser==17.2.0 \
+                robotframework-databaselibrary==1.3.1 \
+                robotframework-robocop==4.0.1 \
+                robotframework-sshlibrary==3.8.1rc1 \
+                robotframework-tidy==4.5.0 \
+                robotframework==6.1.1 \
+                robotremoteserver==1.1.1 \
+                robotframework-jsonlibrary==0.5
 
-        # rfbrowser init
+        rfbrowser init
 
         deactivate
 
