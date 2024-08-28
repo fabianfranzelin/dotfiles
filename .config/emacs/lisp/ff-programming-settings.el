@@ -415,6 +415,10 @@ FORCE: force update of grammars"
   (:map jinja2-mode-map
         ("M-o" . nil)))
 
+;; -------------------------------------------------------------------
+;; Use Emacs web server for providing static files
+(use-package simple-httpd)
+
 (provide 'ff-programming-settings)
 
 ;;; ff-programming-settings.el ends here
