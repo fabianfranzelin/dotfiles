@@ -63,7 +63,7 @@ DIR: directory"
   (custom-set-faces '(vertico-current ((t (:background "#3a3f5a")))))
   :bind
   (:map vertico-map
-        ("C-f" . vertico-exit)
+        ("C-q" . vertico-exit)
         ("C-j" . vertico-exit-input)
         :map minibuffer-local-map
         ("C-l" . ff/minibuffer-backward-kill)
