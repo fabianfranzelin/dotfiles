@@ -34,6 +34,8 @@
   (emacs-lisp-mode . copilot-mode)
   (markdown-mode . copilot-mode)
   (rst-mode . copilot-mode)
+  :custom
+  (copilot-max-char 100000000)
   :config
   ;; fix indentation offset for emacs-lisp; the default depends on the
   ;; the length of the function name and cannot be set in general. I
