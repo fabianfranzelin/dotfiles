@@ -417,7 +417,9 @@ FORCE: force update of grammars"
 
 ;; -------------------------------------------------------------------
 ;; Use Emacs web server for providing static files
-(use-package simple-httpd)
+(use-package simple-httpd
+  :custom
+  (httpd-host 'local))
 
 (provide 'ff-programming-settings)
 
