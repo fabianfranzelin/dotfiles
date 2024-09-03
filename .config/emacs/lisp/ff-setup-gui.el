@@ -174,7 +174,7 @@ FUN: function to be called on the entry's path"
   (doom-modeline-persp-name nil)
   (doom-modeline-display-default-persp-name nil)
   (doom-modeline-persp-icon nil)
-  (doom-modeline-buffer-file-name-style 'truncate-except-project)
+  (doom-modeline-buffer-file-name-style 'file-name)
   (doom-modeline-buffer-modification-icon t)
   (doom-modeline-major-mode-icon t)
   (doom-modeline-buffer-encoding nil)
