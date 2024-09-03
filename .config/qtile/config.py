@@ -1,5 +1,6 @@
 """My Qtile configuration."""
 
+import re
 import subprocess
 from pathlib import Path
 from typing import Any, List
@@ -141,12 +142,12 @@ groups = [
     Group(
         "Com",
         layout="monadtall",
-        matches=[Match(title=["Microsoft Teams", "Outlook (PWA)"])],
+        matches=[Match(title=re.compile(r"^(Microsoft\ Teams|Outlook\ \(PWA\))$"))],
     ),
     Group(
         "Remote",
         layout="monadtall",
-        matches=[Match(title=["FE-V-013VV_S "])],
+        matches=[Match(title=re.compile(r"^(FE\-V\-013VV_S\ )$"))],
     ),
 ]
 
