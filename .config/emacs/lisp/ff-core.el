@@ -512,7 +512,7 @@ COMMAND: command to be executed"
   :config
   ;; use orderless as expression compiler
   (defun affe-orderless-regexp-compiler (input _type _ignorecase)
-    (setq input (orderless-pattern-compiler input))
+    (setq input (cdr (orderless-compile input)))
     (cons input (apply-partially #'orderless--highlight input t)))
   (setq affe-regexp-compiler #'affe-orderless-regexp-compiler)
   :bind
