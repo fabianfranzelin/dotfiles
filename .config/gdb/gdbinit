@@ -17,3 +17,9 @@ set $SHOW_NEST_INSN = 0
 
 # add glibc source path
 dir ~/.local/share/glibc-2.40/sysdeps/unix/sysv/linux/
+
+# for realgud tracking
+set annotate 1
+
+# for asynchronuous debugging of multiple processes. It allows you to execute commands as the process runs in the background.
+# set target-async on

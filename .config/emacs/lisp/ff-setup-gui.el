@@ -163,7 +163,7 @@ FUN: function to be called on the entry's path"
   :hook
   (after-init . doom-modeline-mode)
   :custom
-  (doom-modeline-height 15)
+  (doom-modeline-height 20)
   (doom-modeline-bar-width 6)
   (doom-modeline-modal-icon t)
   (doom-modeline-lsp t)
