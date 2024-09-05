@@ -165,7 +165,7 @@ FUN: function to be called on the entry's path"
   :custom
   (doom-modeline-height 27)
   (doom-modeline-bar-width 6)
-  (doom-modeline-modal-icon t)
+  (doom-modeline-modal-icon nil)
   (doom-modeline-lsp t)
   (doom-modeline-github nil)
   (doom-modeline-mu4e nil)
@@ -179,12 +179,17 @@ FUN: function to be called on the entry's path"
   (doom-modeline-major-mode-icon t)
   (doom-modeline-buffer-encoding nil)
   (doom-modeline-vcs-max-length 48)
+  (doom-modeline-time-analogue-clock t)
+  (doom-modeline-enable-word-count nil)
+  (doom-modeline-time-icon nil)
   :config
   ;; only load icons if kind-icon is available
   (with-eval-after-load 'kind-icon
     (customize-set-variable 'doom-modeline-icon t)))
 
 ;; show current time in mode line
+(customize-set-variable 'display-time-default-load-average nil)
+(customize-set-variable 'display-time-24hr-format t)
 (display-time)
 
 ;; -------------------------------------------------------------------
