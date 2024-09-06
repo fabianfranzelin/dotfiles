@@ -3,17 +3,18 @@
 
 ((nil . ((compile-command . "cd ./examples/cc-project/build && make")
          (eval . (defun run-command-recipe-ff/local ()
-                   (list
+                   (append
                     (when-let* ((project-dir (locate-dominating-file default-directory ".clangd")))
-                      (list :command-name "cc:cmake main"
-                            :command-line "mkdir -p build && cd build && cmake .."
-                            :working-dir project-dir))
+                      (list (list :command-name "cc:cmake main"
+                                  :command-line "mkdir -p build && cd build && cmake .."
+                                  :working-dir project-dir)))
                     (when-let* ((project-dir (locate-dominating-file default-directory "build"))
                                 (build-dir (expand-file-name "build" project-dir)))
-                      (if (f-file-p (expand-file-name "main" build-dir))
-                          (list :command-name "cc:run main"
-                                :command-line "./main"
-                                :working-dir build-dir))))))
+                      (list
+                       (if (f-file-p (expand-file-name "main" build-dir))
+                           (list :command-name "cc:run main"
+                                 :command-line "./main"
+                                 :working-dir build-dir)))))))
          (eval . (add-to-list 'run-command-recipes #'run-command-recipe-ff/local))
          ;; add some environment variables before compilation starts
          (eval . (add-hook 'compilation-mode-hook

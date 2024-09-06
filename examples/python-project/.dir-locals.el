@@ -2,12 +2,12 @@
 ;;; For more information see (info "(emacs) Directory Variables")
 
 ((nil . ((eval . (defun run-command-recipe-ff/local ()
-                   (list
+                   (append
                     (when-let* ((main-dir (locate-dominating-file default-directory "__main__.py")))
-                      (list :command-name "python:run main"
-                            :command-line "python3 __main__.py"
-                            :display "python:run main"
-                            :working-dir main-dir)))))
+                      (list (list :command-name "python:run main"
+                                  :command-line "python3 __main__.py"
+                                  :display "python:run main"
+                                  :working-dir main-dir))))))
          (eval . (add-to-list 'run-command-recipes #'run-command-recipe-ff/local))))
  (python-ts-mode . ((eval . (when-let* ((main-dir (locate-dominating-file default-directory "__main__.py")))
                               (setq python-pytest-executable

@@ -4,44 +4,41 @@
 ((nil . ((pyvenv-workon . nil)
          ;; Configure ;;;;;;;;;;;;;;;;;;;;;;;;;;;
          (eval . (defun run-command-recipe-ff/local ()
-                   (list
+                   (append
                     (when-let* ((project-dir (locate-dominating-file default-directory "configure")))
-                      (list :command-name "sh:configure"
-                            :command-line "./configure"
-                            :working-dir project-dir))
-                    (when-let* ((project-dir (locate-dominating-file default-directory "configure")))
-                      (list :command-name "sh:configure & install (skip Emacs and Qtile)"
-                            :command-line "./configure -i --skip-emacs-build --skip-qtile-installation"
-                            :working-dir project-dir
-                            :runner 'ff/run-command-runner-vterm)))))
+                      (list
+                       (list :command-name "sh:configure"
+                             :command-line "./configure"
+                             :working-dir project-dir)
+                       (list :command-name "sh:configure & install (skip Emacs and Qtile)"
+                             :command-line "./configure -i --skip-emacs-build --skip-qtile-installation"
+                             :working-dir project-dir
+                             :runner 'ff/run-command-runner-vterm))))))
          ;; Docs ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
          (eval . (defun run-command-recipe-ff/docs ()
-                   (list
+                   (append
                     (when-let* ((project-dir (locate-dominating-file default-directory ".git"))
                                 (docs-dir (expand-file-name "docs" project-dir))
                                 (build-script (expand-file-name "build.el" docs-dir)))
-                      (list :command-name "sh:build"
-                            :command-line "./build.el"
-                            :working-dir docs-dir))
+                      (list (list :command-name "sh:build"
+                                  :command-line "./build.el"
+                                  :working-dir docs-dir)))
                     (when-let* ((project-dir (locate-dominating-file default-directory ".git"))
                                 (docs-dir (expand-file-name "docs" project-dir))
                                 (publish-script (expand-file-name "publish.sh" docs-dir)))
-                      (list :command-name "sh:publish"
-                            :command-line "./publish.sh"
-                            :working-dir docs-dir))
-                    (when-let* ((project-dir (locate-dominating-file default-directory ".git"))
-                                (docs-dir (expand-file-name "docs" project-dir))
-                                (publish-script (expand-file-name "publish.sh" docs-dir)))
-                      (list :command-name "sh:publish (dryrun)"
-                            :command-line "./publish.sh --dryrun"
-                            :working-dir docs-dir))
+                      (list (list :command-name "sh:publish"
+                                  :command-line "./publish.sh"
+                                  :working-dir docs-dir)
+                            (list :command-name "sh:publish (dryrun)"
+                                  :command-line "./publish.sh --dryrun"
+                                  :working-dir docs-dir)))
                     (when-let* ((project-dir (locate-dominating-file default-directory ".git"))
                                 (docs-dir (expand-file-name "docs" project-dir))
                                 (build-script (expand-file-name "build.el" docs-dir))
                                 (publish-script (expand-file-name "publish.sh" docs-dir)))
-                      (list :command-name "sh:build_and_publish"
-                            :command-line "./build.el && ./publish.sh"
-                            :working-dir docs-dir)))))
+                      (list (list :command-name "sh:build_and_publish"
+                                  :command-line "./build.el && ./publish.sh"
+                                  :working-dir docs-dir))))))
          (run-command-recipes . (run-command-recipe-ff/local
                                  run-command-recipe-ff/docs
                                  run-command-recipe-ff/cc))))
