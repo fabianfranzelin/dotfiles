@@ -123,9 +123,31 @@ DIR: directory"
   ;; Emacs 28: Hide commands in M-x which do not apply to the current mode.
   ;; Corfu commands are hidden, since they are not supposed to be used via M-x.
   (read-extended-command-predicate #'command-completion-default-include-p)
+
+  ;; Emacs 30 and newer: Disable Ispell completion function. As an alternative,
+  ;; try `cape-dict'.
+  (text-mode-ispell-word-completion nil)
   :init
   ;; Recommended: Enable Corfu globally.
   (global-corfu-mode t)
+  (corfu-echo-mode t)
+  (corfu-history-mode t)
+  :config
+  (setq global-corfu-minibuffer
+        (lambda ()
+          (not (or (bound-and-true-p mct--active)
+                   (bound-and-true-p vertico--input)
+                   (eq (current-local-map) read-passwd-map)))))
+  ;; move candidates to minibuffer
+  (defun corfu-move-to-minibuffer ()
+    (interactive)
+    (pcase completion-in-region--data
+      (`(,beg ,end ,table ,pred ,extras)
+       (let ((completion-extra-properties extras)
+             completion-cycle-threshold completion-cycling)
+         (consult-completion-in-region beg end table pred)))))
+  (keymap-set corfu-map "M-m" #'corfu-move-to-minibuffer)
+  (add-to-list 'corfu-continue-commands #'corfu-move-to-minibuffer)
   :bind(:map corfu-map
              ("C-j" . corfu-next)
              ("C-p" . corfu-previous)
@@ -140,11 +162,17 @@ DIR: directory"
   (when (not (display-graphic-p))
     (corfu-terminal-mode t)))
 
-;; Use dabbrev with Corfu!
+;; Use Dabbrev with Corfu!
 (use-package dabbrev
   ;; Swap M-/ and C-M-/
   :bind (("M-/" . dabbrev-completion)
-         ("C-M-/" . dabbrev-expand)))
+         ("C-M-/" . dabbrev-expand))
+  :config
+  (add-to-list 'dabbrev-ignored-buffer-regexps "\\` ")
+  ;; Since 29.1, use `dabbrev-ignored-buffer-regexps' on older.
+  (add-to-list 'dabbrev-ignored-buffer-modes 'doc-view-mode)
+  (add-to-list 'dabbrev-ignored-buffer-modes 'pdf-view-mode)
+  (add-to-list 'dabbrev-ignored-buffer-modes 'tags-table-mode))
 
 ;; Add extensions
 (use-package cape
