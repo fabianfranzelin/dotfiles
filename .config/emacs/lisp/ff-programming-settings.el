@@ -149,7 +149,7 @@ FORCE: force update of grammars"
 (use-package realgud
   :after org
   :custom
-  (realgud:pdb-command-name "python3 -m pdb")
+  (realgud:pdb-command-name "python3 -m ipdb")
   (realgud-safe-mode nil))
 
 ;; -------------------------------------------------------------------
