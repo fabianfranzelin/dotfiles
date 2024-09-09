@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: def method(...)
+# key: def method(:)
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# --
+
+def ${1:method}($2:arguments):
+    $0
