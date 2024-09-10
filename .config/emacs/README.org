@@ -293,7 +293,7 @@ repository and check it out.
           pull
       else
           echo "The source directory ${__EMACS_SRC} already exists but it is not a git repository."
-          echo "Please remove it before you can continute."
+          echo "Please remove it before you can continue."
       fi
   fi
 #+end_src
