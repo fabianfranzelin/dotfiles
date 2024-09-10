@@ -194,7 +194,7 @@ Here, we combine the little helper functions from the previous section
 to install various versions of Emacs.
 
 First, we use a command line argument parser to get the user defined
-Emacs version. The default one is currently 29.
+Emacs version. The default one is currently 30.
 
 #+begin_src shell
   usage()
@@ -304,7 +304,7 @@ If no Emacs version was found for the given tag, just stop here.
   if [[ ! -d "${__EMACS_SRC}" ]]
   then
       echo "Unknown version tag. Only versions like 28.2 (for official releases) and"
-      echo " 29 (for feature branches that are named as \"emacs-<version>\") are supported."
+      echo " 30 (for feature branches that are named as \"emacs-<version>\") are supported."
       exit 1
   fi
 #+end_src

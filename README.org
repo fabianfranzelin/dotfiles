@@ -31,4 +31,4 @@ configure script of the repository
 
 + [[file:examples/README.org][Examples: Python, C++, org, Typescript/React]]
 + [[file:docs/content/index.org][Docs with org-mode and published as HTML on Github pages]]
-+ [[file:.config/emacs/README.org][How to build Emacs 29 with tree-sitter]]
++ [[file:.config/emacs/README.org][How to build Emacs 30 with tree-sitter]]

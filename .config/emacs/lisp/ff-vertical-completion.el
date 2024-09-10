@@ -114,7 +114,7 @@ DIR: directory"
   ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
   ;; (corfu-echo-documentation nil) ;; Disable documentation in the echo area
   (corfu-scroll-margin 5)        ;; Use scroll margin
-  (corfu-auto-prefix 2)
+  (corfu-auto-prefix 3)
   ;; Enable indentation+completion using the TAB key.
   ;; `completion-at-point' is often bound to M-TAB.
   (tab-always-indent 'complete)
@@ -130,7 +130,6 @@ DIR: directory"
   :init
   ;; Recommended: Enable Corfu globally.
   (global-corfu-mode t)
-  (corfu-echo-mode t)
   (corfu-history-mode t)
   :config
   (setq global-corfu-minibuffer
