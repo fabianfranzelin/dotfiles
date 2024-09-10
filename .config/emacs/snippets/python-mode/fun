@@ -4,5 +4,5 @@
 # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 # --
 
-def ${1:method}(${2:arguments}):
+def ${1:method}(${2:arguments}) -> ${3:type}:
     $0
