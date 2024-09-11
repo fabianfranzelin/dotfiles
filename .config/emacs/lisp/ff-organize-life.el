@@ -25,8 +25,8 @@ DIR: directory path"
                                                   ,(expand-file-name "notes/journal" org-directory)))
       (customize-set-variable 'org-roam-directory (expand-file-name "notes" org-directory))
       (customize-set-variable 'org-roam-dailies-directory (expand-file-name "journal" org-roam-directory))
-      (customize-set-variable 'org-cite-global-bibliography `(,(file-truename (expand-file-name "bib/references.bib" org-directory))))
-      (customize-set-variable 'citar-bibliography `(,(file-truename (expand-file-name "bib/references.bib" org-directory))))
+      (customize-set-variable 'org-cite-global-bibliography `(,(file-truename (expand-file-name "notes/bib/references.bib" org-directory))))
+      (customize-set-variable 'citar-bibliography `(,(file-truename (expand-file-name "notes/bib/references.bib" org-directory))))
       (customize-set-variable 'citar-notes-paths `(,org-roam-directory))
 
       (customize-set-variable
@@ -400,8 +400,8 @@ DIR: directory path"
   (org-cite-insert-processor 'citar)
   (org-cite-follow-processor 'citar)
   (org-cite-activate-processor 'citar)
-  (org-cite-global-bibliography `(,(file-truename (expand-file-name "bib/references.bib" org-directory))))
-  (citar-bibliography `(,(file-truename (expand-file-name "bib/references.bib" org-directory))))
+  (org-cite-global-bibliography `(,(file-truename (expand-file-name "notes/bib/references.bib" org-directory))))
+  (citar-bibliography `(,(file-truename (expand-file-name "notes/bib/references.bib" org-directory))))
   (citar-notes-paths `(,org-roam-directory))
   (citar-at-point-function 'embark-act)
   :config
