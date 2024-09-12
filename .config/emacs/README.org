@@ -141,7 +141,6 @@ Then, I install all the required third party dependencies and build Emacs
                       --with-dbus \
                       --with-x \
                       --with-x-toolkit=gtk3 \
-                      --with-native-compilation=aot \
                       --with-tree-sitter
           make -j"$(nproc)"
       )
