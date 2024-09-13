@@ -197,25 +197,28 @@ FUN: function to be called on the entry's path"
 (set-face-attribute 'default nil :height 145) ;; default = 100
 
 ;; Show number of lines in the left side of the buffer
-(global-display-line-numbers-mode 1)
+(when (and (> (display-pixel-width) 750)
+           (> (display-pixel-height) 500))
+  (global-display-line-numbers-mode 1)
 
-(dolist (mode '(term-mode-hook
-                vterm-mode-hook
-                dired-mode-hook
-                compilation-mode-hook
-                pdf-view-mode-hook
-                enlight-mode-hook))
-  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+  (dolist (mode '(term-mode-hook
+                  vterm-mode-hook
+                  dired-mode-hook
+                  compilation-mode-hook
+                  pdf-view-mode-hook
+                  enlight-mode-hook))
+    (add-hook mode (lambda () (display-line-numbers-mode 0)))))
 
 ;; show column numbers on the modeline
 (column-number-mode 1)
 
 ;; enable visual line mode to truncate long line
-(global-visual-line-mode t)
+(when (and (> (display-pixel-width) 750)
+           (> (display-pixel-height) 500))
+  (global-visual-line-mode t)
 
-(dolist (mode '(proced-mode-hook
-                org-mode-hook))
-  (add-hook mode (lambda () (visual-line-mode 0))))
+  (dolist (mode '(proced-mode-hook))
+    (add-hook mode (lambda () (visual-line-mode 0)))))
 
 ;; Icons for corfu completion
 (use-package kind-icon
