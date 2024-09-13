@@ -306,6 +306,9 @@ FUN: function to be called on the entry's path"
 ;; center the text for the corresponding modes; writing documentation
 ;; is easier with this setting.
 (use-package olivetti
+  ;; Do not waste screen space on small screens
+  :if (and (> (display-pixel-width) 750)
+           (> (display-pixel-height) 500))
   :custom
   (olivetti-body-width 0.66)
   :hook
