@@ -213,7 +213,8 @@ FUN: function to be called on the entry's path"
 ;; enable visual line mode to truncate long line
 (global-visual-line-mode t)
 
-(dolist (mode '(proced-mode-hook))
+(dolist (mode '(proced-mode-hook
+                org-mode-hook))
   (add-hook mode (lambda () (visual-line-mode 0))))
 
 ;; Icons for corfu completion
