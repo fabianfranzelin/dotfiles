@@ -74,6 +74,9 @@ Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
             then
                 echo "Ignore when lid is closed (systemd)"
                 echo "HandleLidSwitch=ignore" | sudo tee "${LOGIND}"
+                echo "HandleLidSwitchExternalPower==ignore" | sudo tee "${LOGIND}"
+                echo "HandleLidSwitchDocked==ignore" | sudo tee "${LOGIND}"
+
             fi
             UPOWER="/etc/UPower/UPower.conf"
             if [ -f "${UPOWER}" ]
