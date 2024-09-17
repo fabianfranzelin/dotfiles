@@ -36,6 +36,11 @@
 ;; -------------------------------------------------------------------
 (require 'ff-ensure-system-packages)
 
+(defun ff/is-mobile ()
+  "Define small screen sizes as mobile."
+  (and (< (display-pixel-width) 750)
+       (< (display-pixel-height) 500)))
+
 ;; enables local variables per default
 (customize-set-variable 'enable-local-variables t)
 ;; dir-local variables will be applied to remote files.

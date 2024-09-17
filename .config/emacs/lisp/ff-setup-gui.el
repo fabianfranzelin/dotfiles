@@ -71,8 +71,7 @@
 (use-package enlight
   ;; The splashscreen does not look good on small displays, hence, I
   ;; disable it there
-  :if (and (> (display-pixel-width) 1000)
-           (> (display-pixel-height) 500))
+  :if (not (ff/is-mobile))
   :straight (:host github :repo "ichernyshovvv/enlight")
   :preface
   (defface ff/enlight-yellow-bold
@@ -197,8 +196,7 @@ FUN: function to be called on the entry's path"
 (set-face-attribute 'default nil :height 145) ;; default = 100
 
 ;; Show number of lines in the left side of the buffer
-(when (and (> (display-pixel-width) 750)
-           (> (display-pixel-height) 500))
+(when (not (ff/is-mobile))
   (global-display-line-numbers-mode 1)
 
   (dolist (mode '(term-mode-hook
@@ -213,8 +211,7 @@ FUN: function to be called on the entry's path"
 (column-number-mode 1)
 
 ;; enable visual line mode to truncate long line
-(when (and (> (display-pixel-width) 750)
-           (> (display-pixel-height) 500))
+(when (not (ff/is-mobile))
   (global-visual-line-mode t)
 
   (dolist (mode '(proced-mode-hook))
@@ -311,8 +308,7 @@ FUN: function to be called on the entry's path"
 ;; is easier with this setting.
 (use-package olivetti
   ;; Do not waste screen space on small screens
-  :if (and (> (display-pixel-width) 750)
-           (> (display-pixel-height) 500))
+  :if (not (ff/is-mobile))
   :custom
   (olivetti-body-width 0.66)
   :hook

@@ -275,8 +275,7 @@ DIR: directory"
 (use-package marginalia
   ;; There is not space for marginalia on small screens, hence, I
   ;; disable it there
-  :if (and (> (display-pixel-width) 750)
-           (> (display-pixel-height) 500))
+  :if (not (ff/is-mobile))
   :after vertico
   :hook
   (vertico-mode . marginalia-mode))
