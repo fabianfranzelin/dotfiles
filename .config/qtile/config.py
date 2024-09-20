@@ -142,7 +142,13 @@ groups = [
     Group(
         "Com",
         layout="monadtall",
-        matches=[Match(title=re.compile(r"^(Microsoft\ Teams|Outlook\ \(PWA\))$"))],
+        matches=[
+            Match(
+                title=re.compile(
+                    r"^(Microsoft\ Teams|Outlook\ \(PWA\)|Chat \| Microsoft Teams classic)$"
+                )
+            )
+        ],
     ),
     Group(
         "Remote",
