@@ -7,7 +7,7 @@ then
     IDS="id_rsa id_ed25519"
 fi
 
-if [ "$(hostname)" = "ThinkPad" ] || [ "$(hostname)" = "DESKTOP-E7EFIIN" ]
+if [ "$(hostname)" = "ThinkPad" ] || [ "$(hostname)" = "DESKTOP-E7EFIIN" ] || [ "$(hostname)" = "pauline" ]
 then
     IDS="id_ed25519"
 fi
