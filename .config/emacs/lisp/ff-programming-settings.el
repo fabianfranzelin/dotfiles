@@ -372,38 +372,37 @@ FORCE: force update of grammars"
 ;; -------------------------------------------------------------------
 ;; SQLite
 ;; -------------------------------------------------------------------
-(require 'sqlite-mode-extras)
+(use-package sqlite-mode-extras
+  :hook ((sqlite-mode . sqlite-extras-minor-mode))
+  :init
+  ;; Open sqlite data bases with sqlite-open-file
+  (defun ff/sqlite-view-file-magically ()
+    "Run `sqlite-mode-open-file' on the file in the current buffer."
+    (require 'sqlite-mode)
+    (let ((file-name buffer-file-name))
+      (kill-current-buffer)
+      (sqlite-mode-open-file file-name)))
 
-(defun ff/sqlite-mode-extras-previous-column ()
-  "Navigate to previous column."
-  (interactive)
-  (sqlite-mode-extras-next-column t))
-
-(define-key sqlite-mode-map "n" 'next-line)
-(define-key sqlite-mode-map "p" 'previous-line)
-(define-key sqlite-mode-map "f" 'sqlite-mode-extras-next-column)
-(define-key sqlite-mode-map "b" 'ff/sqlite-mode-extras-previous-column)
-(define-key sqlite-mode-map "d" 'sqlite-mode-delete)
-(define-key sqlite-mode-map "D" 'sqlite-mode-extras-delete-row-dwim)
-(define-key sqlite-mode-map "e" 'sqlite-mode-extras-edit-row-field)
-(define-key sqlite-mode-map (kbd "<backtab>") 'sqlite-mode-extras-backtab-dwim)
-(define-key sqlite-mode-map (kbd "<tab>") 'sqlite-mode-extras-tab-dwim)
-(define-key sqlite-mode-map (kbd "RET") 'sqlite-mode-extras-ret-dwim)
-(define-key sqlite-mode-map "+" 'sqlite-mode-extras-add-row)
-(define-key sqlite-mode-map "g" 'sqlite-mode-extras-refresh)
-
-;; Open sqlite data bases with sqlite-open-file
-(defun ff/sqlite-view-file-magically ()
-  "Run `sqlite-mode-open-file' on the file in the current buffer."
-  (require 'sqlite-mode)
-  (let ((file-name buffer-file-name))
-    (kill-current-buffer)
-    (sqlite-mode-open-file file-name)))
-
-;; Load all files that start with "SQLite format 3" with sqlite-mode
-;; and not in binary mode
-(add-to-list 'magic-mode-alist
-             '("SQLite format 3\x00" . ff/sqlite-view-file-magically))
+  ;; Load all files that start with "SQLite format 3" with sqlite-mode
+  ;; and not in binary mode
+  (add-to-list 'magic-mode-alist
+               '("SQLite format 3\x00" . ff/sqlite-view-file-magically))
+  :bind (:map
+         sqlite-mode-map
+         ("n" . next-line)
+         ("p" . previous-line)
+         ("b" . sqlite-mode-extras-backtab-dwim)
+         ("f" . sqlite-mode-extras-tab-dwim)
+         ("+" . sqlite-mode-extras-add-row)
+         ("D" . sqlite-mode-extras-delete-row-dwim)
+         ("C" . sqlite-mode-extras-compose-and-execute)
+         ("E" . sqlite-mode-extras-execute)
+         ("S" . sqlite-mode-extras-execute-and-display-select-query)
+         ("DEL" . sqlite-mode-extras-delete-row-dwim)
+         ("g" . sqlite-mode-extras-refresh)
+         ("<backtab>" . sqlite-mode-extras-backtab-dwim)
+         ("<tab>" . sqlite-mode-extras-tab-dwim)
+         ("RET" . sqlite-mode-extras-ret-dwim)))
 
 ;; -------------------------------------------------------------------
 ;; Jinja mode
