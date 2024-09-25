@@ -388,23 +388,6 @@ COMMAND: command to be executed"
               ("C-o" . casual-dired-tmenu)))
 
 (use-package dwim-shell-command
-  :preface
-  (defun ff/dwim-shell-commands-restart-ssh-agent ()
-    "Restart ssh agent and add ssh keys from password store."
-    (interactive)
-    (dwim-shell-command-on-marked-files
-     "Restart ssh agent and add ssh keys from password store."
-     "ssh-add-keys"
-     :utils "ssh-add-keys"
-     :silent-success t))
-  (defun ff/dwim-shell-commands-set-keyboard-layout ()
-    "Set default keyboard layout."
-    (interactive)
-    (dwim-shell-command-on-marked-files
-     "Set default keyboard layout."
-     "set_keyboard_layout"
-     :utils "set_keyboard_layout"
-     :silent-success t))
   :bind
   (:map
    dired-mode-map
@@ -422,7 +405,23 @@ COMMAND: command to be executed"
    ("C-x D s" . ff/dwim-shell-commands-restart-ssh-agent)
    ("C-x D k" . ff/dwim-shell-commands-set-keyboard-layout))
   :config
-  (require 'dwim-shell-commands))
+  (require 'dwim-shell-commands)
+  (defun ff/dwim-shell-commands-restart-ssh-agent ()
+    "Restart ssh agent and add ssh keys from password store."
+    (interactive)
+    (dwim-shell-command-on-marked-files
+     "Restart ssh agent and add ssh keys from password store."
+     "ssh-add-keys"
+     :utils "ssh-add-keys"
+     :silent-success t))
+  (defun ff/dwim-shell-commands-set-keyboard-layout ()
+    "Set default keyboard layout."
+    (interactive)
+    (dwim-shell-command-on-marked-files
+     "Set default keyboard layout."
+     "set_keyboard_layout"
+     :utils "set_keyboard_layout"
+     :silent-success t)))
 
 ;; -------------------------------------------------------------------
 ;; Undo tree - make undos more powerful
