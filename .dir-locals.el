@@ -3,7 +3,7 @@
 
 ((nil . ((pyvenv-workon . nil)
          ;; Configure ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-         (eval . (defun run-command-recipe-ff/local ()
+         (eval . (defun run-command-recipe-ff/configure ()
                    (append
                     (when-let* ((project-dir (locate-dominating-file default-directory "configure")))
                       (list
@@ -39,9 +39,8 @@
                       (list (list :command-name "sh:build_and_publish"
                                   :command-line "./build.el && ./publish.sh"
                                   :working-dir docs-dir))))))
-         (run-command-recipes . (run-command-recipe-ff/local
-                                 run-command-recipe-ff/docs
-                                 run-command-recipe-ff/cc))))
+         (eval . (add-to-list 'run-command-recipes #'run-command-recipe-ff/configure))
+         (eval . (add-to-list 'run-command-recipes #'run-command-recipe-ff/docs))))
  (yaml-mode . ((eglot-workspace-configuration
                 . (:yaml (:rules (:key-ordering nil
                                                 :line-length nil)

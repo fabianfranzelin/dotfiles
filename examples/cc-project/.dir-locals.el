@@ -2,7 +2,7 @@
 ;;; For more information see (info "(emacs) Directory Variables")
 
 ((nil . ((compile-command . "cd ./examples/cc-project/build && make")
-         (eval . (defun run-command-recipe-ff/local ()
+         (eval . (defun run-command-recipe-ff/c++-example ()
                    (append
                     (when-let* ((project-dir (locate-dominating-file default-directory ".clangd")))
                       (list (list :command-name "cc:cmake main"
@@ -15,7 +15,7 @@
                            (list :command-name "cc:run main"
                                  :command-line "./main"
                                  :working-dir build-dir)))))))
-         (eval . (add-to-list 'run-command-recipes #'run-command-recipe-ff/local))
+         (eval . (add-to-list 'run-command-recipes #'run-command-recipe-ff/c++-example))
          ;; add some environment variables before compilation starts
          (eval . (add-hook 'compilation-mode-hook
                            (lambda ()
