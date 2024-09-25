@@ -15,7 +15,9 @@
                            (list :command-name "cc:run main"
                                  :command-line "./main"
                                  :working-dir build-dir)))))))
-         (eval . (add-to-list 'run-command-recipes #'run-command-recipe-ff/c++-example))
+         (run-command-recipes . (run-command-recipe-ff/configure
+                                 run-command-recipe-ff/docs
+                                 run-command-recipe-ff/c++-example))
          ;; add some environment variables before compilation starts
          (eval . (add-hook 'compilation-mode-hook
                            (lambda ()

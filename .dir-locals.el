@@ -39,8 +39,8 @@
                       (list (list :command-name "sh:build_and_publish"
                                   :command-line "./build.el && ./publish.sh"
                                   :working-dir docs-dir))))))
-         (eval . (add-to-list 'run-command-recipes #'run-command-recipe-ff/configure))
-         (eval . (add-to-list 'run-command-recipes #'run-command-recipe-ff/docs))))
+         (run-command-recipes . (run-command-recipe-ff/configure
+                                 run-command-recipe-ff/docs))))
  (yaml-mode . ((eglot-workspace-configuration
                 . (:yaml (:rules (:key-ordering nil
                                                 :line-length nil)
