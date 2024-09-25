@@ -12,6 +12,10 @@ then
     IDS="id_ed25519"
 fi
 
+# Restart ssh agent
+pkill -9 ssh-agent && eval $(ssh-agent -s)
+
+# Add keys
 for id in ${IDS}; do
     PRIVATE_KEY="${HOME}/.ssh/${id}"
     PUBLIC_KEY="${HOME}/.ssh/${id}.pub"

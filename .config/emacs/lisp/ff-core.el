@@ -387,6 +387,43 @@ COMMAND: command to be executed"
   :bind (:map dired-mode-map
               ("C-o" . casual-dired-tmenu)))
 
+(use-package dwim-shell-command
+  :preface
+  (defun ff/dwim-shell-commands-restart-ssh-agent ()
+    "Restart ssh agent and add ssh keys from password store."
+    (interactive)
+    (dwim-shell-command-on-marked-files
+     "Restart ssh agent and add ssh keys from password store."
+     "ssh-add-keys"
+     :utils "ssh-add-keys"
+     :silent-success t))
+  (defun ff/dwim-shell-commands-set-keyboard-layout ()
+    "Set default keyboard layout."
+    (interactive)
+    (dwim-shell-command-on-marked-files
+     "Set default keyboard layout."
+     "set_keyboard_layout"
+     :utils "set_keyboard_layout"
+     :silent-success t))
+  :bind
+  (:map
+   dired-mode-map
+   ([remap dired-do-async-shell-command] . dwim-shell-command)
+   ([remap dired-do-shell-command] . dwim-shell-command)
+   ([remap dired-smart-shell-command] . dwim-shell-command)
+   ("C-d j" . dwim-shell-commands-join-as-pdf)
+   ("C-d r" . dwim-shell-commands-reorient-image)
+   ("C-d v" . dwim-shell-commands-video-to-mp3)
+   ("C-d m" . dwim-shell-commands-audio-to-mp3)
+   ("C-d z" . dwim-shell-commands-zip)
+   :map global-map
+   ("C-x D g" . dwim-shell-commands-kill-gpg-agent)
+   ("C-x D p" . dwim-shell-commands-kill-process)
+   ("C-x D s" . ff/dwim-shell-commands-restart-ssh-agent)
+   ("C-x D k" . ff/dwim-shell-commands-set-keyboard-layout))
+  :config
+  (require 'dwim-shell-commands))
+
 ;; -------------------------------------------------------------------
 ;; Undo tree - make undos more powerful
 ;; -------------------------------------------------------------------
@@ -413,22 +450,12 @@ COMMAND: command to be executed"
 (use-package pass
   :custom (pass-show-keybindings nil))
 
-(defun ff/restart-ssh-agent ()
-  "Add all known ssh-keys from pass."
-  (interactive)
-  (async-shell-command "pkill -9 ssh-agent && eval $(ssh-agent -s) && ssh-add-keys"))
-
 (defun ff/unlock-key ()
   "Unlock gpg key."
   (interactive)
   (if (password-store-get "usernames/public@github")
       (message "GPG key is unlocked")
     (message "Wrong password. GPG key is not unlocked.")))
-
-(defun ff/kill-gpg-agent ()
-  "Kill gpg-agent."
-  (interactive)
-  (async-shell-command "gpgconf --kill gpg-agent"))
 
 (keymap-global-set "C-c C-g" 'ff/unlock-key)
 
