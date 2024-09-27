@@ -21,5 +21,8 @@ dir ~/.local/share/glibc-2.40/sysdeps/unix/sysv/linux/
 # for realgud tracking
 set annotate 1
 
+# save history over multiple sessions
+set history save on
+
 # for asynchronuous debugging of multiple processes. It allows you to execute commands as the process runs in the background.
 # set target-async on
