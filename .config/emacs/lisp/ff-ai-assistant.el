@@ -12,6 +12,9 @@
   (defun ff/get-openai-token ()
     "Load and return the OpenAI token."
     (password-store-get "tokens/fabian.franzelin@openAI.com"))
+  (defun ff/get-gemini-token ()
+    "Load and return the OpenAI token."
+    (password-store-get "tokens/fabian.franzelin@gemini"))
   :custom
   (gptel-api-key #'ff/get-openai-token)
   (gptel-default-mode 'org-mode)
@@ -21,6 +24,9 @@
   (add-hook 'gptel-post-stream 'gptel-auto-scroll)
   ;; move cursor to next heading when response is posted
   (add-hook 'gptel-post-response-functions 'gptel-end-of-response)
+  ;; register gemini as backend for gptel
+  ;; :key can be a function that returns the API key.
+  (gptel-make-gemini "Gemini" :key #'ff/get-gemini-token :stream t)
   :bind (("C-c g" . gptel)))
 
 ;; GitHub copilot
