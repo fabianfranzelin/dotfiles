@@ -71,7 +71,6 @@ DIR: directory path"
   (org-agenda-start-with-log-mode t)
   (org-log-done 'time)
   (org-log-into-drawer t)
-  (org-babel-python-command "/usr/bin/python3")
   ;; disable isearch when using org-goto
   (org-goto-auto-isearch nil)
   ;; use relative paths for links
