@@ -4,7 +4,7 @@ install_parasoft()
 {
     ARTIFACTORY_GENERIC_EXT_URL="https://jfrog.ad-alliance.biz/artifactory/aosp-generic-external-local/"
     PARASOFT_VERSION="2024.1.0-minimal-aos1"
-    PARASOFT_INSTALL_DIR="${HOME}/.local/share/parasoft"
+    PARASOFT_INSTALL_DIR="/usr/share/parasoft"
 
     export ARTIFACTORY_APIKEY
     ARTIFACTORY_APIKEY="$(pass tokens/fabian.franzelin@de.bosch.com@jfrog.ad-alliance.biz)"
@@ -12,11 +12,14 @@ install_parasoft()
 
     __TMP_DIR="$(mktemp -d)"
     PARASOFT_OUT_PATH="${__TMP_DIR}/${FILE}"
+
+    mkdir -p ${PARASOFT_INSTALL_DIR}
+    sudo chown ${USER} ${PARASOFT_INSTALL_DIR}
+    sudo chmod 755 ${PARASOFT_INSTALL_DIR}
+
     echo "Download parasoft to ${PARASOFT_OUT_PATH}"
     curl -f -H "Authorization: Bearer $ARTIFACTORY_APIKEY" ${ARTIFACTORY_GENERIC_EXT_URL}tools/parasoft_cpptest_professional/${PARASOFT_VERSION}/${FILE} -o "${PARASOFT_OUT_PATH}"
     echo "245aa476637be42d1a20b852d31f292aadd659ba9c82ee111c1fb8a181cba47c" "${PARASOFT_OUT_PATH}" | sha256sum --check
-
-    mkdir -p ${PARASOFT_INSTALL_DIR}
     tar xzf "${PARASOFT_OUT_PATH}" -C ${PARASOFT_INSTALL_DIR}
 
     FILE=parasoft_cpptest_ct-${PARASOFT_VERSION}-linux.x86_64.tar.gz
