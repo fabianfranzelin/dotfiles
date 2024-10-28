@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+install_parasoft()
+{
+    ARTIFACTORY_GENERIC_EXT_URL="https://jfrog.ad-alliance.biz/artifactory/aosp-generic-external-local/"
+    PARASOFT_VERSION="2024.1.0-minimal-aos1"
+    PARASOFT_INSTALL_DIR="${HOME}/.local/share/parasoft"
+
+    export ARTIFACTORY_APIKEY
+    ARTIFACTORY_APIKEY="$(pass tokens/fabian.franzelin@de.bosch.com@jfrog.ad-alliance.biz)"
+    FILE=parasoft_cpptest_professional-${PARASOFT_VERSION}-linux.x86_64.tar.gz
+
+    __TMP_DIR="$(mktemp -d)"
+    PARASOFT_OUT_PATH="${__TMP_DIR}/${FILE}"
+    echo "Download parasoft to ${PARASOFT_OUT_PATH}"
+    curl -f -H "Authorization: Bearer $ARTIFACTORY_APIKEY" ${ARTIFACTORY_GENERIC_EXT_URL}tools/parasoft_cpptest_professional/${PARASOFT_VERSION}/${FILE} -o "${PARASOFT_OUT_PATH}"
+    echo "245aa476637be42d1a20b852d31f292aadd659ba9c82ee111c1fb8a181cba47c" "${PARASOFT_OUT_PATH}" | sha256sum --check
+
+    mkdir -p ${PARASOFT_INSTALL_DIR}
+    tar xzf "${PARASOFT_OUT_PATH}" -C ${PARASOFT_INSTALL_DIR}
+
+    FILE=parasoft_cpptest_ct-${PARASOFT_VERSION}-linux.x86_64.tar.gz
+    PARASOFT_CT_OUT_PATH="${__TMP_DIR}/${FILE}"
+    echo "Download parasoft_ct to ${PARASOFT_CT_OUT_PATH}"
+    curl -f -H "Authorization: Bearer $ARTIFACTORY_APIKEY" ${ARTIFACTORY_GENERIC_EXT_URL}tools/parasoft_cpptest_ct/${PARASOFT_VERSION}/${FILE} -o "${PARASOFT_CT_OUT_PATH}"
+    echo "3b417ba864e5b23296d7f0affb15a91505a1d8954af9be0d50a78b0968126412" "${PARASOFT_CT_OUT_PATH}" | sha256sum --check
+    tar xzf "${PARASOFT_CT_OUT_PATH}" -C ${PARASOFT_INSTALL_DIR}
+}
