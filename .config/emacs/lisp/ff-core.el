@@ -399,6 +399,7 @@ COMMAND: command to be executed"
    ("C-d v" . dwim-shell-commands-video-to-mp3)
    ("C-d m" . dwim-shell-commands-audio-to-mp3)
    ("C-d z" . dwim-shell-commands-zip)
+   ("C-d o" . ff/dwim-shell-commands-rebot)
    :map global-map
    ("C-x D g" . dwim-shell-commands-kill-gpg-agent)
    ("C-x D p" . dwim-shell-commands-kill-process)
@@ -421,6 +422,14 @@ COMMAND: command to be executed"
      "Set default keyboard layout."
      "set_keyboard_layout"
      :utils "set_keyboard_layout"
+     :silent-success t))
+  (defun ff/dwim-shell-commands-rebot ()
+    "Set default keyboard layout."
+    (interactive)
+    (dwim-shell-command-on-marked-files
+     "Launch rebot to convert xml files to html reports."
+     "rebot '<<f>>'"
+     :utils "rebot"
      :silent-success t)))
 
 ;; -------------------------------------------------------------------
