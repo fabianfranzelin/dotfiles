@@ -62,7 +62,8 @@ install_base() {
          evince \
          gcovr \
          xdg-utils \
-         libgraphviz-dev
+         libgraphviz-dev \
+         gthumb
 
     if ( __is_wsl )
     then
