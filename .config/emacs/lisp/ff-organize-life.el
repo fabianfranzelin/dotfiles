@@ -133,6 +133,12 @@ DIR: directory path"
         ("C-c C-x Y" . org-download-screenshot)
         ("C-c C-x y" . org-download-yank)))
 
+(use-package toc-org
+  :after (org markdown-mode)
+  :hook
+  (org-mode . toc-org)
+  (markdown-mode . toc-org))
+
 ;; -------------------------------------------------------------------
 ;; Org modern: nice fonts, colors, etc.
 ;; -------------------------------------------------------------------
