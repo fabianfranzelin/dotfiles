@@ -51,13 +51,13 @@ keys = [
     Key(
         [mod, "control"],
         "l",
-        lazy.screen.next_group(skip_empty=True),
+        lazy.screen.next_group(skip_empty=False),
         desc="Navigate to next group",
     ),
     Key(
         [mod, "control"],
         "j",
-        lazy.screen.prev_group(skip_empty=True),
+        lazy.screen.prev_group(skip_empty=False),
         desc="Navigate to previous group",
     ),
     Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
@@ -95,9 +95,6 @@ keys = [
             str(Path("rofi -show p -modi p:~/.local/bin/rofi-power-menu").expanduser())
         ),
     ),
-    # Keyboard layout and screen layout
-    Key([mod, "control"], "k", lazy.spawn("set_keyboard_layout")),
-    Key([mod, "control"], "s", lazy.spawn("set_screen_layout")),
     # Groups
     Key([mod, "control"], "Left", lazy.screen.prev_group()),
     Key([mod, "control"], "Right", lazy.screen.next_group()),
