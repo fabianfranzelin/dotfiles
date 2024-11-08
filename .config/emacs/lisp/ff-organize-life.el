@@ -136,8 +136,8 @@ DIR: directory path"
 (use-package toc-org
   :after (org markdown-mode)
   :hook
-  (org-mode . toc-org)
-  (markdown-mode . toc-org))
+  (org-mode . toc-org-mode)
+  (markdown-mode . toc-org-mode))
 
 ;; -------------------------------------------------------------------
 ;; Org modern: nice fonts, colors, etc.
