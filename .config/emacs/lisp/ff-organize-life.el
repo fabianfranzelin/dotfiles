@@ -25,6 +25,7 @@ DIR: directory path"
                                                   ,(expand-file-name "notes/journal" org-directory)))
       (customize-set-variable 'org-roam-directory (expand-file-name "notes" org-directory))
       (customize-set-variable 'org-roam-dailies-directory (expand-file-name "journal" org-roam-directory))
+      (customize-set-variable 'org-roam-db-location (expand-file-name "org-roam.db" org-roam-directory))
       (customize-set-variable 'org-cite-global-bibliography `(,(file-truename (expand-file-name "notes/bib/references.bib" org-directory))))
       (customize-set-variable 'citar-bibliography `(,(file-truename (expand-file-name "notes/bib/references.bib" org-directory))))
       (customize-set-variable 'citar-notes-paths `(,org-roam-directory))
@@ -244,6 +245,7 @@ DIR: directory path"
   (org-mode . ff/configure-org-roam-mode)
   :custom
   (org-roam-directory (expand-file-name "notes" org-directory))
+  (org-roam-db-location (expand-file-name "org-roam.db" org-roam-directory))
   (org-roam-node-display-template
    (concat "${title:80}"
            (propertize "${tags:20}" 'face 'org-tag)
