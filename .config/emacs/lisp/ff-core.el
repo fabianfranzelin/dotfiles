@@ -381,12 +381,6 @@ COMMAND: command to be executed"
   (:map dired-mode-map
         ("H" . dired-hide-dotfiles-mode)))
 
-(use-package casual-dired
-  :straight (:host github :repo "kickingvegas/casual-dired")
-  :after dired
-  :bind (:map dired-mode-map
-              ("C-o" . casual-dired-tmenu)))
-
 (use-package dwim-shell-command
   :bind
   (:map
@@ -682,15 +676,6 @@ TEXT: title"
 
 ;; save the first 500 entries of the kill ring
 (customize-set-variable 'savekill-max-saved-items 500)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Calc
-
-(use-package casual-calc
-  :straight (:host github :repo "kickingvegas/casual-calc")
-  :bind
-  (:map calc-mode-map
-        ("C-o" . casual-calc-tmenu)))
 
 (provide 'ff-core)
 
