@@ -74,11 +74,9 @@ Then, I install all the required third party dependencies and build Emacs
   build() {
       echo "Install dependencies for building Emacs ${__EMACS_VERSION}"
       sudo apt install -y \
-           gcc-10 \
-           g++-10 \
+           gcc \
+           g++ \
            libgccjit0 \
-           libgccjit-10-dev \
-           libgccjit-9-dev \
            libjansson4 \
            libjansson-dev \
            libacl1-dev \
@@ -94,7 +92,25 @@ Then, I install all the required third party dependencies and build Emacs
            libxpm-dev \
            libncurses-dev \
            texinfo \
-	   libsqlite3-dev
+           libsqlite3-dev
+
+      if apt-cache policy gcc-10 | grep -q "Candidate: 10"
+      then
+          sudo apt install -y gcc-10 g++-10
+          export CC=/usr/bin/gcc-10 CXX=/usr/bin/gcc-10
+      fi
+
+      # List of packages with specific versions
+      packages=(
+          "libgccjit-9-dev"
+          "libgccjit-10-dev"
+          "libgccjit-12-dev"
+      )
+
+      # Iterate over the list and install each package
+      for package in "${packages[@]}"; do
+          sudo apt install "$package" -y
+      done
 
       if [ -d "${__EMACS_BUILD}" ]
       then
@@ -119,7 +135,6 @@ Then, I install all the required third party dependencies and build Emacs
 
       (
           cd "${__EMACS_SRC}" || exit 1
-          export CC=/usr/bin/gcc-10 CXX=/usr/bin/gcc-10
           # clean everything before you start
           make clean
           # Make sure that treesitter lib is available to Emacs build

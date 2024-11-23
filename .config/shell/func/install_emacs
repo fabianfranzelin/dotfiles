@@ -25,9 +25,7 @@ install_emacs()
          clang-format \
          clang-tidy \
          clangd \
-         clangd-12 \
          clang \
-         clang-12 \
          valgrind \
          ripgrep \
          fd-find \
@@ -37,6 +35,17 @@ install_emacs()
          enchant-2 \
          libenchant-2-dev \
          libgit2-dev
+
+    # List of packages with specific versions
+    packages=(
+        "clang-12"
+        "clangd-12"
+    )
+
+    # Iterate over the list and install each package
+    for package in "${packages[@]}"; do
+        sudo apt install "$package" -y
+    done
 
     # emacs pdf-tools dependencies
     sudo apt-get install -y \
