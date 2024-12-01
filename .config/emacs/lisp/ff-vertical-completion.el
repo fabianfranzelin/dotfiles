@@ -127,10 +127,9 @@ DIR: directory"
   ;; Emacs 30 and newer: Disable Ispell completion function. As an alternative,
   ;; try `cape-dict'.
   (text-mode-ispell-word-completion nil)
-  :init
-  ;; Recommended: Enable Corfu globally.
-  (global-corfu-mode t)
-  (corfu-history-mode t)
+  (corfu-min-width 20)
+  :hook
+  (after-init . global-corfu-mode)
   :config
   (setq global-corfu-minibuffer
         (lambda ()
@@ -147,6 +146,15 @@ DIR: directory"
          (consult-completion-in-region beg end table pred)))))
   (keymap-set corfu-map "M-m" #'corfu-move-to-minibuffer)
   (add-to-list 'corfu-continue-commands #'corfu-move-to-minibuffer)
+
+  (setq corfu-popupinfo-delay '(1.25 . 0.5))
+  (corfu-popupinfo-mode 1) ; shows documentation after `corfu-popupinfo-delay'
+
+  ;; Sort by input history (no need to modify `corfu-sort-function').
+  (with-eval-after-load 'savehist
+    (corfu-history-mode 1)
+    (add-to-list 'savehist-additional-variables 'corfu-history))
+
   :bind(:map corfu-map
              ("C-j" . corfu-next)
              ("C-p" . corfu-previous)

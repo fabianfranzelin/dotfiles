@@ -381,6 +381,14 @@ COMMAND: command to be executed"
   (:map dired-mode-map
         ("H" . dired-hide-dotfiles-mode)))
 
+(use-package trashed
+  :commands (trashed)
+  :custom
+  (trashed-action-confirmer 'y-or-n-p)
+  (trashed-use-header-line t)
+  (trashed-sort-key '("Date deleted" . t))
+  (trashed-date-format "%Y-%m-%d %H:%M:%S"))
+
 (use-package dwim-shell-command
   :bind
   (:map

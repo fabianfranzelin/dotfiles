@@ -63,6 +63,12 @@
   (nerd-icons-completion-mode t)
   (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
 
+(use-package nerd-icons-corfu
+  :if (display-graphic-p)
+  :after corfu
+  :config
+  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+
 ;; -------------------------------------------------------------
 ;; present a nice dashboard on startup
 (use-package grid
