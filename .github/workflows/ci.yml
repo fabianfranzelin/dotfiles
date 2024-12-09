@@ -6,6 +6,11 @@ on:
     branches:
       - "nightly"
   pull_request:
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   release:
     runs-on: ubuntu-20.04
