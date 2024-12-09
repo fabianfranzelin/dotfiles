@@ -194,6 +194,7 @@ if { [ -n "${INSTALL_ALL}" ] && [ -z "${SKIP_BASE}" ]; } || [ -n "${INSTALL_BASE
 then
     install_base
     install_git
+    install_python_3_10
 fi
 
 if { [ -n "${INSTALL_ALL}" ] && [ -z "${SKIP_ZSH}" ]; } || [ -n "${INSTALL_ZSH}" ]
