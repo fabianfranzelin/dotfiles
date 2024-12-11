@@ -78,5 +78,8 @@ aos_create_venv() {
 
         # Create alias for vfc for local testing
         conan alias aos_vfc_dist/latest@aos/dev aos_vfc_dist/VFC-4.2.2@aos/aos
+
+        # install some system packages
+        sudo apt install patchelf
     )
 }
