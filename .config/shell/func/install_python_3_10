@@ -18,7 +18,12 @@ install_python_3_10()
             cd "Python-${PYTHON_VERSION}" || exit 1
 
             mkdir -p "${PYTHON_HOME}"
-            ./configure --prefix="${PYTHON_HOME}"
+            ./configure --prefix="${PYTHON_HOME}" \
+                        CFLAGS="-fpic" \
+                        CPPFLAGS="-fpic" \
+                        --enable-shared \
+                        --enable-optimizations
+            
             make -j"$(nproc)"
             make install
         )
