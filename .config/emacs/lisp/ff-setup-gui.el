@@ -83,8 +83,11 @@
   (defface ff/enlight-yellow-bold
     '((t (:foreground "#cabf00" :bold t)))
     "Yellow bold face")
+  (defface ff/enlight-magenta-bold
+    '((t (:foreground "#a9a1e1" :bold t)))
+    "Magenta bold face")
 
-  (defvar ff/enlight-guix
+  (defvar ff/enlight-emacs
     (propertize
      "         @@@@@@@
           @##*+++++++++###@
@@ -106,7 +109,7 @@
        @%******************%%@
           @%%***********%%@
                @@@@@@@              "
-     'face 'ff/enlight-yellow-bold))
+     'face 'ff/enlight-magenta-bold))
 
   (defun ff/enlight-menu-creator (entries fun)
     "Creates a menu of projects if available.
@@ -128,7 +131,7 @@ FUN: function to be called on the entry's path"
    (concat
     (grid-get-box `(
                     :align center
-                    :content ,ff/enlight-guix
+                    :content ,ff/enlight-emacs
                     :width 100))
     (grid-get-box `(
                     :align center
