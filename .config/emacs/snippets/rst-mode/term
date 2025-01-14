@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: term
+# key: term
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# --
+
+:term:\`$0\`
