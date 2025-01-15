@@ -5,6 +5,17 @@
 # set as a default for configurations
 . "${HOME}/.profile"
 
-QTILE_PYTHON_FILEPATH="${HOME}/.cache/qtile/python/bin/python3"
-QTILE_BIN_FILEPATH="${HOME}/.cache/qtile/python/bin/qtile"
-${QTILE_PYTHON_FILEPATH} ${QTILE_BIN_FILEPATH} start -c "${HOME}/.config/qtile/config.py"
+VIRTUAL_ENV="${HOME}/.virtualenvs/qtile"
+export VIRTUAL_ENV
+
+PATH="${VIRTUAL_ENV}/bin/:$PATH"
+export PATH
+
+PYTHON_HOME="${HOME}/.cache/python_3_10"
+LD_LIBRARY_PATH="${PYTHON_HOME}/lib:${LD_LIBRARY_PATH}"
+export LD_LIBRARY_PATH
+
+QTILE_BIN_FILEPATH="${VIRTUAL_ENV}/bin/qtile"
+QTILE_CONFIG_FILEPATH="${HOME}/.config/qtile/config.py"
+
+python3 ${QTILE_BIN_FILEPATH} start -c "${QTILE_CONFIG_FILEPATH}"

@@ -10,14 +10,8 @@ create_venv_qtile()
     VIRTUALENV_ACTIVATE_FILEPATH="${HOME}/.virtualenvs/${VIRTUALENV_NAME}/bin/activate"
     if [[ ! -f "${VIRTUALENV_ACTIVATE_FILEPATH}" ]]; then
         echo -e "Create virtualenv ${VIRTUALENV_NAME}"
-        LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${PYTHON_HOME}/lib
+        LD_LIBRARY_PATH="${PYTHON_HOME}/lib:${LD_LIBRARY_PATH}"
         ${PYTHON_FILEPATH} -m venv "${HOME}/.virtualenvs/${VIRTUALENV_NAME}"
-    fi
-        virtualenv_name="org"
-    virtualenv_activate_filepath="${HOME}/.virtualenvs/${virtualenv_name}/bin/activate"
-    if [[ ! -f "${virtualenv_activate_filepath}" ]]; then
-        echo -e "Create virtualenv ${virtualenv_name}"
-        python3 -m venv "${HOME}/.virtualenvs/${virtualenv_name}"
     fi
 }
 
