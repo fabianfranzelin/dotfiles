@@ -2,14 +2,14 @@
 
 IDS=""
 
-if [ "$(hostname)" = "ST39-C-00066" ] || [ "$(hostname)" = "LE-C-001RA" ] || [ "$(hostname)" = "ABT-C-002NY" ]
+if [ "$(hostname)" = "ABT-C-002NY" ]
 then
     IDS="id_rsa id_ed25519"
 fi
 
 if [ "$(hostname)" = "ThinkPad" ] || [ "$(hostname)" = "DESKTOP-E7EFIIN" ] || [ "$(hostname)" = "pauline" ]
 then
-    IDS="id_ed25519"
+    IDS="id_ed25519 github_finances"
 fi
 
 # Restart ssh agent
