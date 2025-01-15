@@ -104,7 +104,8 @@ install_base() {
 
     # install pandoc
     PANDOC_VER="3.3"
-    PANDOC_BIN="pandoc-${PANDOC_VER}-1-amd64.deb"
+    SYSTEM_ARCH=$(dpkg --print-architecture)
+    PANDOC_BIN="pandoc-${PANDOC_VER}-1-${SYSTEM_ARCH}.deb"
     PANDOC_URL="https://github.com/jgm/pandoc/releases/download/${PANDOC_VER}/${PANDOC_BIN}"
     (
         cd "/tmp" || exit 1

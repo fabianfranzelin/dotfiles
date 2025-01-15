@@ -1,22 +1,55 @@
 #!/usr/bin/env bash
 
-install_qtile()
+create_venv_qtile()
 {
-    echo -e "${__COLOR_INFO}INFO: Install Qtile desktop manager${__COLOR_RESET}"
+    echo -e "${__COLOR_INFO}INFO: Create virtual environemnt for Install Qtile desktop manager${__COLOR_RESET}"
     PYTHON_HOME="${HOME}/.cache/python_3_10"
     PYTHON_FILEPATH="${PYTHON_HOME}/bin/python3"
 
-    # install qtile and its dependencies for this exact version
-    ${PYTHON_FILEPATH} -m pip install --upgrade pip wheel setuptools
-    ${PYTHON_FILEPATH} -m pip install --upgrade xcffib
-    ${PYTHON_FILEPATH} -m pip install --upgrade --no-cache-dir cairocffi
-    sudo apt-get install -y libpangocairo-1.0-0
-    ${PYTHON_FILEPATH} -m pip install --upgrade git+https://github.com/qtile/qtile.git
-    # Install dependencies for widgets
-    ${PYTHON_FILEPATH} -m pip install --upgrade psutil pulsectl-asyncio dbus-next
-    # For eglot
-    ${PYTHON_FILEPATH} -m pip install "python-lsp-server[all]" ipython ipdb pylint mypy flake8 black isort
+    VIRTUALENV_NAME="qtile"
+    VIRTUALENV_ACTIVATE_FILEPATH="${HOME}/.virtualenvs/${VIRTUALENV_NAME}/bin/activate"
+    if [[ ! -f "${VIRTUALENV_ACTIVATE_FILEPATH}" ]]; then
+        echo -e "Create virtualenv ${VIRTUALENV_NAME}"
+        LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${PYTHON_HOME}/lib
+        ${PYTHON_FILEPATH} -m venv "${HOME}/.virtualenvs/${VIRTUALENV_NAME}"
+    fi
+        virtualenv_name="org"
+    virtualenv_activate_filepath="${HOME}/.virtualenvs/${virtualenv_name}/bin/activate"
+    if [[ ! -f "${virtualenv_activate_filepath}" ]]; then
+        echo -e "Create virtualenv ${virtualenv_name}"
+        python3 -m venv "${HOME}/.virtualenvs/${virtualenv_name}"
+    fi
+}
 
+install_qtile()
+{
+    echo -e "${__COLOR_INFO}INFO: Install Qtile desktop manager${__COLOR_RESET}"
+
+    # Create a Python virtual environment for qtile
+    create_venv_qtile
+
+    VIRTUALENV_NAME="qtile"
+    VIRTUALENV_ACTIVATE_FILEPATH="${HOME}/.virtualenvs/${VIRTUALENV_NAME}/bin/activate"
+    echo -e "Activate virtualenv"
+
+    # shellcheck disable=SC1090
+    . "${VIRTUALENV_ACTIVATE_FILEPATH}"
+    python3 -m pip install --upgrade setuptools wheel pip
+
+    # install qtile and its dependencies for this exact version
+    python3 -m pip install --upgrade pip wheel setuptools
+    python3 -m pip install --upgrade xcffib
+    python3 -m pip install --upgrade --no-cache-dir cairocffi
+    sudo apt-get install -y libpangocairo-1.0-0
+    python3 -m pip install --upgrade git+https://github.com/qtile/qtile.git
+    # Install dependencies for widgets
+    python3 -m pip install --upgrade psutil pulsectl-asyncio dbus-next
+    # For eglot
+    python3 -m pip install "python-lsp-server[all]" ipython ipdb pylint mypy flake8 black isort
+
+    deactivate
+
+    # setup X and other tools
     if ( __is_linux )
     then
         echo -e "${__COLOR_INFO}INFO: Install X configs for Qtile${__COLOR_RESET}"
