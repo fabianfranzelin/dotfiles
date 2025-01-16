@@ -1,47 +1,39 @@
 #!/usr/bin/env bash
 
-create_venv_qtile()
-{
-    echo -e "${__COLOR_INFO}INFO: Create virtual environemnt for Install Qtile desktop manager${__COLOR_RESET}"
-    PYTHON_HOME="${HOME}/.cache/python_3_10"
-    PYTHON_FILEPATH="${PYTHON_HOME}/bin/python3"
-
-    VIRTUALENV_NAME="qtile"
-    VIRTUALENV_ACTIVATE_FILEPATH="${HOME}/.virtualenvs/${VIRTUALENV_NAME}/bin/activate"
-    if [[ ! -f "${VIRTUALENV_ACTIVATE_FILEPATH}" ]]; then
-        echo -e "Create virtualenv ${VIRTUALENV_NAME}"
-        LD_LIBRARY_PATH="${PYTHON_HOME}/lib:${LD_LIBRARY_PATH}"
-        ${PYTHON_FILEPATH} -m venv "${HOME}/.virtualenvs/${VIRTUALENV_NAME}"
-    fi
-}
-
 install_qtile()
 {
     echo -e "${__COLOR_INFO}INFO: Install Qtile desktop manager${__COLOR_RESET}"
+    QTILE_PYTHON_HOME="${HOME}/.cache/qtile/python"
+    QTILE_PYTHON_FILEPATH="${QTILE_PYTHON_HOME}/bin/python3"
 
-    # Create a Python virtual environment for qtile
-    create_venv_qtile
+    # Install the right Python version for qtile (>=3.10)
+    if [ ! -f "${QTILE_PYTHON_FILEPATH}" ]; then
+        (
+            # Install Python
+            TMP_PYTHON_SRC=$(mktemp -d)
+            cd "${TMP_PYTHON_SRC}" || exit 1
+            QTILE_PYTHON_VERSION="3.10.16"
+            wget "http://www.python.org/ftp/python/${QTILE_PYTHON_VERSION}/Python-${QTILE_PYTHON_VERSION}.tgz"
+            tar -zxvf "Python-${QTILE_PYTHON_VERSION}.tgz"
+            cd "Python-${QTILE_PYTHON_VERSION}" || exit 1
 
-    VIRTUALENV_NAME="qtile"
-    VIRTUALENV_ACTIVATE_FILEPATH="${HOME}/.virtualenvs/${VIRTUALENV_NAME}/bin/activate"
-    echo -e "Activate virtualenv"
-
-    # shellcheck disable=SC1090
-    . "${VIRTUALENV_ACTIVATE_FILEPATH}"
-    python3 -m pip install --upgrade setuptools wheel pip
+            mkdir -p "${QTILE_PYTHON_HOME}"
+            ./configure --prefix="${QTILE_PYTHON_HOME}"
+            make -j"$(nproc)"
+            make install
+        )
+    fi
 
     # install qtile and its dependencies for this exact version
-    python3 -m pip install --upgrade pip wheel setuptools
-    python3 -m pip install --upgrade xcffib
-    python3 -m pip install --upgrade --no-cache-dir cairocffi
+    ${QTILE_PYTHON_FILEPATH} -m pip install --upgrade pip wheel setuptools
+    ${QTILE_PYTHON_FILEPATH} -m pip install --upgrade xcffib
+    ${QTILE_PYTHON_FILEPATH} -m pip install --upgrade --no-cache-dir cairocffi
     sudo apt-get install -y libpangocairo-1.0-0
-    python3 -m pip install --upgrade git+https://github.com/qtile/qtile.git
+    ${QTILE_PYTHON_FILEPATH} -m pip install --upgrade git+https://github.com/qtile/qtile.git
     # Install dependencies for widgets
-    python3 -m pip install --upgrade psutil pulsectl-asyncio dbus-next
+    ${QTILE_PYTHON_FILEPATH} -m pip install --upgrade psutil pulsectl-asyncio dbus-next
     # For eglot
-    python3 -m pip install "python-lsp-server[all]" ipython ipdb pylint mypy flake8 black isort
-
-    deactivate
+    ${QTILE_PYTHON_FILEPATH} -m pip install "python-lsp-server[all]" ipython ipdb pylint mypy flake8 black isort
 
     # setup X and other tools
     if ( __is_linux )

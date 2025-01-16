@@ -70,7 +70,6 @@ __SHELL_LIB="${DOTFILES}/.config/shell"
 # load gear
 . "${__SHELL_LIB}/func/install_base"
 . "${__SHELL_LIB}/func/install_git"
-. "${__SHELL_LIB}/func/install_python_3_10"
 . "${__SHELL_LIB}/func/install_npm"
 . "${__SHELL_LIB}/func/install_docker"
 . "${__SHELL_LIB}/func/install_emacs"
@@ -195,7 +194,6 @@ if { [ -n "${INSTALL_ALL}" ] && [ -z "${SKIP_BASE}" ]; } || [ -n "${INSTALL_BASE
 then
     install_base
     install_git
-    install_python_3_10
 fi
 
 if { [ -n "${INSTALL_ALL}" ] && [ -z "${SKIP_ZSH}" ]; } || [ -n "${INSTALL_ZSH}" ]

@@ -257,7 +257,6 @@ def init_widgets_list() -> List[Any]:
         widget.TextBox("B:", background=my_colors["bg"], foreground=my_colors["fg"]),
         widget.Backlight(backlight_name="intel_backlight"),
         widget.TextBox("|", background=my_colors["bg"]),
-        widget.Bluetooth(),
         widget.BatteryIcon(),
         widget.Battery(),
         widget.TextBox(text="|", background=my_colors["bg"]),
