@@ -277,6 +277,26 @@ https://github.com/radian-software/straight.el/issues/240"
 ;; http://www.gnu.org/software/auctex/manual/auctex/Adding-Environments.html
 ;; -------------------------------------------------------------------
 
+(with-eval-after-load 'org
+  ;; lualatex preview
+  (customize-set-variable 'org-latex-pdf-process
+                          '("lualatex -shell-escape -interaction nonstopmode %f"
+                            "lualatex -shell-escape -interaction nonstopmode %f"))
+
+  (setq luamagick '(luamagick :programs ("lualatex" "convert")
+                              :description "pdf > png"
+                              :message "you need to install lualatex and imagemagick."
+                              :use-xcolor t
+                              :image-input-type "pdf"
+                              :image-output-type "png"
+                              :image-size-adjust (1.0 . 1.0)
+                              :latex-compiler ("lualatex -interaction nonstopmode -output-directory %o %f")
+                              :image-converter ("convert -density %D -trim -antialias %f -quality 100 %O")))
+
+  (add-to-list 'org-preview-latex-process-alist luamagick)
+
+  (customize-set-variable 'org-preview-latex-default-process 'luamagick))
+
 ;; -------------------------------------------------------------------
 ;; PDF-tools: Mainly used to display PDFs and to inverse and forward
 ;; jumps for Latex documents
