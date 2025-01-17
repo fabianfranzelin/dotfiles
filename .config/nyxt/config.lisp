@@ -77,3 +77,12 @@ more minimalist, but those are internal APIs :(")))
 (define-configuration :browser
   "Set new buffer URL (a.k.a. start page, new tab page)."
   ((default-new-buffer-url (quri:uri "nyxt:new"))))
+
+;;; custom auto-fills
+(define-configuration :autofill-mode
+    ((autofills
+      (list (nyxt/mode/autofill:make-autofill :name "Name" :fill "Fabian")
+            (nyxt/mode/autofill:make-autofill :name "Last Name" :fill "Franzelin")
+            (nyxt/mode/autofill:make-autofill :name "E-mail" :fill "fabian.franzelin@gmail.com")
+            (nyxt/mode/autofill:make-autofill :name "Current time: "
+                                              :fill (lambda () (write-to-string (local-time:now))))))))
