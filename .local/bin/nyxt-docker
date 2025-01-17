@@ -4,8 +4,9 @@
 # sudo xhost +si:localuser:root
 
 # Run the container
-docker run -it --rm --entrypoint /bin/bash \
+docker run --rm \
        --user "$(whoami)" \
+       --privileged \
        --net host \
        -e http_proxy \
        -e https_proxy \
@@ -14,8 +15,6 @@ docker run -it --rm --entrypoint /bin/bash \
        -e DEBIAN_FRONTEND="noninteractive" \
        -e WEBKIT_DISABLE_COMPOSITING_MODE=1 \
        -e GDK_SYNCHRONIZE=1 \
-       -e LIBGL_DEBUG=verbose \
-       -e LIBGL_ALWAYS_INDIRECT=1 \
        -e NO_AT_BRIDGE=1 \
        -v "${HOME}/.Xauthority:/tmp/.Xauthority" \
        -v "/tmp/.X11-unix:/tmp/.X11-unix" \
