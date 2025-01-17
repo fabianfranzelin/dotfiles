@@ -17,6 +17,5 @@
          --build-arg UID="$(id -u "$(whoami)")" \
          -f "Dockerfile" \
          -t nyxt \
-         "${DOTFILES}" \
-         --progress=plain
+         "${DOTFILES}"
 #+end_src

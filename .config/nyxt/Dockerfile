@@ -2,17 +2,14 @@ FROM ubuntu:24.04
 
 # Override user name at build. If build-arg is not passed, will create user named `default_user`
 ARG USERNAME=default_user
-ARG UID=1
-
+ARG UID=1000
 ENV TZ=US
 ENV DEBIAN_FRONTEND=noninteractive
-ENV HTTP_PROXY="http://127.0.0.1:3128"
-ENV HTTPS_PROXY="http://127.0.0.1:3128"
-ENV http_proxy="http://127.0.0.1:3128"
-ENV https_proxy="http://127.0.0.1:3128"
 
-# create a group and user
-RUN echo "Add user ${USERNAME} with ${UID}" && useradd -m -u $UID -U --shell /bin/bash $USERNAME
+# ENV HTTP_PROXY="http://127.0.0.1:3128"
+# ENV HTTPS_PROXY="http://127.0.0.1:3128"
+# ENV http_proxy="http://127.0.0.1:3128"
+# ENV https_proxy="http://127.0.0.1:3128"
 
 RUN apt-get update && \
     apt-get install -y \
@@ -72,4 +69,12 @@ ADD .config/shell/func/install_nyxt /tmp
 # install nyxt
 RUN . /tmp/install_nyxt && install_nyxt
 
+# Set user
+RUN userdel -r ubuntu
+RUN echo "Add user ${USERNAME} with ${UID}" && \
+    useradd -m -u ${UID} -U --shell /bin/bash $USERNAME
+
+ENV USER=${USERNAME}
+WORKDIR /home/${USERNAME}
+USER ${USERNAME}
 ENTRYPOINT [ "nyxt" ]
