@@ -316,9 +316,6 @@ DIR: directory"
   :preface (ff/vc-install :name "savehist")
   :init (savehist-mode t))
 
-(use-package run-command
-  :custom (run-command-default-runner #'run-command-runner-compile))
-
 ;; -------------------------------------------------------------------
 (use-package dired
   :ensure nil
