@@ -33,6 +33,7 @@ RUN apt-get update && \
     glib-networking \
     gsettings-desktop-schemas \
     xclip \
+    wl-clipboard \
     enchant-2 \
     gtk3.0 \
     libgtk-3-0 \
