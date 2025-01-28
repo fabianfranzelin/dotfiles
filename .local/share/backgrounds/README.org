@@ -2,8 +2,10 @@
 
 This folder contains my Desktop backgrounds
 
+#+ATTR_HTML: :width 600
 [[file:./dolomites.jpg]]
 
+#+ATTR_HTML: :width 600
 [[file:./samuel-ferrara-uOi3lg8fGl4-unsplash.jpg]]
 
 by [[https://unsplash.com/photos/uOi3lg8fGl4][Samuel Ferrara]]  (Unsplash [[https://unsplash.com/license][license]])
