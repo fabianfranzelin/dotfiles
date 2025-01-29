@@ -329,7 +329,7 @@ FUN: function to be called on the entry's path"
   ;; Do not waste screen space on small screens
   :if (not (ff/is-mobile))
   :custom
-  (olivetti-body-width 0.66)
+  (olivetti-body-width 0.5)
   :hook
   (org-mode . olivetti-mode)
   (rst-mode . olivetti-mode)
