@@ -51,7 +51,7 @@ aos_create_venv() {
                            esbonio==0.15 \
                            sphinx_autodoc_typehints \
                            sphinx-jsonschema \
-                           sphinxcontrib-ditaa \
+                           sphinxcontrib-ditaa == 1.0.1 \
                            sphinx_design \
                            sphinxcontrib.moderncmakedomain \
                            sphinx_markdown_builder \
@@ -81,6 +81,6 @@ aos_create_venv() {
         conan alias aos_vfc_dist/latest@aos/dev aos_vfc_dist/VFC-4.2.2@aos/aos
 
         # install some system packages
-        sudo apt install patchelf
+        sudo apt install patchelf ditaa
     )
 }
