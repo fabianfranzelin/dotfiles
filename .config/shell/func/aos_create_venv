@@ -47,7 +47,7 @@ aos_create_venv() {
                            sphinx_panels \
                            sphinxcontrib_svg2pdfconverter \
                            sphinxcontrib_plantuml \
-                           sphinx_needs \
+                           sphinx_needs==2.0.0 \
                            esbonio==0.15 \
                            sphinx_autodoc_typehints \
                            sphinx-jsonschema \
