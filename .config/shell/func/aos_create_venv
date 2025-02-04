@@ -51,7 +51,7 @@ aos_create_venv() {
                            esbonio==0.15 \
                            sphinx_autodoc_typehints \
                            sphinx-jsonschema \
-                           sphinxcontrib-ditaa == 1.0.1 \
+                           sphinxcontrib-ditaa==1.0.1 \
                            sphinx_design \
                            sphinxcontrib.moderncmakedomain \
                            sphinx_markdown_builder \
