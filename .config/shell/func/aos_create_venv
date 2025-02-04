@@ -54,6 +54,7 @@ aos_create_venv() {
                            sphinxcontrib-ditaa==1.0.1 \
                            sphinx_design \
                            sphinxcontrib.moderncmakedomain \
+                           sphinx-test-reports==1.0.2 \
                            sphinx_markdown_builder \
                            gcovr \
                            pandas \
