@@ -204,3 +204,13 @@ flycheck_*
 
 ### Nyxt ###
 /.config/nyxt/build.sh
+
+### Homeassistant ###
+/.config/homeassistant/.HA_VERSION
+/.config/homeassistant/.storage/
+/.config/homeassistant/blueprints
+/.config/homeassistant/home-assistant.log
+/.config/homeassistant/home-assistant.log.1
+/.config/homeassistant/home-assistant.log.fault
+/.config/homeassistant/home-assistant_v2.db-shm
+/.config/homeassistant/home-assistant_v2.db-wal
