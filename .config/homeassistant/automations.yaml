@@ -1,1 +1,22 @@
-[]
+- id: '1738953714383'
+  alias: "\U0001F525 Advanced Heating Control V5"
+  description: ''
+  use_blueprint:
+    path: panhans/advanced_heating_control.yaml
+    input:
+      input_trvs:
+      - climate.fritz_smart_thermo_302_1
+      input_hvac_mode: heat
+      input_temperature_sensor: sensor.fritz_smart_thermo_302_1_comfort_temperature
+      input_adjustments:
+      - time: 0:00
+        comfort: '16'
+        eco: '16'
+        calibration: 'off'
+      - time: '23:59'
+        comfort: '16'
+        eco: '16'
+        calibration: 'off'
+      input_schedulers: []
+      input_temperature_comfort_static: 16
+      input_temperature_eco_static: 16
