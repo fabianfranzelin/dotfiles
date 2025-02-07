@@ -9,8 +9,9 @@ install_docker()
     fi
 
     # Install docker-credential-pass
+    SYSTEM_ARCH=$(dpkg --print-architecture)
     DOCKER_CRED_PASS_VER="0.8.2"
-    DOCKER_CRED_PASS_BIN="docker-credential-pass-v${DOCKER_CRED_PASS_VER}.linux-amd64"
+    DOCKER_CRED_PASS_BIN="docker-credential-pass-v${DOCKER_CRED_PASS_VER}.linux-${SYSTEM_ARCH}"
     DOCKER_CRED_PASS_URL="https://github.com/docker/docker-credential-helpers/releases/download/v${DOCKER_CRED_PASS_VER}/${DOCKER_CRED_PASS_BIN}"
     DOCKER_CRED_PASS_PATH="${HOME}/.local/bin/docker-credential-pass"
     if [ ! -f "${DOCKER_CRED_PASS_PATH}" ]
