@@ -6,7 +6,7 @@
     input:
       input_trvs:
       - climate.fritz_smart_thermo_302_1
-      input_hvac_mode: heat
+      input_hvac_mode: auto
       input_temperature_sensor: sensor.fritz_smart_thermo_302_1_comfort_temperature
       input_adjustments:
       - time: 0:00
