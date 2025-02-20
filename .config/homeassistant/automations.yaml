@@ -20,3 +20,25 @@
       input_schedulers: []
       input_temperature_comfort_static: 16
       input_temperature_eco_static: 16
+- id: '1740078963958'
+  alias: Temperaturregler 20
+  description: ''
+  triggers:
+  - type: temperature
+    device_id: 6bd2d6d201302b45ea47ca10037b006b
+    entity_id: f500490206a60f2baf1dbc57ec8c8a8a
+    domain: sensor
+    trigger: device
+    above: 20
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  conditions: []
+  actions:
+  - device_id: 6bd2d6d201302b45ea47ca10037b006b
+    domain: climate
+    entity_id: f5586c8ffc2c1c6f1bc4b72a4098277c
+    type: set_hvac_mode
+    hvac_mode: 'off'
+  mode: single
