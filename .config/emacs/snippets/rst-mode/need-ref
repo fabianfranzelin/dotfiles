@@ -4,4 +4,4 @@
 # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 # --
 
-:need:\`[[id]]<${1:Label}>\` $0
+:need:\`[[id]]<${1:Label}>\`$0
