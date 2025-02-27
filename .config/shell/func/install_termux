@@ -19,7 +19,8 @@ install_termux()
         rsync \
         poppler \
         termux-api \
-	sshpass
+	sshpass \
+        wget
 
     LOCAL_BIN="~/.local/bin"
     mkdir -p "${LOCAL_BIN}"
