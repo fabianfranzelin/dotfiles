@@ -30,6 +30,7 @@ install_base() {
          direnv \
          openjdk-17-jdk \
          zip \
+         curl \
          wget \
          tar \
          bzip2 \
@@ -103,7 +104,7 @@ install_base() {
             jupyter
 
     # install pandoc
-    PANDOC_VER="3.3"
+    PANDOC_VER="3.6.3"
     SYSTEM_ARCH=$(dpkg --print-architecture)
     PANDOC_BIN="pandoc-${PANDOC_VER}-1-${SYSTEM_ARCH}.deb"
     PANDOC_URL="https://github.com/jgm/pandoc/releases/download/${PANDOC_VER}/${PANDOC_BIN}"
@@ -113,9 +114,8 @@ install_base() {
         sudo dpkg -i "${PANDOC_BIN}"
     )
 
-    #------------------------------------------------------------------------------#
     # install dependencies gdb
-    GLIBC_NAME="glibc-2.40"
+    GLIBC_NAME="glibc-2.41"
     GLIBC_PATH="${HOME}/.local/share/${GLIBC_NAME}"
     if [ ! -d "${GLIBC_PATH}" ]
     then
@@ -126,8 +126,7 @@ install_base() {
             mv -n "${GLIBC_NAME}" "${HOME}/.local/share"
         )
     fi
-
-    #------------------------------------------------------------------------------#
+    
     # install dependencies for vscode
     if ( __is_linux )
     then
