@@ -27,6 +27,7 @@ aos_create_venv() {
         # Workarounds
         python3 -m pip install pycryptodomex \
                            conan==1.59.0 \
+                           poetry==1.8.3 \
                            gnupg \
                            rospkg \
                            poetry==1.8.3 \
