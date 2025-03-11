@@ -126,6 +126,16 @@ install_base() {
             mv -n "${GLIBC_NAME}" "${HOME}/.local/share"
         )
     fi
+
+    # install draw.io
+    DRAW_IO_VER="26.0.16"
+    DRAW_IO_BIN="drawio-${SYSTEM_ARCH}-${DRAW_IO_VER}.deb"
+    DRAW_IO_URL="https://github.com/jgraph/drawio-desktop/releases/download/v${DRAW_IO_VER}/${DRAW_IO_BIN}"
+    (
+        cd "/tmp" || exit 1
+        wget "${DRAW_IO_URL}"
+        sudo dpkg -i "${DRAW_IO_BIN}"
+    )
     
     # install dependencies for vscode
     if ( __is_linux )
