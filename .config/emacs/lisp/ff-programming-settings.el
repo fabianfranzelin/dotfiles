@@ -368,6 +368,8 @@ FORCE: force update of grammars"
 ;; -------------------------------------------------------------------
 ;; use tree-sitter as default and overwrite python-mode
 (add-to-list 'major-mode-remap-alist '(css-mode . css-ts-mode))
+(add-to-list 'major-mode-remap-alist '(html-mode . html-ts-mode))
+(add-to-list 'major-mode-remap-alist '(mhtml-mode . html-ts-mode))
 
 ;; -------------------------------------------------------------------
 ;; SQLite

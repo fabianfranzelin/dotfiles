@@ -628,17 +628,8 @@ TEXT: title"
                 (with-temp-buffer
                   (insert parent-mode)
                   (write-file (expand-file-name ".yas-parents" target-folder))))))
-          '(("python-mode" . "python-ts-mode")
-            ("dockerfile-mode" . "dockerfile-ts-mode")
-            ("sh-mode" . "bash-ts-mode")
-            ("c++-mode" . "c++-ts-mode")
-            ("c-mode" . "c-ts-mode")
+          '(("dockerfile-mode" . "dockerfile-ts-mode")
             ("cmake-mode" . "cmake-ts-mode")
-            ("css-mode" . "css-ts-mode")
-            ("java-mode" . "java-ts-mode")
-            ("js-mode" . "js-ts-mode")
-            ("typescript-mode" . "typescript-ts-mode")
-            ("typescript-mode". "tsx-ts-mode")
             ("yaml-mode" . "yaml-ts-mode")))
 
   ;; update snippet directories
