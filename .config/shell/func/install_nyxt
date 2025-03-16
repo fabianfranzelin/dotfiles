@@ -10,7 +10,7 @@ install_nyxt()
         # Download latest sbcl
         TMP_SBCL_SRC=$(mktemp -d)
         cd "${TMP_SBCL_SRC}" || exit 1
-        SBCL_VERSION="2.5.1"
+        SBCL_VERSION="2.5.2"
         SBCL_SRC_FILE_NAME="sbcl-${SBCL_VERSION}-source.tar.bz2"
 
         echo -e "${__COLOR_INFO}INFO: Installing common lisp v${SBCL_VERSION}${__COLOR_RESET}"

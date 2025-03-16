@@ -13,7 +13,8 @@ install_termux()
         emacs \
         git \
         openssl-tool \
-        pass \gnupg \
+        pass \
+        gnupg \
         which \
         git-lfs \
         rsync \
@@ -22,14 +23,14 @@ install_termux()
 	sshpass \
         wget
 
-    LOCAL_BIN="~/.local/bin"
+    LOCAL_BIN="${HOME}/.local/bin"
     mkdir -p "${LOCAL_BIN}"
     export PATH=${PATH}:${LOCAL_BIN}
 
     ###########################################################################
     #                                   GPG                                   #
     ###########################################################################
-    GPG_HOME="~/.gnupg"
+    GPG_HOME="${HOME}/.gnupg"
     GPG_CONF="${GPG_HOME}/.gpg.conf"
     GPG_AGENT_CONF="${GPG_HOME}/.gpg-agent.conf"
     mkdir -p "${GPG_HOME}"
@@ -63,19 +64,19 @@ allow-emacs-pinentry
     git clone "https://github.com/elpraga/Termux-tools.git"
     cd "Termux-Tools" || exit 1
     chmod u+x "termux-*"
-    cp "termux-*" "~/.local/bin"
+    cp "termux-*" "${HOME}/.local/bin"
 
     ###########################################################################
     #                                   Bash                                  #
     ###########################################################################
-    BASHRC="~/.bashrc"
+    BASHRC="${HOME}/.bashrc"
     echo "
-export PASSWORD_STORE='~/.password-store'
+export PASSWORD_STORE='${HOME}/.password-store'
 
-alias e='emacs -nw --init-directory=\"~/workspace/dotfiles/.config/minimal-emacs\"
-alias dot='cd ~/workspace/dotfiles/'
-alias pas='cd ~/.password-store/'
-alias org='cd ~/workspace/org'
+alias e='emacs -nw --init-directory=\"${HOME}/workspace/dotfiles/.config/minimal-emacs\"
+alias dot='cd ${HOME}/workspace/dotfiles/'
+alias pas='cd ${HOME}/.password-store/'
+alias org='cd ${HOME}/workspace/org'
 
 alias cp='cp -i -P'
 alias mv='mv -i'
