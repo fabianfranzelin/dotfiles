@@ -60,7 +60,6 @@ keys = [
         lazy.screen.prev_group(skip_empty=False),
         desc="Navigate to previous group",
     ),
-    Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
     # Unsplit = 1 window displayed, like Max layout, but still with
@@ -150,7 +149,7 @@ groups = [
     Group(
         "Remote",
         layout="monadtall",
-        matches=[Match(title=re.compile(r"^(FE\-V\-013VV_S\ )$"))],
+        matches=[Match(title=re.compile(r"^(FE\-V\-013VV_S|Citrix Workspace)$"))],
     ),
 ]
 
