@@ -8,5 +8,6 @@
 .. interface:: ${1:Title}
    :id: INTERFACE_${2:ID}
    :tags: ${3:Tags}
+   :responsible: cluster_MRA
 
    $0
