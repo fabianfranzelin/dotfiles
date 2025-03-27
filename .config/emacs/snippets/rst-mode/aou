@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+# name: Assumption of use (AOS)
+# key: aou
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# --
+
+.. req-aou:: ${1:Title}
+   :id: REQ_AOU_${2:ID}
+   :milestone: AOS_1_0_0
+   :status: implemented
+   :responsible: cluster_MRA
+   :safety_relevance: no
+   :safety_integrity: QM
+   :safety_comment: Recompute does happen offline, not in a live situation
+   :collapse: true
+
+   $0
