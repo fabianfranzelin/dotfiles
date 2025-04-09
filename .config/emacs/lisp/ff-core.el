@@ -253,6 +253,7 @@ COMMAND: command to be executed"
 ;; Delete trailing white spaces only for lines that are touched. This
 ;; replaces the obvious, more intrusive, approach of
 (use-package ws-butler
+  :straight (:host github :repo "lewang/ws-butler" :branch "master")
   :hook
   (after-init . ws-butler-global-mode))
 
