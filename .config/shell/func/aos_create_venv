@@ -62,7 +62,8 @@ aos_create_venv() {
                            jira \
                            junitparser \
                            matplotlib \
-                           empy
+                           empy \
+                           pytest
 
         python3 -m pip install \
                            robotframework-assertion-engine==3.0.3 \
