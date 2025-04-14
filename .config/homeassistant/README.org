@@ -1,0 +1,5 @@
+* Install HACS
+
++ [[https://hacs.xyz/docs/use/][User documentation]]
+
+Use HACS to install localtuya. With that you can add devices from BEOK.
