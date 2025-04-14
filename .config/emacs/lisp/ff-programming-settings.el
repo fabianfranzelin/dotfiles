@@ -250,6 +250,7 @@ FORCE: force update of grammars"
 (use-package docker
   :after setup-vterm
   :custom
+  (docker-container-shell-file-name "/bin/bash")
   (docker-run-default-args '("-i"
                              "-t"
                              "-e DEBIAN_FRONTEND=noninteractive"
