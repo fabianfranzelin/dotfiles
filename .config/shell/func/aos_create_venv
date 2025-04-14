@@ -62,7 +62,7 @@ aos_create_venv() {
                            jira \
                            junitparser \
                            matplotlib \
-                           empy \
+                           empy=3.3.4 \
                            pytest
 
         python3 -m pip install \
