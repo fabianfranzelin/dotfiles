@@ -5,8 +5,7 @@ install_nyxt()
     (
         echo -e "${__COLOR_INFO}INFO: Installing common lisp from package repository${__COLOR_RESET}"
         sudo apt-get install -y \
-             sbcl \
-             emacs
+             sbcl
 
         # Download latest sbcl
         TMP_SBCL_SRC=$(mktemp -d)
