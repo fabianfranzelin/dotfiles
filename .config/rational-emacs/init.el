@@ -16,6 +16,7 @@
 (require 'ff-programming-settings)
 (require 'ff-write-documents)
 (require 'ff-setup-gui)
+(require 'ff-ai-assistant)
 ;; -------------------------------------------------------------------
 
 (provide 'init)

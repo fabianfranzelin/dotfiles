@@ -16,17 +16,19 @@
     "Load and return the OpenAI token."
     (password-store-get "tokens/fabian.franzelin@gemini"))
   :custom
-  (gptel-api-key #'ff/get-openai-token)
   (gptel-default-mode 'org-mode)
-  (gptel-model 'gpt-4o)
+  (gptel-model 'gemini-2.0-flash)
   :config
   ;; auto scroll as ChatGPT provides new responses
   (add-hook 'gptel-post-stream 'gptel-auto-scroll)
   ;; move cursor to next heading when response is posted
   (add-hook 'gptel-post-response-functions 'gptel-end-of-response)
-  ;; register gemini as backend for gptel
+  ;; register gemini as default backend for gptel
   ;; :key can be a function that returns the API key.
-  (gptel-make-gemini "Gemini" :key #'ff/get-gemini-token :stream t)
+  (setq gpel-model 'gemini-2.0-flash
+        gptel-backend (gptel-make-gemini "Gemini"
+                        :key #'ff/get-gemini-token
+                        :stream t))
   :bind (("C-c g" . gptel)))
 
 ;; GitHub copilot
