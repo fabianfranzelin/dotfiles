@@ -169,8 +169,8 @@ FORCE: force update of grammars"
   (defface fancy-compilation-default-face
     (list (list t :background "282c34" :inherit 'ansi-color-grey))
     "Face used to render black color.")
-  ;; enable minor mode
-  (fancy-compilation-mode 1))
+  :hook
+  (after-init . fancy-compilation-mode))
 
 ;; -------------------------------------------------------------------
 ;; Emacs lisp and common lisp
