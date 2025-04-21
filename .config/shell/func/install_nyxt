@@ -43,6 +43,9 @@ install_nyxt()
         # This works for > Ubuntu 22.04
         sudo apt-get install libwebkit2gtk-4.1-0 || true
 
+        npm install -g \
+            swank-js
+        
         # install Nyxt
         TMP_NYXT_SRC="${HOME}/.cache/nyxt"
         mkdir -p "${TMP_NYXT_SRC}"
