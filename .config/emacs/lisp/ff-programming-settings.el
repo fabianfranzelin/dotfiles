@@ -230,6 +230,10 @@ FORCE: force update of grammars"
 (ff/ensure-apt-package "shellcheck" "shellcheck")
 (ff/ensure-npm-package "bash-language-server" "bash-language-server")
 
+;; make shell script executable
+(add-hook 'after-save-hook
+          #'executable-make-buffer-file-executable-if-script-p)
+
 ;; -------------------------------------------------------------------
 ;; yaml mode
 ;; -------------------------------------------------------------------
