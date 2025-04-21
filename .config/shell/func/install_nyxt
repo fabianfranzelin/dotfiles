@@ -8,25 +8,25 @@ install_nyxt()
              sbcl
 
         # Download latest sbcl
-        TMP_SBCL_SRC=$(mktemp -d)
-        cd "${TMP_SBCL_SRC}" || exit 1
-        SBCL_VERSION="2.5.3"
-        SBCL_SRC_FILE_NAME="sbcl-${SBCL_VERSION}-source.tar.bz2"
+        # TMP_SBCL_SRC=$(mktemp -d)
+        # cd "${TMP_SBCL_SRC}" || exit 1
+        # SBCL_VERSION="2.5.3"
+        # SBCL_SRC_FILE_NAME="sbcl-${SBCL_VERSION}-source.tar.bz2"
 
-        echo -e "${__COLOR_INFO}INFO: Installing common lisp v${SBCL_VERSION}${__COLOR_RESET}"
-        wget "http://prdownloads.sourceforge.net/sbcl/${SBCL_SRC_FILE_NAME}"
-        tar -xf "${SBCL_SRC_FILE_NAME}"
-        cd "sbcl-${SBCL_VERSION}" || exit 1
+        # echo -e "${__COLOR_INFO}INFO: Installing common lisp v${SBCL_VERSION}${__COLOR_RESET}"
+        # wget "http://prdownloads.sourceforge.net/sbcl/${SBCL_SRC_FILE_NAME}"
+        # tar -xf "${SBCL_SRC_FILE_NAME}"
+        # cd "sbcl-${SBCL_VERSION}" || exit 1
 
-        # Actually compile and install it
-        SBCL_INSTALL_DIR="${HOME}/.cache/common-lisp/sbcl-${SBCL_VERSION}.debian-linux-x64"
-        mkdir -p "${SBCL_INSTALL_DIR}"
-        sh make.sh --prefix="${SBCL_INSTALL_DIR}"
-        sh install.sh
+        # # Actually compile and install it
+        # SBCL_INSTALL_DIR="${HOME}/.cache/common-lisp/sbcl-${SBCL_VERSION}.debian-linux-x64"
+        # mkdir -p "${SBCL_INSTALL_DIR}"
+        # sh make.sh --prefix="${SBCL_INSTALL_DIR}"
+        # sh install.sh
 
-        # Use update alternatives to set the right version
-        sudo update-alternatives --install "/usr/bin/sbcl" sbcl "${SBCL_INSTALL_DIR}/bin/sbcl" 100
-        sudo update-alternatives --auto sbcl
+        # # Use update alternatives to set the right versiong
+        # sudo update-alternatives --install "/usr/bin/sbcl" sbcl "${SBCL_INSTALL_DIR}/bin/sbcl" 100
+        # sudo update-alternatives --auto
     )
     (
         # install dependencies for compilation of Nyxt
