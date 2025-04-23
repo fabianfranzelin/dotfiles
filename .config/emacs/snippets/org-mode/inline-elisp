@@ -2,4 +2,4 @@
 # name: inline-elisp
 # key: inline-elisp
 # --
-src_elisp[:session]{$0}
+src_elisp{$0}
