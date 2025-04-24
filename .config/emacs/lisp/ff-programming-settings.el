@@ -140,8 +140,8 @@ FORCE: force update of grammars"
 ;; -------------------------------------------------------------------
 ;; Additionally to flymake, use flycheck as well for certain modes
 (use-package flycheck
-  :init
-  (global-flycheck-mode))
+  :hook
+  (after-init . global-flycheck-mode))
 
 ;; -------------------------------------------------------------------
 ;; Debugger
@@ -164,7 +164,7 @@ FORCE: force update of grammars"
 ;; Colorful compilation buffer
 ;; -------------------------------------------------------------------
 (use-package fancy-compilation
-  :init
+  :preface
   ;; use background of my current theme
   (defface fancy-compilation-default-face
     (list (list t :background "282c34" :inherit 'ansi-color-grey))

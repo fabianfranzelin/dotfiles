@@ -242,7 +242,8 @@ COMMAND: command to be executed"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Let kill operate on the whole line when no region is selected
 (use-package whole-line-or-region
-  :init (whole-line-or-region-global-mode t))
+  :hook
+  (after-init . whole-line-or-region-global-mode))
 
 ;; volatile highlights - temporarily highlight changes from pasting
 (use-package volatile-highlights
