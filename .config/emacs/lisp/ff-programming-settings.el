@@ -140,8 +140,8 @@ FORCE: force update of grammars"
 ;; -------------------------------------------------------------------
 ;; Additionally to flymake, use flycheck as well for certain modes
 (use-package flycheck
-  :hook
-  (after-init . global-flycheck-mode))
+  :init
+  (global-flycheck-mode))
 
 ;; -------------------------------------------------------------------
 ;; Debugger
