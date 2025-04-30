@@ -316,6 +316,15 @@ DIR: directory"
   :preface (ff/vc-install :name "savehist")
   :init (savehist-mode t))
 
+;; Make window movement more efficient
+(use-package ace-window
+  :preface (ff/vc-install :name "ace-window")  
+  :bind
+  (:map global-map
+        ("M-o" . ace-window)
+        :map diff-mode-map
+        ("M-o" . nil)))
+
 ;; -------------------------------------------------------------------
 (use-package dired
   :ensure nil
