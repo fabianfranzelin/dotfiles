@@ -318,7 +318,7 @@ DIR: directory"
 
 ;; Make window movement more efficient
 (use-package ace-window
-  :preface (ff/vc-install :name "ace-window")  
+  :preface (ff/vc-install :name "ace-window")
   :bind
   (:map global-map
         ("M-o" . ace-window)
