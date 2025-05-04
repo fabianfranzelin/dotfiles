@@ -105,7 +105,7 @@ DIR: directory path"
   (define-key org-mode-map (kbd "C-c C-y") 'yas-insert-snippet)
   :bind
   (:map global-map
-        ("C-c C-x b" . ff/org-switch-directory)
+        ("C-x n b" . ff/org-switch-directory)
         :map org-mode-map
         ;; disable these two keys since they are taken by zoom-frm
         ("C-c +" . nil)
