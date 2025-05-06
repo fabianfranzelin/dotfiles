@@ -4,6 +4,8 @@
 
 ;;;; Add attachments from Dired (`gnus-dired' does not require `gnus')
 
+(setq user-gpgid 'Your_GPG_ID)
+
 (use-package gnus-dired
   :straight (:type built-in)
   :hook
