@@ -4,11 +4,8 @@
 
 ;;;; Add attachments from Dired (`gnus-dired' does not require `gnus')
 
-(use-package nnmail
-  :config
-  (setq nnmail-expiry-wait 30))         ; careful with this
-
 (use-package gnus-dired
+  :straight (:type built-in)
   :hook
   (dired-mode . turn-on-gnus-dired-mode))
 
