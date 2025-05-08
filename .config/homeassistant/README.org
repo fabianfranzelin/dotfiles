@@ -7,3 +7,11 @@ Use HACS to install localtuya. With that you can add devices from BEOK.
 * Ede Stoibe
 
 Add via Xiaomi integration.
+
+* Raumthermostate
+
++ Install [[https://github.com/rospogrigio/localtuya][localtuya]] from HACS
++ Use [[https://github.com/jasonacox/tinytuya][tinytuya]] to load local key and a list of all devices that are
+  registered in the app
++ Follow instructions on tinytuyas readme
++ Find credentials in the password-store
