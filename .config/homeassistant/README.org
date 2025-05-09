@@ -15,3 +15,11 @@ Add via Xiaomi integration.
   registered in the app
 + Follow instructions on tinytuyas readme
 + Find credentials in the password-store
+
+
+* Bosch Steckdosen
+
++ Register as zigbee devices
++ Scan QR code in the back side of the power outlet
++ The first 16 charachters before =DLK= are the MAC address, all the
+  characters following =DLK= correspond to the installation code
