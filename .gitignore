@@ -215,3 +215,4 @@ flycheck_*
 /.config/homeassistant/home-assistant_v2.db-shm
 /.config/homeassistant/home-assistant_v2.db-wal
 /.config/homeassistant/custom_components/
+/.config/homeassistant/backups/
