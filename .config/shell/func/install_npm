@@ -4,7 +4,7 @@ install_npm()
 {
     # additional npm dependencies
     echo "Install npm dependencies via nvm"
-    NVM_VERSION="0.40.2"
+    NVM_VERSION="0.40.3"
     export NVM_DIR="${HOME}/.config/nvm"
     if [ ! -d "${NVM_DIR}" ]
     then

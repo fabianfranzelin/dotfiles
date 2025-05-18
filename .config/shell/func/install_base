@@ -105,7 +105,7 @@ install_base() {
             jupyter
 
     # install pandoc
-    PANDOC_VER="3.6.3"
+    PANDOC_VER="3.7.0.1"
     SYSTEM_ARCH=$(dpkg --print-architecture)
     PANDOC_BIN="pandoc-${PANDOC_VER}-1-${SYSTEM_ARCH}.deb"
     PANDOC_URL="https://github.com/jgm/pandoc/releases/download/${PANDOC_VER}/${PANDOC_BIN}"
@@ -129,7 +129,7 @@ install_base() {
     fi
 
     # install draw.io
-    DRAW_IO_VER="26.0.16"
+    DRAW_IO_VER="27.0.5"
     DRAW_IO_BIN="drawio-${SYSTEM_ARCH}-${DRAW_IO_VER}.deb"
     DRAW_IO_URL="https://github.com/jgraph/drawio-desktop/releases/download/v${DRAW_IO_VER}/${DRAW_IO_BIN}"
     (
