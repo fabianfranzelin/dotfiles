@@ -58,6 +58,7 @@ install_base() {
          texlive-lang-german \
          texlive-luatex \
          texlive-latex-extra \
+         cm-super \
          biber \
          doxygen \
          evince \
