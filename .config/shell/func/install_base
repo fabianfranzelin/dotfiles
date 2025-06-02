@@ -52,6 +52,7 @@ install_base() {
 	 openssl \
 	 libssl-dev \
          scons \
+         latexmk \
          texlive-base \
          texlive-science \
          texlive-bibtex-extra \

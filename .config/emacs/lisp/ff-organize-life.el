@@ -384,6 +384,9 @@ DIR: directory path"
   :after org)
 
 (with-eval-after-load 'ox-latex
+  (customize-set-variable
+   'org-latex-pdf-process
+   '("latexmk -shell-escape -bibtex -f -pdf %f"))
   (add-to-list 'org-latex-classes
                '("scrartcl"
                  "\\documentclass[letterpaper]{scrartcl}"
