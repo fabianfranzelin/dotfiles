@@ -41,9 +41,7 @@ fi
 . "${ZDOTDIR}/oh-my-zsh.sh"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-if [ -f "${ZDOTDIR}/.p10k.zsh" ]; then
-    . "${ZDOTDIR}/.p10k.zsh"
-fi
+. "${ZDOTDIR}/.p10k.zsh"
 
 # shellcheck source=gear.zsh
 . "${ZDOTDIR}/gear.zsh"
