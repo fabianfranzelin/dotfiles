@@ -4,7 +4,7 @@ install_zsh()
 {
     #------------------------------------------------------------------------------#
     # install oh-my-zsh if required
-    export ZSH="${HOME}/.cache/oh-my-zsh"
+    export ZSH="${HOME}/.local/share/oh-my-zsh"
     if [ ! -f "${ZSH}/oh-my-zsh.sh" ]
     then
         sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
