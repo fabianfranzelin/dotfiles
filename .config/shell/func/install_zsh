@@ -17,23 +17,43 @@ install_zsh()
     if [ ! -d "${POWERLEVEL10K_HOME}" ]
     then
         git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${POWERLEVEL10K_HOME}"
+    else
+        (
+            cd "${POWERLEVEL10K_HOME}" || exit 1
+            git pull
+        )
     fi
 
     ZSH_AUTOSUGGESTION_HOME="${ZSH}/custom/plugins/zsh-autosuggestions"
     if [ ! -d "${ZSH_AUTOSUGGESTION_HOME}" ]
     then
         git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_AUTOSUGGESTION_HOME}"
+    else
+        (
+            cd "${ZSH_AUTOSUGGESTION_HOME}" || exit 1
+            git pull
+        )
     fi
 
     ZSH_SYNTAX_HIGHLIGHTING="${ZSH}/custom/plugins/zsh-syntax-highlighting"
     if [ ! -d "${ZSH_SYNTAX_HIGHLIGHTING}" ]
     then
         git clone https://github.com/zsh-users/zsh-syntax-highlighting "${ZSH_SYNTAX_HIGHLIGHTING}"
+    else
+        (
+            cd "${ZSH_SYNTAX_HIGHLIGHTING}" || exit 1
+            git pull
+        )
     fi
 
     ZSH_YOU_SHOULD_USE="${ZSH}/custom/plugins/you-should-use"
     if [ ! -d "${ZSH_YOU_SHOULD_USE}" ]
     then
         git clone https://github.com/MichaelAquilina/zsh-you-should-use "${ZSH_YOU_SHOULD_USE}"
+    else
+        (
+            cd "${ZSH_YOU_SHOULD_USE}" || exit 1
+            git pull
+        )
     fi
 }
