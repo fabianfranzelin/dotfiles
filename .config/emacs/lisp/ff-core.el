@@ -219,6 +219,9 @@ COMMAND: command to be executed"
 (ff/ensure-apt-package "firefox" "firefox")
 (customize-set-variable 'browse-url-browser-function 'browse-url-firefox)
 
+;; cycle through windows within the same frame
+(keymap-global-set "M-o" 'other-window)
+
 ;; -------------------------------------------------------------
 ;; Core packages
 ;; -------------------------------------------------------------
@@ -638,16 +641,6 @@ TEXT: title"
   ;; add pesonal snippets directory
   (customize-set-variable 'yas-snippet-dirs `(,(expand-file-name "snippets/" emacs-config-home)
                                               ,yasnippet-snippets-dir)))
-
-;; -------------------------------------------------------------------
-;; Ace window: select windows based on numbers
-;; -------------------------------------------------------------------
-(use-package ace-window
-  :bind
-  (:map global-map
-        ("M-o" . ace-window)
-        :map diff-mode-map
-        ("M-o" . nil)))
 
 ;; -------------------------------------------------------------------
 ;; Avy: Jump in buffer with three key strokes
