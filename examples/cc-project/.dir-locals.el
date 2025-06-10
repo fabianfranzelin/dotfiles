@@ -27,7 +27,8 @@
                                          (let ((name (car element))
                                                (value (cdr element)))
                                            (add-to-list 'compilation-environment (format "%s=%s" name value))))
-                                       env-variables)))))))
- (c++-ts-mode . ((eval . (setq-local ff/cc-build-folder-container nil))
-                 (eval . (setq-local ff/cc-conan-cache-container nil))
-                 (eval . (setq-local ff/cc-conan-cache-host nil)))))
+                                       env-variables)))))
+         ;; conan paths for container setup
+         (eval . (setq-local ff/cc-workspace-folder-container nil))
+         (eval . (setq-local ff/cc-conan-cache-container nil))
+         (eval . (setq-local ff/cc-conan-cache-host nil)))))

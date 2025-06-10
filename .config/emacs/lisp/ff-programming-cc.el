@@ -25,8 +25,8 @@
 ;; Get to work with Docker mounted workspaces: Usually, the docker
 ;; container I am running does not contain a
 
-(defvar ff/cc-build-folder-container "/workspace"
-  "Location of the build folder inside the container.")
+(defvar ff/cc-workspace-container "/workspace"
+  "Location of the workspace inside the container.")
 
 (defvar ff/cc-conan-cache-container nil
   "Location of the conan cache folder inside the container.")
@@ -49,26 +49,19 @@ REPLACE-STR: string that replaces all regex matches"
 (defun ff/container-host-compile-commands-mapping ()
   "Adjust the compile commands of CMake to match the host systems paths."
   (interactive)
-  (let* ((workspace-folder (file-name-directory ff/cc-build-folder-container))
-         (build-folder (file-name-nondirectory ff/cc-build-folder-container))
-         (compile-commands-file-path (expand-file-name "compile_commands.json" (concat (ff/project-root) build-folder)))
-         (build-folder-host (expand-file-name build-folder (ff/project-root))))
-    ;; replace the build folder
-    (message "Replacing %s by %s" ff/cc-build-folder-container build-folder-host)
-    (ff/search-replace compile-commands-file-path
-                       ff/cc-build-folder-container
-                       build-folder-host)
+  (let* ((main-folder-host (locate-dominating-file default-directory "build"))
+         (workspace-folder-host (ff/project-root))
+         (compile-commands-file-path (expand-file-name "build/compile_commands.json" main-folder-host)))
     ;; replace the workspace folder
-    (message "Replacing %s by %s" workspace-folder (ff/project-root))
+    (message "Replacing %s by %s" ff/cc-workspace-folder-container workspace-folder-host)
     (ff/search-replace compile-commands-file-path
-                       workspace-folder
-                       (ff/project-root))
-    (when (and ff/cc-conan-cache-container ff/cc-conan-cache-host)
-      (let ((conan-cache-host (expand-file-name ".conan" (getenv "HOME"))))
-        (message "Replacing %s by %s" ff/cc-conan-cache-container conan-cache-host)
-        (ff/search-replace compile-commands-file-path
-                           ff/cc-conan-cache-container
-                           ff/cc-conan-cache-host)))))
+                       ff/cc-workspace-folder-container
+                       (substring workspace-folder-host 0 (1- (length workspace-folder-host))))
+    ;; replace the conan cache folder
+    (message "Replacing %s by %s" ff/cc-conan-cache-container ff/cc-conan-cache-host)
+    (ff/search-replace compile-commands-file-path
+                       ff/cc-conan-cache-container
+                       ff/cc-conan-cache-host)))
 
 (with-eval-after-load 'eglot
   ;; make sure that system packages are available
