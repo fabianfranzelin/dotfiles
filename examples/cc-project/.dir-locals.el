@@ -31,4 +31,5 @@
          ;; conan paths for container setup
          (eval . (setq-local ff/cc-workspace-folder-container nil))
          (eval . (setq-local ff/cc-conan-cache-container nil))
-         (eval . (setq-local ff/cc-conan-cache-host nil)))))
+         (eval . (setq-local ff/cc-conan-cache-host nil))
+         (eval . (setq-local ff/cc-build-folder-container "examples/cc-project/build")))))

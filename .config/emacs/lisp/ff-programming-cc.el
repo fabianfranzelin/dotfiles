@@ -25,6 +25,9 @@
 ;; Get to work with Docker mounted workspaces: Usually, the docker
 ;; container I am running does not contain a
 
+(defvar ff/cc-build-folder-container nil
+  "Location of the folder where the compile_commands.json is located inside the container.")
+
 (defvar ff/cc-workspace-container "/workspace"
   "Location of the workspace inside the container.")
 
@@ -49,14 +52,17 @@ REPLACE-STR: string that replaces all regex matches"
 (defun ff/container-host-compile-commands-mapping ()
   "Adjust the compile commands of CMake to match the host systems paths."
   (interactive)
-  (let* ((main-folder-host (locate-dominating-file default-directory "build"))
-         (workspace-folder-host (ff/project-root))
-         (compile-commands-file-path (expand-file-name "build/compile_commands.json" main-folder-host)))
+  (let* ((workspace-folder-host (substring (ff/project-root) 0 (1- (length (ff/project-root)))))
+         (build-folder-host
+          (if ff/cc-build-folder-container
+              (expand-file-name ff/cc-build-folder-container workspace-folder-host)
+            (locate-dominating-file default-directory "build")))
+         (compile-commands-file-path (expand-file-name "compile_commands.json" build-folder-host)))
     ;; replace the workspace folder
     (message "Replacing %s by %s" ff/cc-workspace-folder-container workspace-folder-host)
     (ff/search-replace compile-commands-file-path
                        ff/cc-workspace-folder-container
-                       (substring workspace-folder-host 0 (1- (length workspace-folder-host))))
+                       workspace-folder-host)
     ;; replace the conan cache folder
     (message "Replacing %s by %s" ff/cc-conan-cache-container ff/cc-conan-cache-host)
     (ff/search-replace compile-commands-file-path
