@@ -69,6 +69,10 @@ REPLACE-STR: string that replaces all regex matches"
                        ff/cc-conan-cache-container
                        ff/cc-conan-cache-host)))
 
+(with-eval-after-load 'project
+  ;; make sure that the compile commands are adjusted to the host system
+  (define-key project-prefix-map "m" 'ff/container-host-compile-commands-mapping))
+
 (with-eval-after-load 'eglot
   ;; make sure that system packages are available
   (ff/ensure-apt-package "clangd" "clangd")
