@@ -8,7 +8,7 @@
   "Stage, commit, and push all changed files in a Git repo."
   (interactive)
   (magit-stage-modified)
-  (magit-commit-create '("-m" "update some stuff"))
+  (magit-commit-create '("-m" "feat: update some stuff"))
   (magit-push-current-to-upstream nil))
 
 (defun ff/vc-browse-remote (&optional current-line)
