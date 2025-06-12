@@ -308,22 +308,22 @@ COMMAND: command to be executed"
 ;; docker-tramp is part of Emacs 29 core
 ;; multihop example: /ssh:frf2lr@ws|docker:vscode@c8416d9f4da6:/
 
-(defun my/tramp-call-process-direct (host user command &optional args)
-  "Execute a remote COMMAND directly on HOST via TRAMP and return output.
-   USER specifies the remote user. ARGS is a list of command arguments.
+(defun ff/tramp-call-process-direct (protocol host user command &optional args)
+  "
+Execute a remote COMMAND directly on HOST via TRAMP using PROTOCOL and return output.
+USER specifies the remote user. ARGS is a list of command arguments.
 
 Example usage:
-(message (my/tramp-call-process-direct \"your-remote-host.com\" \"your-username\" \"ls\" '(\"-l\" \"/tmp\")))
+(message (my/tramp-call-process-direct \"your-remote-host.com\"
+\"your-username\" \"ls\" '(\"-l\" \"/tmp\")))
 "
-  (let* ((tramp-program (format "/ssh:%s@%s:/bin/%s" user host command))
+  (let* ((tramp-program (format "/%s:%s@%s:/bin/%s" protocol user host command))
          (process-buffer (generate-new-buffer "*tramp-output*")))
     (message "Executing remote command: %s %S" tramp-program args)
     (with-current-buffer process-buffer
       (apply 'call-process tramp-program nil (current-buffer) nil args))
     (prog1 (buffer-string)
       (kill-buffer process-buffer))))
-
-
 
 ;; -------------------------------------------------------------------
 ;; Transpose frame
