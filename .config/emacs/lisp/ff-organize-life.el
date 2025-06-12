@@ -394,7 +394,8 @@ DIR: directory path"
                  ("\\subsection{%s}" . "\\subsection*{%s}")
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                  ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+  (customize-set-variable 'org-latex-inputenc-alist '(("utf8" . "utf8x"))))
 
 (defun ff/citar-reference-notes-absolute-path ()
   "Load the absolute path to all literature notes."
