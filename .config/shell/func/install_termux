@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Install Termux:API from f-droid make sure that the locstion service
+# is enabled for termux:api. Check the Android settings
+
 install_termux()
 {
     ###########################################################################
@@ -21,7 +24,9 @@ install_termux()
         poppler \
         termux-api \
 	sshpass \
-        wget
+        wget \
+        termux-api \
+        jq
 
     LOCAL_BIN="${HOME}/.local/bin"
     mkdir -p "${LOCAL_BIN}"
@@ -113,4 +118,43 @@ alias ......='cd ../../../../..'
 alias g='git'
 alias unlock_key="pass usernames/public@github > /dev/null"
 " | tee "${BASHRC}"
+
+
+    ###########################################################################
+    #                                   ssh                                  #
+    ###########################################################################
+    SSHCONFIG="${HOME}/.ssh/config_2"
+    echo "
+Host *
+     ControlMaster	auto
+     ControlPath	tramp.%C
+     ControlPersist	no
+     ServerAliveInterval 5
+
+Match host pauline exec \"test \\\"$(termux-wifi-connectioninfo | jq -r '.ssid')\\\" = \\\"Pauline\\\"\"
+     Hostname 192.168.178.48
+     Port 22
+     ForwardAgent yes
+     ForwardX11 yes
+     ForwardX11Trusted yes
+     AddressFamily inet
+     Compression yes
+
+     ControlMaster auto
+     ControlPath ~/.ssh/socket/%r@%h-%p
+     ControlPersist 3600
+
+Host pauline
+     Hostname franzelin.dynv6.net
+     Port 22
+     ForwardAgent yes
+     ForwardX11 yes
+     ForwardX11Trusted yes
+     AddressFamily inet
+     Compression yes
+
+     ControlMaster auto
+     ControlPath ~/.ssh/socket/%r@%h-%p
+     ControlPersist 3600
+" | tee "${SSHCONFIG}"
 }
