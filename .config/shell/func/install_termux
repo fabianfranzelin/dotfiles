@@ -135,7 +135,7 @@ alias ssh_pauline='sshpass -p \"\$(pass passwords/frf2lr@pauline)\" ssh frf2lr@p
     echo "======================================"
     echo "Install ssh"
 
-    SSHCONFIG="${HOME}/.ssh/config_2"
+    SSHCONFIG="${HOME}/.ssh/config"
     echo "
 Host *
      ControlMaster	auto
