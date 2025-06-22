@@ -32,7 +32,7 @@ general:
     ftpHistory: []
 appearance:
   # Allowed options: en_US, fr_FR, nl_BE, de_DE, pt_BR, pt_PT or zh_CN
-  locale: 'de_DE'
+  locale: 'en_US'
   # Allowed options: metric or imperial
   unitSystem: 'metric'
   # Time format to use when rendering the app

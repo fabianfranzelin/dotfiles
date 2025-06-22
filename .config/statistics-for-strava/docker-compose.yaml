@@ -10,4 +10,4 @@ services:
       - ./storage/files:/var/www/storage/files
     env_file: ./.env
     ports:
-      - 8080:8080
+      - 8456:8456
