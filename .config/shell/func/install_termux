@@ -37,7 +37,7 @@ install_termux()
     ###########################################################################
     echo "======================================"
     echo "Install gpg"
-    
+
     GPG_HOME="${HOME}/.gnupg"
     GPG_CONF="${GPG_HOME}/.gpg.conf"
     GPG_AGENT_CONF="${GPG_HOME}/.gpg-agent.conf"
@@ -81,7 +81,7 @@ allow-emacs-pinentry
     ###########################################################################
     echo "======================================"
     echo "Install bashrc"
-    
+
     BASHRC="${HOME}/.bashrc"
     echo "
 export PASSWORD_STORE='${HOME}/.password-store'
