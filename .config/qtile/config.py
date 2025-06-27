@@ -22,6 +22,12 @@ keys = [
     Key([mod], "l", lazy.layout.right(), desc="Move focus to right"),
     Key([mod], "k", lazy.layout.down(), desc="Move focus down"),
     Key([mod], "i", lazy.layout.up(), desc="Move focus up"),
+    Key(
+        [mod],
+        "o",
+        lazy.layout.next(),
+        desc="Navigate to next window in current stack pane",
+    ),
     Key([mod], "n", lazy.layout.normalize(), desc="normalize window size ratios"),
     Key(
         [mod],
