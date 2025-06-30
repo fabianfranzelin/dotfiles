@@ -305,8 +305,6 @@ DIR: directory path"
   (require 'org-roam-export)
   ;; make sure that dailies are available
   (require 'org-roam-dailies)
-  ;; enable autosync
-  (org-roam-db-autosync-mode t)
   ;; display buffer
   (add-to-list 'display-buffer-alist
                '("\\*org-roam\\*"

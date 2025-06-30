@@ -412,6 +412,7 @@ Example usage:
   (trashed-date-format "%Y-%m-%d %H:%M:%S"))
 
 (use-package dwim-shell-command
+  :demand t
   :bind
   (:map
    dired-mode-map
