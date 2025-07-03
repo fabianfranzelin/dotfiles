@@ -23,12 +23,17 @@
   (add-hook 'gptel-post-stream 'gptel-auto-scroll)
   ;; move cursor to next heading when response is posted
   (add-hook 'gptel-post-response-functions 'gptel-end-of-response)
-  ;; register gemini as default backend for gptel
-  ;; :key can be a function that returns the API key.
-  (setq gpel-model 'gemini-2.0-flash
-        gptel-backend (gptel-make-gemini "Gemini"
-                        :key #'ff/get-gemini-token
-                        :stream t))
+  ;; Setup copilot
+  (gptel-make-gh-copilot "Copilot")
+
+  ;; make copilot the default backend for gptel when on ABT C-002NY
+  (if (string= (system-name) "ABT-C-002NY")
+      (setq gptel-model 'claude-3.7-sonnet
+            gptel-backend (gptel-make-gh-copilot "Copilot"))
+    ;; otherwise use gemini
+    (setq gptel-backend (gptel-make-gemini "Gemini"
+                          :key #'ff/get-gemini-token
+                          :stream t)))
   :bind (("C-c g" . gptel)))
 
 ;; GitHub copilot
