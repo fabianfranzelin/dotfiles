@@ -14,8 +14,8 @@ export HTTPS_PROXY="http://127.0.0.1:3128"
 # Set default browser use `xdg-open` to call it
 export BROWSER=firefox
 
-# keyboard layout
-"${HOME}/.local/bin/set_keyboard_layout"
+# initialize default setup
+alias init='autorandr --load home-docking-station; set_keyboard_layout; unlock_key; osd-vpn-connect'
 
 #------------------------------------------------------------------------------#
 # AOS
@@ -38,4 +38,3 @@ PATH="$PATH:${PARASOFT_INSTALL_DIR}/cpptest/bin/cli:${PARASOFT_INSTALL_DIR}/cppt
 # Azure DevOps
 # Run cat BOSCH-CA-DE_pem.cer /opt/az/lib/python3.6/site-packages/certifi/cacert.pem > azure-bosch-cert.pem
 export REQUESTS_CA_BUNDLE="${HOME}/.local/share/certificates/bosch/azure-bosch-cert.pem"
-
