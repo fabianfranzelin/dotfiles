@@ -1,4 +1,4 @@
-;;; ff-programming-settings.el --- Setup all programming settings -*- lexical-binding: t; -*-
+ ;;; ff-programming-settings.el --- Setup all programming settings -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 ;; Configuration for all programming settings
