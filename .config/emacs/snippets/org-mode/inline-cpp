@@ -2,4 +2,4 @@
 # name: inline-cpp
 # key: inline-cpp
 # --
-src_cpp[:session]{$0}
+src_cpp{$0}

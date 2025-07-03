@@ -2,6 +2,6 @@
 # name: cpp
 # key: cpp
 # --
-#+BEGIN_SRC c++ :session
+#+BEGIN_SRC c++
 $0
 #+END_SRC
