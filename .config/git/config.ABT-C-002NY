@@ -27,6 +27,8 @@
     helper = !pass keys/$(pass usernames/pace@github)@github.com
 [credential "https://github.com/fabian-franzelin_pace/whitelist_tracker.git"]
     helper = !pass keys/$(pass usernames/pace@github)@github.com
+[credential "https://github.com/fabian-franzelin_pace/org.git"]
+    helper = !pass keys/$(pass usernames/pace@github)@github.com
 [credential "https://github.com"]
     helper = !pass keys/$(pass usernames/public@github)@github.com
 [credential "https://github.boschdevcloud.com"]
