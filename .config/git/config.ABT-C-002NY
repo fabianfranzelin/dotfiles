@@ -37,8 +37,6 @@
     helper = !pass keys/$(pass usernames/bosch)@sourcecode01.de.bosch.com
 [credential "https://sourcecode.socialcoding.bosch.com"]
     helper = !pass keys/$(pass usernames/bosch)@sourcecode.socialcoding.bosch.com
-[credential "https://github.ford.com"]
-    helper = !pass keys/$(pass usernames/ford@github)@github.ford.com
 [http "http://*.bosch.com/"]
     proxy =
 [http "https://*.bosch.com/"]
