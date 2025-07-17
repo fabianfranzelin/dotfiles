@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: log debug
+# key: log debug
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# --
+
+LOG_DEBUG("$0");
