@@ -58,7 +58,18 @@ DIR: directory"
   :custom
   (vertico-count 10)
   (vertico-cycle t)
+  ;; Enable context menu. `vertico-multiform-mode' adds a menu in the minibuffer
+  ;; to switch display modes.
+  (context-menu-mode t)
+  ;; Support opening new minibuffers from inside existing minibuffers.
   (enable-recursive-minibuffers t)
+  ;; Hide commands in M-x which do not work in the current mode.  Vertico
+  ;; commands are hidden in normal buffers. This setting is useful beyond
+  ;; Vertico.
+  (read-extended-command-predicate #'command-completion-default-include-p)
+  ;; Do not allow the cursor in the minibuffer prompt
+  (minibuffer-prompt-properties
+   '(read-only t cursor-intangible t face minibuffer-prompt))
   :config
   (custom-set-faces '(vertico-current ((t (:background "#3a3f5a")))))
   :bind
@@ -90,6 +101,7 @@ DIR: directory"
   :ensure t
   :custom
   (completion-styles '(orderless basic))
+  (completion-category-defaults nil)
   (completion-category-overrides '((file (styles basic partial-completion)))))
 
 ;; Save history during sessions so that vertico can pick up the latest
@@ -120,11 +132,7 @@ DIR: directory"
   (tab-always-indent 'complete)
   ;; TAB cycle if there are only few candidates
   (completion-cycle-threshold 3)
-  ;; Emacs 28: Hide commands in M-x which do not apply to the current mode.
-  ;; Corfu commands are hidden, since they are not supposed to be used via M-x.
-  (read-extended-command-predicate #'command-completion-default-include-p)
-
-  ;; Emacs 30 and newer: Disable Ispell completion function. As an alternative,
+  ;; Disable Ispell completion function. As an alternative,
   ;; try `cape-dict'.
   (text-mode-ispell-word-completion nil)
   (corfu-min-width 20)

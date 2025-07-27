@@ -112,6 +112,15 @@ DIR: directory path"
         ("C-c +" . nil)
         ("C-c -" . nil)))
 
+(with-eval-after-load 'vertico
+  ;; Fix completion issues with vertico and org
+  (advice-add #'org-make-tags-matcher :around #'vertico-enforce-basic-completion)
+  (advice-add #'org-agenda-filter :around #'vertico-enforce-basic-completion)
+
+  ;; Alternative 2: Complete full paths
+  (customize-set-variable 'org-refile-use-outline-path 'file)
+  (customize-set-variable 'org-outline-path-complete-in-steps nil))
+
 ;; use pdf-tools for org links
 (use-package org-pdfview
   :after org
