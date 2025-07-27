@@ -249,9 +249,9 @@ COMMAND: command to be executed"
   (after-init . whole-line-or-region-global-mode))
 
 ;; volatile highlights - temporarily highlight changes from pasting
-(use-package volatile-highlights
-  :hook
-  (after-init . volatile-highlights-mode))
+;; (use-package volatile-highlights
+;;   :hook
+;;   (after-init . volatile-highlights-mode))
 
 ;; -------------------------------------------------------------
 ;; Delete trailing white spaces only for lines that are touched. This
