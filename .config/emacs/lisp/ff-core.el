@@ -139,6 +139,11 @@ COMMAND: command to be executed"
 ;; -------------------------------------------------------------------
 ;; Global key bindings
 ;; -------------------------------------------------------------------
+
+;; the menu key shall trigger alt-x explicitly
+(keymap-global-set "<menu>" 'execute-extended-command)
+(define-key context-menu-mode-map [menu] nil)
+
 ;; convenient setting to move between open buffers
 (require 'repeat)
 (repeat-mode 1)
