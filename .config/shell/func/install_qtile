@@ -12,7 +12,7 @@ install_qtile()
             # Install Python
             TMP_PYTHON_SRC=$(mktemp -d)
             cd "${TMP_PYTHON_SRC}" || exit 1
-            QTILE_PYTHON_VERSION="3.10.16"
+            QTILE_PYTHON_VERSION="3.13.5"
             wget "http://www.python.org/ftp/python/${QTILE_PYTHON_VERSION}/Python-${QTILE_PYTHON_VERSION}.tgz"
             tar -zxvf "Python-${QTILE_PYTHON_VERSION}.tgz"
             cd "Python-${QTILE_PYTHON_VERSION}" || exit 1
