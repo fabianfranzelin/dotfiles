@@ -103,7 +103,8 @@ the need to update my project hierarchy."
 FORCE: force update of grammars"
     (interactive)
     (dolist (grammar
-             '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+             '(
+               (bash "https://github.com/tree-sitter/tree-sitter-bash")
                (cmake "https://github.com/uyha/tree-sitter-cmake")
                (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
                (c "https://github.com/tree-sitter/tree-sitter-c")
@@ -120,7 +121,9 @@ FORCE: force update of grammars"
                (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
                (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
                (yaml "https://github.com/ikatyang/tree-sitter-yaml")
-               (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")))
+               (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")
+               ))
+
       (add-to-list 'treesit-language-source-alist grammar)
       ;; Only install `grammar' if we don't already have it
       ;; installed. However, if you want to *update* a grammar then

@@ -77,7 +77,7 @@ alias doir='docker image rm'
 # Emacs
 alias e="emacsclient -c -a emacs"
 alias en="emacsclient -nw"
-alias eds="e --daemon"
+alias eds="emacs --daemon"
 alias edk="killall emacs"
 alias edr="edk; eds"
 alias em="emacs --init-directory=~/.config/minimal-emacs"

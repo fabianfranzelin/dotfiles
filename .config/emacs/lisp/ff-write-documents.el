@@ -164,13 +164,6 @@ JAR-PATH: expected binary file in the extracted folder."
   :after
   (plantuml-mode flycheck))
 
-;; Graphviz mode
-(use-package graphviz-dot-mode
-  :preface
-  (ff/ensure-apt-package "graphviz" "dot")
-  :custom
-  (graphviz-dot-indent-width 4))
-
 ;; -------------------------------------------------------------------
 ;; Latex
 ;; -------------------------------------------------------------------
