@@ -1,6 +1,11 @@
+#include <arpa/inet.h> // for inet_ntop
 #include <cstdint>
 #include <cstdlib>
 #include <iostream>
+#include <netdb.h> // for getaddrinfo, freeaddrinfo, addrinfo
+#include <regex>
+#include <string>
+#include <sys/socket.h> // for AF_INET
 
 bool bitwise_comparison(std::uint8_t* a, std::uint8_t* b, size_t length)
 {
@@ -14,6 +19,41 @@ bool bitwise_comparison(std::uint8_t* a, std::uint8_t* b, size_t length)
         }
     }
     return ans;
+}
+
+bool resolveIPv4(const std::string& input, std::string& resolvedAddress)
+{
+    if (input.empty())
+    {
+        return false;
+    }
+
+    struct addrinfo hints = {};
+    struct addrinfo* result = nullptr;
+    hints.ai_family = AF_INET; // IPv4 only
+    hints.ai_socktype = SOCK_STREAM;
+
+    int ret = getaddrinfo(input.c_str(), nullptr, &hints, &result);
+    if (ret != 0)
+    {
+        return false;
+    }
+
+    if (!result->ai_addr)
+    {
+        return false;
+    }
+
+    std::unique_ptr<addrinfo, decltype(&freeaddrinfo)> resultGuard(result, freeaddrinfo);
+    const auto* sock_addr = reinterpret_cast<const sockaddr_in*>(result->ai_addr);
+    char ipstr[INET_ADDRSTRLEN];
+    if (inet_ntop(AF_INET, &sock_addr->sin_addr, ipstr, INET_ADDRSTRLEN) == nullptr)
+    {
+        return false;
+    }
+
+    resolvedAddress = ipstr;
+    return !resolvedAddress.empty();
 }
 
 int main(int, char*[])
@@ -33,5 +73,29 @@ int main(int, char*[])
     bitwise_comparison(a, b, length);
     free(a);
     free(b);
+
+    ///////////////////////////////////////////////////////////////////////////
+    //                               Check IPv4                              //
+    ///////////////////////////////////////////////////////////////////////////
+    std::cout << "// IPv4 resolution //////////////////////////////////////////"
+              << "\n";
+
+    for (std::string address : {"",
+                                "test",
+                                "0.0.0.0",
+                                "255.255.255.255",
+                                "127.0.0.1",
+                                "255.255.256.255",
+                                "localhost",
+                                "local_host",
+                                "162.172.0.3"})
+    {
+        std::string resolvedAddress;
+        bool ret = resolveIPv4(address, resolvedAddress);
+        std::cout << "[" << (ret ? "Success" : "Failure") << "] " << (address.empty() ? "None" : address) << " -> "
+                  << (resolvedAddress.empty() ? "None" : resolvedAddress) << "\n";
+    }
+
+
     return 0;
 }

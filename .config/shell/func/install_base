@@ -67,7 +67,8 @@ install_base() {
          xdg-utils \
          libgraphviz-dev \
 	 gnupg2 \
-         ncdu
+         ncdu \
+         p7zip-full
 
     if ( __is_wsl )
     then
