@@ -352,9 +352,7 @@ FORCE: force update of grammars"
   (add-hook 'robot-mode-hook 'apheleia-mode)
   (let* ((robotidy-base-cmd '("robotidy"))
          (robotidy-args (append '("--no-color" "-"
-                                  (when ff/robotidy-config `("--config" ,ff/robotidy-config))
-                                  (apheleia-formatters-indent nil "--indent")
-                                  (apheleia-formatters-fill-column "--line-length"))))
+                                  (when ff/robotidy-config `("--config" ,ff/robotidy-config)))))
          (robotidy-cmd (append robotidy-base-cmd robotidy-args)))
     (setf (alist-get 'robotidy apheleia-formatters) robotidy-cmd)
     (setf (alist-get 'robot-mode apheleia-mode-alist) 'robotidy)))

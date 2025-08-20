@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <cstdlib>
 #include <iostream>
+#include <limits>
 #include <netdb.h> // for getaddrinfo, freeaddrinfo, addrinfo
 #include <regex>
 #include <string>
@@ -95,6 +96,16 @@ int main(int, char*[])
         std::cout << "[" << (ret ? "Success" : "Failure") << "] " << (address.empty() ? "None" : address) << " -> "
                   << (resolvedAddress.empty() ? "None" : resolvedAddress) << "\n";
     }
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    //                              port limits                              //
+    ///////////////////////////////////////////////////////////////////////////
+    std::cout << "// Port limits //////////////////////////////////////////////"
+              << "\n";
+    std::cout << "lower limit: 0"
+              << "\n";
+    std::cout << "upper limit: " << std::numeric_limits<uint16_t>::max() << "\n";
 
 
     return 0;
