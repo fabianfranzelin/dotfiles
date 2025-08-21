@@ -113,7 +113,9 @@ install_base() {
     PANDOC_BIN="pandoc-${PANDOC_VER}-1-${SYSTEM_ARCH}.deb"
     PANDOC_URL="https://github.com/jgm/pandoc/releases/download/${PANDOC_VER}/${PANDOC_BIN}"
     (
-        cd "/tmp" || exit 1
+
+        TEMP_DIR=$(mktemp -d)
+        cd "${TEMP_DIR}" || exit 1
         wget "${PANDOC_URL}"
         sudo dpkg -i "${PANDOC_BIN}"
     )
@@ -124,7 +126,8 @@ install_base() {
     if [ ! -d "${GLIBC_PATH}" ]
     then
         (
-            cd "/tmp" || exit 1
+            TEMP_DIR=$(mktemp -d)
+            cd "${TEMP_DIR}" || exit 1
             wget "https://ftp.gnu.org/gnu/libc/${GLIBC_NAME}.tar.gz"
             tar -zxf "${GLIBC_NAME}.tar.gz"
             mv -n "${GLIBC_NAME}" "${HOME}/.local/share"
@@ -132,11 +135,12 @@ install_base() {
     fi
 
     # install draw.io
-    DRAW_IO_VER="27.0.9"
+    DRAW_IO_VER="28.0.6"
     DRAW_IO_BIN="drawio-${SYSTEM_ARCH}-${DRAW_IO_VER}.deb"
     DRAW_IO_URL="https://github.com/jgraph/drawio-desktop/releases/download/v${DRAW_IO_VER}/${DRAW_IO_BIN}"
     (
-        cd "/tmp" || exit 1
+        TEMP_DIR=$(mktemp -d)
+        cd "${TEMP_DIR}" || exit 1
         wget "${DRAW_IO_URL}"
         sudo dpkg -i "${DRAW_IO_BIN}"
     )
@@ -152,4 +156,16 @@ install_base() {
             sudo snap install --classic code || true
         fi
     fi
+
+    # install act to run the github action locally
+    (
+        TEMP_DIR=$(mktemp -d)
+        cd "${TEMP_DIR}" || exit 1
+        curl -s https://api.github.com/repos/nektos/act/releases/latest | \
+            grep "browser_download_url.*linux_amd64.tar.gz" | \
+            cut -d : -f 2,3 | \
+            tr -d \" | \
+            wget -qi - -O - | \
+            tar -xz -C /usr/local/bin act
+    )
 }
