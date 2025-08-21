@@ -25,6 +25,7 @@
   (dockerfile-ts-mode . eglot-ensure)
   (rst-mode . eglot-ensure)
   (markdown-mode . eglot-ensure)
+  (robot-mode . eglot-ensure)
   :custom
   (eglot-events-buffer-size 10)
   :config
@@ -356,6 +357,13 @@ FORCE: force update of grammars"
          (robotidy-cmd (append robotidy-base-cmd robotidy-args)))
     (setf (alist-get 'robotidy apheleia-formatters) robotidy-cmd)
     (setf (alist-get 'robot-mode apheleia-mode-alist) 'robotidy)))
+
+(with-eval-after-load 'eglot
+  ;; make sure that system packages are available
+  (ff/ensure-python-package "robotframework-lsp" nil "robotframework_ls")
+
+  ;; register robotframework_ls as default lsp server in eglot
+  (add-to-list 'eglot-server-programs `(robot-mode "robotframework_ls")))
 
 ;; -------------------------------------------------------------------
 ;; toml
