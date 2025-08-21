@@ -156,16 +156,4 @@ install_base() {
             sudo snap install --classic code || true
         fi
     fi
-
-    # install act to run the github action locally
-    (
-        TEMP_DIR=$(mktemp -d)
-        cd "${TEMP_DIR}" || exit 1
-        curl -s https://api.github.com/repos/nektos/act/releases/latest | \
-            grep "browser_download_url.*linux_amd64.tar.gz" | \
-            cut -d : -f 2,3 | \
-            tr -d \" | \
-            wget -qi - -O - | \
-            tar -xz -C /usr/local/bin act
-    )
 }
