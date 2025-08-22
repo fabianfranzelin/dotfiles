@@ -213,6 +213,7 @@ FUN: function to be called on the entry's path"
 ;; -------------------------------------------------------------------
 ;; Define font size and methods to adjust it on the fly
 (set-face-attribute 'default nil :height 120) ;; default = 100
+;; (set-frame-font "JetBrains Mono-14" t t)
 
 ;; Show number of lines in the left side of the buffer
 (when (not (ff/is-mobile))
