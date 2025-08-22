@@ -352,7 +352,7 @@ FORCE: force update of grammars"
 (with-eval-after-load 'apheleia
   (add-hook 'robot-mode-hook 'apheleia-mode)
   (let* ((robotidy-base-cmd '("robotidy"))
-         (robotidy-args (append '("--no-color" "-"
+         (robotidy-args (append '("--no-color"
                                   (when ff/robotidy-config `("--config" ,ff/robotidy-config)))))
          (robotidy-cmd (append robotidy-base-cmd robotidy-args)))
     (setf (alist-get 'robotidy apheleia-formatters) robotidy-cmd)
