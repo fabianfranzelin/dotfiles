@@ -79,6 +79,7 @@
   ;; disable it there
   :if (not (ff/is-mobile))
   :straight (:host github :repo "ichernyshovvv/enlight")
+  :after grid
   :preface
   (defface ff/enlight-yellow-bold
     '((t (:foreground "#cabf00" :bold t)))
@@ -129,31 +130,31 @@ FUN: function to be called on the entry's path"
   (initial-buffer-choice #'enlight)
   (enlight-content
    (concat
-    (grid-get-box `(
-                    :align center
-                    :content ,ff/enlight-emacs
-                    :width 100))
-    (grid-get-box `(
-                    :align center
-                    :content ,(concat
-                               "\n\n\n"
-                               (enlight-menu
-                                `(("Org"
-                                   ("Org-Agenda (dashboard)" (org-agenda nil "d") "A"))
-                                  ,(ff/enlight-menu-creator
-                                    '("Projects"
-                                      ("Dotfiles" "~/workspace/dotfiles" "d")
-                                      ("Org" "~/workspace/org" "o")
-                                      ("Org (personal)" "~/workspace/org_personal" "p")
-                                      ("AOS" "~/workspace/aos" "a"))
-                                    #'ff/project-switch-project)
-                                  ,(ff/enlight-menu-creator
-                                    '("Folders"
-                                      ("Home" "~" "h")
-                                      ("Workspace" "~/workspace" "w")
-                                      ("Downloads" "~/Downloads" "D"))
-                                    #'dired))))
-                    :width 100)))))
+    (grid-make-box `(
+                     :align center
+                     :content ,ff/enlight-emacs
+                     :width 100))
+    (grid-make-box `(
+                     :align center
+                     :content ,(concat
+                                "\n\n\n"
+                                (enlight-menu
+                                 `(("Org"
+                                    ("Org-Agenda (dashboard)" (org-agenda nil "d") "A"))
+                                   ,(ff/enlight-menu-creator
+                                     '("Projects"
+                                       ("Dotfiles" "~/workspace/dotfiles" "d")
+                                       ("Org" "~/workspace/org" "o")
+                                       ("Org (personal)" "~/workspace/org_personal" "p")
+                                       ("AOS" "~/workspace/aos" "a"))
+                                     #'ff/project-switch-project)
+                                   ,(ff/enlight-menu-creator
+                                     '("Folders"
+                                       ("Home" "~" "h")
+                                       ("Workspace" "~/workspace" "w")
+                                       ("Downloads" "~/Downloads" "D"))
+                                     #'dired))))
+                     :width 100)))))
 
 ;; -------------------------------------------------------------------
 ;; Doom Color themes
