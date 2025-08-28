@@ -7,6 +7,7 @@
 #include <regex>
 #include <string>
 #include <sys/socket.h> // for AF_INET
+#include <vector>
 
 bool bitwise_comparison(std::uint8_t* a, std::uint8_t* b, size_t length)
 {
@@ -55,6 +56,17 @@ bool resolveIPv4(const std::string& input, std::string& resolvedAddress)
 
     resolvedAddress = ipstr;
     return !resolvedAddress.empty();
+}
+
+void compare_vectors()
+{
+    std::vector<size_t> a{0, 1, 2, 3, 4};
+    std::vector<size_t> b{0, 1, 2, 3, 4};
+    std::vector<size_t> c{0, 1, 2, 3};
+
+    std::cout << "a == b: " << ((a == b) ? "True" : "False") << "\n";
+    std::cout << "a == c: " << ((a == c) ? "True" : "False") << "\n";
+    std::cout << "b == c: " << ((b == c) ? "True" : "False") << "\n";
 }
 
 int main(int, char*[])
@@ -107,6 +119,11 @@ int main(int, char*[])
               << "\n";
     std::cout << "upper limit: " << std::numeric_limits<uint16_t>::max() << "\n";
 
+
+    ///////////////////////////////////////////////////////////////////////////
+    //                            Compare vectors                            //
+    ///////////////////////////////////////////////////////////////////////////
+    compare_vectors();
 
     return 0;
 }
