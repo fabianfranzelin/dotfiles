@@ -15,8 +15,8 @@ export HTTPS_PROXY="http://127.0.0.1:3128"
 export BROWSER=firefox
 
 # initialize default setup
-alias init='autorandr --load gottenheim; set_keyboard_layout; unlock_key; osd-vpn-connect; emacs --daemon'
-# alias init='autorandr --load home-docking-station; set_keyboard_layout; unlock_key; osd-vpn-connect'
+# alias init='autorandr --load gottenheim; set_keyboard_layout; unlock_key; osd-vpn-connect; emacs --daemon'
+alias init='autorandr --load home-docking-station; set_keyboard_layout; unlock_key; osd-vpn-connect'
 
 #------------------------------------------------------------------------------#
 # AOS
