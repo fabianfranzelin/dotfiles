@@ -616,6 +616,8 @@ FILE-PAGE: page at which the annotation refers to"
       ((agenda "")
        (alltodo ""))))))
 
+(use-package org-timeblock)
+
 (provide 'ff-organize-life)
 
 ;;; ff-organize-life.el ends here
