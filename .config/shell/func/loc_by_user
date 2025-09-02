@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+loc_by_user() {
+    git log --author="${AUTHOR}" --numstat --pretty="%H" |
+        awk 'NF==3 {plus+=$1; minus+=$2; dir=substr($3,1,index($3,"/")); if(dir!="") total[dir]+=$1+$2}
+END{for(dir in total) print total[dir],dir}' | sort -rn
+}
