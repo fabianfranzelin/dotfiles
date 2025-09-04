@@ -1,7 +1,7 @@
 ;;; Directory Local Variables
 ;;; For more information see (info "(emacs) Directory Variables")
 
-((nil . ((compile-command . "cd ./examples/cc-project/build && make")
+((nil . ((compile-command . "cd ./examples/cc-project/build && make -j$(nproc)")
          (eval . (defun run-command-recipe-ff/c++-example ()
                    (append
                     (when-let* ((project-dir (locate-dominating-file default-directory ".clangd")))
@@ -11,6 +11,9 @@
                     (when-let* ((project-dir (locate-dominating-file default-directory "build"))
                                 (build-dir (expand-file-name "build" project-dir)))
                       (list
+                       (list :command-name "cc:make"
+                             :command-line "make -j$(nproc)"
+                             :working-dir build-dir)
                        (if (f-file-p (expand-file-name "main" build-dir))
                            (list :command-name "cc:run main"
                                  :command-line "./main"
