@@ -125,7 +125,7 @@ JAR-PATH: expected binary file in the extracted folder."
   :preface
   ;; install system dependencies
   (ff/ensure-apt-package "graphviz" "dot")
-  (defvar plantuml-version "1.2025.2"
+  (defvar plantuml-version "1.2025.7"
     "Version number of plantuml binary")
   (defvar plantuml-name (concat "plantuml-" plantuml-version ".jar")
     "Name of plantuml executable")

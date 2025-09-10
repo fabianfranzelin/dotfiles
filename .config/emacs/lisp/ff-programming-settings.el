@@ -351,10 +351,7 @@ FORCE: force update of grammars"
 ;; configure auto format
 (with-eval-after-load 'apheleia
   (add-hook 'robot-mode-hook 'apheleia-mode)
-  (let* ((robotidy-base-cmd '("robotidy"))
-         (robotidy-args (append '("--no-color"
-                                  (when ff/robotidy-config `("--config" ,ff/robotidy-config)))))
-         (robotidy-cmd (append robotidy-base-cmd robotidy-args  "-")))
+  (let* ((robotidy-cmd '("robotidy" "--no-color" (when ff/robotidy-config `("--config" ,ff/robotidy-config)) filepath)))
     (setf (alist-get 'robotidy apheleia-formatters) robotidy-cmd)
     (setf (alist-get 'robot-mode apheleia-mode-alist) 'robotidy)))
 
