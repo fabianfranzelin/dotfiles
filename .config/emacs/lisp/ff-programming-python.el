@@ -54,18 +54,9 @@
 
 ;; supports virtual environments. To be set with pyvenv-workon
 (use-package pyvenv
-  :preface
-  (defun ff/python-venv-init ()
-    (when-let* ((project (project-current))
-                (project-root (project-root project))
-                (venv-path (expand-file-name ".venv" project-root)))
-      (when (file-directory-p venv-path)
-        (make-local-variable 'pyvenv-virtual-env)
-        (pyvenv-activate venv-path))))
   :hook
   (after-init . pyvenv-mode)
-  (after-init . pyvenv-tracking-mode)
-  (python-base-mode . ff/python-venv-init))
+  (after-init . pyvenv-tracking-mode))
 
 ;; enable sphinx doc strings support
 ;; C-c M-d sphinx-doc

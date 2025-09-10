@@ -1,7 +1,6 @@
 """Main Python module."""
 
 import pathlib
-
 import numpy as np
 
 
