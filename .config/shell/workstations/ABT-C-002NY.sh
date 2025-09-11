@@ -31,11 +31,7 @@ export CONAN_DISABLE_STRICT_MODE=1
 export SWT_GTK3=0
 export FLEXLM_TIMEOUT=3000000
 
-# Parasoft
-PARASOFT_INSTALL_DIR="${HOME}/.local/share/parasoft"
-PATH="$PATH:${PARASOFT_INSTALL_DIR}/cpptest/bin/cli:${PARASOFT_INSTALL_DIR}/cpptest_ct/bin"
-
 #------------------------------------------------------------------------------#
 # Azure DevOps
-# Run cat BOSCH-CA-DE_pem.cer /opt/az/lib/python3.6/site-packages/certifi/cacert.pem > azure-bosch-cert.pem
-export REQUESTS_CA_BUNDLE="${HOME}/.local/share/certificates/bosch/azure-bosch-cert.pem"
+# Run  cat BOSCH-CA-DE_pem.cer /opt/az/lib/python3.6/site-packages/certifi/cacert.pem > azure-bosch-cert.pem
+# export REQUESTS_CA_BUNDLE="${HOME}/.local/share/certificates/bosch/azure-bosch-cert.pem"

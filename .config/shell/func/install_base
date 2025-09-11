@@ -128,9 +128,9 @@ install_base() {
         (
             TEMP_DIR=$(mktemp -d)
             cd "${TEMP_DIR}" || exit 1
-            wget "https://ftp.gnu.org/gnu/libc/${GLIBC_NAME}.tar.gz"
-            tar -zxf "${GLIBC_NAME}.tar.gz"
-            mv -n "${GLIBC_NAME}" "${HOME}/.local/share"
+            #wget "https://ftp.gnu.org/gnu/libc/${GLIBC_NAME}.tar.gz"
+            #tar -zxf "${GLIBC_NAME}.tar.gz"
+            #mv -n "${GLIBC_NAME}" "${HOME}/.local/share"
         )
     fi
 

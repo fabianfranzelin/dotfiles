@@ -97,6 +97,7 @@ build/
 *.db
 *.idx
 *.html
+/.fonts/.uuid
 
 /.local/share/npm/
 /.local/bin/marksman
