@@ -15,6 +15,10 @@
 (add-to-list 'load-path local-lisp-path)
 
 ;; -------------------------------------------------------------------
+;; Disable package.el since we use straight.el
+(customize-set-variable 'package-enable-at-startup nil)
+
+;; -------------------------------------------------------------------
 ;;; Garbage collection
 ;; Increase the GC threshold for faster startup
 ;; The default is 800 kilobytes. Measured in bytes.
@@ -23,10 +27,6 @@
 ;;; Emacs lisp source/compiled preference
 ;; Prefer loading newest compiled .el file
 (customize-set-variable 'load-prefer-newer noninteractive)
-
-;; -------------------------------------------------------------------
-;; Disable package.el since we use straight.el
-(customize-set-variable 'package-enable-at-startup nil)
 
 ;; -------------------------------------------------------------------
 ;; Change my user Emacs directory to non-default location since it is

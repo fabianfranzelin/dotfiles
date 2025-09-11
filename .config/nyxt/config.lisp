@@ -86,3 +86,12 @@ more minimalist, but those are internal APIs :(")))
             (nyxt/mode/autofill:make-autofill :name "E-mail" :fill "fabian.franzelin@gmail.com")
             (nyxt/mode/autofill:make-autofill :name "Current time: "
                                               :fill (lambda () (write-to-string (local-time:now))))))))
+
+;;; Proxy settings
+(define-configuration nyxt/mode/proxy:proxy-mode
+  ((nyxt/mode/proxy:proxy (make-instance 'proxy
+                                         :url (quri:uri "http://127.0.0.1:3128")
+                                         :allowlist '("localhost" "bosch.com")
+                                         :proxied-downloads-p t))))
+(define-configuration web-buffer
+  ((default-modes (append '(proxy-mode) %slot-value%))))

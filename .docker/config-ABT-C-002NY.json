@@ -1,4 +1,7 @@
 {
+  "auths": {
+    "jfrog.ad-alliance.biz": {}
+  },
   "credsStore": "pass",
   "proxies": {
     "default": {
