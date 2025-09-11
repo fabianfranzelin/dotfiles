@@ -13,6 +13,13 @@ install_zsh()
         rm "${HOME}/.zshrc"
     fi
 
+    (
+        # create relative link from home to oh-my-zsh
+        cd "${HOME}" || exit 1
+        echo "Create symbolic link for .oh-my-zsh"
+        ln -sfn ".local/share/oh-my-zsh" ".oh-my-zsh"
+    )
+
     POWERLEVEL10K_HOME="${ZSH}/custom/themes/powerlevel10k"
     if [ ! -d "${POWERLEVEL10K_HOME}" ]
     then
