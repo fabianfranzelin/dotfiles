@@ -23,6 +23,7 @@ package-lock.json
 .github
 .gitattributes
 configure
+bootstrap
 pyproject.toml
 
 .zcompdump*

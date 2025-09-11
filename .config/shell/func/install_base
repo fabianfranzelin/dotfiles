@@ -105,7 +105,8 @@ install_base() {
             ipython \
             gitpython \
             pytest \
-            jupyter
+            jupyter \
+            uv
 
     # install pandoc
     PANDOC_VER="3.8"
