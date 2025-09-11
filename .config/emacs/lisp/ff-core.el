@@ -549,10 +549,19 @@ Example usage:
   (rg-define-search ff/rg-current-dir
     "Search for thing at point in files matching the current file
     under the current directory."
+    :dir current
+    :flags ("--hidden")
     :query ask
     :format literal
-    :dir current
-    :menu ("Search" "a" "Current folder")))
+    :menu ("Search" "a" "(ff) Current folder"))
+  (rg-define-search ff/rg-current-project
+    "Search for thing at point in files matching the current file
+    under the project directory."
+    :dir (locate-dominating-file default-directory ".git")
+    :flags ("--hidden")
+    :query ask
+    :format literal
+    :menu ("Search" "p" "(ff) Project")))
 
 ;; -------------------------------------------------------------------
 ;; Fuzzy finder like fzf: In contrast to project.el it includes also

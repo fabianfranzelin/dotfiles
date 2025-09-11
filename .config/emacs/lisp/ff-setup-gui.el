@@ -77,7 +77,7 @@
 (use-package enlight
   ;; The splashscreen does not look good on small displays, hence, I
   ;; disable it there
-  :if nil ;; (not (ff/is-mobile))
+  :if (not (ff/is-mobile))
   :straight (:host github :repo "ichernyshovvv/enlight")
   :after grid
   :preface
