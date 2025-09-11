@@ -29,9 +29,10 @@ install_qtile()
     ${QTILE_PYTHON_FILEPATH} -m pip install --upgrade xcffib
     ${QTILE_PYTHON_FILEPATH} -m pip install --upgrade --no-cache-dir cairocffi
     sudo apt-get install -y libpangocairo-1.0-0
-    ${QTILE_PYTHON_FILEPATH} -m pip install --upgrade git+https://github.com/qtile/qtile.git
+    ${QTILE_PYTHON_FILEPATH} -m pip uninstall qtile
+    ${QTILE_PYTHON_FILEPATH} -m pip install qtile
     # Install dependencies for widgets
-    ${QTILE_PYTHON_FILEPATH} -m pip install --upgrade psutil pulsectl-asyncio dbus-next
+    ${QTILE_PYTHON_FILEPATH} -m pip install --upgrade psutil pulsectl-asyncio dbus-next dbus-fast
     # For eglot
     ${QTILE_PYTHON_FILEPATH} -m pip install "python-lsp-server[all]" ipython ipdb pylint mypy flake8 black isort
 

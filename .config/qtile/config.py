@@ -243,7 +243,7 @@ def init_widgets_list() -> List[Any]:
             highlight_color=my_colors["dark-grey"],
         ),
         widget.Sep(linewidth=0, padding=6),
-        widget.CurrentLayoutIcon(
+        widget.CurrentLayout(
             custom_icon_paths=[Path("~/.config/qtile/icons").expanduser()],
             padding=0,
             scale=0.7,

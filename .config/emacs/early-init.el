@@ -68,5 +68,8 @@
 ;; Make the initial buffer load faster by setting its mode to fundamental-mode
 (customize-set-variable 'initial-major-mode 'fundamental-mode)
 
+;; Fix flycheck integration with straight
+(customize-set-variable 'straight-fix-flycheck nil)
+
 (provide 'early-init)
 ;;; early-init.el ends here

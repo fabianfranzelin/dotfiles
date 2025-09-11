@@ -5,7 +5,10 @@
 # set as a default for configurations
 . "${HOME}/.profile"
 
+# load qtile specific Python installation
 PYTHON_HOME="${HOME}/.cache/qtile/python"
 QTILE_PYTHON_FILEPATH="${PYTHON_HOME}/bin/python3"
 QTILE_BIN_FILEPATH="${PYTHON_HOME}/bin/qtile"
+
+# launch qtile
 ${QTILE_PYTHON_FILEPATH} ${QTILE_BIN_FILEPATH} start -c "${HOME}/.config/qtile/config.py"
