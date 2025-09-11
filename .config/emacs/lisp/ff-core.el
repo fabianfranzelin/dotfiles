@@ -571,6 +571,8 @@ Example usage:
     (affe-grep dir))
   ;; search also in hidden and ignored files by git
   :custom
+  ;; Extend the search for hidden and ignored (-uu) as well as for a
+  ;; case sensitive (-s) content
   (affe-find-command
    (cond
     ((executable-find "rg") "rg --color=never --files -uu -s")

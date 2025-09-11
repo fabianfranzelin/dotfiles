@@ -68,7 +68,8 @@ install_base() {
          libgraphviz-dev \
 	 gnupg2 \
          ncdu \
-         p7zip-full
+         p7zip-full \
+         ripgrep
 
     if ( __is_wsl )
     then
