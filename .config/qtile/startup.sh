@@ -17,3 +17,6 @@ fi
 
 # Network manager applet
 [ -x "$(command -v nm-applet)" ] && nm-applet &
+
+# Screenshot app
+flameshot &
