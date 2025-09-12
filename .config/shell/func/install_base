@@ -69,7 +69,8 @@ install_base() {
 	 gnupg2 \
          ncdu \
          p7zip-full \
-         ripgrep
+         ripgrep \
+         flameshot
 
     if ( __is_wsl )
     then
