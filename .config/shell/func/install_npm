@@ -27,7 +27,7 @@ install_npm()
     fi
 
     # install npm v16 as default
-    NPM_VERSION=18
+    NPM_VERSION=22.19
     echo "Install npm v${NPM_VERSION}"
     nvm install ${NPM_VERSION}
     nvm use ${NPM_VERSION}
@@ -51,7 +51,8 @@ install_npm()
 
     # install other npm packages
     npm install -g \
-        yarn
+        yarn \
+        @github/copilot-language-server
 
     #------------------------------------------------------------------------------#
     # Hack: setup workstation specific config for npm using extra symlink
