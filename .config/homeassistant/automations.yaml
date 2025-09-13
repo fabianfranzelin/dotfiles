@@ -47,7 +47,3 @@
         device_id: e84de7ba5ad7676ec381c48a406cb799
         entity_id: switch.zigbee_2
         domain: switch
-      - type: turn_off
-        device_id: d1867a36a0ef81fc68600e248d08863c
-        entity_id: switch.zigbee_3
-        domain: switch
