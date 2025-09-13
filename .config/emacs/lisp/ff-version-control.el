@@ -103,7 +103,6 @@ Otherwise, open the repository's main page."
   (consult-gh-confirm-name-before-fork nil)
   (consult-gh-confirm-before-clone t)
   (consult-gh-notifications-show-unread-only nil)
-  ;; (consult-gh-default-interactive-command #'consult-gh-transient)
   (consult-gh-prioritize-local-folder nil)
   (consult-gh-group-dashboard-by :reason)
   ;;;; Optional
@@ -114,7 +113,15 @@ Otherwise, open the repository's main page."
   (add-to-list 'savehist-additional-variables 'consult-gh--known-orgs-list)
   (add-to-list 'savehist-additional-variables 'consult-gh--known-repos-list)
   ;; Enable default keybindings (e.g. for commenting on issues, prs, ...)
-  (consult-gh-enable-default-keybindings))
+  (consult-gh-enable-default-keybindings)
+  :bind
+  (:map global-map
+        ("C-x v H" . consult-gh)))
+
+
+(with-eval-after-load 'consult-gh
+  (require 'consult-gh-transient)
+  (customize-set-variable 'consult-gh-default-interactive-command #'consult-gh-transient))
 
 (use-package consult-gh-embark
   :after consult-gh
