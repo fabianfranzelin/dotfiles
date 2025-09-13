@@ -28,6 +28,9 @@ jobs:
       - name: Install base
         run: |
           ./configure --install-base --skip-stow
+      - name: Install git
+        run: |
+          ./configure --install-git --skip-stow
       - name: Install NPM
         run: |
           ./configure --install-npm --skip-stow

@@ -21,6 +21,10 @@ DESCRIPTION
               Install base packages
        --skip-base
               Skip base installation
+       --install-git
+              Install git packages
+       --skip-git
+              Skip git installation
        --install-npm
               Install npm packages
        --skip-npm
@@ -105,6 +109,14 @@ while [ "${#}" -gt 0 ]; do
             ;;
         '--skip-base')
             SKIP_BASE=1
+            shift # past argument
+            ;;
+        '--install-git')
+            INSTALL_GIT=1
+            shift # past argument
+            ;;
+        '--skip-git')
+            SKIP_GIT=1
             shift # past argument
             ;;
         '--install-npm')
@@ -193,6 +205,11 @@ create_symlinks()
 if { [ -n "${INSTALL_ALL}" ] && [ -z "${SKIP_BASE}" ]; } || [ -n "${INSTALL_BASE}" ]
 then
     install_base
+    install_git
+fi
+
+if { [ -n "${INSTALL_ALL}" ] && [ -z "${SKIP_GIT}" ]; } || [ -n "${INSTALL_GIT}" ]
+then
     install_git
 fi
 
