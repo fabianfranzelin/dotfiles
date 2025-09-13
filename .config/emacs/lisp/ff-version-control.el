@@ -93,7 +93,7 @@ Otherwise, open the repository's main page."
 
 ;; Github integration via consult-gh
 (use-package consult-gh
-  :after consult
+  :after consult savehist
   :custom
   (consult-gh-default-clone-directory "~/workspace")
   (consult-gh-show-preview t)
