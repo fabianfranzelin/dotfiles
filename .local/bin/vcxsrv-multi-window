@@ -3,12 +3,12 @@
 VCXSRV_CMD="/mnt/c/Program Files/VcXsrv/vcxsrv.exe"
 VCXSRV_ARGS=":0 -clipboard -ac -multiwindow -wgl"
 
-if [ -f "${VCXSRV_CMD}" ]
+if [ ! -f "${VCXSRV_CMD}" ]
 then
-    # shellcheck disable=SC2086
-    LOG_FILE="/tmp/vcxsrv.log"
-    "${VCXSRV_CMD}" ${VCXSRV_ARGS} 2> "${LOG_FILE=}" &
-    echo "vcxsrv successfully started. The log file is located here ${LOG_FILE}."
-else
     echo "Executable vor VcXsrv is missing under ${VCXSRV_CMD}."
+    exit
 fi
+
+LOG_FILE="/tmp/vcxsrv.log"
+"${VCXSRV_CMD}" "${VCXSRV_ARGS}" &> "${LOG_FILE=}"
+echo "vcxsrv successfully started. The log file is located here ${LOG_FILE}."
