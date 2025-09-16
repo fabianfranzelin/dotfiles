@@ -28,7 +28,17 @@ aos_create_venv() {
             tqdm
 
         # # other stuff that helps working
-        uv pip install ipdb ipython
+        uv pip install ipdb ipython \
+            ptvsd \
+            black \
+            isort \
+            yamllint \
+            mdformat \
+            cmake_language_server \
+            "python-lsp-server[all]" \
+            pylsp-mypy \
+            python-lsp-black \
+            beautysh
 
         # python3 -m pip install \
             #                    sphinx_rtd_theme \
