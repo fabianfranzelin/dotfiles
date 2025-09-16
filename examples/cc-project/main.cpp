@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <limits>
+#include <memory>
 #include <netdb.h> // for getaddrinfo, freeaddrinfo, addrinfo
 #include <regex>
 #include <string>
@@ -72,8 +73,8 @@ void compare_vectors()
 int main(int, char*[])
 {
     size_t length = 10;
-    std::uint8_t* a = (std::uint8_t*)malloc(length * sizeof(std::uint8_t));
-    std::uint8_t* b = (std::uint8_t*)malloc(length * sizeof(std::uint8_t));
+    uint8_t* a = (std::uint8_t*)malloc(length * sizeof(std::uint8_t));
+    uint8_t* b = (std::uint8_t*)malloc(length * sizeof(std::uint8_t));
 
     for (size_t i = 0; i < length; i++)
     {

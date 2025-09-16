@@ -79,8 +79,18 @@ REPLACE-STR: string that replaces all regex matches"
   (ff/ensure-apt-package "clang" "clang")
 
   ;; register clangd as default lsp server in eglot
-  (add-to-list 'eglot-server-programs `(c-ts-mode "clangd"))
-  (add-to-list 'eglot-server-programs `(c++-ts-mode "clangd")))
+  (add-to-list 'eglot-server-programs `((c++-ts-mode c-ts-mode)
+                                        . ("clangd"
+                                           "-j=8"
+                                           "--log=error"
+                                           "--malloc-trim"
+                                           "--background-index"
+                                           "--clang-tidy"
+                                           "--cross-file-rename"
+                                           "--completion-style=detailed"
+                                           "--pch-storage=memory"
+                                           "--header-insertion=never"
+                                           "--header-insertion-decorators=0"))))
 
 ;; use tree-sitter as default and overwrite all C/C++ modes
 (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))

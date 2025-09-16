@@ -26,6 +26,8 @@ install_emacs()
          clang-tidy \
          clangd \
          clang \
+         libc++-dev \
+         libc++abi-dev \
          valgrind \
          ripgrep \
          fd-find \
@@ -40,6 +42,7 @@ install_emacs()
     packages=(
         "clang-12"
         "clangd-12"
+        "libstdc++-12-dev"
     )
 
     # Iterate over the list and install each package
