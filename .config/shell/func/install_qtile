@@ -47,26 +47,26 @@ install_qtile()
         if [ -d "${XSESSIONS_PATH}" ]; then
             QTILE_DESKTOP_FILE_PATH="${XSESSIONS_PATH}/qtile.desktop"
             if [ ! -f "${QTILE_DESKTOP_FILE_PATH}" ]; then
-  	        echo "[Desktop Entry]
+                echo "[Desktop Entry]
 Name=Qtile
 Comment=Qtile Session
 Exec=startqtile
 Type=Application
-Keywords=wm;tiling" | sudo tee "${QTILE_DESKTOP_FILE_PATH}"
+                Keywords=wm;tiling" | sudo tee "${QTILE_DESKTOP_FILE_PATH}"
             else
-  	        echo -e "${__COLOR_WARN}The file '${QTILE_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
+                echo -e "${__COLOR_WARN}The file '${QTILE_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
             fi
 
             CUSTOM_DESKTOP_FILE_PATH="${XSESSIONS_PATH}/custom.desktop"
             if [ ! -f "${CUSTOM_DESKTOP_FILE_PATH}" ]; then
-  	        echo "[Desktop Entry]
+                echo "[Desktop Entry]
 Name=Qtile
 Comment=Qtile Session
 Exec=/etc/X11/Xsession
 Type=Application
-Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
+                Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
             else
-  	        echo -e "${__COLOR_WARN}The file '${CUSTOM_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
+                echo -e "${__COLOR_WARN}The file '${CUSTOM_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
             fi
 
             # Update power management: ignore lid close
@@ -90,7 +90,7 @@ Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
 
         # Install rofi
         sudo apt-get install -y \
-             rofi
+            rofi
 
         ROFI_POWER_MENU="${HOME}/.local/bin/rofi-power-menu"
         if [ ! -f "${ROFI_POWER_MENU}" ]
@@ -110,8 +110,8 @@ Keywords=wm;tiling" | sudo tee "${CUSTOM_DESKTOP_FILE_PATH}"
         # --save <name> to create a new screen profile. Use autorandr
         # --load <name> to load it again.
         sudo apt-get install -y \
-             autorandr \
-             brightnessctl
+            autorandr \
+            brightnessctl
 
         # Make sure that you can run brightnessctl without sudo
         sudo usermod -a -G video "${USER}"

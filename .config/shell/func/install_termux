@@ -23,7 +23,7 @@ install_termux()
         rsync \
         poppler \
         termux-api \
-	sshpass \
+        sshpass \
         wget \
         termux-api \
         jq
@@ -46,7 +46,7 @@ install_termux()
 cert-digest-algo SHA256
 default-preference-list SHA512 SHA384 SHA256 SHA224 AES256 AES192 AES CAST5 ZLIB BZIP2 ZIP Uncompressed
 auto-key-locate keyserver
-keyserver hkp://pgp.mit.edu" | tee "${GPG_CONF}"
+    keyserver hkp://pgp.mit.edu" | tee "${GPG_CONF}"
     echo "# https://superuser.com/questions/624343/keep-gnupg-credentials-cached-for-entire-user-session
 # https://superuser.com/questions/1075404/how-can-i-restart-gpg-agent
 # default-cache-ttl 600 # 10 minutes
@@ -59,7 +59,7 @@ pinentry-program $(which pinentry-curses)
 # this means clients like Emacs can get the password in their own way and push to gpg
 # for this to work with Emacs, set epa-pinentry-mode to 'loopback in Emacs
 allow-emacs-pinentry
-" | tee "${GPG_AGENT_CONF}"
+    " | tee "${GPG_AGENT_CONF}"
 
     ###########################################################################
     #                               Termux-tools                              #
@@ -70,12 +70,12 @@ allow-emacs-pinentry
     pkg install python poppler ghostscript
 
     (
-	TMP_SRC=$(mktemp -d)
-	cd "${TMP_SRC}" || exit 1
-	git clone "https://github.com/elpraga/Termux-tools.git"
-	cd "Termux-tools" || exit 1
-	chmod u+x "termux-url-opener" "termux-file-editor"
-	cp -f "termux-url-opener" "termux-file-editor" "${HOME}/.local/bin"
+        TMP_SRC=$(mktemp -d)
+        cd "${TMP_SRC}" || exit 1
+        git clone "https://github.com/elpraga/Termux-tools.git"
+        cd "Termux-tools" || exit 1
+        chmod u+x "termux-url-opener" "termux-file-editor"
+        cp -f "termux-url-opener" "termux-file-editor" "${HOME}/.local/bin"
     ) ###########################################################################
     #                                   Bash                                  #
     ###########################################################################
@@ -128,7 +128,7 @@ alias unlock_key='pass usernames/public@github > /dev/null'
 alias u='unlock_key'
 
 alias ssh_pauline='sshpass -p \"\$(pass passwords/frf2lr@pauline)\" ssh frf2lr@pauline'
-" | tee "${BASHRC}"
+    " | tee "${BASHRC}"
     ###########################################################################
     #                                   ssh                                  #
     ###########################################################################
@@ -168,5 +168,5 @@ Host pauline
      ControlMaster auto
      ControlPath ~/.ssh/socket/%r@%h-%p
      ControlPersist 3600
-" | tee "${SSHCONFIG}"
+    " | tee "${SSHCONFIG}"
 }

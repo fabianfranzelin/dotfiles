@@ -1,87 +1,81 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 aos_create_venv() {
     (
         AOS_BASE_DIR=$(git rev-parse --show-toplevel)
-        AOS_REPO_NAME=$(basename "${AOS_BASE_DIR}")
         cd "${AOS_BASE_DIR}" || exit 1
-        VIRTUALENV_NAME="${AOS_REPO_NAME}"
-        VIRTUALENV_PATH="${HOME}/.virtualenvs/${VIRTUALENV_NAME}"
-        VIRTUALENV_ACTIVATE_FILEPATH="${HOME}/.virtualenvs/${VIRTUALENV_NAME}/bin/activate"
-        
-        echo "Create virtualenv ${VIRTUALENV_NAME}"
-        rm -rf "${VIRTUALENV_PATH}"
-        python3 -m venv "${VIRTUALENV_PATH}"
+        VIRTUALENV_ACTIVATE_FILEPATH="${AOS_BASE_DIR}/.venv/bin/activate"
+        if [[ ! -f "${VIRTUALENV_ACTIVATE_FILEPATH}" ]]; then
+            echo -e "Create virtualenv"
+            uv venv --python 3.10
+        fi
 
         echo "Activate virtualenv"
 
         # shellcheck disable=SC1090
         . "${VIRTUALENV_ACTIVATE_FILEPATH}"
-        python3 -m pip install --upgrade pip wheel setuptools
-
         # install command line tool
-        python3 -m pip install "_tools/aos_cli"
-        # python3 -m pip install -r "_tools/docker/aos_user_ubuntu2004/requirements.txt"
-        # python3 -m pip install -r "_tools/docker/aos_dev_ubuntu2004/requirements.txt"
+        uv pip install pip setuptools pyyaml
+        uv pip install -r "_tools/docker/aos_dev_ubuntu2204/requirements.txt"
+        uv pip install "_tools/aos_cli"
 
         # Workarounds
-        python3 -m pip install pycryptodomex \
-                           conan==1.59.0 \
-                           poetry==1.8.3 \
-                           gnupg \
-                           rospkg \
-                           poetry==1.8.3 \
-                           colorlog \
-                           mock \
-                           tqdm \
-                           robotframework==6.1.1 \
-                           uv==0.5.4
+        uv pip install pycryptodomex \
+            gnupg \
+            rospkg \
+            colorlog \
+            mock \
+            tqdm
 
-        # other stuff that helps working
-        python3 -m pip install ipdb ipython
+        # # other stuff that helps working
+        uv pip install ipdb ipython
 
-        python3 -m pip install \
-                           sphinx_rtd_theme \
-                           breathe myst_parser \
-                           sphinx_git \
-                           sphinx_copybutton \
-                           sphinx_panels \
-                           sphinxcontrib_svg2pdfconverter \
-                           sphinxcontrib_plantuml \
-                           sphinx_needs==2.0.0 \
-                           esbonio==0.15 \
-                           sphinx_autodoc_typehints \
-                           sphinx-jsonschema \
-                           sphinxcontrib-ditaa==1.0.1 \
-                           sphinx_design \
-                           sphinxcontrib.moderncmakedomain \
-                           sphinx-test-reports==1.0.2 \
-                           sphinx_markdown_builder \
-                           gcovr \
-                           pandas \
-                           jira \
-                           junitparser \
-                           matplotlib \
-                           empy=3.3.4 \
-                           pytest
+        # python3 -m pip install \
+            #                    sphinx_rtd_theme \
+            #                    breathe myst_parser \
+            #                    sphinx_git \
+            #                    sphinx_copybutton \
+            #                    sphinx_panels \
+            #                    sphinxcontrib_svg2pdfconverter \
+            #                    sphinxcontrib_plantuml \
+            #                    sphinx_needs==2.0.0 \
+            #                    esbonio==0.15 \
+            #                    sphinx_autodoc_typehints \
+            #                    sphinx-jsonschema \
+            #                    sphinxcontrib-ditaa==1.0.1 \
+            #                    sphinx_design \
+            #                    sphinxcontrib.moderncmakedomain \
+            #                    sphinx-test-reports==1.0.2 \
+            #                    sphinx_markdown_builder \
+            #                    gcovr \
+            #                    pandas \
+            #                    jira \
+            #                    junitparser \
+            #                    matplotlib \
+            #                    empy=3.3.4 \
+            #                    pytest
 
-        python3 -m pip install \
-                           robotframework-assertion-engine==3.0.3 \
-                           robotframework-browser==18.8.1 \
-                           robotframework-databaselibrary==1.3.1 \
-                           robotframework-robocop==4.0.1 \
-                           robotframework-sshlibrary==3.8.1rc1 \
-                           robotframework-tidy==4.5.0 \
-                           robotframework==6.1.1 \
-                           robotremoteserver==1.1.1 \
-                           robotframework-jsonlibrary==0.5
+        # python3 -m pip install \
+            #                    robotframework-assertion-engine==3.0.3 \
+            #                    robotframework-browser==18.8.1 \
+            #                    robotframework-databaselibrary==1.3.1 \
+            #                    robotframework-robocop==4.0.1 \
+            #                    robotframework-sshlibrary==3.8.1rc1 \
+            #                    robotframework-tidy==4.5.0 \
+            #                    robotframework==6.1.1 \
+            #                    robotremoteserver==1.1.1 \
+            #                    robotframework-jsonlibrary==0.5
 
         deactivate
 
         # Create alias for vfc for local testing
         conan alias aos_vfc_dist/latest@aos/dev aos_vfc_dist/VFC-4.2.2@aos/aos
 
+        # create symbolic link to default venv location
+        AOS_REPO_NAME=$(basename "${AOS_BASE_DIR}")
+        ln -s -f "${AOS_BASE_DIR}/.venv" "${HOME}/.virtualenvs/${AOS_REPO_NAME}"
+
         # install some system packages
-        # sudo apt install patchelf ditaa
+        # sudo apt install patchelf dita
     )
 }

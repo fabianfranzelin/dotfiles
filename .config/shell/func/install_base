@@ -3,7 +3,7 @@
 install_base() {
     echo -e "${__COLOR_INFO}INFO: Installing minimal required packages for setup...${__COLOR_RESET}"
     sudo apt-get install -y \
-         python3-pip
+        python3-pip
 
     # Remove PyQt5 if installed via pip. This package is buggy. It is
     # installed afterwards again via Ubuntu package sources.
@@ -15,68 +15,68 @@ install_base() {
 
     # Update python setuptools to latest release from pypi
     python3 -m pip install --upgrade \
-            pip \
-            wheel \
-	    setuptools
+        pip \
+        wheel \
+        setuptools
 
     sudo apt-get install -y \
-         xclip \
-         xsel \
-         wl-clipboard \
-         locate \
-         apt-transport-https \
-         python3-pyqt5 \
-         zsh \
-         direnv \
-         openjdk-17-jdk \
-         zip \
-         curl \
-         wget \
-         tar \
-         bzip2 \
-         unzip \
-         compton \
-         nitrogen \
-         dmenu \
-         vim \
-         ccache \
-         gnuplot \
-         pass \
-         gnupg \
-         terminator \
-	 fzf \
-         htop \
-         ssh \
-         sshpass \
-         dos2unix \
-	 openssl \
-	 libssl-dev \
-         scons \
-         latexmk \
-         texlive-base \
-         texlive-science \
-         texlive-bibtex-extra \
-         texlive-lang-german \
-         texlive-luatex \
-         texlive-latex-extra \
-         cm-super \
-         biber \
-         doxygen \
-         evince \
-         gcovr \
-         xdg-utils \
-         libgraphviz-dev \
-	 gnupg2 \
-         ncdu \
-         p7zip-full \
-         ripgrep \
-         flameshot
+        xclip \
+        xsel \
+        wl-clipboard \
+        locate \
+        apt-transport-https \
+        python3-pyqt5 \
+        zsh \
+        direnv \
+        openjdk-17-jdk \
+        zip \
+        curl \
+        wget \
+        tar \
+        bzip2 \
+        unzip \
+        compton \
+        nitrogen \
+        dmenu \
+        vim \
+        ccache \
+        gnuplot \
+        pass \
+        gnupg \
+        terminator \
+        fzf \
+        htop \
+        ssh \
+        sshpass \
+        dos2unix \
+        openssl \
+        libssl-dev \
+        scons \
+        latexmk \
+        texlive-base \
+        texlive-science \
+        texlive-bibtex-extra \
+        texlive-lang-german \
+        texlive-luatex \
+        texlive-latex-extra \
+        cm-super \
+        biber \
+        doxygen \
+        evince \
+        gcovr \
+        xdg-utils \
+        libgraphviz-dev \
+        gnupg2 \
+        ncdu \
+        p7zip-full \
+        ripgrep \
+        flameshot
 
     if ( __is_wsl )
     then
-       # install wslview for xdg-open so that firefox calls are
-       # forwarded to host system
-       sudo apt-get install -y \
+        # install wslview for xdg-open so that firefox calls are
+        # forwarded to host system
+        sudo apt-get install -y \
             wslu
     fi
 
@@ -84,31 +84,32 @@ install_base() {
     if ( __is_linux )
     then
         sudo apt-get install -y \
-             vlc \
-             firefox \
-             eog
+            vlc \
+            firefox \
+            eog
     fi
 
     # additional python dependencies
     python3 -m pip install --upgrade \
-            virtualenv \
-            ptvsd \
-            black \
-            isort \
-            yamllint \
-            mdformat \
-            cmake \
-            cmake_language_server \
-            "python-lsp-server[all]" \
-            pylsp-mypy \
-            python-lsp-black \
-            esbonio==0.16.4 \
-            robotframework-tidy \
-            ipython \
-            gitpython \
-            pytest \
-            jupyter \
-            uv
+        virtualenv \
+        ptvsd \
+        black \
+        isort \
+        yamllint \
+        mdformat \
+        cmake \
+        cmake_language_server \
+        "python-lsp-server[all]" \
+        pylsp-mypy \
+        python-lsp-black \
+        esbonio==0.16.4 \
+        robotframework-tidy \
+        ipython \
+        gitpython \
+        pytest \
+        jupyter \
+        uv \
+        beautysh
 
     # install pandoc
     PANDOC_VER="3.8"
@@ -147,7 +148,7 @@ install_base() {
         wget "${DRAW_IO_URL}"
         sudo dpkg -i "${DRAW_IO_BIN}"
     )
-    
+
     # install dependencies for vscode
     if ( __is_linux )
     then

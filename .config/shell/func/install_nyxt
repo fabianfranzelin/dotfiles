@@ -5,7 +5,7 @@ install_nyxt()
     (
         echo -e "${__COLOR_INFO}INFO: Installing common lisp from package repository${__COLOR_RESET}"
         sudo apt-get install -y \
-             sbcl
+            sbcl
 
         # Download latest sbcl
         # TMP_SBCL_SRC=$(mktemp -d)
@@ -31,11 +31,11 @@ install_nyxt()
     (
         # install dependencies for compilation of Nyxt
         sudo apt-get install -y \
-             libfixposix-dev \
-             libgstreamer1.0-0 \
-             gir1.2-gst-plugins-base-1.0 \
-             gir1.2-gst-plugins-bad-1.0 \
-             gstreamer1.0-plugins-bad
+            libfixposix-dev \
+            libgstreamer1.0-0 \
+            gir1.2-gst-plugins-base-1.0 \
+            gir1.2-gst-plugins-bad-1.0 \
+            gstreamer1.0-plugins-bad
 
         # This works on Ubuntu 20.04
         sudo apt-get install libwebkit2gtk-4.0-37 || true
@@ -45,7 +45,7 @@ install_nyxt()
 
         npm install -g \
             swank-js
-        
+
         # install Nyxt
         TMP_NYXT_SRC="${HOME}/.cache/nyxt"
         mkdir -p "${TMP_NYXT_SRC}"

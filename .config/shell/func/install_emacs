@@ -7,36 +7,36 @@ install_emacs()
     then
         echo "Install default Emacs from package sources."
         sudo apt-get install -y \
-             emacs
+            emacs
     fi
 
     # ---------------------------------------------------------
     # install dependencies for Emacs
     sudo apt-get install -y \
-         markdown \
-         graphviz \
-         fonts-cantarell \
-         cmake \
-         libtool-bin \
-         aspell \
-         aspell-de \
-         aspell-en \
-         aspell-es \
-         clang-format \
-         clang-tidy \
-         clangd \
-         clang \
-         libc++-dev \
-         libc++abi-dev \
-         valgrind \
-         ripgrep \
-         fd-find \
-         shellcheck \
-         poppler-utils \
-         mpv \
-         enchant-2 \
-         libenchant-2-dev \
-         libgit2-dev
+        markdown \
+        graphviz \
+        fonts-cantarell \
+        cmake \
+        libtool-bin \
+        aspell \
+        aspell-de \
+        aspell-en \
+        aspell-es \
+        clang-format \
+        clang-tidy \
+        clangd \
+        clang \
+        libc++-dev \
+        libc++abi-dev \
+        valgrind \
+        ripgrep \
+        fd-find \
+        shellcheck \
+        poppler-utils \
+        mpv \
+        enchant-2 \
+        libenchant-2-dev \
+        libgit2-dev
 
     # List of packages with specific versions
     packages=(
@@ -52,11 +52,11 @@ install_emacs()
 
     # emacs pdf-tools dependencies
     sudo apt-get install -y \
-         libpng-dev \
-	 zlib1g-dev \
-         libpoppler-glib-dev \
-         libpoppler-private-dev \
-         imagemagick
+        libpng-dev \
+        zlib1g-dev \
+        libpoppler-glib-dev \
+        libpoppler-private-dev \
+        imagemagick
 
     (
         # now, install the newest version available by building and
@@ -64,8 +64,8 @@ install_emacs()
         cd "${DOTFILES}/.config/emacs" || exit 1
         # This creates the install script for Emacs
         emacs -Q --batch \
-              --eval "(require 'org)" \
-              --eval '(org-babel-tangle-file "README.org")'
+            --eval "(require 'org)" \
+            --eval '(org-babel-tangle-file "README.org")'
         # Actually install Emacs via update-alternatives
         ./install.sh || exit 1
     )

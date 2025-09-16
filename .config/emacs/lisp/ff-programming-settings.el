@@ -233,10 +233,21 @@ FORCE: force update of grammars"
 ;; Make sure that my preferred linter is installed
 (ff/ensure-apt-package "shellcheck" "shellcheck")
 (ff/ensure-npm-package "bash-language-server" "bash-language-server")
+(ff/ensure-python-package "beautysh")
 
 ;; make shell script executable
 (add-hook 'after-save-hook
           #'executable-make-buffer-file-executable-if-script-p)
+
+;; configure auto format
+(with-eval-after-load 'apheleia
+  (add-hook 'bash-ts-mode-hook 'apheleia-mode)
+  (setf (alist-get 'beautysh apheleia-formatters) '("beautysh"
+                                                    filepath
+                                                    (when-let ((indent (bound-and-true-p sh-basic-offset)))
+                                                      (list "--indent-size" (number-to-string indent)))
+                                                    (when indent-tabs-mode "--tab")))
+  (setf (alist-get 'bash-ts-mode apheleia-mode-alist) 'beautysh))
 
 ;; -------------------------------------------------------------------
 ;; yaml mode
@@ -341,6 +352,7 @@ FORCE: force update of grammars"
 (use-package robot-mode
   :preface
   (ff/ensure-python-package "robotframework-tidy" nil "robotidy")
+  (ff/ensure-python-package "robotframework-robocop" nil "robocop")
   :mode
   ("\\.robot" . robot-mode))
 
@@ -351,7 +363,7 @@ FORCE: force update of grammars"
 ;; configure auto format
 (with-eval-after-load 'apheleia
   (add-hook 'robot-mode-hook 'apheleia-mode)
-  (let* ((robotidy-cmd '("robotidy" "--no-color" (when ff/robotidy-config `("--config" ,ff/robotidy-config)) filepath)))
+  (let* ((robotidy-cmd '("robotidy" "--overwrite" "--no-color" (when ff/robotidy-config `("--config" ,ff/robotidy-config)) filepath)))
     (setf (alist-get 'robotidy apheleia-formatters) robotidy-cmd)
     (setf (alist-get 'robot-mode apheleia-mode-alist) 'robotidy)))
 
