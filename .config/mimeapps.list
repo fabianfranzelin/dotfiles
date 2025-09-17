@@ -1,0 +1,19 @@
+[Default Applications]
+
+text/html=firefox.desktop
+x-scheme-handler/http=firefox.desktop
+x-scheme-handler/https=firefox.desktop
+
+text/plain=emacsclient.desktop
+text/x-python=emacsclient.desktop
+text/x-script.python=emacsclient.desktop
+text/x-java=emacsclient.desktop
+text/x-c=emacsclient.desktop
+text/x-c++=emacsclient.desktop
+text/x-shellscript=emacsclient.desktop
+text/x-makefile=emacsclient.desktop
+text/x-markdown=emacsclient.desktop
+text/xml=emacsclient.desktop
+application/x-perl=emacsclient.desktop
+application/javascript=emacsclient.desktop
+application/json=emacsclient.desktop

@@ -7,7 +7,7 @@
 
 case $- in
     *i*) ;;
-      *) return ;;
+    *) return ;;
 esac
 
 #------------------------------------------------------------------------------#
@@ -88,6 +88,8 @@ export NVM_DIR="${HOME}/.config/nvm"
 #------------------------------------------------------------------------------#
 # pass
 export PASSWORD_STORE_DIR="${XDG_DATA_HOME}/password-store"
+export PASSWORD_STORE_DIR_RELATIVE
+PASSWORD_STORE_DIR_RELATIVE="$(echo "${PASSWORD_STORE_DIR}" | sed "s|^${HOME}/||")"
 
 #------------------------------------------------------------------------------#
 # Load specific settings per workstation
