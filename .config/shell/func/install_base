@@ -109,7 +109,8 @@ install_base() {
         pytest \
         jupyter \
         uv \
-        beautysh
+        beautysh \
+        robotframework-robocop==4.2.2
 
     # install pandoc
     PANDOC_VER="3.8"

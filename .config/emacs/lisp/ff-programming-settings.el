@@ -352,7 +352,7 @@ FORCE: force update of grammars"
 (use-package robot-mode
   :preface
   (ff/ensure-python-package "robotframework-tidy" nil "robotidy")
-  (ff/ensure-python-package "robotframework-robocop" nil "robocop")
+  (ff/ensure-python-package "robotframework-robocop" "4.2.2" "robocop")
   :mode
   ("\\.robot" . robot-mode))
 
@@ -363,9 +363,9 @@ FORCE: force update of grammars"
 ;; configure auto format
 (with-eval-after-load 'apheleia
   (add-hook 'robot-mode-hook 'apheleia-mode)
-  (let* ((robocop-format '("robocop" "format" "--no-color" (when ff/robotidy-config `("--config" ,ff/robotidy-config)) filepath)))
-    (setf (alist-get 'robotidy apheleia-formatters) robocop-format)
-    (setf (alist-get 'robot-mode apheleia-mode-alist) 'robocop-format)))
+  (let* ((robotidy-cmd '("robotidy" "--no-color" (when ff/robotidy-config `("--config" ,ff/robotidy-config)) filepath)))
+    (setf (alist-get 'robotidy apheleia-formatters) robotidy-cmd)
+    (setf (alist-get 'robot-mode apheleia-mode-alist) 'robotidy)))
 
 (with-eval-after-load 'eglot
   ;; make sure that system packages are available
