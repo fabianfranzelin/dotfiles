@@ -408,6 +408,12 @@ Example usage:
   (:map dired-mode-map
         ("H" . dired-hide-dotfiles-mode)))
 
+(use-package dired-subtree
+  :after dired
+  :bind
+  (:map dired-mode-map
+        ("<backtab>" . dired-subtree-toggle)))
+
 (use-package trashed
   :commands (trashed)
   :custom
