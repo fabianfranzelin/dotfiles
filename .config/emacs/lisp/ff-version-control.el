@@ -105,6 +105,7 @@ Otherwise, open the repository's main page."
   (consult-gh-notifications-show-unread-only nil)
   (consult-gh-prioritize-local-folder nil)
   (consult-gh-group-dashboard-by :reason)
+  (consult-gh-pr-maxnum 400)
   ;;;; Optional
   (consult-gh-repo-preview-major-mode nil) ; show readmes in their original format
   (consult-gh-preview-major-mode 'org-mode) ; use 'org-mode for editing comments, commit messages, ...
