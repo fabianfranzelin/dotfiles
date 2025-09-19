@@ -25,6 +25,21 @@
 ;; always confirm org-babel evaluation
 (require 'org)
 (customize-set-variable 'org-confirm-babel-evaluate nil)
+(customize-set-variable 'org-time-stamp-custom-formats '("<%d-%b-%y>" . "<%-l:%M %p, %a %d-%B '%y>"))
+(customize-set-variable 'org-display-custom-times t)
+
+;; org-babel
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t)
+   (python . t)
+   (shell . t)
+   (R . t)
+   (org . t)
+   (latex . t)
+   (dot . t)
+   (gnuplot . t)
+   (plantuml . t)))
 
 ;; Load the publishing system
 (require 'ox-publish)
@@ -40,12 +55,15 @@ FILE: file to be loaded and converted to string."
     (insert-file-contents file)
     (buffer-string)))
 
-(defvar ff/theme-html-head (ff/file-to-string (expand-file-name "themes/readtheorg.html" default-directory)))
+(defvar ff/theme-html-head
+  (ff/file-to-string
+   (expand-file-name "content/themes/simple.html" default-directory)))
 
 (setq org-html-validation-link nil            ;; Don't show validation link
       org-html-head-include-scripts nil       ;; Use our own scripts
       org-html-head-include-default-style nil ;; Use our own styles
-      org-html-head ff/theme-html-head)
+      org-html-head ff/theme-html-head
+      org-html-htmlize-output-type 'css)
 
 ;; Define the publishing project
 (defvar ff/base-dir "./content")
