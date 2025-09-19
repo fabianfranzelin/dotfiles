@@ -117,12 +117,11 @@ Otherwise, open the repository's main page."
   (consult-gh-enable-default-keybindings)
   :bind
   (:map global-map
-        ("C-x v d" . consult-gh-dashboard)
-        ("C-x v a" . consult-gh-auth-switch)
-        ("C-x v f" . consult-gh-search-repos)
-        ("C-x v p" . consult-gh-pr-list)
-        ("C-x v c" . consult-gh-pr-create)))
-
+        ("C-x G d" . consult-gh-dashboard)
+        ("C-x G a" . consult-gh-auth-switch)
+        ("C-x G f" . consult-gh-search-repos)
+        ("C-x G p" . consult-gh-pr-list)
+        ("C-x G c" . consult-gh-pr-create)))
 
 (with-eval-after-load 'consult-gh
   (require 'consult-gh-transient)
