@@ -47,3 +47,41 @@
         device_id: e84de7ba5ad7676ec381c48a406cb799
         entity_id: switch.zigbee_2
         domain: switch
+- id: '1758488499252'
+  alias: Fabis Schreibtisch
+  description: Turns on a power plug at 7:30 AM and off at 12 AM on weekdays.
+  triggers:
+  - at: 07:30:00
+    trigger: time
+  - at: 00:00:00
+    trigger: time
+  conditions:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  actions:
+  - choose:
+    - conditions:
+      - condition: time
+        after: 07:29:00
+        before: 07:31:00
+      sequence:
+      - target:
+          entity_id: switch.strom_fabis_buro
+        action: switch.turn_on
+    - conditions:
+      - condition: time
+        after: '23:59:00'
+        before: 00:01:00
+      sequence:
+      - target:
+          entity_id: switch.strom_fabis_buro
+        action: switch.turn_off
+  - target:
+      entity_id: switch.strom_fabis_buro
+    action: switch.turn_on
+  mode: single
