@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: log error
+# key: log error
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# --
+
+LOG_ERROR("$0");
