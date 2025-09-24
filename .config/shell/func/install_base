@@ -70,7 +70,8 @@ install_base() {
         ncdu \
         p7zip-full \
         ripgrep \
-        flameshot
+        flameshot \
+        ninja-build
 
     if ( __is_wsl )
     then
