@@ -101,7 +101,6 @@ build/
 
 /.local/share/npm/
 /.local/bin/marksman
-/.local/share/fonts/
 /.local/share/certificates/
 /.local/share/Trash/
 /.local/share/emacs-28.2/

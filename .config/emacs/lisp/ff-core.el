@@ -314,14 +314,10 @@ COMMAND: command to be executed"
 ;; multihop example: /ssh:frf2lr@ws|docker:vscode@c8416d9f4da6:/
 
 (defun ff/tramp-call-process-direct (protocol host user command &optional args)
-  "
-Execute a remote COMMAND directly on HOST via TRAMP using PROTOCOL and return output.
-USER specifies the remote user. ARGS is a list of command arguments.
+  "Execute a remote COMMAND directly on HOST via TRAMP using PROTOCOL and return output.
+USER specifies the remote user.  ARGS is a list of command arguments.
 
-Example usage:
-(message (my/tramp-call-process-direct \"your-remote-host.com\"
-\"your-username\" \"ls\" '(\"-l\" \"/tmp\")))
-"
+Example usage: (message (my/tramp-call-process-direct \"your-remote-host.com\" \"your-username\" \"ls\" '(\"-l\" \"/tmp\")))"
   (let* ((tramp-program (format "/%s:%s@%s:/bin/%s" protocol user host command))
          (process-buffer (generate-new-buffer "*tramp-output*")))
     (message "Executing remote command: %s %S" tramp-program args)
@@ -415,7 +411,7 @@ Example usage:
         ("<backtab>" . dired-subtree-toggle)))
 
 (use-package trashed
-  :commands (trashed)
+  :commands trashed
   :custom
   (trashed-action-confirmer 'y-or-n-p)
   (trashed-use-header-line t)

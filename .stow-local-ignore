@@ -7,7 +7,6 @@
 docs
 archive
 mail
-fonts
 ^/.*\.org
 ^/.*\.md
 LICENSE

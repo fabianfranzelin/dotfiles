@@ -214,7 +214,23 @@ FUN: function to be called on the entry's path"
 ;; -------------------------------------------------------------------
 ;; Define font size and methods to adjust it on the fly
 (set-face-attribute 'default nil :height 125) ;; default = 100
-;; (set-frame-font "JetBrains Mono-14" t t)
+(require 'dash) ; for `-some'
+
+(defun ff/font-available-p (font-name)
+  "Determine whether FONT-NAME is installed."
+  (find-font (font-spec :name font-name :weight 'normal :slant 'normal)))
+
+(defun ff/setup-frame-font ()
+  "Choose best available font."
+  (set-frame-font
+   (-some #'ff/font-available-p
+          '("JetBrains Mono-14" "Deja Vu Sans Mono"))))
+
+(ff/font-available-p "JetBrainsMono-Regular")
+(ff/setup-frame-font)
+(font-info (face-font 'default))
+
+;; (set-frame-font "" t t)
 
 ;; Show number of lines in the left side of the buffer
 (when (not (ff/is-mobile))
