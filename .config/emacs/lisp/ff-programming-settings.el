@@ -217,6 +217,11 @@ FORCE: force update of grammars"
   ;; interactive R session
   (ess-ask-for-ess-directory nil))
 
+;; use ESR for R package development
+;; install from codeberg: https://codeberg.org/teoten/esr
+;; (use-package esr
+;;   :straight (:host codeberg :repo "teoten/esr" :branch "main"))
+
 ;; -------------------------------------------------------------------
 ;; Python
 ;; -------------------------------------------------------------------
