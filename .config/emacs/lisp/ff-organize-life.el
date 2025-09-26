@@ -393,18 +393,18 @@ DIR: directory path"
 (use-package citeproc
   :after org)
 
-(with-eval-after-load 'ox-latex
-  (customize-set-variable
-   'org-latex-pdf-process
-   '("latexmk -shell-escape -bibtex -f -pdf %f"))
-  (add-to-list 'org-latex-classes
-               '("scrartcl"
-                 "\\documentclass[letterpaper]{scrartcl}"
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+(require 'ox-latex)
+(customize-set-variable
+ 'org-latex-pdf-process
+ '("latexmk -pdf -pdflatex='pdflatex -interaction nonstopmode' -shell-escape -bibtex %f"))
+(add-to-list 'org-latex-classes
+             '("scrartcl"
+               "\\documentclass[letterpaper]{scrartcl}"
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
 (defun ff/citar-reference-notes-absolute-path ()
   "Load the absolute path to all literature notes."
