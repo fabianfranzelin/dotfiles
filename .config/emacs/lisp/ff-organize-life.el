@@ -65,6 +65,8 @@ DIR: directory path"
   ;; clocking
   (org-timer-set . org-clock-in)
   (org-babel-after-execute . org-display-inline-images)
+  ;; auto align tags
+  (org-mode . (lambda () (add-hook 'before-save-hook 'org-align-tags nil 'local)))
   :custom
   (org-directory (ff/create-folder-and-return "~/workspace/org"))
   (org-agenda-files `(,(ff/create-folder-and-return (expand-file-name "notes" org-directory))
