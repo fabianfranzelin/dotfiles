@@ -34,6 +34,8 @@
   :bind (("C-c g" . gptel)))
 
 (use-package copilot
+  :if (or (string= (system-name) "ABT-C-002NY")
+          (string= (system-name) "pauline"))
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("dist" "*.el"))
   :hook
   (python-ts-mode . copilot-mode)
