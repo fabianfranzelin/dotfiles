@@ -150,12 +150,6 @@ FORCE: force update of grammars"
 ;; -------------------------------------------------------------------
 ;; Debugger
 ;; -------------------------------------------------------------------
-(use-package realgud
-  :after org
-  :custom
-  (realgud:pdb-command-name "python3 -m ipdb")
-  (realgud-safe-mode nil))
-
 (use-package dape
   :hook
   ;; Save breakpoints on quit
