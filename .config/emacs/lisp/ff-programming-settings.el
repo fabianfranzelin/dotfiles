@@ -156,6 +156,22 @@ FORCE: force update of grammars"
   (realgud:pdb-command-name "python3 -m ipdb")
   (realgud-safe-mode nil))
 
+(use-package dape
+  :hook
+  ;; Save breakpoints on quit
+  (kill-emacs . dape-breakpoint-save)
+  ;; Load breakpoints on startup
+  (after-init . dape-breakpoint-load)
+  ;; Save buffers on startup, useful for interpreted languages
+  (dape-start . (lambda () (save-some-buffers t t)))
+  ;; Pulse source line (performance hit)
+  (dape-display-source . pulse-momentary-highlight-one-line)
+  :custom
+  ;; Turn on global bindings for setting breakpoints with mouse
+  (dape-breakpoint-global-mode +1)
+  ;; Info buffers to the right
+  (dape-buffer-window-arrangement 'right))
+
 ;; -------------------------------------------------------------------
 ;; Aphelia: auto-format different source code files extremely
 ;; intelligently
