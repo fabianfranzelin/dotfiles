@@ -73,7 +73,8 @@ install_base() {
         flameshot \
         ninja-build \
         build-essential \
-        texinfo
+        texinfo \
+        cloc
 
     if ( __is_wsl )
     then
