@@ -6,7 +6,7 @@ set verbose off
 set prompt \033[31mgdb$ \033[0m
 
 # Display instructions in Intel format
-set disassembly intel
+# set disassembly intel
 
 # These make gdb never pause in its output
 set height 0
@@ -16,7 +16,7 @@ set $SHOW_CONTEXT = 1
 set $SHOW_NEST_INSN = 0
 
 # add glibc source path
-dir ~/.local/share/glibc-2.40/sysdeps/unix/sysv/linux/
+# dir ~/.local/share/glibc-2.40/sysdeps/unix/sysv/linux/
 
 # for realgud tracking
 set annotate 1
