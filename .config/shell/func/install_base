@@ -71,7 +71,9 @@ install_base() {
         p7zip-full \
         ripgrep \
         flameshot \
-        ninja-build
+        ninja-build \
+        build-essential \
+        texinfo
 
     if ( __is_wsl )
     then
@@ -111,7 +113,8 @@ install_base() {
         jupyter \
         uv \
         beautysh \
-        robotframework-robocop==4.2.2
+        robotframework-robocop==4.2.2 \
+        debugpy
 
     # install pandoc
     PANDOC_VER="3.8"
