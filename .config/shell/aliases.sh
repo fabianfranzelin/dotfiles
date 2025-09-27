@@ -4,18 +4,18 @@
 
 if ( __is_linux )
 then
-   # these aliases require systemd running, hence it just works on
-   # native Linux
-   alias reboot='systemctl reboot'
-   alias shutdown='systemctl poweroff'
-   MY_LOGIN_SESSION=$(loginctl session-status | head -n 1 | awk '{print $1}')
-   alias logout="loginctl terminate-session ${MY_LOGIN_SESSION}"
+    # these aliases require systemd running, hence it just works on
+    # native Linux
+    alias reboot='systemctl reboot'
+    alias shutdown='systemctl poweroff'
+    MY_LOGIN_SESSION=$(loginctl session-status | head -n 1 | awk '{print $1}')
+    alias logout="loginctl terminate-session ${MY_LOGIN_SESSION}"
 
-   # Seahorse
-   alias restart_gnome_keyring_daemon="gnome-keyring-daemon --replace --components=pkcs11,secrets,ssh && seahorse"
+    # Seahorse
+    alias restart_gnome_keyring_daemon="gnome-keyring-daemon --replace --components=pkcs11,secrets,ssh && seahorse"
 
-   # vpn
-   alias vpn_reconnect="/usr/bin/gnome-terminal -- bash -c \"osd-vpn-disconnect && osd-vpn-connect -k\""
+    # vpn
+    alias vpn_reconnect="/usr/bin/gnome-terminal -- bash -c \"osd-vpn-disconnect && osd-vpn-connect -k\""
 fi
 
 alias cp='cp -i -P'
@@ -45,11 +45,15 @@ alias .3='cd ../../..'
 alias .4='cd ../../../..'
 alias .5='cd ../../../../..'
 alias .6='cd ../../../../../..'
+alias .7='cd ../../../../../../,,'
+alias .8='cd ../../../../../../../..'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
 alias ......='cd ../../../../..'
+alias .......='cd ../../../../../..'
+alias ........='cd ../../../../../../..'
 
 # 'A' for ANSI line graphics
 # 'C' for colorization
@@ -59,13 +63,8 @@ alias tree='tree -A -C -F'
 alias g='git'
 
 alias py='python'
-alias py2='python2'
 alias py3='python3'
 alias ipy3='ipython3'
-
-# Kubernetes
-alias k='kubectl --namespace=development-${USER}'
-alias kp='kubectl --namespace=production'
 
 # Docker
 alias doi='docker images'

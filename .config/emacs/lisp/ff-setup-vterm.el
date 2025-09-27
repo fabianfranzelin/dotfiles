@@ -121,15 +121,6 @@ https://github.com/akermu/emacs-libvterm/issues/518"
                      (message "Sending password to %s" (buffer-name))
                      (vterm-send-string pwd))
                  (message "No password found under %s" pwd-store-entry))))
-            ((string-match "kinit" last-shell-command)
-             (let* ((user-name (password-store-get "usernames/bosch"))
-                    (pwd-store-entry (format "passwords/%s@nt" user-name))
-                    (pwd (password-store-get pwd-store-entry))))
-             (if pwd
-                 (progn
-                   (message "Sending password to %s" (buffer-name))
-                   (vterm-send-string pwd))
-               (message "No password found for user %s" pwd-store-entry)))
             (t
              (comint-send-invisible "Enter password: ")))
       (vterm-send-C-j)

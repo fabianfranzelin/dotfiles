@@ -1,5 +1,0 @@
-#!/usr/bin/env sh
-
-ssh_ws() {
-    sshpass -p "$(pass passwords/$(pass usernames/bosch)@nt)" ssh ws
-}

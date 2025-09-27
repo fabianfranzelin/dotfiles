@@ -34,7 +34,7 @@ export LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;
 export LC_COLLATE="C"
 
 # expand path to include local bin directory
-export PATH="${HOME}/opt/bin:${HOME}/.local/bin:${HOME}/.local/share/npm/bin:/usr/lib/ccache:/usr/sbin:${PATH}"
+export PATH="${HOME}/.local/bin:${HOME}/.local/share/npm/bin:/usr/lib/ccache:/usr/sbin:${PATH}"
 
 # Add some default directories to LD_LIBRARY_PATH
 export LD_LIBRARY_PATH="/usr/local/lib:${LD_LIBRARY_PATH}"

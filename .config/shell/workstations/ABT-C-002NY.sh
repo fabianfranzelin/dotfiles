@@ -19,19 +19,6 @@ export BROWSER=firefox
 alias init='autorandr --load pauline; set_keyboard_layout; unlock_key; osd-vpn-connect -k'
 
 #------------------------------------------------------------------------------#
-# AOS
-export AOS_BASE_HOME="${HOME}/workspace/aos"
-export AOS_BUILD_DIR="${AOS_BASE_HOME}/build"
-export AOS_INSTALL_DIR="${AOS_BASE_HOME}/install"
-
-export ENVIRONMENT_NAME="Classic-with-Bosch-BCN-Services"
-export CONAN_DISABLE_STRICT_MODE=1
-
-# QNX
-export SWT_GTK3=0
-export FLEXLM_TIMEOUT=3000000
-
-#------------------------------------------------------------------------------#
 # Azure DevOps
 # Run  cat BOSCH-CA-DE_pem.cer /opt/az/lib/python3.6/site-packages/certifi/cacert.pem > azure-bosch-cert.pem
 # export REQUESTS_CA_BUNDLE="${HOME}/.local/share/certificates/bosch/azure-bosch-cert.pem"
