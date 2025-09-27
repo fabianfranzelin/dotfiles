@@ -129,17 +129,27 @@ install_base() {
         sudo dpkg -i "${PANDOC_BIN}"
     )
 
-    # install dependencies gdb
-    GLIBC_NAME="glibc-2.42"
-    GLIBC_PATH="${HOME}/.local/share/${GLIBC_NAME}"
-    if [ ! -d "${GLIBC_PATH}" ]
+    # install gdb
+    GDB_NAME="gdb-16.1"
+    GDB_PATH="${HOME}/.local/share/${GDB_NAME}"
+    sudo apt-get install libmpc-dev -y
+    if [ ! -d "${GDB_PATH}" ]
     then
         (
             TEMP_DIR=$(mktemp -d)
             cd "${TEMP_DIR}" || exit 1
-            #wget "https://ftp.gnu.org/gnu/libc/${GLIBC_NAME}.tar.gz"
-            #tar -zxf "${GLIBC_NAME}.tar.gz"
-            #mv -n "${GLIBC_NAME}" "${HOME}/.local/share"
+            wget "https://sourceware.org/pub/gdb/releases/${GDB_NAME}.tar.xz"
+            tar -xf "${GLIBC_NAME}.tar.xz"
+            cd "${GDB_NAME}" || exit 1
+            ./configure --prefix="${GDB_PATH}"
+            make CXXFLAGS="-static-libstdc++"
+            make install
+
+            # use update-alternatives to manage the binaries
+            [ -f "/usr/bin/gdb" ] && sudo mv "/usr/bin/gdb" "/usr/bin/gdb.backup"
+            sudo update-alternatives --install "/usr/bin/gdb" gdb "${GDB_PATH}/bin/gdb" 100
+            sudo update-alternatives --install "/usr/bin/gdb" gdb "/bin/gdb" 50
+            sudo update-alternatives --auto gdb
         )
     fi
 

@@ -226,11 +226,7 @@ FUN: function to be called on the entry's path"
    (-some #'ff/font-available-p
           '("JetBrains Mono-14" "Deja Vu Sans Mono"))))
 
-(ff/font-available-p "JetBrainsMono-Regular")
-(ff/setup-frame-font)
-(font-info (face-font 'default))
-
-;; (set-frame-font "" t t)
+;; (ff/setup-frame-font)
 
 ;; Show number of lines in the left side of the buffer
 (when (not (ff/is-mobile))
