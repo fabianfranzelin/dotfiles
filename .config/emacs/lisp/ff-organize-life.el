@@ -147,7 +147,7 @@ DIR: directory path"
         ("C-c C-x y" . org-download-yank)))
 
 (use-package toc-org
-  :after (org markdown-mode)
+  :after org markdown-mode
   :hook
   (org-mode . toc-org-mode)
   (markdown-mode . toc-org-mode))
@@ -351,7 +351,6 @@ DIR: directory path"
         ("C-x n c" . org-roam-capture)
         ("C-x n C" . org-roam-dailies-capture-today)
         ("C-x n f" . org-roam-node-find)
-        ("C-x n t" . org-roam-buffer-toggle)
         ("C-x n a" . org-agenda)
         :map org-mode-map
         ("C-M-i" . completion-at-point)
@@ -367,7 +366,6 @@ DIR: directory path"
   :bind
   (:map global-map
         ("C-x n u" . org-roam-ui-open)))
-
 
 (use-package consult-org-roam
   :after org-roam
