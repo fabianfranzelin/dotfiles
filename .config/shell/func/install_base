@@ -139,7 +139,7 @@ install_base() {
             TEMP_DIR=$(mktemp -d)
             cd "${TEMP_DIR}" || exit 1
             wget "https://sourceware.org/pub/gdb/releases/${GDB_NAME}.tar.xz"
-            tar -xf "${GLIBC_NAME}.tar.xz"
+            tar -xf "${GDB_NAME}.tar.xz"
             cd "${GDB_NAME}" || exit 1
             ./configure --prefix="${GDB_PATH}"
             make CXXFLAGS="-static-libstdc++"
