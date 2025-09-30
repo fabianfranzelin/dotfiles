@@ -1,24 +1,6 @@
 #!/usr/bin/env bash
 
-install_base() {
-    echo -e "${__COLOR_INFO}INFO: Installing minimal required packages for setup...${__COLOR_RESET}"
-    sudo apt-get install -y \
-        python3-pip
-
-    # Remove PyQt5 if installed via pip. This package is buggy. It is
-    # installed afterwards again via Ubuntu package sources.
-    # python3 -m pip uninstall PyQt5
-
-    # Make sure that there is just one venv package installed. We do
-    # this via pip
-    sudo apt-get remove -y python3-venv
-
-    # Update python setuptools to latest release from pypi
-    python3 -m pip install --upgrade \
-        pip \
-        wheel \
-        setuptools
-
+install_apt_packages() {
     sudo apt-get install -y \
         xclip \
         xsel \
@@ -93,6 +75,33 @@ install_base() {
             eog
     fi
 
+    # install dependencies for vscode
+    if ( __is_linux )
+    then
+        # note that vscode is mounted from Windows in WSL and not
+        # installed via apt. Ignore when code cannot be found
+        sudo apt-get install -y code || true
+        if command -v snap > /dev/null
+        then
+            sudo snap install --classic code || true
+        fi
+    fi
+}
+
+install_python_packages() {
+    sudo apt-get install -y \
+        python3-pip
+
+    # Update python setuptools to latest release from pypi
+    python3 -m pip install --upgrade \
+        pip \
+        wheel \
+        setuptools
+
+    # Install uv as default package manager for Python
+    python3 -m pip install --upgrade \
+        uv
+
     # additional python dependencies
     python3 -m pip install --upgrade \
         virtualenv \
@@ -116,7 +125,9 @@ install_base() {
         beautysh \
         robotframework-robocop==4.2.2 \
         debugpy
+}
 
+install_packages_manually() {
     # install pandoc
     PANDOC_VER="3.8"
     SYSTEM_ARCH=$(dpkg --print-architecture)
@@ -164,16 +175,11 @@ install_base() {
         wget "${DRAW_IO_URL}"
         sudo dpkg -i "${DRAW_IO_BIN}"
     )
+}
 
-    # install dependencies for vscode
-    if ( __is_linux )
-    then
-        # note that vscode is mounted from Windows in WSL and not
-        # installed via apt. Ignore when code cannot be found
-        sudo apt-get install -y code || true
-        if command -v snap > /dev/null
-        then
-            sudo snap install --classic code || true
-        fi
-    fi
+install_base() {
+    echo -e "${__COLOR_INFO}INFO: Installing minimal required packages for setup...${__COLOR_RESET}"
+    install_apt_packages
+    install_python_packages
+    install_packages_manually
 }
