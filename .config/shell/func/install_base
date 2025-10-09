@@ -129,7 +129,7 @@ install_python_packages() {
 
 install_packages_manually() {
     # install pandoc
-    PANDOC_VER="3.8"
+    PANDOC_VER="3.8.2"
     SYSTEM_ARCH=$(dpkg --print-architecture)
     PANDOC_BIN="pandoc-${PANDOC_VER}-1-${SYSTEM_ARCH}.deb"
     PANDOC_URL="https://github.com/jgm/pandoc/releases/download/${PANDOC_VER}/${PANDOC_BIN}"
@@ -166,7 +166,7 @@ install_packages_manually() {
     fi
 
     # install draw.io
-    DRAW_IO_VER="28.1.2"
+    DRAW_IO_VER="28.2.5"
     DRAW_IO_BIN="drawio-${SYSTEM_ARCH}-${DRAW_IO_VER}.deb"
     DRAW_IO_URL="https://github.com/jgraph/drawio-desktop/releases/download/v${DRAW_IO_VER}/${DRAW_IO_BIN}"
     (
@@ -174,6 +174,27 @@ install_packages_manually() {
         cd "${TEMP_DIR}" || exit 1
         wget "${DRAW_IO_URL}"
         sudo dpkg -i "${DRAW_IO_BIN}"
+    )
+
+    # install jetbrains mono nl font
+    JETBRAINS_MONO_VER="2.304"
+    JETBRAINS_MONO_NAME="JetBrainsMono-${JETBRAINS_MONO_VER}.zip"
+    JETBRAINS_MONO_URL="https://download.jetbrains.com/fonts/${JETBRAINS_MONO_NAME}"
+    (
+        # Download the font
+        TEMP_DIR=$(mktemp -d)
+        cd "${TEMP_DIR}" || exit 1
+        wget "${JETBRAINS_MONO_URL}"
+        unzip "${JETBRAINS_MONO_NAME}"
+        cd "fonts/ttf" || exit
+
+        # Install it into home director
+        FONTS_DIR="${HOME}/.local/share/fonts"
+        mkdir -p "${FONTS_DIR}"
+        yes | cp -rf *.ttf "${FONTS_DIR}"
+
+        # Update font cache
+        sudo fc-cache -f -v
     )
 }
 

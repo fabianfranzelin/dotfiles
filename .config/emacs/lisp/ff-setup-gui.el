@@ -224,9 +224,10 @@ FUN: function to be called on the entry's path"
   "Choose best available font."
   (set-frame-font
    (-some #'ff/font-available-p
-          '("JetBrains Mono-14" "Deja Vu Sans Mono"))))
+          '("JetBrains Mono NL" "Deja Vu Sans Mono"))))
 
-;; (ff/setup-frame-font)
+(when (not (ff/is-mobile))
+  (ff/setup-frame-font))
 
 ;; Show number of lines in the left side of the buffer
 (when (not (ff/is-mobile))

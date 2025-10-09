@@ -217,3 +217,4 @@ flycheck_*
 /.config/homeassistant/custom_components/
 /.config/homeassistant/backups/
 /.config/homeassistant/tts/
+/.config/homeassistant/.ha_run.lock
