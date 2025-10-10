@@ -67,6 +67,21 @@ def run_publish_on_github(built_docs_dir: Path, dryrun: bool = False) -> int:
 
     print("Add .nojekyll to root folder. This is required for css rendering on pages.")
     (tmp_dir / ".nojekyll").touch()
+
+    print("Add README.org to root folder.")
+    with open(tmp_dir / "README.org", encoding="utf-8", mode="w") as fd:
+        fd.write(
+            """
+#+TITLE: dotfiles (docs)
+#+AUTHOR: Fabian Franzelin
+#+EMAIL: fabian.franzelin@gmail.com
+#+CREATOR: Fabian Franzelin
+#+LANGUAGE: en
+
+The documentation is published [[https://fabianfranzelin.github.io/dotfiles][here]].
+        """
+        )
+
     try:
         print("Commit all the changes.")
         git_repo.add(".")
