@@ -169,4 +169,9 @@ Host pauline
      ControlPath ~/.ssh/socket/%r@%h-%p
      ControlPersist 3600
     " | tee "${SSHCONFIG}"
+    ###########################################################################
+    #                                   Docker                               #
+    ###########################################################################
+    pkg install root-repo -y
+    pkg install docker -y
 }
