@@ -23,3 +23,10 @@ Add via Xiaomi integration.
 + Scan QR code in the back side of the power outlet
 + The first 16 charachters before =DLK= are the MAC address, all the
   characters following =DLK= correspond to the installation code
+
+| Device                | MAC              | Installation code                    |
+|-----------------------+------------------+--------------------------------------|
+| Strom - Wohnzimmer    | 286847FFFE26EE66 | 80976E5A9B9F6AC81A70BF86622759FB96E6 |
+| Strom - Waschmaschine | 286847FFFE26F95D | D2E2EA1EB96D44AFE4A497E25B3F8D4F26B7 |
+| Strom - Anlage        | 70C59CFFFE8C524E | 3A97C429ACBE78FD1A2BC06D8153F5F7BF0A |
+| Strom - Schreibtisch  |                  |                                      |
