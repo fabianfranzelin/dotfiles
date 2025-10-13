@@ -269,32 +269,32 @@ DIR: directory path"
    '(("d" "default" plain
       "\n\n%?"
       :target (file+head "%<%Y%m%d%H%M>-${slug}.org"
-                         "#+title: ${title}\n")
+                         "#+title: ${title}#+OPTIONS: ^:{}\n\n")
       :unnarrowed t)
      ("l" "log entry" entry
       "\n\n* %<%I:%M %p> - Log\n %U\n %a\n %i\n%?"
       :target (file+head "%<%Y%m%d%H%M>-log.org"
-                         "#+title: ${title}\n")
+                         "#+title: ${title}\n#+OPTIONS: ^:{}\n")
       :unarrowed t)
      ("s" "link notes" entry
       "\n\n* %<%I:%M %p> - Links\n %U\n %a\n %i\n** Description\n\n%?\n** Log Entries\n\n"
       :target (file+head "%<%Y%m%d%H%M>-link.org"
-                         "#+title: ${title}\n")
+                         "#+title: ${title}\n#+OPTIONS: ^:{}\n")
       :unarrowed t)
      ("p" "project note" entry
       "\n\n* %?"
       :target (file+head "%<%Y%m%d%H%M>-${slug}.org"
-                         "#+title: ${title}\n\n#+CATEGORY: Project\n#+filetags: :%^{project}:\n\n")
+                         "#+title: ${title}\n\n#+OPTIONS: ^:{}\n#+CATEGORY: Project\n#+filetags: :%^{project}:\n\n")
       :unarrowed t)
      ("t" "task" plain
       "* TODO ${title}\n%U\n\n%?"
       :target (file+head "journal/%<%Y%m%d%H%M>-${slug}.org"
-                         "#+title: ${title} (%<%Y-%m-%d %a>)\n#+CATEGORY: Task\n\n")
+                         "#+title: ${title} (%<%Y-%m-%d %a>)\n#+OPTIONS: ^:{}\n#+CATEGORY: Task\n\n")
       :unnarrowed t)
      ("m" "meeting" plain
       "* Participants\n\n+ Fabian Franzelin\n\n* Notes\n\n%?\n\n* Todos"
       :target (file+head "journal/%<%Y%m%d%H%M>-${slug}.org"
-                         "#+title: ${title} (%<%Y-%m-%d %a>)\n#+CATEGORY: Meeting\n\n")
+                         "#+title: ${title} (%<%Y-%m-%d %a>)\n#+OPTIONS: ^:{}\n#+CATEGORY: Meeting\n\n")
 
       :unarrowed t)))
   ;; org-roam-dailies
@@ -303,13 +303,13 @@ DIR: directory path"
    '(("f" "fleeting note" plain
       "** TODO %^{Note title}\n %U\n %i\n%?"
       :target (file+head+olp "inbox.org"
-                             "#+title: Inbox\n\n"
+                             "#+title: Inbox\n#+OPTIONS: ^:{}\n\n"
                              ("%(format-time-string \"%B, %d.%m\")"))
       :unarrowed t)
      ("w" "workday" plain
       "** %<[w%V] %a (%d.%m)> \n\n%?"
       :target (file+head+olp "clocking.org"
-                             "#+title: Clocking\n\n"
+                             "#+title: Clocking\n#+OPTIONS: ^:{}\n\n"
                              ("%(format-time-string \"%B, %Y\")"))
       :unarrowed t)))
   :config
