@@ -281,6 +281,7 @@ COMMAND: command to be executed"
 ;; -------------------------------------------------------------
 ;; Show available keybindings
 (use-package which-key
+  :straight (:type built-in)
   :custom
   (which-key-idle-delay 1)
   :hook
@@ -419,7 +420,6 @@ Example usage: (message (my/tramp-call-process-direct \"your-remote-host.com\" \
   (trashed-date-format "%Y-%m-%d %H:%M:%S"))
 
 (use-package dwim-shell-command
-  :demand t
   :bind
   (:map
    dired-mode-map
