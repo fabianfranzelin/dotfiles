@@ -217,7 +217,7 @@ def lower_left_triangle(bg_color: str, fg_color: str) -> Any:
     :returns: Textbox
     """
     return widget.TextBox(
-        text="\u25E2",
+        text="\u25e2",
         padding=0,
         fontsize=35,
         background=bg_color,
@@ -261,7 +261,6 @@ def init_widgets_list() -> List[Any]:
         widget.PulseVolume(),
         widget.TextBox("B:", background=my_colors["bg"], foreground=my_colors["fg"]),
         widget.Backlight(backlight_name="intel_backlight"),
-        widget.TextBox("|", background=my_colors["bg"]),
         widget.BatteryIcon(),
         widget.Battery(),
         widget.TextBox(text="|", background=my_colors["bg"]),
