@@ -56,7 +56,8 @@ install_apt_packages() {
         ninja-build \
         build-essential \
         texinfo \
-        cloc
+        cloc \
+        locales-all
 
     if ( __is_wsl )
     then
@@ -195,11 +196,6 @@ install_packages_manually() {
 
         # Update font cache
         sudo fc-cache -f -v
-    )
-
-    # install german locale
-    (
-        sudo locale-gen de_DE.UTF-8
     )
 }
 
