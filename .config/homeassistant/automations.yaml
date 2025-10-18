@@ -95,7 +95,7 @@
   - at: 08:00:00
     id: weekday_morning_off
     trigger: time
-  - at: 07:30:00
+  - at: 07:00:00
     id: weekend_morning_on
     trigger: time
   - at: 09:30:00
@@ -149,7 +149,8 @@
         - condition: and
           conditions:
           - condition: trigger
-            id: weekday_morning_off
+            id:
+            - weekday_morning_off
           - condition: time
             weekday:
             - mon
@@ -160,11 +161,26 @@
         - condition: and
           conditions:
           - condition: trigger
-            id: weekend_morning_off
+            id:
+            - weekend_morning_off
           - condition: time
             weekday:
             - sat
             - sun
+        - condition: trigger
+          id: evening_on
+      sequence:
+      - target:
+          entity_id: climate.your_fritz_302_thermostat
+          device_id: b0c54078707a81ed49fa6704ff58e0b2
+          area_id: familienbad
+        data:
+          temperature: 20
+          hvac_mode: heat
+        action: climate.set_temperature
+    - conditions:
+      - condition: or
+        conditions:
         - condition: trigger
           id: evening_off
       sequence:
