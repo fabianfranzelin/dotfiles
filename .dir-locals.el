@@ -1,8 +1,7 @@
 ;;; Directory Local Variables
 ;;; For more information see (info "(emacs) Directory Variables")
 
-((nil . ((eval . (pyvenv-deactivate))
-         ;; Configure ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+((nil . (;; Configure ;;;;;;;;;;;;;;;;;;;;;;;;;;;
          (eval . (defun run-command-recipe-ff/configure ()
                    (append
                     (when-let* ((project-dir (locate-dominating-file default-directory "configure")))
