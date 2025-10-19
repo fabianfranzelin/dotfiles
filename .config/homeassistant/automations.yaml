@@ -167,8 +167,6 @@
             weekday:
             - sat
             - sun
-        - condition: trigger
-          id: evening_on
       sequence:
       - target:
           entity_id: climate.your_fritz_302_thermostat
