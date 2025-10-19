@@ -183,10 +183,11 @@
           id: evening_off
       sequence:
       - target:
-          entity_id: climate.fritz_dect_302_2
+          entity_id: climate.your_fritz_302_thermostat
           device_id: b0c54078707a81ed49fa6704ff58e0b2
           area_id: familienbad
         data:
-          hvac_mode: 'off'
-        action: climate.set_hvac_mode
+          hvac_mode: heat
+          temperature: 16
+        action: climate.set_temperature
   mode: single
