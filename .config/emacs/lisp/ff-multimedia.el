@@ -5,10 +5,8 @@
 
 ;;; Code:
 
-
 ;; Find radio streams: https://streamurl.link/
 ;; https://www.radio-browser.info/gui/#!/stations
-;; https://playerservices.streamtheworld.com/api/livestream-redirect/RADIOLE_ASO_OSUNA.mp3
 
 (use-package emms
   :preface
@@ -25,6 +23,8 @@
   (emms-player-mpv-update-metadata t)
   (emms-info-functions '(emms-info-native))
   (emms-playlist-buffer-name "*Music*")
+  (emms-repeat-playlist t)
+  (emms-source-file-default-directory (expand-file-name "Music" (getenv "HOME")))
   :init
   (emms-all)
   :config
@@ -33,7 +33,13 @@
         emms-browser-thumbnail-small-size 64
         emms-browser-thumbnail-medium-size 128)
   ;; history
-  (emms-history-load))
+  (emms-history-load)
+  ;; Add one default radio station (radiole)
+  (defun ff/radiole ()
+    "Radiole. These links might break now and then. For latest see"
+    (interactive)
+    (emms-play-streamlist
+     "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIOLE_ASO_OSUNA.mp3")))
 
 (provide 'ff-multimedia)
 
