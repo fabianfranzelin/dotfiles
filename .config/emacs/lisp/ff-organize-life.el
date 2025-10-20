@@ -269,7 +269,7 @@ DIR: directory path"
    '(("d" "default" plain
       "\n\n%?"
       :target (file+head "%<%Y%m%d%H%M>-${slug}.org"
-                         "#+title: ${title}#+OPTIONS: ^:{}\n\n")
+                         "#+title: ${title}\n#+OPTIONS: ^:{}\n\n")
       :unnarrowed t)
      ("l" "log entry" entry
       "\n\n* %<%I:%M %p> - Log\n %U\n %a\n %i\n%?"
