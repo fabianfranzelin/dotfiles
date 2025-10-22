@@ -139,6 +139,9 @@ PROJECT-ROOT: Path to the root directory of the current project."
         ("t" . ff/project-project-tab)
         ("C" . run-command)))
 
+(use-package time-zones
+  :straight (:host github :repo "xenodium/time-zones" :branch "main"))
+
 (provide 'ff-project-management)
 
 ;;; ff-project-management.el ends here
