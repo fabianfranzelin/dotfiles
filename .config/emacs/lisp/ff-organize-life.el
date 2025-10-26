@@ -615,7 +615,12 @@ FILE-PAGE: page at which the annotation refers to"
       ((agenda "")
        (alltodo ""))))))
 
-(use-package org-timeblock)
+(use-package org-timeblock
+  :custom
+  (org-timeblock-span 7)
+  :bind
+  (:map global-map
+        ("C-x n t" . org-timeblock)))
 
 (provide 'ff-organize-life)
 
