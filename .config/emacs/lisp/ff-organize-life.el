@@ -281,7 +281,7 @@ DIR: directory path"
       :target (file+head "%<%Y%m%d%H%M>-link.org"
                          "#+title: ${title}\n#+OPTIONS: ^:{}\n")
       :unarrowed t)
-     ("p" "project note" entry
+     ("p" "project note" plain
       "\n\n* %?"
       :target (file+head "%<%Y%m%d%H%M>-${slug}.org"
                          "#+title: ${title}\n#+OPTIONS: ^:{}\n#+CATEGORY: Project\n#+filetags: :%^{project}:\n\n")
