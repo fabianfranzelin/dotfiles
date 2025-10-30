@@ -225,7 +225,7 @@ def lower_left_triangle(bg_color: str, fg_color: str) -> Any:
     )
 
 
-def init_widgets_list() -> List[Any]:
+def init_widgets_list(hide_sys_tray: bool = False) -> List[Any]:
     """Create my widgets for the top toolbar.
 
     :returns: List of widgets
@@ -255,7 +255,12 @@ def init_widgets_list() -> List[Any]:
             foreground=my_colors["fg"],
             padding=10,
         ),
-        widget.Systray(padding=5),
+    ]
+    if not hide_sys_tray:
+        widgets_list += [
+            widget.Systray(padding=5),
+        ]
+    widgets_list += [
         widget.Sep(linewidth=0, padding=6),
         widget.TextBox("V:", background=my_colors["bg"], foreground=my_colors["fg"]),
         widget.PulseVolume(),
@@ -283,6 +288,13 @@ screens = [
     Screen(
         top=bar.Bar(
             widgets=init_widgets_list(),
+            opacity=1.0,
+            size=20,
+        )
+    ),
+    Screen(
+        top=bar.Bar(
+            widgets=init_widgets_list(hide_sys_tray=True),
             opacity=1.0,
             size=20,
         )
