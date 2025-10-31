@@ -93,8 +93,7 @@ Otherwise, open the repository's main page."
 
 ;; Github integration via consult-gh
 (use-package consult-gh
-  :straight (consult-gh :type git :host github :repo "armindarvish/consult-gh"
-                        :fork (:host github :repo "fabianfranzelin/consult-gh"))
+  :straight (consult-gh :type git :host github :repo "armindarvish/consult-gh")
   :after consult savehist
   :custom
   (consult-gh-default-clone-directory "~/workspace")
