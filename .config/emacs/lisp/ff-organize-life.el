@@ -81,7 +81,7 @@ DIR: directory path"
   ;; highlight latex
   (org-highlight-latex-and-related '(latex))
   ;; do not visualize subscripts in org-mode buffers
-  (org-export-with-sub-superscripts '{})
+  (org-use-sub-superscripts '{})
   :config
   (require 'org-indent)
   (require 'org-habit)
