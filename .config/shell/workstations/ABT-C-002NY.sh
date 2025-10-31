@@ -15,11 +15,11 @@ export HTTPS_PROXY="http://127.0.0.1:3128"
 export BROWSER=firefox
 
 # initialize default setup according to the available wifis
-current_wifi=$(nmcli dev wifi list)
+AVAILABLE_WIFIS=$(nmcli dev wifi list)
 
-if echo "$current_wifi" | grep -q "Tomate"; then
+if echo "${AVAILABLE_WIFIS}" | grep -q "Tomate"; then
     alias init='autorandr --load gottenheim; set_keyboard_layout; unlock_key; osd-vpn-connect -k'
-elif echo "$current_wifi" | grep -q "Pauline"; then
+elif echo "${AVAILABLE_WIFIS}" | grep -q "Pauline"; then
     alias init='autorandr --load pauline; set_keyboard_layout; unlock_key; osd-vpn-connect -k'
 else
     alias init='set_keyboard_layout; unlock_key; osd-vpn-connect -k'
