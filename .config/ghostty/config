@@ -59,3 +59,7 @@ cursor-style = block
 
 # No need for confirmation when closing the terminal
 confirm-close-surface = false
+
+# Set the same font as I use in Emacs
+font-family = JetBrains Mono NL
+font-size = 13
