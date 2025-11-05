@@ -11,7 +11,7 @@ from libqtile.dgroups import simple_key_binder  # type: ignore
 from libqtile.lazy import lazy  # type: ignore
 
 mod = "mod4"
-my_term = "terminator"
+my_term = "ghostty"
 my_browser = "firefox"
 
 keys = [

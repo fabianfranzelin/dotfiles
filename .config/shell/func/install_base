@@ -67,6 +67,9 @@ install_apt_packages() {
             wslu
     fi
 
+    # install terminal emulator
+    sudo snap install --classic ghostty || true
+
     # install gtk tools
     if ( __is_linux )
     then
