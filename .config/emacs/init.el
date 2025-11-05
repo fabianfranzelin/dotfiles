@@ -19,7 +19,6 @@
 (require 'ff-spellcheck)
 (require 'ff-ai-assistant)
 (require 'ff-multimedia)
-(require 'ff-elora)
 ;; -------------------------------------------------------------------
 
 (provide 'init)

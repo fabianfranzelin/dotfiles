@@ -189,23 +189,19 @@ COMMAND: command to be executed"
   "c" 'delete-window
   "h" 'split-window-horizontally
   "v" 'split-window-vertically
-  "b" 'windmove-left
-  "f" 'windmove-right
-  "n" 'windmove-down
-  "p" 'windmove-up
-  "B" 'windmove-swap-states-left
-  "F" 'windmove-swap-states-right
-  "N" 'windmove-swap-states-down
-  "P" 'windmove-swap-states-up)
+  "b" 'windmove-swap-states-left
+  "f" 'windmove-swap-states-right
+  "n" 'windmove-swap-states-down
+  "p" 'windmove-swap-states-up)
 
 (keymap-global-set "C-q" ff/window-key-map)
 
 ;; https://www.emacswiki.org/emacs/Repeatable
 (defun ff/repeat-command (command)
   "Repeat COMMAND."
-  (let ((repeat-previous-repeated-command  command)
-        (repeat-message-function           #'ignore)
-        (last-repeatable-command           'repeat))
+  (let ((repeat-previous-repeated-command command)
+        (repeat-message-function #'ignore)
+        (last-repeatable-command 'repeat))
     (repeat nil)))
 
 ;; make the undo/redo functions repeatable
@@ -239,6 +235,8 @@ COMMAND: command to be executed"
   (define-key view-mode-map "a" 'beginning-of-visual-line)
   (define-key view-mode-map "e" 'end-of-visual-line)
   (define-key view-mode-map "l" 'recenter-top-bottom))
+
+(keymap-global-set "C-c v" 'view-mode)
 
 ;; -------------------------------------------------------------
 ;; Core packages
@@ -370,11 +368,10 @@ Example usage: (message (my/tramp-call-process-direct \"your-remote-host.com\" \
   (dired-listing-switches "-agho --group-directories-first")
   (dired-hide-details-hide-symlink-targets nil)
   (dired-mouse-drag-files t)
+  (dired-vc-rename-file t)
   :init
   (require 'dired-x)
   (autoload 'dired-omit-mode "dired-x")
-  :config
-  (setq dired-vc-rename-file t)
   :hook
   (dired-mode . auto-revert-mode)
   (dired-mode . dired-hide-details-mode)
@@ -495,7 +492,10 @@ Example usage: (message (my/tramp-call-process-direct \"your-remote-host.com\" \
 
 (require 'auth-source)
 ;; Do not allow unencrypted auth-sources. Use GPG
-(customize-set-variable 'auth-sources `(password-store ,(expand-file-name "authinfo.gpg" (getenv "PASSWORD_STORE_DIR"))))
+(customize-set-variable 'auth-sources
+                        `(password-store ,(expand-file-name
+                                           "authinfo.gpg"
+                                           (getenv "PASSWORD_STORE_DIR"))))
 ;; Use the Emacs minibuffer for GPG pinentry
 ;; https://vxlabs.com/2021/03/21/gnupg-pinentry-via-the-emacs-minibuffer/
 (customize-set-variable 'epa-pinentry-mode 'loopback)
@@ -610,13 +610,13 @@ Example usage: (message (my/tramp-call-process-direct \"your-remote-host.com\" \
   (defun affe-orderless-regexp-compiler (input _type _ignorecase)
     (setq input (cdr (orderless-compile input)))
     (cons input (apply-partially #'orderless--highlight input t)))
-  (setq affe-regexp-compiler #'affe-orderless-regexp-compiler)
+  (customize-set-variable 'affe-regexp-compiler #'affe-orderless-regexp-compiler)
   :bind
   (:map global-map
-        ("C-x a f" . affe-find)
-        ("C-x a F" . (lambda () (interactive) (ff/affe-find default-directory)))
-        ("C-x a g" . affe-grep)
-        ("C-x a G" . (lambda () (interactive) (ff/affe-grep default-directory)))
+        ("M-s a f" . affe-find)
+        ("M-s a F" . (lambda () (interactive) (ff/affe-find default-directory)))
+        ("M-s a g" . affe-grep)
+        ("M-s a G" . (lambda () (interactive) (ff/affe-grep default-directory)))
         :map embark-file-map
         ("a" . ff/affe-find)))
 
