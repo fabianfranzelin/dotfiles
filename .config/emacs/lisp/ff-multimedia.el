@@ -45,6 +45,8 @@
     :doc "Bindings for managing emms, configured to be repeatable."
     :repeat t
     "r" 'ff/radiole
+    "s" 'emms-start
+    "q" 'emms-stop
     "SPC" 'emms-pause)
   (keymap-global-set "C-c e" ff/emms-key-map))
 
