@@ -39,7 +39,28 @@
     "Radiole. These links might break now and then. For latest see"
     (interactive)
     (emms-play-streamlist
-     "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIOLE_ASO_OSUNA.mp3")))
+     "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIOLE_ASO_OSUNA.mp3"))
+
+  (defvar-keymap ff/emms-key-map
+    :doc "Bindings for managing emms, configured to be repeatable."
+    :repeat t
+    "r" 'ff/radiole
+    "SPC" 'emms-pause)
+  (keymap-global-set "C-c e" ff/emms-key-map))
+
+(use-package ready-player
+  :custom
+  (ready-player-my-media-collection-location (expand-file-name "Music" (getenv "HOME")))
+  :config
+  ;; Recognize video files as audio.
+  (setq ready-player-supported-audio (append ready-player-supported-audio
+                                             ready-player-supported-video))
+  ;; Don't recognize any file as video.
+  (setq ready-player-supported-video nil)
+  ;; Disable video stream playback (mpv player)
+  (setq ready-player-open-playback-commands
+        '(("mpv" "--audio-display=no" "--video=no" "--input-ipc-server=<<socket>>")))  :config
+  (ready-player-mode t))
 
 (provide 'ff-multimedia)
 

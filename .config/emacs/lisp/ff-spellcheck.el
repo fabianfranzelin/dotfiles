@@ -9,10 +9,10 @@
 ;; On the fly spell check
 ;; ----------------------
 (use-package jinx
+  :ensure-system-package aspell
   :preface
   (ff/ensure-apt-package "enchant-2" "enchant-2")
   (ff/ensure-apt-package "libenchant-2-dev" "/usr/include/enchant-2/enchant.h")
-  (ff/ensure-apt-package "aspell" "aspell")
   (ff/ensure-apt-package "aspell-en" "/usr/lib/aspell/en_US.multi")
   (ff/ensure-apt-package "aspell-de" "/usr/lib/aspell/de_DE.multi")
   (ff/ensure-apt-package "aspell-es" "/usr/lib/aspell/es.multi")

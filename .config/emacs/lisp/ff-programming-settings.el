@@ -144,8 +144,23 @@ FORCE: force update of grammars"
 ;; -------------------------------------------------------------------
 ;; Additionally to flymake, use flycheck as well for certain modes
 (use-package flycheck
+  :custom
+  ;; bazel-buildifier in flycheck no longer working. Disable.
+  (flycheck-disabled-checkers '(bazel-buildifier))
+  ;; Override default flycheck triggers
+  (flycheck-check-syntax-automatically '(save idle-change mode-enabled))
+  (flycheck-idle-change-delay 0.8)
   :init
   (global-flycheck-mode))
+
+(use-package flycheck-status-emoji
+  :after flycheck
+  :custom
+  (flycheck-status-emoji-indicator-finished-error ?💀)
+  (flycheck-status-emoji-indicator-finished-ok ?👍)
+  (flycheck-status-emoji-indicator-finished-warning ?👎)
+  :config
+  (flycheck-status-emoji-mode t))
 
 ;; -------------------------------------------------------------------
 ;; Debugger
@@ -335,6 +350,9 @@ FORCE: force update of grammars"
 (flycheck-add-mode 'javascript-eslint 'js-ts-mode)
 (flycheck-add-mode 'javascript-eslint 'tsx-ts-mode)
 
+(use-package js-comint
+  :commands js-comint-repl)
+
 ;; -------------------------------------------------------------------
 ;; Groovy mode for Jenkins
 ;; -------------------------------------------------------------------
@@ -461,6 +479,17 @@ FORCE: force update of grammars"
 (use-package simple-httpd
   :custom
   (httpd-host 'local))
+
+;; -----------------------------------------------------------------------------------
+;; Bazel
+;; for getting compile commands code: https://github.com/hedronvision/bazel-compile-commands-extractor
+
+(use-package bazel
+  :mode (("\\.bzl\\'" . bazel-mode)
+         ("BUILD\\'" . bazel-mode))
+  :custom
+  (bazel-mode-buildifier-before-save t))
+
 
 (provide 'ff-programming-settings)
 

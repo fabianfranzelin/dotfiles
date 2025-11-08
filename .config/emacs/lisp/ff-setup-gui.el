@@ -241,6 +241,13 @@ FUN: function to be called on the entry's path"
                   enlight-mode-hook))
     (add-hook mode (lambda () (display-line-numbers-mode 0)))))
 
+;; Don't use continuation character.
+(setq-default fringe-indicator-alist (delq (assq 'continuation fringe-indicator-alist) fringe-indicator-alist))
+
+;; Mispressing C-z or C-x C-z invokes `suspend-frame' (disable).
+(global-unset-key (kbd "C-z"))
+(global-unset-key (kbd "C-x C-z"))
+
 ;; show column numbers on the modeline
 (column-number-mode 1)
 

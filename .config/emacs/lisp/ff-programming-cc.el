@@ -139,10 +139,6 @@ REPLACE-STR: string that replaces all regex matches"
 (add-to-list 'auto-mode-alist '("\\.cmake$" . cmake-mode))
 (add-to-list 'auto-mode-alist '("CMakeLists.txt" . cmake-mode))
 
-;; -----------------------------------------------------------------------------------
-;; Bazel
-(use-package bazel)
-
 (provide 'ff-programming-cc)
 
 ;;; ff-programming-cc.el ends here

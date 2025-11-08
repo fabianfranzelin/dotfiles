@@ -25,7 +25,7 @@ def main() -> None:
     print(path)
 
     a = np.array([10, 20])
-    print(np.dot(a, a.T))  # type: ignore
+    print(np.dot(a, a.T))
 
 
 if __name__ == "__main__":
