@@ -130,7 +130,14 @@ build/
 ### Docs ###
 /docs/public/
 /docs/.packages/
-!/docs/themes/readtheorg.html
+!/docs/content/themes/simple_menu.html
+!/docs/content/themes/simple_whiteblue.html
+!/docs/content/themes/worg.html
+!/docs/content/themes/cloudflare.html
+!/docs/content/themes/cloudflare_menu.html
+!/docs/content/themes/orgcss.html
+!/docs/content/themes/readtheorg.html
+!/docs/content/themes/simple.html
 
 ### Examples ###
 /examples/org-project/content/index.pdf
