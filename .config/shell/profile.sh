@@ -66,12 +66,6 @@ export CERT_PATH="${HOME}/.local/share/certificates"
 export POSTGRES_PORT=2345
 
 #------------------------------------------------------------------------------#
-# SGpp
-export SGPP_HOME="${HOME}/workspace/SGpp_ff"
-export LD_LIBRARY_PATH="${SGPP_HOME}/lib/sgpp:${LD_LIBRARY_PATH}"
-export PYTHONPATH="${SGPP_HOME}/lib:${PYTHONPATH}"
-
-#------------------------------------------------------------------------------#
 # Virtual environments for python
 export WORKON_HOME="${HOME}/.virtualenvs"
 export PIP_VIRTUALENV_BASE="${WORKON_HOME}"
