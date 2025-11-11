@@ -73,19 +73,15 @@ alias dosp='docker system prune -f'
 alias dormi='docker rmi $(docker images --filter "dangling=true" -q --no-trunc)'
 alias doir='docker image rm'
 
-# Emacs
+# Emacs #######################################################################
 alias e="emacsclient -c -a emacs"
 alias en="emacsclient -nw"
-alias eds="emacs --daemon"
-alias edk="killall emacs"
-alias edr="edk; eds"
+alias ek="killall emacs"
+alias ef="emacs --daemon"
 alias em="emacs --init-directory=~/.config/minimal-emacs"
-alias emd="er --daemon"
-alias er="emacs --init-directory=~/.config/rational-emacs"
-alias erd="er --daemon"
 
 alias emacs_stop="edk"
-alias emacs_start="eds"
+alias emacs_start="efs"
 alias emacs_restart="edr"
 alias ff='find_file'
 
