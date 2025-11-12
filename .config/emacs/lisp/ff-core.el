@@ -366,7 +366,7 @@ Example usage: (message (my/tramp-call-process-direct \"your-remote-host.com\" \
   (dired-recursive-deletes 'always)
   (dired-recursive-copies 'always)
   (delete-by-moving-to-trash t)
-  (dired-listing-switches "-Alhtc --group-directories-first")
+  (setq dired-listing-switches "-agho --group-directories-first")
   (dired-hide-details-hide-symlink-targets nil)
   (dired-mouse-drag-files t)
   (dired-vc-rename-file t)
@@ -560,7 +560,7 @@ Example usage: (message (my/tramp-call-process-direct \"your-remote-host.com\" \
     :flags ("--hidden")
     :query ask
     :format literal
-    :menu ("Search" "p" "(ff) Project")))
+    :menu ("Search" "P" "(ff) Project")))
 
 ;; -------------------------------------------------------------------
 ;; Fuzzy finder like fzf: In contrast to project.el it includes also
