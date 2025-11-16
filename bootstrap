@@ -7,13 +7,13 @@ set -e
 
 # install minimal dependencies
 sudo apt install -y \
-     git \
-     gnupg2 \
-     ssh \
-     pass
+    git \
+    gnupg2 \
+    ssh \
+    pass
 
 # set pauline endpoint
-PAULINE="frf2lr@franzelin.dynv6.net"
+PAULINE="frf2lr@franzelin.duckdns.net"
 
 # copy keys from pauline
 SOURCE_DIR=".gnupg"
