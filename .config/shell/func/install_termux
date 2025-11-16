@@ -157,7 +157,7 @@ Match host pauline exec \"test \\\"\$(termux-wifi-connectioninfo | jq -r '.ssid'
      ControlPersist 3600
 
 Host pauline
-     Hostname franzelin.duckdns.net
+     Hostname franzelin.duckdns.org
      Port 22
      ForwardAgent yes
      ForwardX11 yes

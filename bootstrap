@@ -13,7 +13,7 @@ sudo apt install -y \
     pass
 
 # set pauline endpoint
-PAULINE="frf2lr@franzelin.duckdns.net"
+PAULINE="frf2lr@franzelin.duckdns.org"
 
 # copy keys from pauline
 SOURCE_DIR=".gnupg"
