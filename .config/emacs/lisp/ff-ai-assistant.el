@@ -13,7 +13,7 @@
     "Load and return the OpenAI token."
     (password-store-get "tokens/fabian.franzelin@openAI.com"))
   (defun ff/get-gemini-token ()
-    "Load and return the OpenAI token."
+    "Load and return the Gemini token."
     (password-store-get "tokens/fabian.franzelin@gemini"))
   :custom
   (gptel-default-mode 'org-mode)
@@ -25,7 +25,7 @@
   (add-hook 'gptel-post-response-functions 'gptel-end-of-response)
   ;; make copilot the default backend for gptel when on ABT C-002NY
   (if (string= (system-name) "ABT-C-002NY")
-      (setq gptel-model 'claude-3.5-sonnet
+      (setq gptel-model 'claude-sonnet-4
             gptel-backend (gptel-make-gh-copilot "Copilot"))
     ;; otherwise use gemini
     (setq gptel-backend (gptel-make-gemini "Gemini"
