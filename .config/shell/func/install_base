@@ -57,7 +57,9 @@ install_apt_packages() {
         build-essential \
         texinfo \
         cloc \
-        locales-all
+        locales-all \
+        bluez \
+        blueman
 
     if ( __is_wsl )
     then
