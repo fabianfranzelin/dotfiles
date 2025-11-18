@@ -366,7 +366,7 @@ Example usage: (message (my/tramp-call-process-direct \"your-remote-host.com\" \
   (dired-recursive-deletes 'always)
   (dired-recursive-copies 'always)
   (delete-by-moving-to-trash t)
-  (setq dired-listing-switches "-agho --group-directories-first")
+  (dired-listing-switches "-agho --group-directories-first")
   (dired-hide-details-hide-symlink-targets nil)
   (dired-mouse-drag-files t)
   (dired-vc-rename-file t)
