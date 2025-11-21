@@ -150,7 +150,6 @@ build/
 /examples/org-project/content/*.synctex.gz
 /examples/org-project/README.tex
 
-
 ### Python ###
 __pycache__
 .mypy_cache
@@ -225,3 +224,11 @@ flycheck_*
 /.config/homeassistant/backups/
 /.config/homeassistant/tts/
 /.config/homeassistant/.ha_run.lock
+
+### Syncthing ###
+/.config/syncthing/cert.pem
+/.config/syncthing/https-cert.pem
+/.config/syncthing/https-key.pem
+/.config/syncthing/index-v2/
+/.config/syncthing/key.pem
+/.config/syncthing/syncthing.lock
