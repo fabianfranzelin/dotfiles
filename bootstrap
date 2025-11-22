@@ -10,7 +10,8 @@ sudo apt install -y \
     git \
     gnupg2 \
     ssh \
-    pass
+    pass \
+    rsync
 
 # set pauline endpoint
 PAULINE="frf2lr@franzelin.duckdns.org"
@@ -19,16 +20,16 @@ PAULINE="frf2lr@franzelin.duckdns.org"
 SOURCE_DIR=".gnupg"
 TARGET_DIR="${HOME}/${SOURCE_DIR}"
 mkdir -p "${TARGET_DIR}"
-scp -r ${PAULINE}:${SOURCE_DIR} "${TARGET_DIR}"
+rsync -avz "${PAULINE}:${SOURCE_DIR}/" "${TARGET_DIR}/"
 
 # copy password store
 SOURCE_DIR=".local/share/password-store"
 TARGET_DIR="${HOME}/${SOURCE_DIR}"
 mkdir -p "${TARGET_DIR}"
-scp -r ${PAULINE}:${SOURCE_DIR} "${TARGET_DIR}"
+rsync -avz "${PAULINE}:${SOURCE_DIR}/" "${TARGET_DIR}/"
 
 # copy dotfiles
 SOURCE_DIR="workspace/dotfiles"
 TARGET_DIR="${HOME}/${SOURCE_DIR}"
 mkdir -p "${TARGET_DIR}"
-scp -r ${PAULINE}:${SOURCE_DIR} "${TARGET_DIR}"
+rsync -avz "${PAULINE}:${SOURCE_DIR}/" "${TARGET_DIR}/"
