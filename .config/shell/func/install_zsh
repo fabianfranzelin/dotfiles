@@ -63,4 +63,7 @@ install_zsh()
             git pull
         )
     fi
+
+    echo "Make zsh the default shell"
+    sudo chsh -s "$(which zsh)" "${USER}"
 }
