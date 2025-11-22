@@ -4,6 +4,7 @@
 
 #------------------------------------------------------------------------------#
 # description of cmdline-parser
+# @formatter:off
 usage="
 USAGE
     ${0} [OPTION]...
@@ -50,6 +51,7 @@ DESCRIPTION
        --skip-nyxt
               Skip nyxt installation
 "
+# @formatter:on
 
 #------------------------------------------------------------------------------#
 # check prerequisites
