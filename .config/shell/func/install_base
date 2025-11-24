@@ -61,6 +61,9 @@ install_apt_packages() {
         bluez \
         blueman
 
+    # install watchdog for raspi reset
+    sudo apt-get install -y watchdog || true
+
     if ( __is_wsl )
     then
         # install wslview for xdg-open so that firefox calls are
