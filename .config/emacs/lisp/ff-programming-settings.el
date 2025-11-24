@@ -492,6 +492,25 @@ FORCE: force update of grammars"
   (bazel-mode-buildifier-before-save t))
 
 
+;; -----------------------------------------------------------------------------------
+;; CSV mode
+
+(use-package csv-mode
+  :mode (("\\.csv\\'" . csv-mode)
+         ("\\.tsv\\'" . csv-mode))
+  :preface
+  (ff/ensure-npm-package "csvlint" "csvlint")
+  :hook (
+         ;; auto detect separator
+         (csv-mode . csv-guess-set-separator)
+         ;; turn on field alignment
+         (csv-mode . csv-align-mode)
+         ;; disable line wrap
+         (csv-mode .
+                   (lambda ()
+                     (visual-line-mode -1)
+                     (toggle-truncate-lines 1)))))
+
 (provide 'ff-programming-settings)
 
 ;;; ff-programming-settings.el ends here
