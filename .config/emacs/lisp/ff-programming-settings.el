@@ -498,8 +498,6 @@ FORCE: force update of grammars"
 (use-package csv-mode
   :mode (("\\.csv\\'" . csv-mode)
          ("\\.tsv\\'" . csv-mode))
-  :preface
-  (ff/ensure-npm-package "csvlint" "csvlint")
   :hook (
          ;; auto detect separator
          (csv-mode . csv-guess-set-separator)
