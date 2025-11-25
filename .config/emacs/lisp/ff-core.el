@@ -597,10 +597,11 @@ Example usage: (message (my/tramp-call-process-direct \"your-remote-host.com\" \
   (customize-set-variable 'affe-regexp-compiler #'affe-orderless-regexp-compiler)
   :bind
   (:map global-map
-        ("M-s a f" . affe-find)
-        ("M-s a F" . (lambda () (interactive) (ff/affe-find default-directory)))
         ("M-s a g" . affe-grep)
         ("M-s a G" . (lambda () (interactive) (ff/affe-grep default-directory)))
+        :map project-prefix-map
+        ("a" . affe-find)
+        ("A" . (lambda () (interactive) (ff/affe-find default-directory)))
         :map embark-file-map
         ("a" . ff/affe-find)))
 

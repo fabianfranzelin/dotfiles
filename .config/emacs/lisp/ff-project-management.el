@@ -134,8 +134,6 @@ PROJECT-ROOT: Path to the root directory of the current project."
         ("P" . ff/project-switch-project)
         ("g" . ff/project-magit)
         ("v" . project-vc-dir)
-        ("a" . affe-find)
-        ("r" . affe-grep)
         ("t" . ff/project-project-tab)
         ("C" . run-command)))
 
