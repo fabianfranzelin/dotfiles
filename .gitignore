@@ -232,3 +232,4 @@ flycheck_*
 /.config/syncthing/index-v2/
 /.config/syncthing/key.pem
 /.config/syncthing/syncthing.lock
+/.config/syncthing/.ash_history
