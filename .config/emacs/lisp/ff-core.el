@@ -394,6 +394,11 @@ Example usage: (message (my/tramp-call-process-direct \"your-remote-host.com\" \
   (:map dired-mode-map
         ("H" . dired-hide-dotfiles-mode)))
 
+(use-package dired-rsync
+  :after dired
+  :bind (:map dired-mode-map
+              ("r" . dired-rsync)))
+
 (use-package dired-subtree
   :after dired
   :bind
