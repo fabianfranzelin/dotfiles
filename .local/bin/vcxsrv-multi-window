@@ -10,5 +10,5 @@ then
 fi
 
 LOG_FILE="/tmp/vcxsrv.log"
-"${VCXSRV_CMD}" "${VCXSRV_ARGS}" &> "${LOG_FILE=}"
+"${VCXSRV_CMD}" ${VCXSRV_ARGS} &> "${LOG_FILE=}"
 echo "vcxsrv successfully started. The log file is located here ${LOG_FILE}."
