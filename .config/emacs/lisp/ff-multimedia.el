@@ -48,7 +48,10 @@
     "s" 'emms-start
     "q" 'emms-stop
     "SPC" 'emms-pause)
-  (keymap-global-set "C-c e" ff/emms-key-map))
+  (keymap-global-set "C-c e" ff/emms-key-map)
+  :bind (:map global-map
+              ("<XF86AudioPlay>" . emms-pause)
+              ("<XF86AudioStop>" . emms-stop)))
 
 (use-package ready-player
   :custom
