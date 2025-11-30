@@ -59,5 +59,8 @@ then
 fi
 
 #------------------------------------------------------------------------------#
-# enable direnv for bash or zsh
+# enable direnv
 eval "$(direnv hook "$(command -v bash)")" > /dev/null
+
+# enable autocompletion for uv
+eval "$(uv --generate-shell-completion bash)"

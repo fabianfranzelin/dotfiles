@@ -233,3 +233,6 @@ flycheck_*
 /.config/syncthing/key.pem
 /.config/syncthing/syncthing.lock
 /.config/syncthing/.ash_history
+
+### UV ###
+/.config/uv/uv-receipt.json

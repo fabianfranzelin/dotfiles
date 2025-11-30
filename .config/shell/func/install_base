@@ -108,8 +108,9 @@ install_python_packages() {
         setuptools
 
     # Install uv as default package manager for Python
-    python3 -m pip install --upgrade \
-        uv
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+
+
 
     # additional python dependencies
     python3 -m pip install --upgrade \
@@ -130,7 +131,6 @@ install_python_packages() {
         gitpython \
         pytest \
         jupyter \
-        uv \
         beautysh \
         robotframework-robocop==4.2.2 \
         debugpy
