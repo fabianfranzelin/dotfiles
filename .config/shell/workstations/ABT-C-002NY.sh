@@ -21,6 +21,8 @@ if echo "${AVAILABLE_WIFIS}" | grep -q "Tomate"; then
     alias init='autorandr --load gottenheim; set_keyboard_layout; unlock_key; osd-vpn-connect -k'
 elif echo "${AVAILABLE_WIFIS}" | grep -q "Pauline"; then
     alias init='autorandr --load pauline; set_keyboard_layout; unlock_key; osd-vpn-connect -k'
+elif echo "${AVAILABLE_WIFIS}" | grep -q "BWSOA"; then
+    alias init='autorandr --load feuerbach; set_keyboard_layout; unlock_key'
 else
     alias init='set_keyboard_layout; unlock_key; osd-vpn-connect -k'
 fi
