@@ -25,6 +25,8 @@
     helper = !pass keys/$(pass usernames/pace@github)@github.com
 [credential "https://github.com/PACE-INT/aos-review-test.git"]
     helper = !pass keys/$(pass usernames/pace@github)@github.com
+[credential "https://github.com/PACE-INT/aos_safety_arch.git"]
+    helper = !pass keys/$(pass usernames/pace@github)@github.com
 [credential "https://github.com/fabian-franzelin_pace/ros_vision.git"]
     helper = !pass keys/$(pass usernames/pace@github)@github.com
 [credential "https://github.com/fabian-franzelin_pace/aos_vision.git"]
