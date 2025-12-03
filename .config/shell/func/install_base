@@ -36,11 +36,15 @@ install_apt_packages() {
         scons \
         latexmk \
         texlive-base \
+        texlive-fonts-extra \
         texlive-science \
         texlive-bibtex-extra \
         texlive-lang-german \
         texlive-luatex \
         texlive-latex-extra \
+        texlive-latex-recommended \
+        texlive-extra-utils \
+        inkscape \
         cm-super \
         biber \
         doxygen \
