@@ -235,7 +235,8 @@ COMMAND: command to be executed"
   (define-key view-mode-map "a" 'beginning-of-visual-line)
   (define-key view-mode-map "e" 'end-of-visual-line)
   (define-key view-mode-map "l" 'recenter-top-bottom)
-  (define-key view-mode-map "k" 'ff/kill-buffer-current))
+  (define-key view-mode-map "k" 'ff/kill-buffer-current)
+  (define-key view-mode-map "q" 'View-exit))
 
 (keymap-global-set "C-c v" 'view-mode)
 
