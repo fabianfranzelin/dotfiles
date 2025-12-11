@@ -16,5 +16,9 @@
     prune = true
 [lfs]
     storage = "~/.cache/git/lfs"
+[filter "lfs"]
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
 [include]
     path = "~/.config/git/config.alias"
