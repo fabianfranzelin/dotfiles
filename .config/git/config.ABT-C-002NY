@@ -39,6 +39,10 @@
     helper = !pass keys/$(pass usernames/pace@github)@github.com
 [credential "https://github.com/fabian-franzelin_pace/py_ea_export.git"]
     helper = !pass keys/$(pass usernames/pace@github)@github.com
+[credential "https://github.com/fabian-franzelin_pace/org_public.git"]
+    helper = !pass keys/$(pass usernames/pace@github)@github.com
+[credential "https://github.com/fabian-franzelin_pace/emacs_public.git"]
+    helper = !pass keys/$(pass usernames/pace@github)@github.com
 [credential "https://github.com"]
     helper = !pass keys/$(pass usernames/public@github)@github.com
 [credential "https://github.boschdevcloud.com"]
