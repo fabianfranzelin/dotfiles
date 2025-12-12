@@ -12,6 +12,12 @@
 (unless package-archive-contents
   (package-refresh-contents))
 
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
+(eval-when-compile (require 'use-package))
+;; Automatically install packages
+(customize-set-variable 'use-package-always-ensure t)
+
 (cl-defun ff/vc-install (&key (fetcher "github") repo name rev backend)
   "Install a package from a remote if it's not already installed.
 This is a thin wrapper around `package-vc-install' in order to
@@ -321,12 +327,11 @@ DIR: directory"
   :preface (ff/vc-install :name "ace-window")
   :bind
   (:map global-map
-        ("M-o" . ace-window)
-        :map diff-mode-map
-        ("M-o" . nil)))
+        ("M-o" . ace-window)))
 
 ;; -------------------------------------------------------------------
 (use-package dired
+  :ensure nil
   :custom
   (dired-auto-revert-buffer nil) ; Auto update when buffer is revisited
   (dired-dwim-target t)
