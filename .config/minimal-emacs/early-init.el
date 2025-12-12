@@ -16,10 +16,6 @@
 (customize-set-variable 'load-prefer-newer noninteractive)
 
 ;; -------------------------------------------------------------------
-;; Disable package.el since we use straight.el
-(customize-set-variable 'package-enable-at-startup nil)
-
-;; -------------------------------------------------------------------
 ;; Change my user emacs directory to non-default location since it is
 ;; under version control
 (setq user-emacs-directory (expand-file-name "~/.cache/minimal-emacs"))

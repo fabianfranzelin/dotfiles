@@ -327,7 +327,6 @@ DIR: directory"
 
 ;; -------------------------------------------------------------------
 (use-package dired
-  :ensure nil
   :custom
   (dired-auto-revert-buffer nil) ; Auto update when buffer is revisited
   (dired-dwim-target t)
@@ -353,7 +352,6 @@ DIR: directory"
 ;; -------------------------------------------------------------------
 ;; Tramp
 (use-package tramp
-  :ensure nil
   :custom
   (tramp-terminal-type "dumb")
   (tramp-default-method "ssh")
@@ -386,7 +384,6 @@ DIR: directory"
   (magit-push-current-to-upstream nil))
 
 (use-package magit
-  :ensure t
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
   ;; Show word based diff
