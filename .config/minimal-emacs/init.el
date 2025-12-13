@@ -12,9 +12,7 @@
 (unless package-archive-contents
   (package-refresh-contents))
 
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
-(eval-when-compile (require 'use-package))
+(require 'use-package)
 ;; Automatically install packages
 (customize-set-variable 'use-package-always-ensure t)
 
