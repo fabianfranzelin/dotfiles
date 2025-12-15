@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
 
 ssh_pauline() {
-    sshpass -p "$(pass passwords/frf2lr@pauline)" ssh frf2lr@pauline -t "e"; exec "${SHELL}"
+    sshpass -p "$(pass passwords/frf2lr@pauline)" ssh frf2lr@pauline -t 'emacsclient -c -a emacs; exec ${SHELL}
 }
