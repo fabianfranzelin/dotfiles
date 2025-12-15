@@ -126,12 +126,8 @@ DIR: directory path"
   (customize-set-variable 'org-outline-path-complete-in-steps nil))
 
 ;; use pdf-tools for org links
-(use-package org-pdfview
-  :after org
-  :config
-  (add-to-list 'org-file-apps
-               '("\\.pdf\\'" . (lambda (file link)
-                                 (org-pdfview-open link)))))
+(use-package org-pdftools
+  :hook (org-mode . org-pdftools-setup-link))
 
 ;; Allow drag and drop into Dired. For details, see enables
 ;; https://github.com/abo-abo/org-download
