@@ -15,10 +15,10 @@
 (require 'ff-organize-life)
 (require 'ff-programming-settings)
 (require 'ff-write-documents)
-(require 'ff-setup-gui)
 (require 'ff-spellcheck)
 (require 'ff-ai-assistant)
 (require 'ff-multimedia)
+(require 'ff-setup-gui)
 ;; -------------------------------------------------------------------
 
 (provide 'init)
