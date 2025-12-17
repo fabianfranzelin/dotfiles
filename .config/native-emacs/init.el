@@ -229,6 +229,22 @@ DIR: directory"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;           Project                  ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package tab-bar
+  :ensure nil
+  :hook
+  (after-init . tab-bar-mode)
+  :custom
+  ;; Don't turn on tab-bar-mode when tabs are created
+  (tab-bar-show nil)
+  :bind
+  (:map global-map
+        ("C-x t n" . tab-new)
+        ;; after a tab is closed, the *scratch* tab appears
+        ;; automatically; Hence, we close that one as well after
+        ;; closing the actually intended one to actually get to the
+        ;; previous user tab.
+        ("C-x t w" . tab-close)))
+
 (require 'project)
 
 (defun ff/project-name (dir)

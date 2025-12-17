@@ -9,6 +9,7 @@
 ;; Tab bar: one tab per project
 ;; -------------------------------------------------------------------
 (use-package tab-bar
+  :straight (:type built-in)
   :hook
   (after-init . tab-bar-mode)
   :custom
