@@ -3,16 +3,6 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'package)
-(setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-                         ("melpa" . "https://melpa.org/packages/")
-                         ("melpa-stable" . "https://stable.melpa.org/packages/")))
-
-;; Initialize the package system
-(package-initialize)
-(unless package-archive-contents
-  (package-refresh-contents))
-
 (require 'use-package)
 ;; Automatically install packages
 (customize-set-variable 'use-package-always-ensure t)
