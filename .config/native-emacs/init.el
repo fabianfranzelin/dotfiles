@@ -229,21 +229,44 @@ DIR: directory"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;           Project                  ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun ff/project-name (dir)
+  "Define the name of a project as the name of the root directory.
+
+DIR: root directory of project"
+  (file-name-nondirectory (directory-file-name (file-name-directory dir))))
+
+(defun ff/tab-bar--names (&optional tabs frame)
+  "Return the list of tabs sorted by name.
+TABS: tabs as alist
+FRAME: frame"
+  (let* ((tabs (or tabs (funcall tab-bar-tabs-function frame))))
+    (mapcar (lambda (tab) (alist-get 'name tab)) tabs)))
+
+(defun ff/project-project-tab ()
+  "Switch to a workspace with the project name."
+  (interactive)
+  (let* ((project-dir (project-prompt-project-dir))
+         (project-name (ff/project-name project-dir)))
+    (unless (member project-name (ff/tab-bar--names))
+      (tab-bar-new-tab)
+      (tab-rename project-name))
+    (tab-bar-switch-to-tab project-name)))
+
 (use-package project
   :ensure nil
   :custom
   (project-switch-commands '((project-find-file "Find file")
                              (project-find-dir "Find directory")
-                             ;; (ff/project-magit "Magit")
                              (project-dired "Dired")
                              (project-vc-dir "VC-Dir")))
   (project-vc-extra-root-markers '(".project.el"))
   (project-vc-ignores '("build/" "install/" ".*cache/" "__pycache__"))
   :bind
   (:map project-prefix-map
-        ("g" . ff/project-magit)
+        ("P" . ff/project-switch-project)
         ("v" . project-vc-dir)
-        ("C" . run-command)))
+        ("t" . ff/project-project-tab)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;           org-mode                  ;
