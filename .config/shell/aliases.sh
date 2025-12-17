@@ -79,6 +79,7 @@ alias en="emacsclient -nw"
 alias ek="killall emacs"
 alias ef="emacs --daemon"
 alias em="emacs --init-directory=~/.config/minimal-emacs"
+alias en="emacs --init-directory=~/.config/native-emacs"
 
 alias emacs_stop="edk"
 alias emacs_start="efs"
