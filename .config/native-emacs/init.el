@@ -78,6 +78,32 @@ gmail.com"
 ;; save cursor position in files even when buffers are killed
 (save-place-mode)
 
+;; enable view-mode per default in read-only buffers
+(customize-set-variable 'view-read-only t)
+
+;; use single keys for navigating in read-only buffers
+(with-eval-after-load 'view
+  (define-key view-mode-map "n" 'next-line)
+  (define-key view-mode-map "p" 'previous-line)
+  (define-key view-mode-map "f" 'forward-char)
+  (define-key view-mode-map "b" 'backward-char)
+  (define-key view-mode-map "a" 'beginning-of-visual-line)
+  (define-key view-mode-map "e" 'end-of-visual-line)
+  (define-key view-mode-map "l" 'recenter-top-bottom)
+  (define-key view-mode-map "k" 'ff/kill-buffer-current)
+  (define-key view-mode-map "q" 'View-exit))
+
+(keymap-global-set "C-c v" 'view-mode)
+
+;; -------------------------------------------------------------
+;; Show available keybindings
+(use-package which-key
+  :straight (:type built-in)
+  :custom
+  (which-key-idle-delay 1)
+  :hook
+  (after-init . which-key-mode))
+
 ;; -------------------------------------------------------------------
 ;; Credential management
 ;; -------------------------------------------------------------------
