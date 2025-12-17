@@ -171,6 +171,7 @@ flycheck_*
 /.config/emacs/var/
 /.config/emacs/projects
 /.config/minimal-emacs/elpa/
+/.config/native-emacs/places
 
 ### ZSH ###
 /.config/zsh/.zcompdump*
@@ -236,3 +237,4 @@ flycheck_*
 
 ### UV ###
 /.config/uv/uv-receipt.json
+
