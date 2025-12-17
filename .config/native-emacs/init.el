@@ -253,6 +253,18 @@ FRAME: frame"
       (tab-rename project-name))
     (tab-bar-switch-to-tab project-name)))
 
+(defun ff/project-switch-project (&optional project)
+  "Switch to a workspace with the project name.
+PROJECT: path to project"
+  (interactive)
+  (let* ((project-dir (or project (project-prompt-project-dir)))
+         (project-name (ff/project-name project-dir)))
+    (unless (member project-name (ff/tab-bar--names))
+      (tab-bar-new-tab)
+      (tab-rename project-name))
+    (tab-bar-switch-to-tab project-name)
+    (project-switch-project project-dir)))
+
 (use-package project
   :ensure nil
   :custom
