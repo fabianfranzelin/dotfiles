@@ -98,7 +98,7 @@ gmail.com"
 ;; -------------------------------------------------------------
 ;; Show available keybindings
 (use-package which-key
-  :straight (:type built-in)
+  :ensure nil
   :custom
   (which-key-idle-delay 1)
   :hook
