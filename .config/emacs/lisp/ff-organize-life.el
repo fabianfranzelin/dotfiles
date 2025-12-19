@@ -127,7 +127,9 @@ DIR: directory path"
 
 ;; use pdf-tools for org links
 (use-package org-pdftools
-  :hook (org-mode . org-pdftools-setup-link))
+  :hook (org-mode . org-pdftools-setup-link)
+  :config
+  (pdf-tools-install))
 
 ;; Allow drag and drop into Dired. For details, see enables
 ;; https://github.com/abo-abo/org-download
