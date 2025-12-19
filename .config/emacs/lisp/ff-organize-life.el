@@ -140,11 +140,13 @@ DIR: directory path"
   (dired-mode . org-download-enable)
   :custom
   (org-download-method 'directory)
-  (org-download-image-org-width 600)
+  (org-download-image-org-width 800)
+  (org-download-image-dir (expand-file-name "images/download" org-roam-directory))
+  (org-download-heading-lvl 0)
   :bind
   (:map org-mode-map
-        ("C-c C-x Y" . org-download-screenshot)
-        ("C-c C-x y" . org-download-yank)))
+        ("C-c C-x y" . org-download-clipboard)
+        ("C-c C-x Y" . org-download-yank)))
 
 (use-package toc-org
   :after org markdown-mode

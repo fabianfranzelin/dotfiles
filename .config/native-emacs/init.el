@@ -199,10 +199,10 @@ DIR: directory"
 (setq completion-category-overrides '((file (styles partial-completion))))
 
 ;; Configure TAB for selection in minibuffer
-(define-key minibuffer-local-map "<tab>" 'icomplete-fido-ret)
-(define-key minibuffer-local-map "C-a" (lambda() (interactive) (ff/minibuffer-move-to-dir "/")))
-(define-key minibuffer-local-map "C-o" (lambda() (interactive) (ff/minibuffer-move-to-dir "~/")))
-(define-key minibuffer-local-map "C-l" 'ff/minibuffer-backward-kill)
+(define-key minibuffer-local-map (kbd "<tab>") 'icomplete-fido-ret)
+(define-key minibuffer-local-map (kbd "C-a") (lambda() (interactive) (ff/minibuffer-move-to-dir "/")))
+(define-key minibuffer-local-map (kbd "C-o") (lambda() (interactive) (ff/minibuffer-move-to-dir "~/")))
+(define-key minibuffer-local-map (kbd "C-l") 'ff/minibuffer-backward-kill)g
 
 ;; -------------------------------------------------------------------
 (use-package dired
