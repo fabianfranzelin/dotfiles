@@ -213,8 +213,6 @@ FUN: function to be called on the entry's path"
 
 ;; -------------------------------------------------------------------
 ;; Define font size and methods to adjust it on the fly
-(set-face-attribute 'default nil :height 125) ;; default = 100
-
 (defun ff/font-available-p (font-name)
   "Determine whether FONT-NAME is installed."
   (find-font (font-spec :name font-name :weight 'normal :slant 'normal)))
@@ -223,8 +221,10 @@ FUN: function to be called on the entry's path"
   "Choose best available font."
   (let ((my-font "JetBrains Mono NL"))
     (when (ff/font-available-p my-font)
-      (set-frame-font my-font)
-      (add-to-list 'default-frame-alist `(font . ,my-font)))))
+      (set-face-attribute 'default nil :font my-font)
+      (add-to-list 'default-frame-alist `(font . ,my-font))
+      (set-frame-font my-font nil t)
+      (set-face-attribute 'default nil :height 125))))
 
 (when (not (ff/is-mobile))
   (ff/setup-frame-font))
