@@ -139,7 +139,10 @@ PROJECT-ROOT: Path to the root directory of the current project."
         ("C" . run-command)))
 
 (use-package time-zones
-  :straight (:host github :repo "xenodium/time-zones" :branch "main"))
+  :straight (:host github :repo "xenodium/time-zones" :branch "main")
+  :config
+  (setq time-zones--city-list-file
+        (expand-file-name "time-zones.el" local-lisp-path)))
 
 (provide 'ff-project-management)
 
