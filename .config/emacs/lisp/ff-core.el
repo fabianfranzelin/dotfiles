@@ -477,6 +477,9 @@ Example usage: (message (my/tramp-call-process-direct \"your-remote-host.com\" \
 ;; -------------------------------------------------------------------
 ;; Credential management
 ;; -------------------------------------------------------------------
+(unless (getenv "PASSWORD_STORE_DIR")
+  (setenv "PASSWORD_STORE_DIR" (expand-file-name "~/.local/share/password-store")))
+
 (require 'auth-source-pass)
 (auth-source-pass-enable)
 

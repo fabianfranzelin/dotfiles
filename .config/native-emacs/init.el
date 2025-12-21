@@ -107,12 +107,18 @@ gmail.com"
 ;; -------------------------------------------------------------------
 ;; Credential management
 ;; -------------------------------------------------------------------
+(unless (getenv "PASSWORD_STORE_DIR")
+  (setenv "PASSWORD_STORE_DIR" (expand-file-name "~/.local/share/password-store")))
+
 (require 'auth-source-pass)
 (auth-source-pass-enable)
 
 (require 'auth-source)
-;; Do not allow unencrypted auth-sources.
-(customize-set-variable 'auth-sources `(password-store ,(expand-file-name "~/.password-store/authinfo.gpg")))
+;; Do not allow unencrypted auth-sources. Use GPG
+(customize-set-variable 'auth-sources
+                        `(password-store ,(expand-file-name
+                                           "authinfo.gpg"
+                                           (getenv "PASSWORD_STORE_DIR"))))
 ;; Use the Emacs minibuffer for GPG pinentry
 ;; https://vxlabs.com/2021/03/21/gnupg-pinentry-via-the-emacs-minibuffer/
 (customize-set-variable 'epg-pinentry-mode 'loopback)
@@ -151,7 +157,7 @@ gmail.com"
 (setq-default cursor-type 'box)
 
 ;; no splash screen
-(setq inhibit-startup-screen t)
+(customize-set-variable 'inhibit-startup-screen t)
 
 ;; -------------------------------------------------------------------
 
@@ -202,9 +208,9 @@ DIR: directory"
 (fido-vertical-mode t)
 
 ;; Enable fuzzy matching
-(setq completion-styles '(flex basic partial-completion emacs22))
+(customize-set-variable 'completion-styles '(flex basic partial-completion emacs22))
+(customize-set-variable 'completion-category-overrides '((file (styles partial-completion))))
 (setq completion-category-defaults nil)
-(setq completion-category-overrides '((file (styles partial-completion))))
 
 ;; Configure TAB for selection in minibuffer
 (define-key minibuffer-local-map (kbd "<tab>") 'icomplete-fido-ret)
