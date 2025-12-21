@@ -27,3 +27,6 @@ pyproject.toml
 
 .zcompdump*
 .zsh_history
+
+gpg.conf.default
+gpg.conf.ABT-C-002NY

@@ -211,9 +211,26 @@ install_packages_manually() {
     )
 }
 
+configure_gnupg() {
+    #------------------------------------------------------------------------------#
+    # Hack: setup workstation specific config for git using extra symlink
+    (
+        cd "${DOTFILES}/.gnupg" || exit 1
+        GPG_CONFIG="gpg.conf"
+        TARGET_GPG_CONFIG="gpg.conf.$(hostname)"
+        if [ -f "${TARGET_GPG_CONFIG}" ]; then
+            ln -s -f "${TARGET_GPG_CONFIG}" "${GPG_CONFIG}"
+        else
+            echo -e "${__COLOR_INFO}No specific git configuration for $(hostname) available. Using the default one.${__COLOR_RESET}"
+            ln -s -f "gpg.conf.default" "${GPG_CONFIG}"
+        fi
+    )
+}
+
 install_base() {
     echo -e "${__COLOR_INFO}INFO: Installing minimal required packages for setup...${__COLOR_RESET}"
     install_apt_packages
     install_python_packages
     install_packages_manually
+    configure_gnupg
 }
