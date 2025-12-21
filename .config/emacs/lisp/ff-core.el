@@ -486,21 +486,34 @@ Example usage: (message (my/tramp-call-process-direct \"your-remote-host.com\" \
                         `(password-store ,(expand-file-name
                                            "authinfo.gpg"
                                            (getenv "PASSWORD_STORE_DIR"))))
+
+(require 'epg)
 ;; Use the Emacs minibuffer for GPG pinentry
 ;; https://vxlabs.com/2021/03/21/gnupg-pinentry-via-the-emacs-minibuffer/
 (customize-set-variable 'epa-pinentry-mode 'loopback)
 
+(defun ff/unlock-first-gpg-key ()
+  "Identify the first available private GPG key and unlock it by signing a test string."
+  (interactive)
+  (let* ((context (epg-make-context 'OpenPGP))
+         ;; Filter for secret/private keys only
+         (keys (epg-list-keys context nil t)))
+    (if (null keys)
+        (message "No private GPG keys found.")
+      (let* ((first-key (car keys))
+             (key-id (epg-sub-key-id (car (epg-key-sub-key-list first-key)))))
+        (condition-case err
+            (progn
+              ;; Attempt to sign a dummy string to trigger the pinentry/unlock
+              (epg-sign-string context "unlock-test" 'detach)
+              (message "Successfully unlocked key: %s" key-id))
+          (error
+           (message "Failed to unlock key %s: %s" key-id (error-message-string err))))))))
+
+(keymap-global-set "C-c C-g" 'ff/unlock-first-gpg-key)
+
 (use-package pass
   :custom (pass-show-keybindings nil))
-
-(defun ff/unlock-key ()
-  "Unlock gpg key."
-  (interactive)
-  (if (password-store-get "usernames/public@github")
-      (message "GPG key is unlocked")
-    (message "Wrong password. GPG key is not unlocked.")))
-
-(keymap-global-set "C-c C-g" 'ff/unlock-key)
 
 ;; -------------------------------------------------------------------
 ;; Auto-saving changed files when they lose focus

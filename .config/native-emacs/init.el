@@ -20,10 +20,10 @@ gmail.com"
 (customize-set-variable 'enable-local-variables t)
 
 ;; dont warn for following symlinked files
-(setq vc-follow-symlinks t)
+(customize-set-variable 'vc-follow-symlinks t)
 
 ;; disable lockfiles
-(setq create-lockfiles nil)
+(customize-set-variable 'create-lockfiles nil)
 
 ;; define alias for yes-or-no decision
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -111,24 +111,32 @@ gmail.com"
 (auth-source-pass-enable)
 
 (require 'auth-source)
-;; Do not allow unencrypted auth-sources. Use GPG
-(setq auth-sources `(password-store ,(expand-file-name "~/.password-store/authinfo.gpg")))
+;; Do not allow unencrypted auth-sources.
+(customize-set-variable 'auth-sources `(password-store ,(expand-file-name "~/.password-store/authinfo.gpg")))
 ;; Use the Emacs minibuffer for GPG pinentry
 ;; https://vxlabs.com/2021/03/21/gnupg-pinentry-via-the-emacs-minibuffer/
-(setq epa-pinentry-mode 'loopback)
+(customize-set-variable 'epg-pinentry-mode 'loopback)
 
-;; (use-package pass
-;;   :preface (ff/vc-install :repo "NicolasPetton" :name "pass")
-;;   :custom (pass-show-keybindings nil))
-
-(defun ff/unlock-key ()
-  "Unlock gpg key."
+(require 'epg)
+(defun ff/unlock-first-gpg-key ()
+  "Identify the first available private GPG key and unlock it by signing a test string."
   (interactive)
-  (if (password-store-get "usernames/public@github")
-      (message "GPG key is unlocked")
-    (message "Wrong password. GPG key is not unlocked.")))
+  (let* ((context (epg-make-context 'OpenPGP))
+         ;; Filter for secret/private keys only
+         (keys (epg-list-keys context nil t)))
+    (if (null keys)
+        (message "No private GPG keys found.")
+      (let* ((first-key (car keys))
+             (key-id (epg-sub-key-id (car (epg-key-sub-key-list first-key)))))
+        (condition-case err
+            (progn
+              ;; Attempt to sign a dummy string to trigger the pinentry/unlock
+              (epg-sign-string context "unlock-test" 'detach)
+              (message "Successfully unlocked key: %s" key-id))
+          (error
+           (message "Failed to unlock key %s: %s" key-id (error-message-string err))))))))
 
-(keymap-global-set "C-c C-g" 'ff/unlock-key)
+(keymap-global-set "C-c C-g" 'ff/unlock-first-gpg-key)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                 GUI                 ;
