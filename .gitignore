@@ -193,9 +193,7 @@ flycheck_*
 
 ### GNUPG ###
 /.gnupg/*
-!/.gnupg/gpg.conf
 !/.gnupg/gpg-agent.conf
-
 
 ### Docker ###
 /.docker/config.json
