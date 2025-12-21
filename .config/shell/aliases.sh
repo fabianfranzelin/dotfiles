@@ -86,7 +86,8 @@ alias emacs_start="efs"
 alias emacs_restart="edr"
 alias ff='find_file'
 
-# unlock gpg key
-alias unlock_key="pass usernames/public@github > /dev/null"
+# unlock gpg key: note, that pinentry-curses does not work with every
+# terminal. So I enforce here one that is actually supported
+alias unlock_key="TERM=xterm-256color pass usernames/public@github > /dev/null"
 alias u="unlock_key"
 alias kill_gpg_agent="gpgconf --kill gpg-agent"
