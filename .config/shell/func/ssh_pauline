@@ -1,5 +1,12 @@
 #!/usr/bin/env sh
 
 ssh_pauline() {
-    sshpass -p "$(pass passwords/frf2lr@pauline)" ssh frf2lr@pauline -t 'unlock_key; emacsclient -c -a emacs; exec ${SHELL}'
+    (
+        # 1. Fetch password from pass
+        PASS_VAL=$(pass passwords/frf2lr@pauline)
+
+        # 2. Execute SSH with tty allocation
+        sshpass -p "${PASS_VAL}" ssh -t frf2lr@pauline \
+            "unlock_key; emacsclient -nw -a emacs; exec \$SHELL -l"
+    )
 }
