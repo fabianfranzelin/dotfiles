@@ -2,11 +2,6 @@
 
 ssh_pauline() {
     (
-        # 1. Fetch password from pass
-        PASS_VAL=$(pass passwords/frf2lr@pauline)
-
-        # 2. Execute SSH with tty allocation
-        sshpass -p "${PASS_VAL}" ssh -t frf2lr@pauline \
-            "unlock_key; emacsclient -nw -a emacs; exec \$SHELL -l"
+        sshpass -p "$(pass passwords/frf2lr@pauline)" ssh -t frf2lr@pauline "emacsclient -nw -a emacs; exec \$SHELL -l"
     )
 }
