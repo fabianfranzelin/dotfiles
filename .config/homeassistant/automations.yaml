@@ -3,17 +3,17 @@
   description: Power cycle multimedia station
   triggers:
   - at: 00:00:00
-    id: 'off'
+    id: midnight
     trigger: time
   - at: 07:00:00
-    id: 'on'
+    id: morning
     trigger: time
   conditions: []
   actions:
   - choose:
     - conditions:
       - condition: trigger
-        id: 'off'
+        id: midnight
       sequence:
       - type: turn_off
         device_id: d145863eab5f2012733d31ca4ed7ba55
@@ -21,7 +21,8 @@
         domain: switch
     - conditions:
       - condition: trigger
-        id: 'on'
+        id:
+        - morning
       sequence:
       - type: turn_on
         device_id: d145863eab5f2012733d31ca4ed7ba55
