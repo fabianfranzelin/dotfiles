@@ -8,7 +8,6 @@ install_apt_packages() {
         locate \
         apt-transport-https \
         python3-pyqt5 \
-        zsh \
         direnv \
         openjdk-17-jdk \
         zip \
