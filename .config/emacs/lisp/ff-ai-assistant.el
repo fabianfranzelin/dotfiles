@@ -23,11 +23,11 @@
   (add-hook 'gptel-post-stream 'gptel-auto-scroll)
   ;; move cursor to next heading when response is posted
   (add-hook 'gptel-post-response-functions 'gptel-end-of-response)
-  ;; make copilot the default backend for gptel when on ABT C-002NY
-  (if (string= (system-name) "ABT-C-002NY")
-      (setq gptel-model 'claude-sonnet-4
-            gptel-backend (gptel-make-gh-copilot "Copilot"))
-    ;; otherwise use gemini
+  ;; make copilot the default backend for gptel
+  (setq gptel-model 'gpt-5-mini
+        gptel-backend (gptel-make-gh-copilot "Copilot"))
+  ;; disable Femini for now
+  (when nil
     (setq gptel-backend (gptel-make-gemini "Gemini"
                           :key #'ff/get-gemini-token
                           :stream t)))
