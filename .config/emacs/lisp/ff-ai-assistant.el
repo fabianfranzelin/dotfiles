@@ -5,16 +5,19 @@
 
 ;;; Code:
 
+(defun ff/get-openai-token ()
+  "Load and return the OpenAI token."
+  (password-store-get "tokens/fabian.franzelin@openAI.com"))
+(defun ff/get-gemini-token ()
+  "Load and return the Gemini token."
+  (password-store-get "tokens/fabian.franzelin@gemini"))
+(defun ff/get-claude-token ()
+  "Load and return the Gemini token."
+  (password-store-get "tokens/fabian.franzelin@claude"))
+
 ;; ChaGPT
 (use-package gptel
   :straight (:host github :repo "karthink/gptel")
-  :preface
-  (defun ff/get-openai-token ()
-    "Load and return the OpenAI token."
-    (password-store-get "tokens/fabian.franzelin@openAI.com"))
-  (defun ff/get-gemini-token ()
-    "Load and return the Gemini token."
-    (password-store-get "tokens/fabian.franzelin@gemini"))
   :custom
   (gptel-default-mode 'org-mode)
   (gptel-model 'gemini-2.0-flash)
@@ -62,6 +65,17 @@
 
   :bind (:map copilot-completion-map
               ("C-e" . copilot-accept-completion)))
+
+(use-package agent-shell
+  :ensure-system-package
+  ;; Add agent installation configs here
+  ((claude . "npm install -g @anthropic-ai/claude-code")
+   (claude-acp . "npm install -g @zed-industries/claude-code-acp")))
+
+;; (setq agent-shell-anthropic-claude-environment
+;;       (agent-shell-make-environment-variables
+;;        "ANTHROPIC_API_KEY" (ff/get-claude-token)))
+
 
 (provide 'ff-ai-assistant)
 
