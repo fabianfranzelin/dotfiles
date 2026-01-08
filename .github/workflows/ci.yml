@@ -34,18 +34,18 @@ jobs:
       - name: Install NPM
         run: |
           ./configure --install-npm --skip-stow
-      - name: Install ZSH
-        run: |
-          ./configure --install-zsh --skip-stow
-      - name: Install docker
-        run: |
-          ./configure --install-docker --skip-stow
-      - name: Install qtile
-        run: |
-          ./configure --install-qtile --skip-stow
-      - name: Install nyxt
-        run: |
-          ./configure --install-nyxt --skip-stow
+      # - name: Install ZSH
+      #   run: |
+      #     ./configure --install-zsh --skip-stow
+      # - name: Install docker
+      #   run: |
+      #     ./configure --install-docker --skip-stow
+      # - name: Install qtile
+      #   run: |
+      #     ./configure --install-qtile --skip-stow
+      # - name: Install nyxt
+      #   run: |
+      #     ./configure --install-nyxt --skip-stow
       - name: Install Emacs
         run: |
           ./configure --install-emacs --skip-stow
