@@ -66,11 +66,11 @@
   :bind (:map copilot-completion-map
               ("C-e" . copilot-accept-completion)))
 
-(use-package agent-shell
-  :ensure-system-package
-  ;; Add agent installation configs here
-  ((claude . "npm install -g @anthropic-ai/claude-code")
-   (claude-acp . "npm install -g @zed-industries/claude-code-acp")))
+;; (use-package agent-shell
+;;   :ensure-system-package
+;;   ;; Add agent installation configs here
+;;   ((claude . "npm install -g @anthropic-ai/claude-code")
+;;    (claude-acp . "npm install -g @zed-industries/claude-code-acp")))
 
 ;; (setq agent-shell-anthropic-claude-environment
 ;;       (agent-shell-make-environment-variables
