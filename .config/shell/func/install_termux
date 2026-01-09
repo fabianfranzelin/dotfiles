@@ -129,8 +129,10 @@ alias g='git'
 alias unlock_key='pass usernames/public@github > /dev/null'
 alias u='unlock_key'
 
-alias pa='sshpass -p \"$(pass passwords/frf2lr@pauline)\" ssh frf2lr@pauline'
-alias p='sshpass -p \"$(pass passwords/frf2lr@pauline)\" ssh -t frf2lr@pauline \"emacsclient -nw -a emacs; exec \$SHELL -l\"'
+alias spa='sshpass -p \"$(pass passwords/frf2lr@pauline)\" ssh frf2lr@pauline'
+alias sp='sshpass -p \"$(pass passwords/frf2lr@pauline)\" ssh -t frf2lr@pauline \"emacsclient -nw -a emacs; exec \$SHELL -l\"'
+alias pa='sshpass -p \"$(pass passwords/frf2lr@pauline)\" mosh frf2lr@pauline'
+alias p='sshpass -p \"$(pass passwords/frf2lr@pauline)\" mosh frf2lr@pauline -- sh -c \"emacsclient -nw -a emacs; exec \$SHELL -l\"'
     " | tee "${BASHRC}"
     ###########################################################################
     #                                   ssh                                  #
