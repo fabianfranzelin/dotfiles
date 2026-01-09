@@ -26,7 +26,8 @@ install_termux()
         sshpass \
         wget \
         termux-api \
-        jq
+        jq \
+        mosh
 
     LOCAL_BIN="${HOME}/.local/bin"
     mkdir -p "${LOCAL_BIN}"
