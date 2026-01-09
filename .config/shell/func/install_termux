@@ -148,7 +148,7 @@ Host *
      ControlPersist	no
      ServerAliveInterval 5
 
-Match host pauline exec \"ping -c 1 -t 1 192.168.178.48\"
+Match host pauline exec \"ping -c 1 -W 1 192.168.178.48\"
      Hostname 192.168.178.48
      Port 22
      ForwardAgent yes
