@@ -85,13 +85,13 @@ allow-emacs-pinentry
 
     BASHRC="${HOME}/.bashrc"
     echo "
-export PASSWORD_STORE='${HOME}/.password-store'
+export PASSWORD_STORE='\${HOME}/.password-store'
 
-alias e='emacs -nw --init-directory=\"${HOME}/workspace/dotfiles/.config/minimal-emacs\"'
-alias en='emacs -nw --init-directory=\"${HOME}/workspace/dotfiles/.config/native-emacs\"'
-alias dot='cd ${HOME}/workspace/dotfiles/'
-alias pas='cd ${HOME}/.password-store/'
-alias org='cd ${HOME}/workspace/org'
+alias e='emacs -nw --init-directory=\"\${HOME}/workspace/dotfiles/.config/minimal-emacs\"'
+alias en='emacs -nw --init-directory=\"\${HOME}/workspace/dotfiles/.config/native-emacs\"'
+alias dot='cd \${HOME}/workspace/dotfiles/'
+alias pas='cd \${HOME}/.password-store/'
+alias org='cd \${HOME}/workspace/org'
 
 alias cp='cp -i -P'
 alias mv='mv -i'
