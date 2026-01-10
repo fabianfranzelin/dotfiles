@@ -60,7 +60,7 @@ jobs:
           echo "------------------------------------------------"
           emacs --version
           echo "------------------------------------------------"
-          printf "%s\n%s\n%s\n" "(add-to-list 'load-path \"~/.config/native-emacs\")" "(require 'early-init)" "(require 'init)" | tee "test-native.el"
+          printf "%s\n%s\n%s\n" "(add-to-list 'load-path \"~/.config/native-emacs\")" "(require 'init)" | tee "test-native.el"
           emacs --script "test-native.el"
           test $? -eq 0 || exit 1
       - name: Run Emacs (minimal)
