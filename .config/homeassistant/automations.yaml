@@ -172,7 +172,7 @@
           device_id: b0c54078707a81ed49fa6704ff58e0b2
           area_id: familienbad
         data:
-          temperature: 20
+          temperature: 23
           hvac_mode: heat
         action: climate.set_temperature
     - conditions:
