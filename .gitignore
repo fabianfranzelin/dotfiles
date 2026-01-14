@@ -170,6 +170,7 @@ flycheck_*
 /.config/emacs/straight/
 /.config/emacs/var/
 /.config/emacs/projects
+/.config/emacs/.org-id-locations
 /.config/minimal-emacs/elpa/
 /.config/native-emacs/places
 
@@ -237,4 +238,3 @@ flycheck_*
 
 ### UV ###
 /.config/uv/uv-receipt.json
-
