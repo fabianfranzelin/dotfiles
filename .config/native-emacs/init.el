@@ -216,7 +216,7 @@ DIR: directory"
 (define-key minibuffer-local-map (kbd "<tab>") 'icomplete-fido-ret)
 (define-key minibuffer-local-map (kbd "C-a") (lambda() (interactive) (ff/minibuffer-move-to-dir "/")))
 (define-key minibuffer-local-map (kbd "C-o") (lambda() (interactive) (ff/minibuffer-move-to-dir "~/")))
-(define-key minibuffer-local-map (kbd "C-l") 'ff/minibuffer-backward-kill)g
+(define-key minibuffer-local-map (kbd "C-l") 'ff/minibuffer-backward-kill)
 
 ;; -------------------------------------------------------------------
 (use-package dired
