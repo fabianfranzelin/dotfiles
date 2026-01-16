@@ -173,6 +173,8 @@ flycheck_*
 /.config/emacs/.org-id-locations
 /.config/minimal-emacs/elpa/
 /.config/native-emacs/places
+/.config/native-emacs/eln-cache/
+/.config/native-emacs/projects
 
 ### ZSH ###
 /.config/zsh/.zcompdump*
