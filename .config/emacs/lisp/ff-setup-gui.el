@@ -131,11 +131,10 @@ FUN: function to be called on the entry's path"
   (enlight-content
    (concat
     (grid-make-box `(
-                     :align center
                      :content ,ff/enlight-emacs
-                     :width 100))
-    (grid-make-box `(
                      :align center
+                     :width 80))
+    (grid-make-box `(
                      :content ,(concat
                                 "\n\n\n"
                                 (enlight-menu
@@ -154,7 +153,8 @@ FUN: function to be called on the entry's path"
                                        ("Workspace" "~/workspace" "w")
                                        ("Downloads" "~/Downloads" "D"))
                                      #'dired))))
-                     :width 100)))))
+                     :align center
+                     :width 80)))))
 
 ;; -------------------------------------------------------------------
 ;; Doom Color themes
