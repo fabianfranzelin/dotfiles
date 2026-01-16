@@ -14,6 +14,9 @@
 (defun ff/get-claude-token ()
   "Load and return the Gemini token."
   (password-store-get "tokens/fabian.franzelin@claude"))
+(defun ff/get-devmate-token ()
+  "Load and return the Gemini token."
+  (password-store-get "tokens/frf2lr@devmate.bosch.com"))
 
 ;; ChaGPT
 (use-package gptel
@@ -47,6 +50,7 @@
   (emacs-lisp-mode . copilot-mode)
   (markdown-mode . copilot-mode)
   (rst-mode . copilot-mode)
+  (bazel-mode . copilot-mode)
   :custom
   (copilot-max-char 100000000)
   :config
@@ -63,19 +67,13 @@
   (setq ff/rst-indent-offset 2)
   (setf (alist-get 'rst-mode copilot-indentation-alist) '(ff/rst-indent-offset))
 
+  (setq ff/bazel-indent-offset 4)
+  (setf (alist-get 'bazel-mode copilot-indentation-alist) '(ff/bazel-indent-offset))
+
   :bind (:map copilot-completion-map
               ("C-e" . copilot-accept-completion)))
 
-;; (use-package agent-shell
-;;   :ensure-system-package
-;;   ;; Add agent installation configs here
-;;   ((claude . "npm install -g @anthropic-ai/claude-code")
-;;    (claude-acp . "npm install -g @zed-industries/claude-code-acp")))
-
-;; (setq agent-shell-anthropic-claude-environment
-;;       (agent-shell-make-environment-variables
-;;        "ANTHROPIC_API_KEY" (ff/get-claude-token)))
-
+;; (use-package agent-shell)
 
 (provide 'ff-ai-assistant)
 
