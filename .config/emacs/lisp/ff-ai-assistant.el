@@ -73,7 +73,8 @@
   :bind (:map copilot-completion-map
               ("C-e" . copilot-accept-completion)))
 
-;; (use-package agent-shell)
+(use-package agent-shell
+  :disabled)
 
 (provide 'ff-ai-assistant)
 

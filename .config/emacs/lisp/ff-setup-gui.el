@@ -59,6 +59,8 @@
 (use-package nerd-icons-completion
   :if (display-graphic-p)
   :after marginalia
+  :autoload
+  (nerd-icons-completion-mode nerd-icons-completion-marginalia-setup)
   :config
   (nerd-icons-completion-mode t)
   (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
@@ -66,6 +68,7 @@
 (use-package nerd-icons-corfu
   :if (display-graphic-p)
   :after corfu
+  :autoload nerd-icons-corfu-formatter
   :config
   (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 
@@ -262,6 +265,7 @@ FUN: function to be called on the entry's path"
 (use-package kind-icon
   :if (display-graphic-p)
   :after corfu
+  :autoload kind-icon-margin-formatter
   :custom
   (kind-icon-default-face 'corfu-default) ; to compute blended backgrounds correctly
   ;; use nerd-icons
