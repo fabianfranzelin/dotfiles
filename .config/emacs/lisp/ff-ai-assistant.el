@@ -11,12 +11,6 @@
 (defun ff/get-gemini-token ()
   "Load and return the Gemini token."
   (password-store-get "tokens/fabian.franzelin@gemini"))
-(defun ff/get-claude-token ()
-  "Load and return the Gemini token."
-  (password-store-get "tokens/fabian.franzelin@claude"))
-(defun ff/get-devmate-token ()
-  "Load and return the Gemini token."
-  (password-store-get "tokens/frf2lr@devmate.bosch.com"))
 
 ;; ChaGPT
 (use-package gptel
@@ -74,8 +68,14 @@
               ("C-e" . copilot-accept-completion)))
 
 (use-package agent-shell
-  :disabled)
-
+  :ensure-system-package
+  ;; Add agent installation configs here
+  ((opencode . "npm i -g opencode-ai"))
+  :config
+  ;; OpenCode configuration
+  (setq agent-shell-opencode-authentication
+        `(agent-shell-opencode-make-authentication
+          :api-key (lambda () (password-store-get "tokens/fabian.franzelin@opencode")))))
 (provide 'ff-ai-assistant)
 
 ;;; ff-ai-assistant.el ends here
