@@ -90,7 +90,7 @@
   alias: Familienbad - Heizkörper
   description: Sets heating to 22°C or Off based on a weekday/weekend schedule.
   triggers:
-  - at: 06:00:00
+  - at: 05:45:00
     id: weekday_morning_on
     trigger: time
   - at: 08:00:00
