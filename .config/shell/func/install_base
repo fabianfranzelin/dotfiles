@@ -63,7 +63,8 @@ install_apt_packages() {
         locales-all \
         bluez \
         blueman \
-        mosh
+        mosh \
+        protobuf-compiler
 
     # install watchdog for raspi reset
     sudo apt-get install -y watchdog || true
