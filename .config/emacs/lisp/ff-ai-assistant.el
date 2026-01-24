@@ -75,7 +75,7 @@
   ;; OpenCode configuration
   (setq agent-shell-opencode-authentication
         `(agent-shell-opencode-make-authentication
-          :api-key (lambda () (password-store-get "tokens/fabian.franzelin@opencode")))))
+          :api-key (lambda () (password-store-get "tokens/fabian.franzelin@copilot.opencode")))))
 (provide 'ff-ai-assistant)
 
 ;;; ff-ai-assistant.el ends here
