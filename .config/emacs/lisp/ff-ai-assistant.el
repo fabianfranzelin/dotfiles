@@ -70,12 +70,7 @@
 (use-package agent-shell
   :ensure-system-package
   ;; Add agent installation configs here
-  ((opencode . "npm i -g opencode-ai"))
-  :config
-  ;; OpenCode configuration
-  (setq agent-shell-opencode-authentication
-        `(agent-shell-opencode-make-authentication
-          :api-key (lambda () (password-store-get "tokens/fabian.franzelin@copilot.opencode")))))
+  ((opencode . "npm i -g opencode-ai")))
 (provide 'ff-ai-assistant)
 
 ;;; ff-ai-assistant.el ends here

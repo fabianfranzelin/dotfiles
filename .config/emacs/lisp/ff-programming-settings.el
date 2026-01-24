@@ -123,6 +123,7 @@ FORCE: force update of grammars"
                (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
                (yaml "https://github.com/ikatyang/tree-sitter-yaml")
                (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")
+               (rst "https://github.com/stsewd/tree-sitter-rst")
                ))
 
       (add-to-list 'treesit-language-source-alist grammar)
