@@ -2,10 +2,16 @@
 
 install_nyxt()
 {
+    SYSTEM_ARCH=$(dpkg --print-architecture)
+    if [ "$SYSTEM_ARCH" != "amd64" ]; then
+        echo "Skipping: system architecture is $SYSTEM_ARCH, not amd64."
+        return 0
+    fi
     (
         echo -e "${__COLOR_INFO}INFO: Installing common lisp from package repository${__COLOR_RESET}"
         sudo apt-get install -y \
-            sbcl
+            sbcl \
+            libfuse2
 
         # Download latest sbcl
         # TMP_SBCL_SRC=$(mktemp -d)
@@ -51,7 +57,7 @@ install_nyxt()
         mkdir -p "${TMP_NYXT_SRC}"
         cd "${TMP_NYXT_SRC}" || exit 1
         NYXT_VERSION="4.0.0"
-        NYXT_SRC_FILE_NAME="nyxt-${NYXT_VERSION}-source-with-submodules.tar.xz"
+        NYXT_SRC_FILE_NAME="Linux-Nyxt-x86_64.tar.gz"
 
         echo -e "${__COLOR_INFO}INFO: Downloading nyxt v${NYXT_VERSION}${__COLOR_RESET}"
         wget "https://github.com/atlas-engineer/nyxt/releases/download/${NYXT_VERSION}/${NYXT_SRC_FILE_NAME}"

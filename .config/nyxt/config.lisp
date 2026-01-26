@@ -29,8 +29,6 @@ loads."
      :depends-on (,system) ,@(when file
                                `(:components (,file)))))
 
-(defextsystem :nx-search-engines "search-engines")
-
 (define-configuration :prompt-buffer
   "Make the attribute widths adjust to the content in them.
 
