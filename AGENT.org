@@ -1,0 +1,187 @@
+#+TITLE: Dotfiles Repository Agent Guide
+#+AUTHOR: Fabian Franzelin
+#+EMAIL: fabian.franzelin@gmail.com
+#+CREATOR: Fabian Franzelin
+#+LANGUAGE: en
+#+OPTIONS: auto-id:t H:4 toc:t num:nil ^:{}
+#+KEYWORDS: dotfiles linux emacs qtile configuration agent
+
+* Repository Overview
+
+This repository contains Fabian Franzelin's comprehensive Linux system configuration that enables consistent computing experiences across multiple machines. The primary deployment mechanism uses GNU Stow with automated installation via =./configure -i=.
+
+Core focus: Personal dotfiles for power users emphasizing keyboard-driven workflows, developer productivity, and cross-machine consistency.
+
+The system configures three main tools: [[https://www.gnu.org/software/emacs/][GNU Emacs]], [[https://zsh.sourceforge.io/][ZSH]], and [[http://docs.qtile.org/en/stable/][Qtile]], along with numerous supporting applications and utilities.
+
+* Core Architecture & Technologies
+
+- *GNU Stow*: Configuration deployment system respecting =.stow-local-ignore= patterns
+- *Bash/Shell Scripting*: Modular installation functions in =.config/shell/func/=
+- *Python*: Qtile window manager configuration and system automation
+- *Org-mode*: Literate configuration and documentation approach
+- *XDG Base Directory Standard*: Configuration organization in =.config/=
+
+The repository uses a modular approach where individual components can be installed or skipped independently through the main =configure= script.
+
+* Configured Applications
+
+** GNU Emacs 30.2
+
+Custom source build with comprehensive configuration:
+
+- *Build Process*: Literate org-mode installation script (=.config/emacs/README.org=)
+- *Tree-sitter Support*: Custom tree-sitter v0.25.8 compilation and integration
+- *Build Features*: Native compilation (libgccjit), ImageMagick, GTK3, modules support, wide-int, XML2, DBUS integration
+- *Optimization*: Native CPU optimization flags (=-O3 -mtune=native -march=native=)
+- *Configuration Structure*: Modular design with feature-specific files (=ff-*.el=) in =lisp/= directory
+- *Core Modules*:
+  - =ff-core=: Base configuration and settings
+  - =ff-vertical-completion=: Completion framework
+  - =ff-project-management=: Project navigation and management
+  - =ff-version-control=: Git integration and tools
+  - =ff-programming-*=: Language-specific configurations (Python, C/C++, etc.)
+  - =ff-ai-assistant=: AI integration and tools
+  - =ff-organize-life=: Org-mode configuration
+  - =ff-write-documents=: Document writing and LaTeX
+- *Package Management*: Straight.el for declarative package management
+- *System Integration*: Installation via =update-alternatives= for global availability
+
+** Qtile
+
+Python-based tiling window manager with custom configuration:
+
+- *Key Configuration*: mod4 (Super) key as primary modifier
+- *Terminal*: Ghostty as default terminal emulator
+- *Browser*: Firefox as default web browser  
+- *Keybindings*: Vim-inspired navigation patterns (hjkl variants)
+- *Configuration File*: =.config/qtile/config.py=
+
+** ZSH
+
+Enhanced shell environment:
+
+- *Framework*: Oh-My-ZSH with extensive plugin ecosystem
+- *Theme*: Powerlevel10k for advanced prompt customization
+- *Custom Functions*: Extensive utility collection in =.config/shell/func/=
+- *Configuration*: Modular setup in =.config/zsh/=
+
+** Git
+
+Version control with workstation-specific configurations:
+
+- *Configuration Pattern*: Base config includes machine-specific files
+- *Workstation Files*: =config.ThinkPad=, =config.ABT-C-002NY=, =config.pauline=, etc.
+- *Features*: LFS support, rebase-based pulls, auto-prune, submodule handling
+
+** Additional Tools
+
+- *VS Code*: Modern editor configuration with extensions and settings
+- *Docker*: Container platform setup with custom utility functions
+- *Home Assistant*: Home automation platform configuration
+- *Nyxt*: Lisp-based web browser setup
+- *Development Tools*: LaTeX, npm packages, base Linux utilities
+
+* Key Directory Structure
+
+#+begin_example
+.config/
+├── emacs/
+│   ├── README.org          # Literate installation instructions
+│   ├── init.el            # Main configuration entry point
+│   └── lisp/ff-*.el       # Modular feature configurations
+├── qtile/
+│   └── config.py          # Python window manager configuration
+├── zsh/                   # ZSH configuration and themes
+├── git/
+│   ├── config             # Base git configuration
+│   ├── config.*           # Workstation-specific includes
+│   └── config.alias       # Git aliases
+├── shell/
+│   └── func/              # Installation and utility functions
+└── vscode/                # VS Code editor configuration
+
+docs/                      # Org-mode documentation (GitHub Pages)
+examples/                  # Test projects for configuration validation
+bootstrap                  # Remote deployment script
+configure                  # Main installation script
+.stow-local-ignore         # Stow deployment patterns
+#+end_example
+
+* Workstation-Specific Configuration System
+
+- Machine-specific includes via hostname-based files (e.g., =config.ThinkPad=, =config.ABT-C-002NY=)
+- Stow ignore patterns prevent sensitive file deployment
+
+The system automatically detects the current machine and includes appropriate configuration files. This allows for personalized settings while maintaining a unified configuration base.
+
+* Common Debugging & Update Workflows
+
+** Configuration Testing
+- Use =examples/= directory for validating configurations
+- Test individual components before full deployment
+- Verify functionality across different environments
+
+** Stow Deployment Issues
+- Check =.stow-local-ignore= patterns for conflict resolution
+- Understand which files are intentionally excluded from deployment
+- Resolve symlink conflicts by examining existing file structures
+
+** Emacs Build Troubleshooting
+- *Tree-sitter Issues*: Verify tree-sitter v0.25.8 compilation and =LD_LIBRARY_PATH= settings
+- *Dependency Resolution*: Ensure all build dependencies are installed (libgccjit, development headers)
+- *Build Flags*: Maintain consistency in optimization and feature flags
+- *Module Loading*: Check modular =ff-*.el= file organization and load paths
+
+** Component-Specific Updates
+- Individual install functions in =.config/shell/func/install_*= allow isolated updates
+- Test changes in isolation before full system deployment
+- Preserve existing customizations during updates
+
+** Installation Debugging
+- Modular approach enables component-specific troubleshooting
+- Check installation logs for specific error patterns
+- Verify system dependencies before configuration deployment
+
+* Critical Warnings & Sensitive Information
+
+** Workstation-Specific Files
+- *NEVER modify* machine-specific configuration files (files matching =config.*= patterns with hostnames)
+- *PRESERVE* existing workstation-specific includes and patterns
+- *AVOID* changes to personal identifiers or machine-specific paths
+
+** Stow Deployment Patterns  
+- *RESPECT* =.stow-local-ignore= patterns when suggesting new files
+- *UNDERSTAND* which files are intentionally excluded (=.org=, =.md=, =docs/=, =examples/=, etc.)
+- *MAINTAIN* existing directory structures and naming conventions
+
+** Build and Configuration Integrity
+- *PRESERVE* Emacs build flags and dependency requirements
+- *MAINTAIN* modular configuration structure in existing applications
+- *RESPECT* established patterns for new tool integrations
+
+* Common Assistant Tasks
+
+Primary focus areas for AI assistance:
+
+** Configuration Updates and Maintenance
+- Safely updating existing application configurations while preserving customizations
+- Adding new tool configurations following established patterns and conventions
+- Maintaining consistency across configuration components
+
+** Debugging Support
+- Troubleshooting Emacs build issues, particularly tree-sitter integration problems
+- Resolving Stow deployment conflicts and understanding ignore patterns
+- Diagnosing installation script failures and dependency issues
+
+** Code Organization
+- Understanding and maintaining the modular Emacs configuration structure
+- Following established naming conventions for new configuration modules
+- Preserving the literate programming approach used throughout the repository
+
+** Documentation Maintenance
+- Maintaining org-mode style documentation and literate configuration
+- Updating installation instructions while preserving the existing format
+- Ensuring consistency between configuration and documentation
+
+The repository represents a sophisticated, battle-tested personal computing environment optimized for keyboard-driven workflows and developer productivity. All assistance should respect the established patterns and preserve the careful balance between automation and customization.
