@@ -11,6 +11,19 @@
   (magit-commit-create '("-m" "feat: update some stuff"))
   (magit-push-current-to-upstream nil))
 
+;; Make sure the main GPG key is unlocked before pulling a git
+;; repository. The git credentials are all taken from the password
+;; store, hence, it the corresponding key needs to be unlocked
+;; beforehand.
+(advice-add 'magit-pull :before-while
+            #'ff/unlock-first-gpg-key)
+(advice-add 'magit-push :before-while
+            #'ff/unlock-first-gpg-key)
+(advice-add 'ff/stage-commit-push-all :before-while
+            #'ff/unlock-first-gpg-key)
+(advice-add 'magit-fetch :before-while
+            #'ff/unlock-first-gpg-key)
+
 (defun ff/vc-browse-remote (&optional current-line)
   "Open the repository's remote URL in the browser.
 If CURRENT-LINE is non-nil, point to the current branch, file, and line.
