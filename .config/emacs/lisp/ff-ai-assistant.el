@@ -26,7 +26,7 @@
   ;; make copilot the default backend for gptel
   (setq gptel-model 'gpt-5-mini
         gptel-backend (gptel-make-gh-copilot "Copilot"))
-  ;; disable Femini for now
+  ;; disable Gemini for now
   (when nil
     (setq gptel-backend (gptel-make-gemini "Gemini"
                           :key #'ff/get-gemini-token
