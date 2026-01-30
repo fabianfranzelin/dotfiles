@@ -216,5 +216,6 @@
   "cmake.showOptionsMovedNotification": false,
   "git.openRepositoryInParentFolders": "always",
   "git.autofetch": true,
-  "githubPullRequests.pullBranch": "never"
+  "githubPullRequests.pullBranch": "never",
+  "github.copilot.nextEditSuggestions.enabled": true
 }
