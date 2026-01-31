@@ -65,7 +65,8 @@ install_apt_packages() {
         blueman \
         mosh \
         protobuf-compiler \
-        pavucontrol
+        pavucontrol \
+        caffeine
 
     # install watchdog for raspi reset
     sudo apt-get install -y watchdog || true
