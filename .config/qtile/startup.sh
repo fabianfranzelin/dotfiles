@@ -20,3 +20,5 @@ fi
 
 # Screenshot app
 flameshot &
+# disable screen off when in power mode
+caffeine-indicator &
