@@ -89,6 +89,7 @@ install_apt_packages() {
 
     # install terminal emulator
     sudo snap install --classic ghostty || true
+    sudo apt-get install ghostty -y || true
 
     # install gtk tools
     if ( __is_linux )
