@@ -15,6 +15,7 @@
     use_custom_command = True
     custom_command = /bin/zsh
     use_system_font = False
+    title_transmit_bg_color = "#1c1f24"
 [layouts]
   [[default]]
     [[[child1]]]
