@@ -67,11 +67,15 @@ install_apt_packages() {
         pavucontrol \
         caffeine
 
+    sudo apt-get install watchdog -y || true
+    # This is required by the ssh config to identify whether pauline
+    # is reachable or not.
+    sudo apt-get install net-tools -y || true
+
     # List of packages with specific versions
     packages=(
         "openjdk-17-jdk"
         "openjdk-25-jdk"
-        "watchdog"
     )
 
     # Iterate over the list and install each package
