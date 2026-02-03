@@ -9,7 +9,6 @@ install_apt_packages() {
         apt-transport-https \
         python3-pyqt5 \
         direnv \
-        openjdk-17-jdk \
         zip \
         curl \
         wget \
@@ -68,8 +67,17 @@ install_apt_packages() {
         pavucontrol \
         caffeine
 
-    # install watchdog for raspi reset
-    sudo apt-get install -y watchdog || true
+    # List of packages with specific versions
+    packages=(
+        "openjdk-17-jdk"
+        "openjdk-25-jdk"
+        "watchdog"
+    )
+
+    # Iterate over the list and install each package
+    for package in "${packages[@]}"; do
+        sudo apt install "$package" -y || true
+    done
 
     if ( __is_wsl )
     then
@@ -87,8 +95,9 @@ install_apt_packages() {
     then
         sudo apt-get install -y \
             vlc \
-            firefox \
             eog
+        sudo apt-get install firefox -y || true
+        sudo apt-get install firefox-esr -y || true
     fi
 
     # install dependencies for vscode
