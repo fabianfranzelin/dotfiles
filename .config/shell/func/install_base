@@ -72,6 +72,9 @@ install_apt_packages() {
     # is reachable or not.
     sudo apt-get install net-tools -y || true
 
+    # Close windows via shortcut for xfce4
+    sudo apt-get install xdotools -y || true
+
     # List of packages with specific versions
     packages=(
         "openjdk-17-jdk"

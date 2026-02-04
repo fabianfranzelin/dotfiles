@@ -69,6 +69,7 @@
       </property>
       <property name="&lt;Shift&gt;&lt;Alt&gt;b" type="string" value="firefox-esr"/>
       <property name="Super_L" type="string" value="xfce4-popup-whiskermenu"/>
+      <property name="&lt;Super&gt;w" type="string" value="xdotool getwindowfocus windowkill"/>
     </property>
   </property>
   <property name="xfwm4" type="empty">
