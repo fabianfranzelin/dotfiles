@@ -12,28 +12,32 @@ configs:
       width: 1920
       height: 1080
   icons:
-    "/":
-      row: 1
+    "/home/frf2lr":
+      row: 0
       col: 0
     "trash:///":
       row: 2
-      col: 0
-    "4828501F28500E76":
-      row: 4
-      col: 0
-      last_seen: 1770149077655305
-    "424CC3BB4CC3A7CD":
-      row: 5
-      col: 0
-      last_seen: 1770149077669021
-    "5E0C5F130C5EE615":
-      row: 3
-      col: 0
-      last_seen: 1770149077640346
-    "/home/frf2lr":
-      row: 0
       col: 0
     "C24CC07F4CC07029":
       row: 6
       col: 0
       last_seen: 1770149077681183
+    "424CC3BB4CC3A7CD":
+      row: 5
+      col: 0
+      last_seen: 1770149077669021
+    "/media/frf2lr/pauline":
+      row: 3
+      col: 0
+      last_seen: 1770590237188976
+    "4828501F28500E76":
+      row: 4
+      col: 0
+      last_seen: 1770149077655305
+    "5E0C5F130C5EE615":
+      row: 3
+      col: 0
+      last_seen: 1770149077640346
+    "/":
+      row: 1
+      col: 0

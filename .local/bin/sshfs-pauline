@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+# shellcheck disable=SC1090
+
+USERNAME="frf2lr"
+HOSTNAME="pauline"
+pass "passwords/${USERNAME}@pauline" | head -n 1 | sshfs -o password_stdin ${USERNAME}@${HOSTNAME}:/ /media/frf2lr/pauline -d
