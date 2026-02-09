@@ -716,17 +716,6 @@ TEXT: title"
         ("C-c +" . (lambda () (interactive) (ff/repeat-command 'zoom-frm-in)))
         ("C-c -" . (lambda () (interactive) (ff/repeat-command 'zoom-frm-out)))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Save kill ring over various sessions
-(require 'savekill)
-(customize-set-variable 'save-kill-file-name
-                        (expand-file-name
-                         "kill-ring.el"
-                         no-littering-etc-directory))
-
-;; save the first 500 entries of the kill ring
-(customize-set-variable 'savekill-max-saved-items 500)
-
 (provide 'ff-core)
 
 ;;; ff-core.el ends here
