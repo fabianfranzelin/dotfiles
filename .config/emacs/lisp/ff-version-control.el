@@ -47,7 +47,7 @@ Otherwise, open the repository's main page."
 	     (format "https://%s/%s" host path))))
       (message "Could not determine repository URL"))))
 
-(global-set-key (kbd "C-x v B") 'ff/vc-browse-remote)
+(global-set-key (kbd "C-x G b") 'ff/vc-browse-remote)
 
 (use-package magit
   :custom
