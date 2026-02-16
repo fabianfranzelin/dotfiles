@@ -7,7 +7,7 @@ then
     IDS="id_rsa id_ed25519"
 fi
 
-if [ "$(hostname)" = "ThinkPad" ] || [ "$(hostname)" = "DESKTOP-E7EFIIN" ] || [ "$(hostname)" = "pauline" ]
+if [ "$(hostname)" = "thinkpad" ] || [ "$(hostname)" = "pauline" ]
 then
     IDS="id_ed25519 github_finances"
 fi
@@ -30,5 +30,5 @@ for id in ${IDS}; do
 pass keys/${id}/password" > "${PASS_SCRIPT}"
     chmod +x "${PASS_SCRIPT}"
     DISPLAY=None SSH_ASKPASS="${PASS_SCRIPT}" ssh-add "${PRIVATE_KEY}" < /dev/null
-    rm -f "${PRIVATE_KEY}"
+    rm -f "${PASS_SCRIPT}"
 done
