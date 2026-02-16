@@ -1,7 +1,17 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # shellcheck disable=SC1090
 
 USERNAME="frf2lr"
 HOSTNAME="pauline"
-pass "passwords/${USERNAME}@pauline" | head -n 1 | sshfs -o password_stdin ${USERNAME}@${HOSTNAME}:/ /media/frf2lr/pauline -d
+
+# List of packages with specific versions
+hard_drives=(
+    "TOSHIBA EXT"
+    "My Passport"
+)
+
+# Iterate over the list and install each package
+for drive in "${hard_drives[@]}"; do
+    sshfs "${USERNAME}@${HOSTNAME}:/media/frf2lr/${drive}" "/media/frf2lr/${drive}" -d &
+done

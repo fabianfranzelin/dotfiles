@@ -241,3 +241,6 @@ flycheck_*
 
 ### UV ###
 /.config/uv/uv-receipt.json
+
+### XFCE ###
+/.config/xfce/desktop
