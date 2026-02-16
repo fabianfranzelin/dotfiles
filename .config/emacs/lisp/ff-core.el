@@ -435,11 +435,12 @@ Example usage: (message (my/tramp-call-process-direct \"your-remote-host.com\" \
    :map global-map
    ("C-x D g" . dwim-shell-commands-kill-gpg-agent)
    ("C-x D p" . dwim-shell-commands-kill-process)
-   ("C-x D s" . ff/dwim-shell-commands-restart-ssh-agent)
-   ("C-x D k" . ff/dwim-shell-commands-set-keyboard-layout))
+   ("C-x D s" . ff/dwim-shell-commands-add-ssh-keys)
+   ("C-x D k" . ff/dwim-shell-commands-set-keyboard-layout)
+   ("C-x D m" . ff/dwim-shell-commands-mount-pauline))
   :config
   (require 'dwim-shell-commands)
-  (defun ff/dwim-shell-commands-restart-ssh-agent ()
+  (defun ff/dwim-shell-commands-add-ssh-keys ()
     "Restart ssh agent and add ssh keys from password store."
     (interactive)
     (dwim-shell-command-on-marked-files
@@ -462,6 +463,14 @@ Example usage: (message (my/tramp-call-process-direct \"your-remote-host.com\" \
      "Launch rebot to convert xml files to html reports."
      "rebot '<<f>>'"
      :utils "rebot"
+     :silent-success t))
+  (defun ff/dwim-shell-commands-mount-pauline ()
+    "Set default keyboard layout."
+    (interactive)
+    (dwim-shell-command-on-marked-files
+     "Mount Pauline's hard drives via sshfs."
+     "sshfs-pauline"
+     :utils "sshfs-pauline"
      :silent-success t)))
 
 ;; -------------------------------------------------------------------

@@ -14,7 +14,6 @@ fi
 
 # Restart ssh agent
 pkill -9 ssh-agent && eval $(ssh-agent -s)
-/usr/bin/gnome-keyring-daemon --start --components=ssh
 
 # Add keys
 for id in ${IDS}; do

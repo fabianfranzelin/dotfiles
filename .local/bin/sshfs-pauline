@@ -13,5 +13,5 @@ hard_drives=(
 
 # Iterate over the list and install each package
 for drive in "${hard_drives[@]}"; do
-    sshfs "${USERNAME}@${HOSTNAME}:/media/frf2lr/${drive}" "/media/frf2lr/${drive}" -d &
+    pass "passwords/${USERNAME}@pauline" | head -n 1 | sshfs -o password_stdin "${USERNAME}@${HOSTNAME}:/media/frf2lr/${drive}" "/media/frf2lr/${drive}" -d &
 done
