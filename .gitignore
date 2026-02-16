@@ -243,4 +243,4 @@ flycheck_*
 /.config/uv/uv-receipt.json
 
 ### XFCE ###
-/.config/xfce/desktop
+/.config/xfce4/desktop/
