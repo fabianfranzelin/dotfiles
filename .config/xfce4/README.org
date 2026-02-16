@@ -1,0 +1,7 @@
+* GNOME Keyring
+
+Disable XFCE's default ssh agent
+
+#+BEGIN_SRC bash :results output :shebang #!/usr/bin/env bash
+xfconf-query --channel xfce4-session --property /startup/ssh-agent/enabled --create --type bool --set false
+#+END_SRC

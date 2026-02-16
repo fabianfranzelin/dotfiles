@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Application
+Name=GNOME Keyring SSH Agent
+Exec=/usr/bin/gnome-keyring-daemon --start --components=ssh
+Comment=Unlock SSH keys on login
