@@ -32,3 +32,9 @@ pass keys/${id}/password" > "${PASS_SCRIPT}"
     DISPLAY=None SSH_ASKPASS="${PASS_SCRIPT}" ssh-add "${PRIVATE_KEY}" < /dev/null
     rm -f "${PASS_SCRIPT}"
 done
+
+# Copy ID to pauline
+if [ "$(hostname)" = "thinkpad" ]
+then
+    ssh-copy-id -f -i id_ed25519 frf2lr@pauline
+fi
