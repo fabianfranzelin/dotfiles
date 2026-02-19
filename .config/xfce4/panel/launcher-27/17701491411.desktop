@@ -8,7 +8,7 @@ GenericName=File Manager
 Keywords[de]=Dateiverwaltung;Explorer;Finder;Browser;Ordner;Verzeichnisse;Verzeichnisse;Partitionen;Laufwerke;Netzwerk;Geräte;Umbenennen;Verschieben;Kopieren;Löschen;Berechtigungen;Home;Papierkorb;
 Keywords=file manager;explorer;finder;browser;folders;directory;directories;partitions;drives;network;devices;rename;move;copy;delete;permissions;home;trash;
 Exec=thunar %U
-Icon=org.xfce.thunar
+Icon=org.xfce.filemanager
 Terminal=false
 StartupNotify=true
 Type=Application
@@ -16,6 +16,7 @@ Categories=System;Core;GTK;FileTools;FileManager;
 MimeType=inode/directory;
 Actions=open-home;open-computer;open-trash;
 X-XFCE-Source=file:///usr/share/applications/thunar.desktop
+Path=
 
 [Desktop Action open-home]
 Name[de]=Persönlicher Ordner

@@ -17,8 +17,6 @@
         <value type="int" value="20"/>
         <value type="int" value="24"/>
         <value type="int" value="27"/>
-        <value type="int" value="10"/>
-        <value type="int" value="11"/>
         <value type="int" value="2"/>
         <value type="int" value="3"/>
         <value type="int" value="5"/>
@@ -48,6 +46,7 @@
     <property name="plugin-6" type="string" value="systray">
       <property name="square-icons" type="bool" value="true"/>
       <property name="known-legacy-items" type="array">
+        <value type="string" value="funknetzwerkverbindung mit »pauline« ist aktiv: pauline (90%)"/>
         <value type="string" value="funknetzwerkverbindung mit »pauline« ist aktiv: pauline (50%)"/>
         <value type="string" value="funknetzwerkverbindung mit »pauline« ist aktiv: pauline (52%)"/>
         <value type="string" value="funknetzwerkverbindung mit »pauline« ist aktiv: pauline (58%)"/>
@@ -107,15 +106,5 @@
       <property name="known-players" type="string" value="firefox-esr"/>
     </property>
     <property name="plugin-4" type="string" value="battery"/>
-    <property name="plugin-10" type="string" value="launcher">
-      <property name="items" type="array">
-        <value type="string" value="17701551011.desktop"/>
-      </property>
-    </property>
-    <property name="plugin-11" type="string" value="launcher">
-      <property name="items" type="array">
-        <value type="string" value="17701583613.desktop"/>
-      </property>
-    </property>
   </property>
 </channel>
