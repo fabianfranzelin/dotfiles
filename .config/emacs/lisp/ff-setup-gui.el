@@ -242,7 +242,8 @@ FUN: function to be called on the entry's path"
                   compilation-mode-hook
                   pdf-view-mode-hook
                   enlight-mode-hook
-                  agent-shell-mode))
+                  agent-shell-mode-hook
+                  help-mode-hook))
     (add-hook mode (lambda () (display-line-numbers-mode 0)))))
 
 ;; Don't use continuation character.
