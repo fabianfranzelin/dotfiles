@@ -70,6 +70,7 @@
         <property name="startup-notify" type="bool" value="true"/>
       </property>
       <property name="&lt;Super&gt;s" type="string" value="xfce4-session-logout"/>
+      <property name="&lt;Shift&gt;&lt;Super&gt;b" type="string" value="firefox-esr"/>
     </property>
   </property>
   <property name="xfwm4" type="empty">
