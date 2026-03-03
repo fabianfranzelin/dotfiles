@@ -163,6 +163,7 @@ groups = [
         layout="monadtall",
         matches=[Match(title=re.compile(r"^(FE\-V\-013VV_S|Citrix Workspace)$"))],
     ),
+    Group("Other", layout="monadtall"),
 ]
 
 # Allow MODKEY+[0 through 9] to bind to groups, see
