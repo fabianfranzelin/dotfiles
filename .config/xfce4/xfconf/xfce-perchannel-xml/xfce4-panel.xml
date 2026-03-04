@@ -46,6 +46,8 @@
     <property name="plugin-6" type="string" value="systray">
       <property name="square-icons" type="bool" value="true"/>
       <property name="known-legacy-items" type="array">
+        <value type="string" value="funknetzwerkverbindung mit »pauline« ist aktiv: pauline (75%)"/>
+        <value type="string" value="funknetzwerkverbindung mit »pauline« ist aktiv: pauline (100%)"/>
         <value type="string" value="funknetzwerkverbindung mit »pauline« ist aktiv: pauline (72%)"/>
         <value type="string" value="funknetzwerkverbindung mit »pauline« ist aktiv: pauline (82%)"/>
         <value type="string" value="funknetzwerkverbindung mit »pauline« ist aktiv: pauline (71%)"/>
@@ -88,6 +90,7 @@
     <property name="plugin-20" type="string" value="showdesktop"/>
     <property name="plugin-21" type="string" value="whiskermenu">
       <property name="recent" type="array">
+        <value type="string" value="xfce4-power-manager-settings.desktop"/>
         <value type="string" value="xfce-keyboard-settings.desktop"/>
         <value type="string" value="xfce-settings-manager.desktop"/>
         <value type="string" value="synaptic.desktop"/>
