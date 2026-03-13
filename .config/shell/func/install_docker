@@ -10,19 +10,14 @@ install_docker()
 
     # Install docker-credential-pass
     SYSTEM_ARCH=$(dpkg --print-architecture)
-    DOCKER_CRED_PASS_VER="0.9.3"
+    DOCKER_CRED_PASS_VER="0.9.5"
     DOCKER_CRED_PASS_BIN="docker-credential-pass-v${DOCKER_CRED_PASS_VER}.linux-${SYSTEM_ARCH}"
     DOCKER_CRED_PASS_URL="https://github.com/docker/docker-credential-helpers/releases/download/v${DOCKER_CRED_PASS_VER}/${DOCKER_CRED_PASS_BIN}"
     DOCKER_CRED_PASS_PATH="${HOME}/.local/bin/docker-credential-pass"
-    if [ ! -f "${DOCKER_CRED_PASS_PATH}" ]
-    then
-        (
-            cd "/tmp" || exit 1
-            wget "${DOCKER_CRED_PASS_URL}"
-            chmod 755 "${DOCKER_CRED_PASS_BIN}"
-            mv -f "${DOCKER_CRED_PASS_BIN}" "${DOCKER_CRED_PASS_PATH}"
-        )
-    fi
+    cd "/tmp" || exit 1
+    wget "${DOCKER_CRED_PASS_URL}"
+    chmod 755 "${DOCKER_CRED_PASS_BIN}"
+    mv -f "${DOCKER_CRED_PASS_BIN}" "${DOCKER_CRED_PASS_PATH}"
 
     #------------------------------------------------------------------------------#
     # Hack: setup workstation specific config for docker using extra symlink

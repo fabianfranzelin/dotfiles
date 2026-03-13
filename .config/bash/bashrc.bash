@@ -64,3 +64,5 @@ eval "$(direnv hook "$(command -v bash)")" > /dev/null
 
 # enable autocompletion for uv
 eval "$(uv --generate-shell-completion bash)"
+
+. "$HOME/.local/share/../bin/env"
