@@ -1,0 +1,65 @@
+[user]
+    name = " Franzelin Fabian (XC-AS/ESS4)"
+    email = fabian.franzelin@de.bosch.com
+[credential]
+    # ----------------------------------
+    helper = cache --timeout=8000000
+    useHttpPath = true
+    # ----------------------------------
+    # For installation, run:
+    # sudo apt-get install libsecret-1-0 libsecret-1-dev
+    # cd /usr/share/doc/git/contrib/credential/libsecret
+    # sudo make
+    # helper = /usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret
+    # ----------------------------------
+    # For WSL use
+    # useHttpPath = true
+    # helper = /mnt/c/Program\\ Files/Git/mingw64/libexec/git-core/git-credential-wincred.exe
+[credential "https://github.com/PACE-INT/pace.git"]
+    helper = !pass keys/$(pass usernames/pace@github)@github.com
+[credential "https://github.com/PACE-INT/aos.git"]
+    helper = !pass keys/$(pass usernames/pace@github)@github.com
+[credential "https://github.com/PACE-INT/credible.git"]
+    helper = !pass keys/$(pass usernames/pace@github)@github.com
+[credential "https://github.com/PACE-INT/aos-mt-dev-configs.git"]
+    helper = !pass keys/$(pass usernames/pace@github)@github.com
+[credential "https://github.com/PACE-INT/aos-review-test.git"]
+    helper = !pass keys/$(pass usernames/pace@github)@github.com
+[credential "https://github.com/PACE-INT/aos_safety_arch.git"]
+    helper = !pass keys/$(pass usernames/pace@github)@github.com
+[credential "https://github.com/fabian-franzelin_pace/ros_vision.git"]
+    helper = !pass keys/$(pass usernames/pace@github)@github.com
+[credential "https://github.com/fabian-franzelin_pace/aos_vision.git"]
+    helper = !pass keys/$(pass usernames/pace@github)@github.com
+[credential "https://github.com/fabian-franzelin_pace/whitelist_tracker.git"]
+    helper = !pass keys/$(pass usernames/pace@github)@github.com
+[credential "https://github.com/fabian-franzelin_pace/org.git"]
+    helper = !pass keys/$(pass usernames/pace@github)@github.com
+[credential "https://github.com/fabian-franzelin_pace/py_sphinx_docs.git"]
+    helper = !pass keys/$(pass usernames/pace@github)@github.com
+[credential "https://github.com/fabian-franzelin_pace/py_ea_export.git"]
+    helper = !pass keys/$(pass usernames/pace@github)@github.com
+[credential "https://github.com/fabian-franzelin_pace/org_notes.git"]
+    helper = !pass keys/$(pass usernames/pace@github)@github.com
+[credential "https://github.com/fabian-franzelin_pace/emacs_notes.git"]
+    helper = !pass keys/$(pass usernames/pace@github)@github.com
+[credential "https://github.com"]
+    helper = !pass keys/$(pass usernames/public@github)@github.com
+[credential "https://github.boschdevcloud.com"]
+    helper = !pass keys/$(pass usernames/bosch)@github.boschdevcloud.com
+[credential "https://sourcecode01.de.bosch.com"]
+    helper = !pass keys/$(pass usernames/bosch)@sourcecode01.de.bosch.com
+[credential "https://sourcecode.socialcoding.bosch.com"]
+    helper = !pass keys/$(pass usernames/bosch)@sourcecode.socialcoding.bosch.com
+[http "http://*.bosch.com/"]
+    proxy =
+[http "https://*.bosch.com/"]
+    proxy =
+[http "http://*.*.bosch.com/"]
+    proxy =
+[http "https://*.*.bosch.com/"]
+    proxy =
+[http "http://*.*.*.bosch.com/"]
+    proxy =
+[http "https://*.*.*.bosch.com/"]
+    proxy =
