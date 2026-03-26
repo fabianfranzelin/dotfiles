@@ -4,6 +4,7 @@
 \.files
 .mypy_cache
 .pytest_cache
+.agent-shell
 docs
 archive
 mail
