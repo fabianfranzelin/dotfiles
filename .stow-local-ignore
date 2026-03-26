@@ -5,6 +5,7 @@
 .mypy_cache
 .pytest_cache
 .agent-shell
+.ruff_cache
 docs
 archive
 mail
