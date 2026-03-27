@@ -12,6 +12,7 @@
     prompt-background:           #46D9FF;
     prompt-foreground:           #282c34;
     prompt-padding:              4px;
+    prompt-font:                "JetBrains Mono 13";
     alternate-normal-background: #282c34;
     alternate-normal-foreground: @text-color;
     selected-normal-background:  #a9a1e1;
