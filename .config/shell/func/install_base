@@ -100,8 +100,11 @@ install_apt_packages() {
         sudo apt-get install -y \
             vlc \
             eog
-        sudo apt-get install firefox -y || true
-        sudo apt-get install firefox-esr -y || true
+        sudo apt-get install firefox -y || {
+            # Only install firefox-esr when the latest greatest is not
+            # available
+            sudo apt-get install firefox-esr -y || true
+        }
     fi
 
     # install dependencies for vscode
