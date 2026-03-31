@@ -89,5 +89,3 @@ PASSWORD_STORE_DIR_RELATIVE="$(echo "${PASSWORD_STORE_DIR}" | sed "s|^${HOME}/||
 # Load specific settings per workstation
 __HOST_SETTINGS="${__SHELL_LIB}/workstations/$(hostname).sh"
 [ -f "${__HOST_SETTINGS}" ] && . "${__HOST_SETTINGS}"
-
-. "$HOME/.local/share/../bin/env"
