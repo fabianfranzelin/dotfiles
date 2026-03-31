@@ -78,5 +78,3 @@ eval "$(direnv hook "$(command -v zsh)")" > /dev/null
 
 # enable uv autocompletion
 eval "$(uv --generate-shell-completion zsh)"
-
-. "$HOME/.local/share/../bin/env"
