@@ -200,6 +200,7 @@ flycheck_*
 !/.gnupg/gpg-agent.conf
 !/.gnupg/gpg.conf.default
 !/.gnupg/gpg.conf.ABT-C-002NY
+!/.gnupg/gpg.conf.FEWI-C-0007J
 
 ### Docker ###
 /.docker/config.json

@@ -71,7 +71,7 @@ Enhanced shell environment:
 Version control with workstation-specific configurations:
 
 - *Configuration Pattern*: Base config includes machine-specific files
-- *Workstation Files*: =config.ThinkPad=, =config.ABT-C-002NY=, =config.pauline=, etc.
+- *Workstation Files*: =config.ThinkPad=, =conf.FEWI-C-0007J=, =config.pauline=, etc.
 - *Features*: LFS support, rebase-based pulls, auto-prune, submodule handling
 
 ** Additional Tools
