@@ -118,6 +118,9 @@ install_apt_packages() {
 }
 
 install_python_packages() {
+    # Create default virtualenvs folder
+    mkdir -p "${HOME}/.virtualenvs"
+
     sudo apt-get install -y \
         python3-pip
 
