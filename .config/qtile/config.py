@@ -93,6 +93,19 @@ keys = [
         "x",
         lazy.spawn(
             str(Path("~/.local/bin/betterlockscreen").expanduser())
+            + " -l dimblur --display 1 --span -u "
+            + str(
+                Path(
+                    "~/.local/share/backgrounds/pexels-eberhardgross-12365567.jpg"
+                ).expanduser()
+            )
+        ),
+    ),
+    Key(
+        [mod],
+        "x",
+        lazy.spawn(
+            str(Path("~/.local/bin/betterlockscreen").expanduser())
             + " -l dimblur --display 1 --span"
         ),
     ),
