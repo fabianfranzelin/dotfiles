@@ -87,6 +87,15 @@ keys = [
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
+    # Lock screen
+    Key(
+        [mod, "shift"],
+        "x",
+        lazy.spawn(
+            str(Path("~/.local/bin/betterlockscreen").expanduser())
+            + " -l dimblur --display 1 --span"
+        ),
+    ),
     # --------------------------------------------------------
     # Personal key bindings
     Key(

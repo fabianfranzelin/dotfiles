@@ -228,6 +228,7 @@ fi
 if { [ -n "${INSTALL_ALL}" ] && [ -z "${SKIP_QTILE}" ]; } || [ -n "${INSTALL_QTILE}" ]
 then
     install_qtile
+    install_betterlockscreen
 fi
 
 if { [ -n "${INSTALL_ALL}" ] && [ -z "${SKIP_DOCKER}" ]; } || [ -n "${INSTALL_DOCKER}" ]
