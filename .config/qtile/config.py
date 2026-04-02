@@ -15,6 +15,14 @@ my_term = "ghostty"
 my_browser = "firefox"
 
 keys = [
+    Key(
+        [mod, "control"],
+        "i",
+        lazy.spawn(
+            f"{my_term} -e bash -c '{str(Path('~/.local/bin/init').expanduser())} || bash'"
+        ),
+        desc="Run init script in terminal",
+    ),
     # A list of available commands that can be bound to keys can be found
     # at https://docs.qtile.org/en/latest/manual/config/lazy.html
     # Switch between windows

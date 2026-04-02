@@ -1,0 +1,35 @@
+#!/usr/bin/env sh
+
+# shellcheck disable=SC1090
+
+set_keyboard_layout()
+{
+    setxkbmap -layout de -option ctrl:nocaps
+}
+
+unlock_key()
+{
+    # make pinentry aware of the current TTY (useful if using a terminal pinentry)
+    export GPG_TTY=$(tty 2>/dev/null || true)
+
+    # sign a small dummy string; output discarded. This will trigger pinentry.
+    printf 'unlock\n' | gpg --clearsign --output /dev/null
+}
+
+set_keyboard_layout
+unlock_key
+
+# initialize default setup according to the available wifis
+AVAILABLE_WIFIS=$(nmcli dev wifi list)
+if echo "${AVAILABLE_WIFIS}" | grep -q "Tomate"; then
+    autorandr --load gottenheim
+elif echo "${AVAILABLE_WIFIS}" | grep -q "Pauline"; then
+    autorandr --load pauline
+elif echo "${AVAILABLE_WIFIS}" | grep -q "BWSOA"; then
+    autorandr --load feuerbach
+fi
+
+if [ "$(hostname)" = "ABT-C-002NY" ]  || [ "$(hostname)" = "FEWI-C-0007J" ]
+then
+    osd-vpn-connect -k
+fi

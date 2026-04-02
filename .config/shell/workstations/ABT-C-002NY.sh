@@ -14,19 +14,6 @@ export HTTPS_PROXY="http://127.0.0.1:3128"
 # Set default browser use `xdg-open` to call it
 export BROWSER=firefox
 
-# initialize default setup according to the available wifis
-AVAILABLE_WIFIS=$(nmcli dev wifi list)
-
-if echo "${AVAILABLE_WIFIS}" | grep -q "Tomate"; then
-    alias init='autorandr --load gottenheim; set_keyboard_layout; unlock_key; osd-vpn-connect -k'
-elif echo "${AVAILABLE_WIFIS}" | grep -q "Pauline"; then
-    alias init='autorandr --load pauline; set_keyboard_layout; unlock_key; osd-vpn-connect -k'
-elif echo "${AVAILABLE_WIFIS}" | grep -q "BWSOA"; then
-    alias init='autorandr --load feuerbach; set_keyboard_layout; unlock_key'
-else
-    alias init='set_keyboard_layout; unlock_key; osd-vpn-connect -k'
-fi
-
 #------------------------------------------------------------------------------#
 # Azure DevOps
 # Run  cat BOSCH-CA-DE_pem.cer /opt/az/lib/python3.6/site-packages/certifi/cacert.pem > azure-bosch-cert.pem
