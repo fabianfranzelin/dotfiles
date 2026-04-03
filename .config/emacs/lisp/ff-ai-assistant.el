@@ -71,7 +71,9 @@
 (use-package agent-shell
   :ensure-system-package
   ;; Add agent installation configs here
-  ((opencode . "npm i -g opencode-ai")))
+  ((opencode . "npm i -g opencode-ai"))
+  ((copilot . "npm install -g @github/copilot")))
+
 (provide 'ff-ai-assistant)
 
 ;;; ff-ai-assistant.el ends here
