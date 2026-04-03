@@ -232,7 +232,7 @@ install_packages_manually() {
     fi
 
     # install draw.io
-    DRAW_IO_VER="29.6.1"
+    DRAW_IO_VER="29.6.6"
     DRAW_IO_BIN="drawio-${SYSTEM_ARCH}-${DRAW_IO_VER}.deb"
     DRAW_IO_URL="https://github.com/jgraph/drawio-desktop/releases/download/v${DRAW_IO_VER}/${DRAW_IO_BIN}"
     (
