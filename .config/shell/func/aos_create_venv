@@ -15,7 +15,6 @@ aos_create_venv() {
         # shellcheck disable=SC1090
         . "${VIRTUALENV_ACTIVATE_FILEPATH}"
         # install command line tool
-        uv pip install pip setuptools pyyaml
         uv pip install -r "_tools/docker/aos_dev_ubuntu2204/requirements.txt"
         uv pip install "_tools/aos_cli"
 
@@ -25,10 +24,13 @@ aos_create_venv() {
             rospkg \
             colorlog \
             mock \
-            tqdm
+            tqdm \
+            conan==1.59.0
 
-        # # other stuff that helps working
-        uv pip install ipdb ipython \
+        # other stuff that helps working
+        uv pip install \
+            ipdb \
+            ipython \
             ptvsd \
             black \
             isort \
@@ -40,30 +42,30 @@ aos_create_venv() {
             python-lsp-black \
             beautysh
 
-        # python3 -m pip install \
-            #                    sphinx_rtd_theme \
-            #                    breathe myst_parser \
-            #                    sphinx_git \
-            #                    sphinx_copybutton \
-            #                    sphinx_panels \
-            #                    sphinxcontrib_svg2pdfconverter \
-            #                    sphinxcontrib_plantuml \
-            #                    sphinx_needs==2.0.0 \
-            #                    esbonio==0.15 \
-            #                    sphinx_autodoc_typehints \
-            #                    sphinx-jsonschema \
-            #                    sphinxcontrib-ditaa==1.0.1 \
-            #                    sphinx_design \
-            #                    sphinxcontrib.moderncmakedomain \
-            #                    sphinx-test-reports==1.0.2 \
-            #                    sphinx_markdown_builder \
-            #                    gcovr \
-            #                    pandas \
-            #                    jira \
-            #                    junitparser \
-            #                    matplotlib \
-            #                    empy=3.3.4 \
-            #                    pytest
+        uv pip install \
+            sphinx_rtd_theme \
+            breathe myst_parser \
+            sphinx_git \
+            sphinx_copybutton \
+            sphinx_panels \
+            sphinxcontrib_svg2pdfconverter \
+            sphinxcontrib_plantuml \
+            sphinx_needs==2.0.0 \
+            esbonio==0.15 \
+            sphinx_autodoc_typehints \
+            sphinx-jsonschema \
+            sphinxcontrib-ditaa==1.0.1 \
+            sphinx_design \
+            sphinxcontrib.moderncmakedomain \
+            sphinx-test-reports==1.0.2 \
+            sphinx_markdown_builder \
+            gcovr \
+            pandas \
+            jira \
+            junitparser \
+            matplotlib \
+            empy==3.3.4 \
+            pytest
 
         # python3 -m pip install \
             #                    robotframework-assertion-engine==3.0.3 \
