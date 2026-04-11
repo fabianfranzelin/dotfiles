@@ -46,6 +46,14 @@
     <property name="plugin-6" type="string" value="systray">
       <property name="square-icons" type="bool" value="true"/>
       <property name="known-legacy-items" type="array">
+        <value type="string" value="funknetzwerkverbindung mit »pauline« ist aktiv: pauline (62%)"/>
+        <value type="string" value="funknetzwerkverbindung mit »pauline« ist aktiv: pauline (70%)"/>
+        <value type="string" value="funknetzwerkverbindung mit »pauline« ist aktiv: pauline (73%)"/>
+        <value type="string" value="javaembeddedframe"/>
+        <value type="string" value="funknetzwerkverbindung mit »pauline« ist aktiv: pauline (92%)"/>
+        <value type="string" value="funknetzwerkverbindung mit »pauline« ist aktiv: pauline (85%)"/>
+        <value type="string" value="system-config-printer"/>
+        <value type="string" value="funknetzwerkverbindung mit »pauline« ist aktiv: pauline (77%)"/>
         <value type="string" value="funknetzwerkverbindung mit »pauline« ist aktiv: pauline (75%)"/>
         <value type="string" value="funknetzwerkverbindung mit »pauline« ist aktiv: pauline (100%)"/>
         <value type="string" value="funknetzwerkverbindung mit »pauline« ist aktiv: pauline (72%)"/>
@@ -75,6 +83,7 @@
         <value type="string" value="ibus panel"/>
       </property>
       <property name="known-items" type="array">
+        <value type="string" value="TeamViewer"/>
         <value type="string" value="blueman"/>
       </property>
     </property>
@@ -90,15 +99,16 @@
     <property name="plugin-20" type="string" value="showdesktop"/>
     <property name="plugin-21" type="string" value="whiskermenu">
       <property name="recent" type="array">
+        <value type="string" value="jdownloader2_JDownloader.desktop"/>
+        <value type="string" value="winboat.desktop"/>
+        <value type="string" value="system-config-printer.desktop"/>
+        <value type="string" value="wine-Programs-tiptoi® Manager.desktop"/>
         <value type="string" value="xfce4-power-manager-settings.desktop"/>
         <value type="string" value="xfce-keyboard-settings.desktop"/>
         <value type="string" value="xfce-settings-manager.desktop"/>
         <value type="string" value="synaptic.desktop"/>
         <value type="string" value="terminator.desktop"/>
         <value type="string" value="com.mitchellh.ghostty.desktop"/>
-        <value type="string" value="emacs.desktop"/>
-        <value type="string" value="system-config-printer.desktop"/>
-        <value type="string" value="xfce4-terminal-emulator.desktop"/>
       </property>
     </property>
     <property name="plugin-24" type="string" value="launcher">
