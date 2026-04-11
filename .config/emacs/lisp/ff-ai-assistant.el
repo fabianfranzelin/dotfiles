@@ -72,7 +72,9 @@
   :ensure-system-package
   ;; Add agent installation configs here
   ((opencode . "npm i -g opencode-ai"))
-  ((copilot . "npm install -g @github/copilot")))
+  ((copilot . "npm install -g @github/copilot"))
+  :custom
+  (agent-shell-preferred-agent-config "OpenCode"))
 
 (provide 'ff-ai-assistant)
 
