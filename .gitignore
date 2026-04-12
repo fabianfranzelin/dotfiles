@@ -230,6 +230,7 @@ flycheck_*
 /.config/homeassistant/backups/
 /.config/homeassistant/tts/
 /.config/homeassistant/.ha_run.lock
+/.config/homeassistant/.cache/
 
 ### Syncthing ###
 /.config/syncthing/cert.pem

@@ -54,8 +54,10 @@
   triggers:
   - at: 07:30:00
     trigger: time
+    id: Start working
   - at: 00:00:00
     trigger: time
+    id: Stop working
   conditions:
   - condition: time
     weekday:
@@ -67,24 +69,24 @@
   actions:
   - choose:
     - conditions:
-      - condition: time
-        after: 07:29:00
-        before: 07:31:00
+      - condition: trigger
+        id:
+        - Start working
       sequence:
-      - target:
-          entity_id: switch.strom_fabis_buro
-        action: switch.turn_on
+      - type: turn_on
+        device_id: 3b477d9516fb27574fcb277fada4a94c
+        entity_id: c93104e78a4ea45159b82174a0147448
+        domain: switch
+  - choose:
     - conditions:
-      - condition: time
-        after: '23:59:00'
-        before: 00:01:00
+      - condition: trigger
+        id:
+        - Stop working
       sequence:
-      - target:
-          entity_id: switch.strom_fabis_buro
-        action: switch.turn_off
-  - target:
-      entity_id: switch.strom_fabis_buro
-    action: switch.turn_on
+      - type: turn_off
+        device_id: 3b477d9516fb27574fcb277fada4a94c
+        entity_id: c93104e78a4ea45159b82174a0147448
+        domain: switch
   mode: single
 - id: '1760733577087'
   alias: Familienbad - Heizkörper
