@@ -1,16 +1,9 @@
-#!/usr/bin/env sh
+* WSL specific setup
 
-# shellcheck disable=SC1090
+I have no running Windows machine anymore. So here comes my last WSL
+shell setup if I have to use Windows again at some point.
 
-# Load specific settings for WSL
-
-#------------------------------------------------------------------------------#
-# Dotfiles setup
-export __SHELL_LIB="${XDG_CONFIG_HOME}/shell"
-
-#------------------------------------------------------------------------------#
-# WSL specific stuff
-
+#+BEGIN_SRC sh
 # Make X server available
 export DISPLAY="`grep nameserver /etc/resolv.conf | sed 's/nameserver //'`:0"
 export LIBGL_ALWAYS_INDIRECT=1
@@ -25,3 +18,4 @@ if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
 fi
 
 alias init='vcxsrv-multi-window; unlock_key'
+#+END_SRC
