@@ -24,6 +24,8 @@ DESCRIPTION
               Skip base installation
        --install-git
               Install git packages
+       --update-git-credentials
+              Update git credentials
        --skip-git
               Skip git installation
        --install-npm
@@ -115,6 +117,10 @@ while [ "${#}" -gt 0 ]; do
             ;;
         '--install-git')
             INSTALL_GIT=1
+            shift # past argument
+            ;;
+        '--update-git-credentials')
+            UPDATE_GIT_CREDENTIALS=1
             shift # past argument
             ;;
         '--skip-git')
@@ -213,6 +219,11 @@ fi
 if { [ -n "${INSTALL_ALL}" ] && [ -z "${SKIP_GIT}" ]; } || [ -n "${INSTALL_GIT}" ]
 then
     install_git
+fi
+
+if { [ -n "${INSTALL_ALL}" ] && [ -z "${SKIP_GIT}" ]; } || [ -n "${INSTALL_GIT}" ] || [ -n "${UPDATE_GIT_CREDENTIALS}" ]
+then
+    generate_git_credentials
 fi
 
 if { [ -n "${INSTALL_ALL}" ] && [ -z "${SKIP_ZSH}" ]; } || [ -n "${INSTALL_ZSH}" ]

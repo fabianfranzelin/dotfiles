@@ -183,6 +183,7 @@ flycheck_*
 
 ### GIT ###
 /.config/git/config.workstation
+/.config/git/*.credentials
 
 ### NPM ###
 /.config/npm/npmrc

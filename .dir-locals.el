@@ -12,7 +12,10 @@
                        (list :command-name "sh:configure & install (skip Emacs and Qtile)"
                              :command-line "./configure -i --skip-emacs-build --skip-qtile-installation"
                              :working-dir project-dir
-                             :runner 'ff/run-command-runner-vterm))))))
+                             :runner 'ff/run-command-runner-vterm)
+                       (list :command-name "sh:generate git credentials"
+                             :command-line "./configure --update-git-credentials"
+                             :working-dir project-dir))))))
          ;; Docs ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
          (eval . (defun run-command-recipe-ff/docs ()
                    (append
