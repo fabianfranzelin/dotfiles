@@ -4,6 +4,16 @@
 [credential]
     helper = cache --timeout=8000000
     useHttpPath = true
+    # ----------------------------------
+    # For installation, run:
+    # sudo apt-get install libsecret-1-0 libsecret-1-dev
+    # cd /usr/share/doc/git/contrib/credential/libsecret
+    # sudo make
+    # helper = /usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret
+    # ----------------------------------
+    # For WSL use
+    # useHttpPath = true
+    # helper = /mnt/c/Program\\ Files/Git/mingw64/libexec/git-core/git-credential-wincred.exe
 [http "http://*.bosch.com/"]
     proxy =
 [http "https://*.bosch.com/"]
