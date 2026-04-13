@@ -74,7 +74,7 @@
   ((opencode . "npm i -g opencode-ai"))
   ((copilot . "npm install -g @github/copilot"))
   :custom
-  (agent-shell-preferred-agent-config "OpenCode"))
+  (agent-shell-preferred-agent-config 'opencode))
 
 (provide 'ff-ai-assistant)
 
