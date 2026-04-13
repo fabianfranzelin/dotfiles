@@ -9,7 +9,7 @@
 nitrogen --set-zoom-fill \
     "$HOME/.local/share/backgrounds/pexels-eberhardgross-12365567.jpg" &
 
-if [ "$(hostname)" = "ABT-C-002NY" ] || [ "$(hostname)" = "FEWI-C-0007J" ]
+if [ "$(hostname)" = "FEWI-C-0007J" ]
 then
     # Use this widget to create vpn session
     osd-toolkit &

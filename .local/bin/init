@@ -29,7 +29,7 @@ elif echo "${AVAILABLE_WIFIS}" | grep -q "BWSOA"; then
     autorandr --load feuerbach
 fi
 
-if [ "$(hostname)" = "ABT-C-002NY" ]  || [ "$(hostname)" = "FEWI-C-0007J" ]
+if [ "$(hostname)" = "FEWI-C-0007J" ]
 then
     osd-vpn-connect -k
 fi

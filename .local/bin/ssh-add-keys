@@ -2,7 +2,7 @@
 
 IDS=""
 
-if [ "$(hostname)" = "ABT-C-002NY" ]  || [ "$(hostname)" = "FEWI-C-0007J" ]
+if [ "$(hostname)" = "FEWI-C-0007J" ]
 then
     IDS="id_rsa id_ed25519"
 fi
