@@ -13,9 +13,6 @@ then
 
     # Seahorse
     alias restart_gnome_keyring_daemon="gnome-keyring-daemon --replace --components=pkcs11,secrets,ssh && seahorse"
-
-    # vpn
-    alias vpn_reconnect="/usr/bin/gnome-terminal -- bash -c \"osd-vpn-disconnect && osd-vpn-connect -k\""
 fi
 
 alias cp='cp -i -P'
@@ -48,12 +45,12 @@ alias .6='cd ../../../../../..'
 alias .7='cd ../../../../../../,,'
 alias .8='cd ../../../../../../../..'
 alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
-alias .....='cd ../../../..'
-alias ......='cd ../../../../..'
-alias .......='cd ../../../../../..'
-alias ........='cd ../../../../../../..'
+alias ...='.2'
+alias ....='.3'
+alias .....='.4'
+alias ......='.5'
+alias .......='.6'
+alias ........='.7'
 
 # 'A' for ANSI line graphics
 # 'C' for colorization
