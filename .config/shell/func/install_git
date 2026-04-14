@@ -8,7 +8,7 @@ generate_git_credentials()
     local username
 
     hostname=$(hostname)
-    credentials_file="${HOME}/.config/git/config.${hostname}.credentials"
+    credentials_file="${DOTFILES}/.config/git/config.${hostname}.credentials"
 
     echo "Generating git credentials for ${hostname}..."
 
