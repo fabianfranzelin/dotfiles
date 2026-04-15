@@ -266,7 +266,7 @@ FORCE: force update of grammars"
 ;; -------------------------------------------------------------------
 ;; part of the lsp-mode configuration
 
-;; use tree-sitter as default and overwrite python-mode
+;; use tree-sitter as default and overwrite sh-mode
 (add-to-list 'major-mode-remap-alist '(sh-mode . bash-ts-mode))
 
 ;; Make sure that my preferred linter is installed
@@ -287,6 +287,10 @@ FORCE: force update of grammars"
                                                       (list "--indent-size" (number-to-string indent)))
                                                     (when indent-tabs-mode "--tab")))
   (setf (alist-get 'bash-ts-mode apheleia-mode-alist) 'beautysh))
+
+;; envrc files
+(add-to-list 'auto-mode-alist '("\\.envrc\\'" . envrc-file-mode))
+(add-to-list 'auto-mode-alist '("\\.envrc\\.\\'" . envrc-file-mode))
 
 ;; -------------------------------------------------------------------
 ;; yaml mode
