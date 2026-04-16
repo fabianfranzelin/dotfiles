@@ -21,15 +21,22 @@ unlock_key
 
 # initialize default setup according to the available wifis
 AVAILABLE_WIFIS=$(nmcli dev wifi list)
-if echo "${AVAILABLE_WIFIS}" | grep -q "Tomate"; then
+AT_HOME=$(echo "${AVAILABLE_WIFIS}" | grep -q "Pauline" && echo "yes" || echo "no")
+AT_OFFICE=$(echo "${AVAILABLE_WIFIS}" | grep -q "BWSOA" && echo "yes" || echo "no")
+AT_GOTTENHEIM=$(echo "${AVAILABLE_WIFIS}" | grep -q "Tomate" && echo "yes" || echo "no")
+
+if [ "${AT_GOTTENHEIM}" = "yes" ]
+then
     autorandr --load gottenheim
-elif echo "${AVAILABLE_WIFIS}" | grep -q "Pauline"; then
+elif [ "${AT_HOME}" = "yes" ]
+then
     autorandr --load pauline
-elif echo "${AVAILABLE_WIFIS}" | grep -q "BWSOA"; then
+elif [ "${AT_OFFICE}" = "yes" ]
+then
     autorandr --load feuerbach
 fi
 
-if [ "$(hostname)" = "FEWI-C-0007J" ]
+if [ "$(hostname)" = "FEWI-C-0007J" ] && [ "${AT_OFFICE}" = "no" ]
 then
     osd-vpn-connect -k
 fi
