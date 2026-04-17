@@ -59,6 +59,7 @@ aos_create_venv() {
             sphinxcontrib.moderncmakedomain \
             sphinx-test-reports==1.0.2 \
             sphinx_markdown_builder \
+            sphinx_simplepdf \
             gcovr \
             pandas \
             jira \
