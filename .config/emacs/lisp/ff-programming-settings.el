@@ -147,7 +147,8 @@ FORCE: force update of grammars"
 (use-package flycheck
   :custom
   ;; bazel-buildifier in flycheck no longer working. Disable.
-  (flycheck-disabled-checkers '(bazel-buildifier))
+  ;; org-lint is also not working and I don't need it, so disable as well.
+  (flycheck-disabled-checkers '(bazel-buildifier org-lint))
   ;; Override default flycheck triggers
   (flycheck-check-syntax-automatically '(save idle-change mode-enabled))
   (flycheck-idle-change-delay 0.8)
