@@ -32,6 +32,9 @@
   (setq emms-browser-covers #'emms-browser-cache-thumbnail-async
         emms-browser-thumbnail-small-size 64
         emms-browser-thumbnail-medium-size 128)
+  ;; display format
+  (setq emms-browser-info-title-format "%T %a - %t"
+        emms-browser-default-format "%n")
   ;; history
   (emms-history-load)
   ;; Add one default radio station (radiole)
@@ -52,6 +55,11 @@
   :bind (:map global-map
               ("<XF86AudioPlay>" . emms-pause)
               ("<XF86AudioStop>" . emms-stop)))
+
+(use-package tag-edit-mode
+  :straight (tag-edit-mode :type git :host github :repo "defaultxr/tag-edit-mode")
+  :bind (:map dired-mode-map
+              ("E" . tag-edit-dired)))
 
 (use-package ready-player
   :custom

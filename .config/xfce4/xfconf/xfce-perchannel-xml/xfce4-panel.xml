@@ -102,6 +102,7 @@
     <property name="plugin-20" type="string" value="showdesktop"/>
     <property name="plugin-21" type="string" value="whiskermenu">
       <property name="recent" type="array">
+        <value type="string" value="firefox-esr.desktop"/>
         <value type="string" value="jdownloader2_JDownloader.desktop"/>
         <value type="string" value="winboat.desktop"/>
         <value type="string" value="system-config-printer.desktop"/>
