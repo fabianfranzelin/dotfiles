@@ -46,6 +46,8 @@
     <property name="plugin-6" type="string" value="systray">
       <property name="square-icons" type="bool" value="true"/>
       <property name="known-legacy-items" type="array">
+        <value type="string" value="funknetzwerkverbindung mit »pauline« ist aktiv: pauline (69%)"/>
+        <value type="string" value="caffeine-indicator"/>
         <value type="string" value="funknetzwerkverbindung mit »pauline« ist aktiv: pauline (62%)"/>
         <value type="string" value="funknetzwerkverbindung mit »pauline« ist aktiv: pauline (70%)"/>
         <value type="string" value="funknetzwerkverbindung mit »pauline« ist aktiv: pauline (73%)"/>
@@ -83,6 +85,7 @@
         <value type="string" value="ibus panel"/>
       </property>
       <property name="known-items" type="array">
+        <value type="string" value="caffeine-cup-empty"/>
         <value type="string" value="TeamViewer"/>
         <value type="string" value="blueman"/>
       </property>
@@ -102,7 +105,6 @@
         <value type="string" value="jdownloader2_JDownloader.desktop"/>
         <value type="string" value="winboat.desktop"/>
         <value type="string" value="system-config-printer.desktop"/>
-        <value type="string" value="wine-Programs-tiptoi® Manager.desktop"/>
         <value type="string" value="xfce4-power-manager-settings.desktop"/>
         <value type="string" value="xfce-keyboard-settings.desktop"/>
         <value type="string" value="xfce-settings-manager.desktop"/>
