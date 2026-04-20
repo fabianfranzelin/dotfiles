@@ -1,53 +1,3 @@
-- id: '1754125179273'
-  alias: Multimedia
-  description: Power cycle multimedia station
-  triggers:
-  - at: 00:00:00
-    id: midnight
-    trigger: time
-  - at: 07:00:00
-    id: morning
-    trigger: time
-  conditions: []
-  actions:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: midnight
-      sequence:
-      - type: turn_off
-        device_id: d145863eab5f2012733d31ca4ed7ba55
-        entity_id: switch.zigbee_1
-        domain: switch
-    - conditions:
-      - condition: trigger
-        id:
-        - morning
-      sequence:
-      - type: turn_on
-        device_id: d145863eab5f2012733d31ca4ed7ba55
-        entity_id: switch.zigbee_1
-        domain: switch
-    default: []
-  mode: single
-- id: '1754419808619'
-  alias: Strom aus
-  description: Power off everything ad midnight
-  triggers:
-  - at: 00:00:00
-    id: 'off'
-    trigger: time
-  conditions: []
-  actions:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: 'off'
-      sequence:
-      - type: turn_off
-        device_id: e84de7ba5ad7676ec381c48a406cb799
-        entity_id: switch.zigbee_2
-        domain: switch
 - id: '1758488499252'
   alias: Fabis Schreibtisch
   description: Turns on a power plug at 7:30 AM and off at 12 AM on weekdays.
@@ -74,8 +24,8 @@
         - Start working
       sequence:
       - type: turn_on
-        device_id: 3b477d9516fb27574fcb277fada4a94c
-        entity_id: c93104e78a4ea45159b82174a0147448
+        device_id: b2225a3e5fe01b2896595f1e1be5c806
+        entity_id: 007ca7184c51dd29bf58105945cb7417
         domain: switch
   - choose:
     - conditions:
@@ -84,8 +34,8 @@
         - Stop working
       sequence:
       - type: turn_off
-        device_id: 3b477d9516fb27574fcb277fada4a94c
-        entity_id: c93104e78a4ea45159b82174a0147448
+        device_id: b2225a3e5fe01b2896595f1e1be5c806
+        entity_id: 007ca7184c51dd29bf58105945cb7417
         domain: switch
   mode: single
 - id: '1760733577087'
