@@ -89,16 +89,6 @@ This includes ispell and languagetool."
 
   (advice-add 'jinx-languages :after #'ff/switch-dictionary))
 
-;; -------------------------------------------------------------------
-;; Reverso: Translate text and find synonyms
-(use-package reverso
-  :bind
-  (:map global-map
-        ("C-c r s" . reverso-synonyms)
-        ("C-c r t" . reverso-translate)
-        ("C-c r c" . reverso-context)
-        ("C-c r c" . reverso-conjugation)))
-
 (provide 'ff-spellcheck)
 
 ;;; ff-spellcheck.el ends here

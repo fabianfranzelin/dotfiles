@@ -75,6 +75,11 @@
   :custom
   (agent-shell-preferred-agent-config 'opencode))
 
+(use-package agent-review
+  :straight (agent-review :type git :host github :repo "nineluj/agent-review")
+  :bind (:map global-map
+              ("C-c r" . agent-review)))
+
 (provide 'ff-ai-assistant)
 
 ;;; ff-ai-assistant.el ends here
