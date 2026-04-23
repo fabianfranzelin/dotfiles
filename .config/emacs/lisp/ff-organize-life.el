@@ -238,6 +238,23 @@ DIR: directory path"
         ("C-c C-f" . dw/org-present-next)
         ("C-c C-b" . dw/org-present-prev)))
 
+(use-package ox-reveal)
+
+(with-eval-after-load 'ox-reveal
+  (let ((html-backend (org-export-get-backend 'html)))
+    (when html-backend
+      (setf (org-export-backend-menu html-backend)
+            '(104 "Export to HTML"
+                  ((72 "As HTML buffer" org-html-export-as-html)
+                   (104 "As HTML file" org-html-export-to-html)
+                   (111 "As HTML file and open"
+                        (lambda (a s v b)
+                          (if a (org-html-export-to-html t s v b)
+                            (org-open-file (org-html-export-to-html nil s v b)))))
+                   (114 "As reveal.js file" org-reveal-export-to-html)
+                   (82 "As reveal.js and browse" org-reveal-export-to-html-and-browse)
+                   (115 "Subtree to reveal.js" org-reveal-export-current-subtree)))))))
+
 ;; -------------------------------------------------------------------
 ;; Org-roam: Taking notes
 ;; -------------------------------------------------------------------
