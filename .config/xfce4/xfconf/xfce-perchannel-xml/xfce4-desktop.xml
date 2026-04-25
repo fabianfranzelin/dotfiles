@@ -25,7 +25,7 @@
       </property>
       <property name="monitorLVDS-1" type="empty">
         <property name="workspace0" type="empty">
-          <property name="last-image" type="string" value="/home/frf2lr/Bilder/IMG-20260404-WA0004.jpg"/>
+          <property name="last-image" type="string" value="/home/frf2lr/Pictures/IMG-20260404-WA0004.jpg"/>
           <property name="color-style" type="int" value="0"/>
           <property name="image-style" type="int" value="1"/>
         </property>
