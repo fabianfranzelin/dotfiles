@@ -23,20 +23,22 @@
         id:
         - Start working
       sequence:
-      - type: turn_on
-        device_id: b2225a3e5fe01b2896595f1e1be5c806
-        entity_id: 007ca7184c51dd29bf58105945cb7417
-        domain: switch
+      - action: switch.turn_on
+        metadata: {}
+        target:
+          device_id: 2c680c927a635dca2b6704a9d8d15d09
+        data: {}
   - choose:
     - conditions:
       - condition: trigger
         id:
         - Stop working
       sequence:
-      - type: turn_off
-        device_id: b2225a3e5fe01b2896595f1e1be5c806
-        entity_id: 007ca7184c51dd29bf58105945cb7417
-        domain: switch
+      - action: switch.turn_off
+        metadata: {}
+        target:
+          device_id: 2c680c927a635dca2b6704a9d8d15d09
+        data: {}
   mode: single
 - id: '1760733577087'
   alias: Familienbad - Heizkörper
@@ -89,8 +91,8 @@
           id: evening_on
       sequence:
       - target:
-          device_id: b0c54078707a81ed49fa6704ff58e0b2
           area_id: familienbad
+          device_id: 75b7856de539d67a4d57d526f761dac0
         data:
           temperature: 22
           hvac_mode: heat
@@ -121,8 +123,8 @@
             - sun
       sequence:
       - target:
-          device_id: b0c54078707a81ed49fa6704ff58e0b2
           area_id: familienbad
+          device_id: 75b7856de539d67a4d57d526f761dac0
         data:
           temperature: 20
           hvac_mode: heat
@@ -134,8 +136,8 @@
           id: evening_off
       sequence:
       - target:
-          device_id: b0c54078707a81ed49fa6704ff58e0b2
           area_id: familienbad
+          device_id: 75b7856de539d67a4d57d526f761dac0
         data:
           hvac_mode: heat
           temperature: 18

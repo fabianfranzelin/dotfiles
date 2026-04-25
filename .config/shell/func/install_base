@@ -128,38 +128,36 @@ install_python_packages() {
         python3-pip
 
     # Update python setuptools to latest release from pypi
-    python3 -m pip install --upgrade \
-        pip \
-        wheel \
-        setuptools
+    # python3 -m pip install --upgrade \
+    #     pip \
+    #     wheel \
+    #     setuptools
 
     # Install uv as default package manager for Python
     curl -LsSf https://astral.sh/uv/install.sh | sh
 
-
-
     # additional python dependencies
-    python3 -m pip install --upgrade \
-        virtualenv \
-        ptvsd \
-        black \
-        isort \
-        yamllint \
-        mdformat \
-        cmake \
-        cmake_language_server \
-        "python-lsp-server[all]" \
-        pylsp-mypy \
-        python-lsp-black \
-        esbonio==0.16.4 \
-        robotframework-tidy \
-        ipython \
-        gitpython \
-        pytest \
-        jupyter \
-        beautysh \
-        robotframework-robocop==4.2.2 \
-        debugpy
+    # python3 -m pip install --upgrade \
+    #     virtualenv \
+    #     ptvsd \
+    #     black \
+    #     isort \
+    #     yamllint \
+    #     mdformat \
+    #     cmake \
+    #     cmake_language_server \
+    #     "python-lsp-server[all]" \
+    #     pylsp-mypy \
+    #     python-lsp-black \
+    #     esbonio==0.16.4 \
+    #     robotframework-tidy \
+    #     ipython \
+    #     gitpython \
+    #     pytest \
+    #     jupyter \
+    #     beautysh \
+    #     robotframework-robocop==4.2.2 \
+    #     debugpy
 }
 
 install_packages_manually() {

@@ -6,30 +6,50 @@
 set -e
 
 # install minimal dependencies
-sudo apt install -y \
-    git \
-    gnupg2 \
-    ssh \
-    pass \
-    rsync
+# sudo apt install -y \
+#     git \
+#     gnupg2 \
+#     ssh \
+#     pass \
+#     rsync
 
 # set pauline endpoint
-PAULINE="frf2lr@franzelin.duckdns.org"
+# PAULINE="frf2lr@franzelin.duckdns.org"
+
+# # copy keys from pauline
+# SOURCE_DIR=".gnupg"
+# TARGET_DIR="${HOME}/${SOURCE_DIR}"
+# mkdir -p "${TARGET_DIR}"
+# rsync -avz "${PAULINE}:${SOURCE_DIR}/" "${TARGET_DIR}/"
+
+# # copy password store
+# SOURCE_DIR=".local/share/password-store"
+# TARGET_DIR="${HOME}/${SOURCE_DIR}"
+# mkdir -p "${TARGET_DIR}"
+# rsync -avz "${PAULINE}:${SOURCE_DIR}/" "${TARGET_DIR}/"
+
+# # copy dotfiles
+# SOURCE_DIR="workspace/dotfiles"
+# TARGET_DIR="${HOME}/${SOURCE_DIR}"
+# mkdir -p "${TARGET_DIR}"
+# rsync -avz "${PAULINE}:${SOURCE_DIR}/" "${TARGET_DIR}/"
+
+# set pauline endpoint
+PAULINE="frf2lr@pauline"
 
 # copy keys from pauline
-SOURCE_DIR=".gnupg"
-TARGET_DIR="${HOME}/${SOURCE_DIR}"
-mkdir -p "${TARGET_DIR}"
-rsync -avz "${PAULINE}:${SOURCE_DIR}/" "${TARGET_DIR}/"
+TARGET_DIR=".gnupg"
+SOURCE_DIR="${HOME}/${TARGET_DIR}"
+rsync -avz "${SOURCE_DIR}/" "${PAULINE}:${TARGET_DIR}/"
 
 # copy password store
-SOURCE_DIR=".local/share/password-store"
-TARGET_DIR="${HOME}/${SOURCE_DIR}"
-mkdir -p "${TARGET_DIR}"
-rsync -avz "${PAULINE}:${SOURCE_DIR}/" "${TARGET_DIR}/"
+TARGET_DIR=".local/share/password-store"
+SOURCE_DIR="${HOME}/.password-store"
+rsync -avz "${SOURCE_DIR}/" "${PAULINE}:${TARGET_DIR}/"
 
 # copy dotfiles
-SOURCE_DIR="workspace/dotfiles"
-TARGET_DIR="${HOME}/${SOURCE_DIR}"
-mkdir -p "${TARGET_DIR}"
-rsync -avz "${PAULINE}:${SOURCE_DIR}/" "${TARGET_DIR}/"
+TARGET_DIR="workspace/dotfiles"
+SOURCE_DIR="${HOME}/${TARGET_DIR}"
+rsync -avz "${SOURCE_DIR}/" "${PAULINE}:${TARGET_DIR}/"
+
+
