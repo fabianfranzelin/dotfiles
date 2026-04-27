@@ -139,7 +139,9 @@ Otherwise, open the repository's main page."
 
 (with-eval-after-load 'consult-gh
   (require 'consult-gh-transient)
-  (customize-set-variable 'consult-gh-default-interactive-command #'consult-gh-transient))
+  (customize-set-variable 'consult-gh-default-interactive-command #'consult-gh-transient)
+  (require 'ff-consult-gh-pr-inbox)
+  (keymap-global-set "C-x G m" 'consult-gh-pr-inbox))
 
 (use-package consult-gh-embark
   :after consult-gh

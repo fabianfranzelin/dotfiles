@@ -261,6 +261,26 @@ install_packages_manually() {
         # Update font cache
         sudo fc-cache -f -v
     )
+
+    # install babashka
+    BABASHKA_VER="1.12.218"
+    SYSTEM_ARCH=$(dpkg --print-architecture)
+
+    # only aarch64 is available for arm
+    [ "${SYSTEM_ARCH}" = "arm64" ] && SYSTEM_ARCH="aarch64"
+
+    BABASHKA_SRC_FILE_NAME="babashka-${BABASHKA_VER}-linux-${SYSTEM_ARCH}"
+    BABASHKA_URL="https://github.com/babashka/babashka/releases/download/v${BABASHKA_VER}/${BABASHKA_SRC_FILE_NAME}.tar.gz"
+    (
+
+        TEMP_DIR=$(mktemp -d)
+        cd "${TEMP_DIR}" || exit 1
+        echo -e "${__COLOR_INFO}INFO: Downloading babashka v${BABASHKA_VER} to ${TEMP_DIR}${__COLOR_RESET}"
+        wget "${BABASHKA_URL}"
+        tar -xf "${BABASHKA_SRC_FILE_NAME}.tar.gz"
+        chmod +x bb
+        mv bb "${HOME}/.local/bin"
+    )
 }
 
 configure_gnupg() {
