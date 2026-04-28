@@ -81,7 +81,7 @@ INPUT is passed as extra arguments to \"gh search prs\"."
                (flags (append cmd opts)))
     (unless (or (member "-L" flags) (member "--limit" flags))
       (setq opts (append opts (list "--limit" (format "%s" consult-gh-pr-maxnum)))))
-    (cons (append cmd opts (remove nil (list arg)) (list "--" "-is:draft")) nil)))
+    (cons (append cmd opts (remove nil (list arg)) (list "--" "-is:draft" (format "-reviewed-by:%s" user))) nil)))
 
 (defvar consult-gh--pr-inbox-assigned-source
   (list :name "Assigned to me (non-draft)"
