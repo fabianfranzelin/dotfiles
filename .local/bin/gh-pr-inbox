@@ -1,0 +1,199 @@
+#!/usr/bin/env bash
+# gh-pr-inbox — Generate a markdown file listing actionable PRs.
+#
+# Sources:
+#   1. Assigned to me (non-draft) — excludes PRs I've already approved
+#   2. Mentions me
+#   3. Stalled approvals — my approval was dismissed and I haven't re-approved
+#
+# Usage:
+#   gh-pr-inbox [--user USER] [--repo OWNER/REPO] [--limit N] [--output FILE]
+#
+# Requires: gh (GitHub CLI), jq
+
+set -euo pipefail
+
+USER="@me"
+REPO=""
+LIMIT=100
+OUTPUT=""
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --user)  USER="$2"; shift 2 ;;
+        --repo)  REPO="$2"; shift 2 ;;
+        --limit) LIMIT="$2"; shift 2 ;;
+        --output) OUTPUT="$2"; shift 2 ;;
+        -h|--help)
+            sed -n '2,/^$/s/^# //p' "$0"
+            exit 0 ;;
+        *) echo "Unknown option: $1" >&2; exit 1 ;;
+    esac
+done
+
+# Cap GraphQL first at 100
+GQL_LIMIT=$((LIMIT > 100 ? 100 : LIMIT))
+
+# Resolve login
+LOGIN=$(gh api user --jq '.login')
+if [[ "$USER" == "@me" ]]; then
+    DISPLAY_USER="$LOGIN"
+else
+    DISPLAY_USER="$USER"
+fi
+
+repo_filter=""
+[[ -n "$REPO" ]] && repo_filter=" repo:$REPO"
+repo_flag=()
+[[ -n "$REPO" ]] && repo_flag=(--repo "$REPO")
+
+# Helper: run gh search prs and output JSON array.
+# Named flags go before --, qualifiers go after.
+# Usage: search_prs [--flag val ...] [-- qualifier ...]
+search_prs() {
+    local flags=() qualifiers=()
+    local seen_dashdash=false
+    for arg in "$@"; do
+        if [[ "$arg" == "--" ]]; then
+            seen_dashdash=true
+            continue
+        fi
+        if $seen_dashdash; then
+            qualifiers+=("$arg")
+        else
+            flags+=("$arg")
+        fi
+    done
+    gh search prs \
+        --state open \
+        --sort updated \
+        --limit "$LIMIT" \
+        --json repository,title,number,labels,updatedAt,state,url,commentsCount,author \
+        "${repo_flag[@]}" \
+        "${flags[@]}" \
+        -- "${qualifiers[@]}"
+}
+
+###############################################################################
+# 1. Assigned to me (non-draft), excluding PRs I've approved
+###############################################################################
+
+assigned_query="is:pr is:open assignee:${USER} -is:draft${repo_filter}"
+
+# GraphQL: find which assigned PRs I have an APPROVED review on
+approved_set=$(
+    gh api graphql -f query="{
+        search(query:\"${assigned_query}\",type:ISSUE,first:${GQL_LIMIT}){
+            nodes{...on PullRequest{
+                number
+                repository{nameWithOwner}
+                reviews(first:100,states:APPROVED){nodes{author{login}}}
+            }}
+        }
+    }" --jq "
+        .data.search.nodes[]
+        | select(.reviews.nodes | map(select(.author.login == \"${LOGIN}\")) | length > 0)
+        | .repository.nameWithOwner + \"#\" + (.number|tostring)
+    " 2>/dev/null || true
+)
+
+assigned_json=$(search_prs --assignee "$USER" -- -is:draft)
+
+# Filter out approved PRs
+assigned_filtered=$(echo "$assigned_json" | jq -c --arg approved "$approved_set" '
+    ($approved | split("\n") | map(select(. != ""))) as $list |
+    [ .[] | select(
+        (.repository.nameWithOwner + "#" + (.number|tostring)) as $key |
+        ($list | index($key) | not)
+    )]
+')
+
+###############################################################################
+# 2. Mentions me
+###############################################################################
+
+mentions_json=$(search_prs --mentions "$USER")
+
+###############################################################################
+# 3. Stalled approvals
+###############################################################################
+
+stalled_query="is:pr is:open reviewed-by:${USER} -is:draft -author:${USER}${repo_filter}"
+
+stalled_set=$(
+    gh api graphql -f query="{
+        search(query:\"${stalled_query}\",type:ISSUE,first:${GQL_LIMIT}){
+            nodes{...on PullRequest{
+                number
+                repository{nameWithOwner}
+                reviews(first:100){nodes{author{login} state submittedAt}}
+            }}
+        }
+    }" --jq "
+        .data.search.nodes[]
+        | {num: .number, repo: .repository.nameWithOwner,
+           userReviews: [.reviews.nodes[] | select(.author.login == \"${LOGIN}\")]}
+        | select([.userReviews[] | select(.state == \"DISMISSED\")] | length > 0)
+        | {num, repo,
+           lastDismissed: ([.userReviews[] | select(.state == \"DISMISSED\") | .submittedAt] | max),
+           lastApproved: ([.userReviews[] | select(.state == \"APPROVED\") | .submittedAt] | max // \"\")}
+        | select(.lastApproved == \"\" or .lastApproved < .lastDismissed)
+        | .repo + \"#\" + (.num|tostring)
+    " 2>/dev/null || true
+)
+
+stalled_json=$(search_prs --reviewed-by "$USER" -- -is:draft "-author:${USER}")
+
+stalled_filtered=$(echo "$stalled_json" | jq -c --arg stalled "$stalled_set" '
+    ($stalled | split("\n") | map(select(. != ""))) as $list |
+    [ .[] | select(
+        (.repository.nameWithOwner + "#" + (.number|tostring)) as $key |
+        ($list | index($key))
+    )]
+')
+
+###############################################################################
+# Render markdown
+###############################################################################
+
+render_section() {
+    local title="$1"
+    local json="$2"
+    local count
+    count=$(echo "$json" | jq 'length')
+
+    echo "## ${title} (${count})"
+    echo ""
+
+    if [[ "$count" -eq 0 ]]; then
+        echo "_None_"
+        echo ""
+        return
+    fi
+
+    echo "| # | Repository | Title | Author | Updated | Comments | URL |"
+    echo "|---|-----------|-------|--------|---------|----------|-----|"
+
+    echo "$json" | jq -r '
+        sort_by(.updatedAt) | reverse | .[] |
+        "| #\(.number) | \(.repository.nameWithOwner) | \(.title) | @\(.author.login) | \(.updatedAt[:10]) | \(.commentsCount) | \(.url) |"
+    '
+    echo ""
+}
+
+{
+    echo "# PR Inbox for ${DISPLAY_USER}"
+    echo ""
+    echo "_Generated: $(date -u '+%Y-%m-%d %H:%M UTC')_"
+    echo ""
+
+    render_section "Assigned to me (non-draft)" "$assigned_filtered"
+    render_section "Mentions me" "$mentions_json"
+    render_section "Stalled approvals" "$stalled_filtered"
+    } | if [[ -n "$OUTPUT" ]]; then
+    tee "$OUTPUT"
+    echo "" >&2
+    echo "Written to ${OUTPUT}" >&2
+else
+    cat
+fi
