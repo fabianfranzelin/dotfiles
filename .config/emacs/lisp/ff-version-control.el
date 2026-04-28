@@ -129,19 +129,18 @@ Otherwise, open the repository's main page."
   (add-to-list 'savehist-additional-variables 'consult-gh--known-repos-list)
   ;; Enable default keybindings (e.g. for commenting on issues, prs, ...)
   (consult-gh-enable-default-keybindings)
+  :config
+  (require 'consult-gh-transient)
+  (customize-set-variable 'consult-gh-default-interactive-command #'consult-gh-transient)
+  (require 'ff-consult-gh-pr-inbox)
   :bind
   (:map global-map
         ("C-x G d" . consult-gh-dashboard)
         ("C-x G a" . consult-gh-auth-switch)
         ("C-x G f" . consult-gh-search-repos)
         ("C-x G p" . consult-gh-pr-list)
-        ("C-x G c" . consult-gh-pr-create)))
-
-(with-eval-after-load 'consult-gh
-  (require 'consult-gh-transient)
-  (customize-set-variable 'consult-gh-default-interactive-command #'consult-gh-transient)
-  (require 'ff-consult-gh-pr-inbox)
-  (keymap-global-set "C-x G m" 'consult-gh-pr-inbox))
+        ("C-x G c" . consult-gh-pr-create)
+        ("C-x G m" . consult-gh-pr-inbox)))
 
 (use-package consult-gh-embark
   :after consult-gh
