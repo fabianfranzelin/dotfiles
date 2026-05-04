@@ -37,6 +37,8 @@ alias la='ls -1F --color=auto -a'
 alias ll='ls -1F --color=auto -altrh'
 alias lla='ls -1F --color=auto -lha'
 
+alias dud='du -d 1 -h'
+
 alias .2='cd ../..'
 alias .3='cd ../../..'
 alias .4='cd ../../../..'

@@ -83,13 +83,6 @@ install_zsh()
         )
     fi
 
-    ZSH_COMPLETION="${ZSH}/completions"
-    mkdir -p "${ZSH_COMPLETION}"
-    (
-        cd "${ZSH_COMPLETION}" || exit 1
-        curl https://raw.githubusercontent.com/bazelbuild/bazel/master/scripts/zsh_completion/_bazel -o _bazel
-    )
-
     echo "Make zsh the default shell"
     sudo chsh -s "$(which zsh)" "${USER}"
 }
