@@ -146,7 +146,12 @@ INPUT is passed as extra arguments to \"gh search prs\"."
   "Source for PRs assigned to user (open, non-draft).")
 
 (defun consult-gh--pr-inbox-mentions-builder (input)
-  "Find open PRs that mention configured user.
+  "Find open PRs that mention configured user, excluding approved ones.
+
+Fetches PRs mentioning the user, then filters out any PR where the user's
+current review status is approved.  This is done via a shell pipeline that
+runs a `gh search prs' query and a GraphQL query for PRs approved by the
+user, then excludes the intersection.
 
 Uses `consult-gh-pr-inbox-user' for the mentions filter (default \"@me\").
 Uses `consult-gh-pr-inbox-repo' for repository filter (default nil = all repos).
@@ -157,30 +162,61 @@ INPUT is passed as extra arguments to \"gh search prs\"."
                (reason (if (string= user "@me")
                            "Mentions me"
                          (format "Mentions %s" user)))
+               (template (concat "{{range .}}"
+                                 "true" "      "
+                                 "{{.repository.nameWithOwner}}" "      "
+                                 "{{.title}}" "      "
+                                 "{{.number}}" "      "
+                                 "{{.state}}" "      "
+                                 "{{.updatedAt}}" "      "
+                                 "{{.labels}}" "      "
+                                 "{{.url}}" "      "
+                                 "{{.commentsCount}}" "      "
+                                 reason
+                                 "{{\"\\n\"}}" "{{end}}"))
                (cmd (append consult-gh-args
                             (list "search" "prs"
                                   "--sort" "updated"
                                   "--mentions" user
                                   "--state" "open"
                                   "--json" "repository,title,number,labels,updatedAt,state,url,commentsCount"
-                                  "--template" (concat "{{range .}}"
-                                                       "true" "      "
-                                                       "{{.repository.nameWithOwner}}" "      "
-                                                       "{{.title}}" "      "
-                                                       "{{.number}}" "      "
-                                                       "{{.state}}" "      "
-                                                       "{{.updatedAt}}" "      "
-                                                       "{{.labels}}" "      "
-                                                       "{{.url}}" "      "
-                                                       "{{.commentsCount}}" "      "
-                                                       reason
-                                                       "\n" "{{end}}"))
+                                  "--template" template)
                             (when repo (list "--repo" repo))))
                (`(,arg . ,opts) (consult-gh--split-command input))
                (flags (append cmd opts)))
     (unless (or (member "-L" flags) (member "--limit" flags))
       (setq opts (append opts (list "--limit" (format "%s" consult-gh-pr-maxnum)))))
-    (cons (append cmd opts (remove nil (list arg))) nil)))
+    (let* ((main-args (append cmd opts (remove nil (list arg))))
+           (main-cmd (consult-gh--pr-inbox-shell-join main-args))
+           (limit (format "%s" (min consult-gh-pr-maxnum 100)))
+           (gh (car consult-gh-args))
+           (mentions-query (if repo
+                               (format "is:pr is:open mentions:%s repo:%s" user repo)
+                             (format "is:pr is:open mentions:%s" user)))
+           (graphql-query (format "{search(query:\"%s\",type:ISSUE,first:%s){nodes{...on PullRequest{number repository{nameWithOwner}reviews(first:100,states:APPROVED){nodes{author{login}}}}}}}"
+                                  mentions-query limit))
+           (script (concat
+                    ;; Resolve @me to actual login for GraphQL author matching
+                    "login=$("
+                    (consult-gh--pr-inbox-shell-join
+                     (list gh "api" "user" "--jq" ".login"))
+                    "); "
+                    ;; Fetch approved PRs via GraphQL (checks actual review history)
+                    "approved=$("
+                    (consult-gh--pr-inbox-shell-join
+                     (list gh "api" "graphql" "-f" (concat "query=" graphql-query)))
+                    " --jq '.data.search.nodes[] | select(.reviews.nodes | map(select(.author.login == \"'\"$login\"'\")) | length > 0) | .repository.nameWithOwner + \"#\" + (.number|tostring)' 2>/dev/null)"
+                    "; "
+                    ;; Fetch mentioned PRs and filter out approved ones
+                    main-cmd
+                    " | while IFS= read -r line; do"
+                    " repo=$(printf '%s' \"$line\" | awk -F'      ' '{print $2}');"
+                    " num=$(printf '%s' \"$line\" | awk -F'      ' '{print $4}');"
+                    " if [ -z \"$approved\" ] || ! printf '%s\\n' \"$approved\" | grep -qxF \"${repo}#${num}\"; then"
+                    " printf '%s\\n' \"$line\";"
+                    " fi;"
+                    " done")))
+      (cons (list "bash" "-c" script) nil))))
 
 (defvar consult-gh--pr-inbox-mentions-source
   (list :name "Mentions me"

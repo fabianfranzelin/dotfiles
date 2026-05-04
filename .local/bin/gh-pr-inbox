@@ -3,7 +3,7 @@
 #
 # Sources:
 #   1. Assigned to me (non-draft) — excludes PRs I've already approved
-#   2. Mentions me
+#   2. Mentions me — excludes PRs I've already approved
 #   3. Stalled approvals — my approval was dismissed and I haven't re-approved
 #
 # Usage:
@@ -109,10 +109,38 @@ assigned_filtered=$(echo "$assigned_json" | jq -c --arg approved "$approved_set"
 ')
 
 ###############################################################################
-# 2. Mentions me
+# 2. Mentions me, excluding PRs I've approved
 ###############################################################################
 
+mentions_query="is:pr is:open mentions:${USER}${repo_filter}"
+
+# GraphQL: find which mentioned PRs I have an APPROVED review on
+mentions_approved_set=$(
+    gh api graphql -f query="{
+        search(query:\"${mentions_query}\",type:ISSUE,first:${GQL_LIMIT}){
+            nodes{...on PullRequest{
+                number
+                repository{nameWithOwner}
+                reviews(first:100,states:APPROVED){nodes{author{login}}}
+            }}
+        }
+    }" --jq "
+        .data.search.nodes[]
+        | select(.reviews.nodes | map(select(.author.login == \"${LOGIN}\")) | length > 0)
+        | .repository.nameWithOwner + \"#\" + (.number|tostring)
+    " 2>/dev/null || true
+)
+
 mentions_json=$(search_prs --mentions "$USER")
+
+# Filter out approved PRs
+mentions_filtered=$(echo "$mentions_json" | jq -c --arg approved "$mentions_approved_set" '
+    ($approved | split("\n") | map(select(. != ""))) as $list |
+    [ .[] | select(
+        (.repository.nameWithOwner + "#" + (.number|tostring)) as $key |
+        ($list | index($key) | not)
+    )]
+')
 
 ###############################################################################
 # 3. Stalled approvals
@@ -188,7 +216,7 @@ render_section() {
     echo ""
 
     render_section "Assigned to me (non-draft)" "$assigned_filtered"
-    render_section "Mentions me" "$mentions_json"
+    render_section "Mentions me" "$mentions_filtered"
     render_section "Stalled approvals" "$stalled_filtered"
     } | if [[ -n "$OUTPUT" ]]; then
     tee "$OUTPUT"
