@@ -346,7 +346,7 @@ Example usage: (message (my/tramp-call-process-direct \"your-remote-host.com\" \
 (use-package transpose-frame
   :bind
   (:map global-map
-        ("C-c b t" . transpose-frame)))
+        ("C-c t" . transpose-frame)))
 
 ;; -------------------------------------------------------------------
 ;; Set up dired with async

@@ -26,6 +26,7 @@
   (rst-mode . eglot-ensure)
   (markdown-mode . eglot-ensure)
   (robot-mode . eglot-ensure)
+  (bazel-mode . eglot-ensure)
   :custom
   (eglot-events-buffer-size 10)
   :config
@@ -498,10 +499,46 @@ FORCE: force update of grammars"
 
 (use-package bazel
   :mode (("\\.bzl\\'" . bazel-mode)
-         ("BUILD\\'" . bazel-mode))
-  :custom
-  (bazel-mode-buildifier-before-save t))
+         ("BUILD\\'" . bazel-mode)
+         ("BUILD\\.bazel\\'" . bazel-mode)
+         ("WORKSPACE\\'" . bazel-mode)
+         ("WORKSPACE\\.bazel\\'" . bazel-mode))
+  :bind (:map
+         global-map
+         ("C-c b b" . bazel-build)
+         ("C-c b t" . bazel-test)
+         ("C-c b r" . bazel-run)
+         ("C-c b q" . bazel-query)
+         ("C-c b c" . bazel-coverage)
+         ("C-c b m" . ff/bazel-transient)))
 
+;; use apheleia for formatting instead of bazel-buildifier package
+(with-eval-after-load 'apheleia
+  (add-hook 'bazel-mode-hook 'apheleia-mode)
+  (setf (alist-get 'buildifier apheleia-formatters)
+        '("buildifier" filepath))
+  (setf (alist-get 'bazel-mode apheleia-mode-alist) 'buildifier))
+
+(with-eval-after-load 'eglot
+  ;; register starpls as lsp server for bazel-mode (starlark lsp)
+  (add-to-list 'eglot-server-programs '(bazel-mode "starpls")))
+
+;; Transient menu for Bazel (similar to VSCode command palette)
+(transient-define-prefix ff/bazel-transient ()
+  "Bazel commands."
+  ["Bazel"
+   ["Build/Test/Run"
+    ("b" "Build" bazel-build)
+    ("t" "Test" bazel-test)
+    ("r" "Run" bazel-run)
+    ("c" "Coverage" bazel-coverage)]
+   ["Query"
+    ("q" "Query" bazel-query)]
+   ["Format"
+    ("f" "Format file" (lambda () (interactive) (apheleia-format-buffer)))
+    ("F" "Format all BUILD files" (lambda ()
+                                    (interactive)
+                                    (shell-command "find . -type f \\( -name BUILD -o -name BUILD.bazel \\) -exec buildifier {} +")))]])
 
 ;; -----------------------------------------------------------------------------------
 ;; CSV mode

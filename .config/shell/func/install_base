@@ -65,7 +65,8 @@ install_apt_packages() {
         mosh \
         protobuf-compiler \
         pavucontrol \
-        caffeine
+        caffeine \
+        golang
 
     sudo apt-get install watchdog -y || true
     # This is required by the ssh config to identify whether pauline
@@ -129,35 +130,35 @@ install_python_packages() {
 
     # Update python setuptools to latest release from pypi
     # python3 -m pip install --upgrade \
-    #     pip \
-    #     wheel \
-    #     setuptools
+        #     pip \
+        #     wheel \
+        #     setuptools
 
     # Install uv as default package manager for Python
     curl -LsSf https://astral.sh/uv/install.sh | sh
 
     # additional python dependencies
     # python3 -m pip install --upgrade \
-    #     virtualenv \
-    #     ptvsd \
-    #     black \
-    #     isort \
-    #     yamllint \
-    #     mdformat \
-    #     cmake \
-    #     cmake_language_server \
-    #     "python-lsp-server[all]" \
-    #     pylsp-mypy \
-    #     python-lsp-black \
-    #     esbonio==0.16.4 \
-    #     robotframework-tidy \
-    #     ipython \
-    #     gitpython \
-    #     pytest \
-    #     jupyter \
-    #     beautysh \
-    #     robotframework-robocop==4.2.2 \
-    #     debugpy
+        #     virtualenv \
+        #     ptvsd \
+        #     black \
+        #     isort \
+        #     yamllint \
+        #     mdformat \
+        #     cmake \
+        #     cmake_language_server \
+        #     "python-lsp-server[all]" \
+        #     pylsp-mypy \
+        #     python-lsp-black \
+        #     esbonio==0.16.4 \
+        #     robotframework-tidy \
+        #     ipython \
+        #     gitpython \
+        #     pytest \
+        #     jupyter \
+        #     beautysh \
+        #     robotframework-robocop==4.2.2 \
+        #     debugpy
 }
 
 install_packages_manually() {
@@ -280,6 +281,47 @@ install_packages_manually() {
         tar -xf "${BABASHKA_SRC_FILE_NAME}.tar.gz"
         chmod +x bb
         mv bb "${HOME}/.local/bin"
+    )
+
+    # install buildifier (bazel formatter)
+    BUILDIFIER_VER="8.5.1"
+    BUILDIFIER_BIN="buildifier-linux-amd64"
+    BUILDIFIER_URL="https://github.com/bazelbuild/buildtools/releases/download/v${BUILDIFIER_VER}/${BUILDIFIER_BIN}"
+    (
+        mkdir -p "${HOME}/.local/bin"
+        cd "${HOME}/.local/bin" || exit 1
+        echo -e "${__COLOR_INFO}INFO: Downloading buildifier v${BUILDIFIER_VER}${__COLOR_RESET}"
+        wget -O buildifier "${BUILDIFIER_URL}"
+        chmod +x buildifier
+    )
+
+    # install bazelisk (bazel version manager/launcher)
+    BAZELISK_VER="1.28.1"
+    BAZELISK_BIN="bazelisk-linux-amd64"
+    BAZELISK_URL="https://github.com/bazelbuild/bazelisk/releases/download/v${BAZELISK_VER}/${BAZELISK_BIN}"
+    (
+        mkdir -p "${HOME}/.local/bin"
+        cd "${HOME}/.local/bin" || exit 1
+        echo -e "${__COLOR_INFO}INFO: Downloading bazelisk v${BAZELISK_VER}${__COLOR_RESET}"
+        wget -O bazel "${BAZELISK_URL}"
+        chmod +x bazel
+    )
+
+    # install starpls (starlark language server)
+    STARPLS_VER="0.1.22"
+    case "$(uname -m)" in
+        x86_64) STARPLS_ARCH="linux-amd64" ;;
+        aarch64|arm64) STARPLS_ARCH="linux-aarch64" ;;
+        *) echo "Unsupported architecture for starpls"; exit 1 ;;
+    esac
+    STARPLS_BIN="starpls-${STARPLS_ARCH}"
+    STARPLS_URL="https://github.com/withered-magic/starpls/releases/download/v${STARPLS_VER}/${STARPLS_BIN}"
+    (
+        mkdir -p "${HOME}/.local/bin"
+        cd "${HOME}/.local/bin" || exit 1
+        echo -e "${__COLOR_INFO}INFO: Downloading starpls v${STARPLS_VER}${__COLOR_RESET}"
+        wget -O starpls "${STARPLS_URL}"
+        chmod +x starpls
     )
 }
 
