@@ -77,13 +77,13 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(cp # rsync with cpv
-         zsh-autosuggestions
-         zsh-syntax-highlighting
-         zsh-navigation-tools
-         you-should-use
-         sudo # ESC-ESC puts sudo in front of last command
-         z # quickly navigating through stuff
-        )
+    zsh-autosuggestions
+    zsh-syntax-highlighting
+    zsh-navigation-tools
+    you-should-use
+    sudo # ESC-ESC puts sudo in front of last command
+    z # quickly navigating through stuff
+)
 
 # shellcheck source=oh-my-zsh.sh
 . "${ZSH}/oh-my-zsh.sh"
@@ -94,12 +94,12 @@ plugins=(cp # rsync with cpv
 
 ### Fix slowness of pastes with zsh-syntax-highlighting.zsh
 pasteinit() {
-  OLD_SELF_INSERT=${${(s.:.)widgets[self-insert]}[2,3]}
-  zle -N self-insert url-quote-magic # I wonder if you'd need `.url-quote-magic`?
+    OLD_SELF_INSERT=${${(s.:.)widgets[self-insert]}[2,3]}
+    zle -N self-insert url-quote-magic # I wonder if you'd need `.url-quote-magic`?
 }
 
 pastefinish() {
-  zle -N self-insert $OLD_SELF_INSERT
+    zle -N self-insert $OLD_SELF_INSERT
 }
 zstyle :bracketed-paste-magic paste-init pasteinit
 zstyle :bracketed-paste-magic paste-finish pastefinish

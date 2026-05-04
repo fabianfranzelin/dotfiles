@@ -29,6 +29,7 @@ install_zsh()
         git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${POWERLEVEL10K_HOME}"
     else
         (
+            echo "Pull updates for powerlevel10k"
             cd "${POWERLEVEL10K_HOME}" || exit 1
             git pull
         )
@@ -40,6 +41,7 @@ install_zsh()
         git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_AUTOSUGGESTION_HOME}"
     else
         (
+            echo "Pull updates for autosuggestions"
             cd "${ZSH_AUTOSUGGESTION_HOME}" || exit 1
             git pull
         )
@@ -51,6 +53,7 @@ install_zsh()
         git clone https://github.com/zsh-users/zsh-syntax-highlighting "${ZSH_SYNTAX_HIGHLIGHTING}"
     else
         (
+            echo "Pull updates for syntax highlighting"
             cd "${ZSH_SYNTAX_HIGHLIGHTING}" || exit 1
             git pull
         )
@@ -62,10 +65,30 @@ install_zsh()
         git clone https://github.com/MichaelAquilina/zsh-you-should-use "${ZSH_YOU_SHOULD_USE}"
     else
         (
+            echo "Pull updates for you should use"
             cd "${ZSH_YOU_SHOULD_USE}" || exit 1
             git pull
         )
     fi
+
+    ZSH_AUTOCOMPLETION="${ZSH}/custom/plugins/zsh-autocomplete"
+    if [ ! -d "${ZSH_AUTOCOMPLETION}" ]
+    then
+        git clone https://github.com/marlonrichert/zsh-autocomplete "${ZSH_AUTOCOMPLETION}"
+    else
+        (
+            echo "Pull updates for autocompletion"
+            cd "${ZSH_AUTOCOMPLETION}" || exit 1
+            git pull
+        )
+    fi
+
+    ZSH_COMPLETION="${ZSH}/completions"
+    mkdir -p "${ZSH_COMPLETION}"
+    (
+        cd "${ZSH_COMPLETION}" || exit 1
+        curl https://raw.githubusercontent.com/bazelbuild/bazel/master/scripts/zsh_completion/_bazel -o _bazel
+    )
 
     echo "Make zsh the default shell"
     sudo chsh -s "$(which zsh)" "${USER}"
