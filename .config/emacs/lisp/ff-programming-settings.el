@@ -442,6 +442,8 @@ FORCE: force update of grammars"
 (add-to-list 'major-mode-remap-alist '(html-mode . html-ts-mode))
 (add-to-list 'major-mode-remap-alist '(mhtml-mode . html-ts-mode))
 
+(define-key html-ts-mode-map (kbd "M-o") nil)
+
 ;; -------------------------------------------------------------------
 ;; SQLite
 ;; -------------------------------------------------------------------
@@ -523,10 +525,10 @@ FORCE: force update of grammars"
   ;; register starpls as lsp server for bazel-mode (starlark lsp)
   (add-to-list 'eglot-server-programs
                '(bazel-mode .
-                 ("starpls" "server"
-                  "--experimental_infer_ctx_attributes"
-                  "--experimental_use_code_flow_analysis"
-                  "--experimental_enable_label_completions"))))
+                            ("starpls" "server"
+                             "--experimental_infer_ctx_attributes"
+                             "--experimental_use_code_flow_analysis"
+                             "--experimental_enable_label_completions"))))
 
 ;; Transient menu for Bazel (similar to VSCode command palette)
 (transient-define-prefix ff/bazel-transient ()
