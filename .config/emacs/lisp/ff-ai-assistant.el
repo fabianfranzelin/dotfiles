@@ -78,7 +78,8 @@
 (use-package agent-review
   :straight (agent-review :type git :host github :repo "nineluj/agent-review")
   :bind (:map global-map
-              ("C-c r" . agent-review)))
+              ("C-c r" . agent-review)
+              ("C-x a s" . agent-shell)))
 
 (provide 'ff-ai-assistant)
 
