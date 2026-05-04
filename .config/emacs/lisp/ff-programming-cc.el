@@ -90,7 +90,8 @@ REPLACE-STR: string that replaces all regex matches"
                                            "--completion-style=detailed"
                                            "--pch-storage=memory"
                                            "--header-insertion=never"
-                                           "--header-insertion-decorators=0"))))
+                                           "--header-insertion-decorators=0"
+                                           "--query-driver=**"))))
 
 ;; use tree-sitter as default and overwrite all C/C++ modes
 (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))

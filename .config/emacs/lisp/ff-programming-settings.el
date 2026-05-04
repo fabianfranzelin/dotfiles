@@ -521,7 +521,12 @@ FORCE: force update of grammars"
 
 (with-eval-after-load 'eglot
   ;; register starpls as lsp server for bazel-mode (starlark lsp)
-  (add-to-list 'eglot-server-programs '(bazel-mode "starpls")))
+  (add-to-list 'eglot-server-programs
+               '(bazel-mode .
+                 ("starpls" "server"
+                  "--experimental_infer_ctx_attributes"
+                  "--experimental_use_code_flow_analysis"
+                  "--experimental_enable_label_completions"))))
 
 ;; Transient menu for Bazel (similar to VSCode command palette)
 (transient-define-prefix ff/bazel-transient ()

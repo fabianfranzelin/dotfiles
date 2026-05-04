@@ -1,9 +1,17 @@
 ;;; Directory Local Variables
 ;;; For more information see (info "(emacs) Directory Variables")
 
-((nil . ((compile-command . "cd ./examples/cc-project/build && make -j$(nproc)")
+((nil . ((compile-command . "cd ./examples/cc-project && bazel build //:main && bazel run //:refresh_compile_commands")
          (eval . (defun run-command-recipe-ff/c++-example ()
                    (append
+                    (when-let* ((project-dir (locate-dominating-file default-directory "MODULE.bazel")))
+                      (list
+                       (list :command-name "bazel:build //:main"
+                             :command-line "bazel build //:main && bazel run //:refresh_compile_commands"
+                             :working-dir project-dir)
+                       (list :command-name "bazel:run //:main"
+                             :command-line "bazel run //:main"
+                             :working-dir project-dir)))
                     (when-let* ((project-dir (locate-dominating-file default-directory ".clangd")))
                       (list (list :command-name "cc:cmake main"
                                   :command-line "mkdir -p build && cd build && cmake .."
