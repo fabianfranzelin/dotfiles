@@ -86,6 +86,10 @@ export PASSWORD_STORE_DIR_RELATIVE
 PASSWORD_STORE_DIR_RELATIVE="$(echo "${PASSWORD_STORE_DIR}" | sed "s|^${HOME}/||")"
 
 #------------------------------------------------------------------------------#
+# Bazel
+export USE_BAZEL_VERSION="8.5.1"
+
+#------------------------------------------------------------------------------#
 # Load specific settings per workstation
 __HOST_SETTINGS="${__SHELL_LIB}/workstations/$(hostname).sh"
 [ -f "${__HOST_SETTINGS}" ] && . "${__HOST_SETTINGS}"
