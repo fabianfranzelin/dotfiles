@@ -11,8 +11,11 @@
 (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
-;; NOTE: tool-bar, menu-bar, and scroll-bar are already disabled via
-;; default-frame-alist in early-init.el
+(setq inhibit-startup-message t)
+(push '(tool-bar-lines . 0) default-frame-alist)
+(push '(menu-bar-lines . 0) default-frame-alist)
+(push '(vertical-scroll-bars) default-frame-alist)
+(push '(mouse-color . "white") default-frame-alist)
 
 ;; set cursor style to filled bar
 (customize-set-variable 'cursor-type 'box)
