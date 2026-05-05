@@ -122,7 +122,8 @@ https://github.com/akermu/emacs-libvterm/issues/518"
                      (vterm-send-string pwd))
                  (message "No password found under %s" pwd-store-entry))))
             (t
-             (comint-send-invisible "Enter password: ")))
+             (let ((pwd (read-passwd "Enter password: ")))
+               (vterm-send-string pwd))))
       (vterm-send-C-j)
       (clear-this-command-keys))))
 

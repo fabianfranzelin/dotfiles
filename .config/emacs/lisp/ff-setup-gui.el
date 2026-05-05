@@ -222,12 +222,11 @@ FUN: function to be called on the entry's path"
 
 (defun ff/setup-frame-font ()
   "Choose best available font."
-  (let ((my-font "JetBrains Mono NL"))
-    (when (ff/font-available-p my-font)
-      (set-face-attribute 'default nil :font my-font)
+  (let ((my-font "JetBrains Mono NL-12.5"))
+    (when (ff/font-available-p "JetBrains Mono NL")
+      (set-face-attribute 'default nil :font my-font :height 125)
       (add-to-list 'default-frame-alist `(font . ,my-font))
-      (set-frame-font my-font nil t)
-      (set-face-attribute 'default nil :height 125))))
+      (set-frame-font my-font nil t))))
 
 (when (not (ff/is-mobile))
   (ff/setup-frame-font))
