@@ -57,10 +57,8 @@ Falls back to `consult-gh-default-host' if auth cannot be determined."
 (defun consult-gh--pr-inbox-assigned-builder (input)
   "Find open non-draft PRs assigned to configured user, excluding approved ones.
 
-Fetches PRs assigned to the user, then filters out any PR where the user's
-current review status is approved.  This is done via a shell pipeline that
-runs two `gh search prs' queries: one for assigned PRs and one for PRs
-approved by the user, then excludes the intersection.
+Uses a single GraphQL query to fetch assigned PRs and their latest review
+state, then filters out PRs where the user's current review is APPROVED.
 
 Uses `consult-gh-pr-inbox-user' for the assignee filter (default \"@me\").
 Uses `consult-gh-pr-inbox-repo' for repository filter (default nil = all repos).
@@ -71,60 +69,37 @@ INPUT is passed as extra arguments to \"gh search prs\"."
                (reason (if (string= user "@me")
                            "Assigned to me"
                          (format "Assigned to %s" user)))
-               (template (concat "{{range .}}"
-                                 "true" "      "
-                                 "{{.repository.nameWithOwner}}" "      "
-                                 "{{.title}}" "      "
-                                 "{{.number}}" "      "
-                                 "{{.state}}" "      "
-                                 "{{.updatedAt}}" "      "
-                                 "{{.labels}}" "      "
-                                 "{{.url}}" "      "
-                                 "{{.commentsCount}}" "      "
-                                 reason
-                                 "{{\"\\n\"}}" "{{end}}"))
-               (cmd (append consult-gh-args
-                            (list "search" "prs"
-                                  "--sort" "updated"
-                                  "--assignee" user
-                                  "--state" "open"
-                                  "--json" "repository,title,number,labels,updatedAt,state,url,commentsCount"
-                                  "--template" template)
-                            (when repo (list "--repo" repo))))
-               (`(,arg . ,opts) (consult-gh--split-command input))
-               (flags (append cmd opts)))
-    (unless (or (member "-L" flags) (member "--limit" flags))
-      (setq opts (append opts (list "--limit" (format "%s" consult-gh-pr-maxnum)))))
-    (let* ((main-args (append cmd opts (remove nil (list arg)) (list "--" "-is:draft")))
-           (main-cmd (consult-gh--pr-inbox-shell-join main-args))
-           (limit (format "%s" (min consult-gh-pr-maxnum 100)))
+               (`(,_arg . ,_opts) (consult-gh--split-command input)))
+    (let* ((limit (format "%s" (min consult-gh-pr-maxnum 100)))
            (gh (car consult-gh-args))
-           (assignee-query (if repo
-                               (format "is:pr is:open assignee:%s -is:draft repo:%s" user repo)
-                             (format "is:pr is:open assignee:%s -is:draft" user)))
-           (graphql-query (format "{search(query:\"%s\",type:ISSUE,first:%s){nodes{...on PullRequest{number repository{nameWithOwner}reviews(first:100,states:APPROVED){nodes{author{login}}}}}}}"
-                                  assignee-query limit))
+           (sep "\\u2006\\u2006\\u2006\\u2006\\u2006\\u2006")
+           (search-query (concat "is:pr is:open assignee:" user " -is:draft"
+                                 " sort:updated"
+                                 (when repo (concat " repo:" repo))))
+           (graphql-query (format (concat
+                                   "{viewer{login}"
+                                   " search(query:\"%s\",type:ISSUE,first:%s){"
+                                   "nodes{...on PullRequest{"
+                                   "number repository{nameWithOwner} title state updatedAt url"
+                                   " labels(first:10){nodes{name}}"
+                                   " comments{totalCount}"
+                                   " latestReviews(first:50){nodes{author{login}state}}"
+                                   "}}}}")
+                                  search-query limit))
+           (jq-filter (concat
+                       ".data.viewer.login as $login"
+                       " | .data.search.nodes[]"
+                       " | select(.latestReviews.nodes | map(select(.author.login == $login and .state == \"APPROVED\")) | length == 0)"
+                        " | \"true" sep "\" + .repository.nameWithOwner + \"" sep "\" + .title + \"" sep "\" + (.number|tostring)"
+                       " + \"" sep "\" + .state + \"" sep "\" + .updatedAt"
+                       " + \"" sep "\" + (if (.labels.nodes | length) > 0 then \"[\" + ([.labels.nodes[] | \"map[name:\" + .name + \"]\"] | join(\" \")) + \"]\" else \"\" end)"
+                       " + \"" sep "\" + .url + \"" sep "\" + (.comments.totalCount|tostring)"
+                       " + \"" sep reason "\""))
            (script (concat
-                    ;; Resolve @me to actual login for GraphQL author matching
-                    "login=$("
                     (consult-gh--pr-inbox-shell-join
-                     (list gh "api" "user" "--jq" ".login"))
-                    "); "
-                    ;; Fetch approved PRs via GraphQL (checks actual review history)
-                    "approved=$("
-                    (consult-gh--pr-inbox-shell-join
-                     (list gh "api" "graphql" "-f" (concat "query=" graphql-query)))
-                    " --jq '.data.search.nodes[] | select(.reviews.nodes | map(select(.author.login == \"'\"$login\"'\")) | length > 0) | .repository.nameWithOwner + \"#\" + (.number|tostring)' 2>/dev/null)"
-                    "; "
-                    ;; Fetch assigned PRs and filter out approved ones
-                    main-cmd
-                    " | while IFS= read -r line; do"
-                    " repo=$(printf '%s' \"$line\" | awk -F'      ' '{print $2}');"
-                    " num=$(printf '%s' \"$line\" | awk -F'      ' '{print $4}');"
-                    " if [ -z \"$approved\" ] || ! printf '%s\\n' \"$approved\" | grep -qxF \"${repo}#${num}\"; then"
-                    " printf '%s\\n' \"$line\";"
-                    " fi;"
-                    " done")))
+                     (list gh "api" "graphql" "-f" (concat "query=" graphql-query)
+                           "--jq" jq-filter))
+                    " 2>/dev/null")))
       (cons (list "bash" "-c" script) nil))))
 
 (defvar consult-gh--pr-inbox-assigned-source
@@ -148,10 +123,8 @@ INPUT is passed as extra arguments to \"gh search prs\"."
 (defun consult-gh--pr-inbox-mentions-builder (input)
   "Find open PRs that mention configured user, excluding approved ones.
 
-Fetches PRs mentioning the user, then filters out any PR where the user's
-current review status is approved.  This is done via a shell pipeline that
-runs a `gh search prs' query and a GraphQL query for PRs approved by the
-user, then excludes the intersection.
+Uses a single GraphQL query to fetch mentioned PRs and their latest review
+state, then filters out PRs where the user's current review is APPROVED.
 
 Uses `consult-gh-pr-inbox-user' for the mentions filter (default \"@me\").
 Uses `consult-gh-pr-inbox-repo' for repository filter (default nil = all repos).
@@ -162,60 +135,37 @@ INPUT is passed as extra arguments to \"gh search prs\"."
                (reason (if (string= user "@me")
                            "Mentions me"
                          (format "Mentions %s" user)))
-               (template (concat "{{range .}}"
-                                 "true" "      "
-                                 "{{.repository.nameWithOwner}}" "      "
-                                 "{{.title}}" "      "
-                                 "{{.number}}" "      "
-                                 "{{.state}}" "      "
-                                 "{{.updatedAt}}" "      "
-                                 "{{.labels}}" "      "
-                                 "{{.url}}" "      "
-                                 "{{.commentsCount}}" "      "
-                                 reason
-                                 "{{\"\\n\"}}" "{{end}}"))
-               (cmd (append consult-gh-args
-                            (list "search" "prs"
-                                  "--sort" "updated"
-                                  "--mentions" user
-                                  "--state" "open"
-                                  "--json" "repository,title,number,labels,updatedAt,state,url,commentsCount"
-                                  "--template" template)
-                            (when repo (list "--repo" repo))))
-               (`(,arg . ,opts) (consult-gh--split-command input))
-               (flags (append cmd opts)))
-    (unless (or (member "-L" flags) (member "--limit" flags))
-      (setq opts (append opts (list "--limit" (format "%s" consult-gh-pr-maxnum)))))
-    (let* ((main-args (append cmd opts (remove nil (list arg))))
-           (main-cmd (consult-gh--pr-inbox-shell-join main-args))
-           (limit (format "%s" (min consult-gh-pr-maxnum 100)))
+               (`(,_arg . ,_opts) (consult-gh--split-command input)))
+    (let* ((limit (format "%s" (min consult-gh-pr-maxnum 100)))
            (gh (car consult-gh-args))
-           (mentions-query (if repo
-                               (format "is:pr is:open mentions:%s repo:%s" user repo)
-                             (format "is:pr is:open mentions:%s" user)))
-           (graphql-query (format "{search(query:\"%s\",type:ISSUE,first:%s){nodes{...on PullRequest{number repository{nameWithOwner}reviews(first:100,states:APPROVED){nodes{author{login}}}}}}}"
-                                  mentions-query limit))
+           (sep "\\u2006\\u2006\\u2006\\u2006\\u2006\\u2006")
+           (search-query (concat "is:pr is:open mentions:" user
+                                 " sort:updated"
+                                 (when repo (concat " repo:" repo))))
+           (graphql-query (format (concat
+                                   "{viewer{login}"
+                                   " search(query:\"%s\",type:ISSUE,first:%s){"
+                                   "nodes{...on PullRequest{"
+                                   "number repository{nameWithOwner} title state updatedAt url"
+                                   " labels(first:10){nodes{name}}"
+                                   " comments{totalCount}"
+                                   " latestReviews(first:50){nodes{author{login}state}}"
+                                   "}}}}")
+                                  search-query limit))
+           (jq-filter (concat
+                       ".data.viewer.login as $login"
+                       " | .data.search.nodes[]"
+                       " | select(.latestReviews.nodes | map(select(.author.login == $login and .state == \"APPROVED\")) | length == 0)"
+                       " | \"true" sep "\" + .repository.nameWithOwner + \"" sep "\" + .title + \"" sep "\" + (.number|tostring)"
+                       " + \"" sep "\" + .state + \"" sep "\" + .updatedAt"
+                       " + \"" sep "\" + (if (.labels.nodes | length) > 0 then \"[\" + ([.labels.nodes[] | \"map[name:\" + .name + \"]\"] | join(\" \")) + \"]\" else \"\" end)"
+                       " + \"" sep "\" + .url + \"" sep "\" + (.comments.totalCount|tostring)"
+                       " + \"" sep reason "\""))
            (script (concat
-                    ;; Resolve @me to actual login for GraphQL author matching
-                    "login=$("
                     (consult-gh--pr-inbox-shell-join
-                     (list gh "api" "user" "--jq" ".login"))
-                    "); "
-                    ;; Fetch approved PRs via GraphQL (checks actual review history)
-                    "approved=$("
-                    (consult-gh--pr-inbox-shell-join
-                     (list gh "api" "graphql" "-f" (concat "query=" graphql-query)))
-                    " --jq '.data.search.nodes[] | select(.reviews.nodes | map(select(.author.login == \"'\"$login\"'\")) | length > 0) | .repository.nameWithOwner + \"#\" + (.number|tostring)' 2>/dev/null)"
-                    "; "
-                    ;; Fetch mentioned PRs and filter out approved ones
-                    main-cmd
-                    " | while IFS= read -r line; do"
-                    " repo=$(printf '%s' \"$line\" | awk -F'      ' '{print $2}');"
-                    " num=$(printf '%s' \"$line\" | awk -F'      ' '{print $4}');"
-                    " if [ -z \"$approved\" ] || ! printf '%s\\n' \"$approved\" | grep -qxF \"${repo}#${num}\"; then"
-                    " printf '%s\\n' \"$line\";"
-                    " fi;"
-                    " done")))
+                     (list gh "api" "graphql" "-f" (concat "query=" graphql-query)
+                           "--jq" jq-filter))
+                    " 2>/dev/null")))
       (cons (list "bash" "-c" script) nil))))
 
 (defvar consult-gh--pr-inbox-mentions-source
@@ -243,8 +193,8 @@ This finds PRs where GitHub dismissed the user's approval (typically due
 to branch protection rules when new commits are pushed) and the user has
 not re-approved since.  PRs authored by the user are excluded.
 
-Uses a GraphQL query to accurately check per-user review history, then
-fetches matching PRs with `gh search prs' for consistent formatting.
+Uses a single GraphQL query to fetch reviewed PRs and their full review
+history, then filters to find stalled approvals.
 
 Uses `consult-gh-pr-inbox-user' for the reviewer filter (default \"@me\").
 Uses `consult-gh-pr-inbox-repo' for repository filter (default nil = all repos).
@@ -253,74 +203,44 @@ INPUT is passed as extra arguments to \"gh search prs\"."
   (pcase-let* ((user (or consult-gh-pr-inbox-user "@me"))
                (repo consult-gh-pr-inbox-repo)
                (reason "Stalled approval")
-               (template (concat "{{range .}}"
-                                 "true" "      "
-                                 "{{.repository.nameWithOwner}}" "      "
-                                 "{{.title}}" "      "
-                                 "{{.number}}" "      "
-                                 "{{.state}}" "      "
-                                 "{{.updatedAt}}" "      "
-                                 "{{.labels}}" "      "
-                                 "{{.url}}" "      "
-                                 "{{.commentsCount}}" "      "
-                                 reason
-                                 "{{\"\\n\"}}" "{{end}}"))
-               (cmd (append consult-gh-args
-                            (list "search" "prs"
-                                  "--sort" "updated"
-                                  "--reviewed-by" user
-                                  "--state" "open"
-                                  "--json" "repository,title,number,labels,updatedAt,state,url,commentsCount"
-                                  "--template" template)
-                            (when repo (list "--repo" repo))))
-               (`(,arg . ,opts) (consult-gh--split-command input))
-               (flags (append cmd opts)))
-    (unless (or (member "-L" flags) (member "--limit" flags))
-      (setq opts (append opts (list "--limit" (format "%s" consult-gh-pr-maxnum)))))
-    (let* ((main-args (append cmd opts (remove nil (list arg))
-                              (list "--" "-is:draft"
-                                    (format "-author:%s" user))))
-           (main-cmd (consult-gh--pr-inbox-shell-join main-args))
-           (limit (format "%s" (min consult-gh-pr-maxnum 100)))
+               (`(,_arg . ,_opts) (consult-gh--split-command input)))
+    (let* ((limit (format "%s" (min consult-gh-pr-maxnum 100)))
            (gh (car consult-gh-args))
+           (sep "\\u2006\\u2006\\u2006\\u2006\\u2006\\u2006")
            (search-query (concat "is:pr is:open reviewed-by:" user
-                                 " -is:draft"
-                                 " -author:" user
+                                 " -is:draft -author:" user
+                                 " sort:updated"
                                  (when repo (concat " repo:" repo))))
-           (graphql-query (format "{search(query:\"%s\",type:ISSUE,first:%s){nodes{...on PullRequest{number repository{nameWithOwner}reviews(first:100){nodes{author{login}state submittedAt}}}}}}"
+           (graphql-query (format (concat
+                                   "{viewer{login}"
+                                   " search(query:\"%s\",type:ISSUE,first:%s){"
+                                   "nodes{...on PullRequest{"
+                                   "number repository{nameWithOwner} title state updatedAt url"
+                                   " labels(first:10){nodes{name}}"
+                                   " comments{totalCount}"
+                                   " reviews(first:100){nodes{author{login}state submittedAt}}"
+                                   "}}}}")
                                   search-query limit))
+           (jq-filter (concat
+                       ".data.viewer.login as $login"
+                       " | .data.search.nodes[]"
+                       " | {pr: ., userReviews: [.reviews.nodes[] | select(.author.login == $login)]}"
+                       " | select([.userReviews[] | select(.state == \"DISMISSED\")] | length > 0)"
+                       " | {pr: .pr,"
+                       " lastDismissed: ([.userReviews[] | select(.state == \"DISMISSED\") | .submittedAt] | max),"
+                       " lastApproved: ([.userReviews[] | select(.state == \"APPROVED\") | .submittedAt] | max // \"\")}"
+                       " | select(.lastApproved == \"\" or .lastApproved < .lastDismissed)"
+                       " | .pr"
+                       " | \"true" sep "\" + .repository.nameWithOwner + \"" sep "\" + .title + \"" sep "\" + (.number|tostring)"
+                       " + \"" sep "\" + .state + \"" sep "\" + .updatedAt"
+                       " + \"" sep "\" + (if (.labels.nodes | length) > 0 then \"[\" + ([.labels.nodes[] | \"map[name:\" + .name + \"]\"] | join(\" \")) + \"]\" else \"\" end)"
+                       " + \"" sep "\" + .url + \"" sep "\" + (.comments.totalCount|tostring)"
+                       " + \"" sep reason "\""))
            (script (concat
-                    ;; Resolve @me to actual login for GraphQL author matching
-                    "login=$("
                     (consult-gh--pr-inbox-shell-join
-                     (list gh "api" "user" "--jq" ".login"))
-                    "); "
-                    ;; Find stalled PRs via GraphQL: user has a DISMISSED review
-                    ;; and no APPROVED review after the latest dismissal
-                    "stalled=$("
-                    (consult-gh--pr-inbox-shell-join
-                     (list gh "api" "graphql" "-f" (concat "query=" graphql-query)))
-                    " --jq '"
-                    ".data.search.nodes[]"
-                    " | {num: .number, repo: .repository.nameWithOwner,"
-                    " userReviews: [.reviews.nodes[] | select(.author.login == \"'\"$login\"'\")]}"
-                    " | select([.userReviews[] | select(.state == \"DISMISSED\")] | length > 0)"
-                    " | {num, repo,"
-                    " lastDismissed: ([.userReviews[] | select(.state == \"DISMISSED\") | .submittedAt] | max),"
-                    " lastApproved: ([.userReviews[] | select(.state == \"APPROVED\") | .submittedAt] | max // \"\")}"
-                    " | select(.lastApproved == \"\" or .lastApproved < .lastDismissed)"
-                    " | .repo + \"#\" + (.num|tostring)"
-                    "' 2>/dev/null)"
-                    "; "
-                    ;; Fetch reviewed PRs and keep only stalled ones
-                    main-cmd
-                    " | while IFS= read -r line; do"
-                    " repo=$(printf '%s' \"$line\" | awk -F'      ' '{print $2}');"
-                    " num=$(printf '%s' \"$line\" | awk -F'      ' '{print $4}');"
-                    " if [ -n \"$stalled\" ] && printf '%s\\n' \"$stalled\" | grep -qxF \"${repo}#${num}\"; then"
-                    " printf '%s\\n' \"$line\";"
-                    " fi;"
-                    " done")))
+                     (list gh "api" "graphql" "-f" (concat "query=" graphql-query)
+                           "--jq" jq-filter))
+                    " 2>/dev/null")))
       (cons (list "bash" "-c" script) nil))))
 
 (defvar consult-gh--pr-inbox-stalled-approvals-source

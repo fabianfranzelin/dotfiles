@@ -2,8 +2,8 @@
 # gh-pr-inbox — Generate a markdown file listing actionable PRs.
 #
 # Sources:
-#   1. Assigned to me (non-draft) — excludes PRs I've already approved
-#   2. Mentions me — excludes PRs I've already approved
+#   1. Assigned to me (non-draft) — excludes PRs I've currently approved
+#   2. Mentions me — excludes PRs I've currently approved
 #   3. Stalled approvals — my approval was dismissed and I haven't re-approved
 #
 # Usage:
@@ -34,150 +34,81 @@ done
 # Cap GraphQL first at 100
 GQL_LIMIT=$((LIMIT > 100 ? 100 : LIMIT))
 
-# Resolve login
-LOGIN=$(gh api user --jq '.login')
+repo_filter=""
+[[ -n "$REPO" ]] && repo_filter=" repo:$REPO"
+
+###############################################################################
+# Single GraphQL query fetching all data
+###############################################################################
+
+QUERY="{
+  viewer { login }
+  assigned: search(query:\"is:pr is:open assignee:${USER} -is:draft sort:updated${repo_filter}\", type:ISSUE, first:${GQL_LIMIT}) {
+    nodes { ...on PullRequest {
+      number repository { nameWithOwner } title state updatedAt url
+      author { login } labels(first:10) { nodes { name } }
+      comments { totalCount }
+      latestReviews(first:50) { nodes { author { login } state } }
+    }}
+  }
+  mentions: search(query:\"is:pr is:open mentions:${USER} sort:updated${repo_filter}\", type:ISSUE, first:${GQL_LIMIT}) {
+    nodes { ...on PullRequest {
+      number repository { nameWithOwner } title state updatedAt url
+      author { login } labels(first:10) { nodes { name } }
+      comments { totalCount }
+      latestReviews(first:50) { nodes { author { login } state } }
+    }}
+  }
+  stalled: search(query:\"is:pr is:open reviewed-by:${USER} -is:draft -author:${USER} sort:updated${repo_filter}\", type:ISSUE, first:${GQL_LIMIT}) {
+    nodes { ...on PullRequest {
+      number repository { nameWithOwner } title state updatedAt url
+      author { login } labels(first:10) { nodes { name } }
+      comments { totalCount }
+      reviews(first:100) { nodes { author { login } state submittedAt } }
+    }}
+  }
+}"
+
+RAW=$(gh api graphql -f query="$QUERY")
+
+LOGIN=$(echo "$RAW" | jq -r '.data.viewer.login')
 if [[ "$USER" == "@me" ]]; then
     DISPLAY_USER="$LOGIN"
 else
     DISPLAY_USER="$USER"
 fi
 
-repo_filter=""
-[[ -n "$REPO" ]] && repo_filter=" repo:$REPO"
-repo_flag=()
-[[ -n "$REPO" ]] && repo_flag=(--repo "$REPO")
-
-# Helper: run gh search prs and output JSON array.
-# Named flags go before --, qualifiers go after.
-# Usage: search_prs [--flag val ...] [-- qualifier ...]
-search_prs() {
-    local flags=() qualifiers=()
-    local seen_dashdash=false
-    for arg in "$@"; do
-        if [[ "$arg" == "--" ]]; then
-            seen_dashdash=true
-            continue
-        fi
-        if $seen_dashdash; then
-            qualifiers+=("$arg")
-        else
-            flags+=("$arg")
-        fi
-    done
-    gh search prs \
-        --state open \
-        --sort updated \
-        --limit "$LIMIT" \
-        --json repository,title,number,labels,updatedAt,state,url,commentsCount,author \
-        "${repo_flag[@]}" \
-        "${flags[@]}" \
-        -- "${qualifiers[@]}"
-}
-
 ###############################################################################
-# 1. Assigned to me (non-draft), excluding PRs I've approved
+# Filter assigned: exclude PRs where user's latest review is APPROVED
 ###############################################################################
 
-assigned_query="is:pr is:open assignee:${USER} -is:draft${repo_filter}"
-
-# GraphQL: find which assigned PRs I have an APPROVED review on
-approved_set=$(
-    gh api graphql -f query="{
-        search(query:\"${assigned_query}\",type:ISSUE,first:${GQL_LIMIT}){
-            nodes{...on PullRequest{
-                number
-                repository{nameWithOwner}
-                reviews(first:100,states:APPROVED){nodes{author{login}}}
-            }}
-        }
-    }" --jq "
-        .data.search.nodes[]
-        | select(.reviews.nodes | map(select(.author.login == \"${LOGIN}\")) | length > 0)
-        | .repository.nameWithOwner + \"#\" + (.number|tostring)
-    " 2>/dev/null || true
-)
-
-assigned_json=$(search_prs --assignee "$USER" -- -is:draft)
-
-# Filter out approved PRs
-assigned_filtered=$(echo "$assigned_json" | jq -c --arg approved "$approved_set" '
-    ($approved | split("\n") | map(select(. != ""))) as $list |
-    [ .[] | select(
-        (.repository.nameWithOwner + "#" + (.number|tostring)) as $key |
-        ($list | index($key) | not)
-    )]
+assigned_filtered=$(echo "$RAW" | jq -c --arg login "$LOGIN" '
+    [.data.assigned.nodes[] |
+     select(.latestReviews.nodes | map(select(.author.login == $login and .state == "APPROVED")) | length == 0)]
 ')
 
 ###############################################################################
-# 2. Mentions me, excluding PRs I've approved
+# Filter mentions: exclude PRs where user's latest review is APPROVED
 ###############################################################################
 
-mentions_query="is:pr is:open mentions:${USER}${repo_filter}"
-
-# GraphQL: find which mentioned PRs I have an APPROVED review on
-mentions_approved_set=$(
-    gh api graphql -f query="{
-        search(query:\"${mentions_query}\",type:ISSUE,first:${GQL_LIMIT}){
-            nodes{...on PullRequest{
-                number
-                repository{nameWithOwner}
-                reviews(first:100,states:APPROVED){nodes{author{login}}}
-            }}
-        }
-    }" --jq "
-        .data.search.nodes[]
-        | select(.reviews.nodes | map(select(.author.login == \"${LOGIN}\")) | length > 0)
-        | .repository.nameWithOwner + \"#\" + (.number|tostring)
-    " 2>/dev/null || true
-)
-
-mentions_json=$(search_prs --mentions "$USER")
-
-# Filter out approved PRs
-mentions_filtered=$(echo "$mentions_json" | jq -c --arg approved "$mentions_approved_set" '
-    ($approved | split("\n") | map(select(. != ""))) as $list |
-    [ .[] | select(
-        (.repository.nameWithOwner + "#" + (.number|tostring)) as $key |
-        ($list | index($key) | not)
-    )]
+mentions_filtered=$(echo "$RAW" | jq -c --arg login "$LOGIN" '
+    [.data.mentions.nodes[] |
+     select(.latestReviews.nodes | map(select(.author.login == $login and .state == "APPROVED")) | length == 0)]
 ')
 
 ###############################################################################
-# 3. Stalled approvals
+# Filter stalled: keep PRs where user has DISMISSED review with no later APPROVED
 ###############################################################################
 
-stalled_query="is:pr is:open reviewed-by:${USER} -is:draft -author:${USER}${repo_filter}"
-
-stalled_set=$(
-    gh api graphql -f query="{
-        search(query:\"${stalled_query}\",type:ISSUE,first:${GQL_LIMIT}){
-            nodes{...on PullRequest{
-                number
-                repository{nameWithOwner}
-                reviews(first:100){nodes{author{login} state submittedAt}}
-            }}
-        }
-    }" --jq "
-        .data.search.nodes[]
-        | {num: .number, repo: .repository.nameWithOwner,
-           userReviews: [.reviews.nodes[] | select(.author.login == \"${LOGIN}\")]}
-        | select([.userReviews[] | select(.state == \"DISMISSED\")] | length > 0)
-        | {num, repo,
-           lastDismissed: ([.userReviews[] | select(.state == \"DISMISSED\") | .submittedAt] | max),
-           lastApproved: ([.userReviews[] | select(.state == \"APPROVED\") | .submittedAt] | max // \"\")}
-        | select(.lastApproved == \"\" or .lastApproved < .lastDismissed)
-        | .repo + \"#\" + (.num|tostring)
-    " 2>/dev/null || true
-)
-
-stalled_json=$(search_prs --reviewed-by "$USER" -- -is:draft "-author:${USER}")
-
-stalled_filtered=$(echo "$stalled_json" | jq -c --arg stalled "$stalled_set" '
-    ($stalled | split("\n") | map(select(. != ""))) as $list |
-    [ .[] | select(
-        (.repository.nameWithOwner + "#" + (.number|tostring)) as $key |
-        ($list | index($key))
-    )]
+stalled_filtered=$(echo "$RAW" | jq -c --arg login "$LOGIN" '
+    [.data.stalled.nodes[] |
+     {pr: ., userReviews: [.reviews.nodes[] | select(.author.login == $login)]} |
+     select([.userReviews[] | select(.state == "DISMISSED")] | length > 0) |
+     {pr: .pr,
+      lastDismissed: ([.userReviews[] | select(.state == "DISMISSED") | .submittedAt] | max),
+      lastApproved: ([.userReviews[] | select(.state == "APPROVED") | .submittedAt] | max // "")} |
+     select(.lastApproved == "" or .lastApproved < .lastDismissed) |
+     .pr]
 ')
 
 ###############################################################################
@@ -204,7 +135,7 @@ render_section() {
 
     echo "$json" | jq -r '
         sort_by(.updatedAt) | reverse | .[] |
-        "| #\(.number) | \(.repository.nameWithOwner) | \(.title) | @\(.author.login) | \(.updatedAt[:10]) | \(.commentsCount) | \(.url) |"
+        "| #\(.number) | \(.repository.nameWithOwner) | \(.title) | @\(.author.login) | \(.updatedAt[:10]) | \(.comments.totalCount) | \(.url) |"
     '
     echo ""
 }
@@ -218,7 +149,7 @@ render_section() {
     render_section "Assigned to me (non-draft)" "$assigned_filtered"
     render_section "Mentions me" "$mentions_filtered"
     render_section "Stalled approvals" "$stalled_filtered"
-    } | if [[ -n "$OUTPUT" ]]; then
+} | if [[ -n "$OUTPUT" ]]; then
     tee "$OUTPUT"
     echo "" >&2
     echo "Written to ${OUTPUT}" >&2
