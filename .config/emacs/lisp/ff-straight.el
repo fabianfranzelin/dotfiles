@@ -30,6 +30,10 @@
 ;; replace builtin use-package by straights version
 (straight-use-package 'use-package)
 
+;; Install org from straight BEFORE any org feature is loaded,
+;; to prevent the built-in version from being activated.
+(straight-use-package 'org)
+
 ;; ensure all packages to be installed
 (customize-set-variable 'straight-use-package-by-default t)
 

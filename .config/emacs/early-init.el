@@ -49,7 +49,8 @@
 
 (when (featurep 'native-compile)
   ;; Set the right directory to store the native compilation cache
-  (add-to-list 'native-comp-eln-load-path (expand-file-name "var/eln-cache/" user-emacs-directory))
+  (when (boundp 'native-comp-eln-load-path)
+    (add-to-list 'native-comp-eln-load-path (expand-file-name "var/eln-cache/" user-emacs-directory)))
 
   ;; Silence compiler warnings as they can be pretty disruptive
   (customize-set-variable 'native-comp-async-report-warnings-errors nil)
