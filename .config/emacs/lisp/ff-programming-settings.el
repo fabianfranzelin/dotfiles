@@ -442,7 +442,8 @@ FORCE: force update of grammars"
 (add-to-list 'major-mode-remap-alist '(html-mode . html-ts-mode))
 (add-to-list 'major-mode-remap-alist '(mhtml-mode . html-ts-mode))
 
-(define-key html-ts-mode-map (kbd "M-o") nil)
+(with-eval-after-load 'html-ts-mode
+  (define-key html-ts-mode-map (kbd "M-o") nil))
 
 ;; -------------------------------------------------------------------
 ;; SQLite

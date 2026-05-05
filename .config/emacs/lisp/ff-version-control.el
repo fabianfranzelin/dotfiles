@@ -120,6 +120,7 @@ Otherwise, open the repository's main page."
   (consult-gh-prioritize-local-folder nil)
   (consult-gh-group-dashboard-by :reason)
   (consult-gh-maxnum 400)
+  (consult-gh-prs-show-comments-in-view 30)
   ;;;; Optional
   (consult-gh-repo-preview-major-mode nil) ; show readmes in their original format
   (consult-gh-preview-major-mode 'org-mode) ; use 'org-mode for editing comments, commit messages, ...
