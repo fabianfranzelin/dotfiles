@@ -413,6 +413,8 @@ DIR: directory path"
 ;; required as a dependency to org-noter
 (use-package djvu
   :after org)
+(use-package nov
+  :after org)
 
 (require 'ox-latex)
 (customize-set-variable
