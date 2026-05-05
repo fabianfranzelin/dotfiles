@@ -37,7 +37,7 @@
 
 ;; store the eln-cache into the standard paths of the no-littering
 ;; package
-(when (fboundp 'startup-redirect-eln-cache)
+(when (and (featurep 'native-compile) (fboundp 'startup-redirect-eln-cache))
   (startup-redirect-eln-cache
    (convert-standard-filename
     (expand-file-name  "var/eln-cache/" user-emacs-directory))))
