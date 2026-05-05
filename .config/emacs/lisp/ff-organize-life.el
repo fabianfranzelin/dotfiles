@@ -410,6 +410,10 @@ DIR: directory path"
 (use-package citeproc
   :after org)
 
+;; required as a dependency to org-noter
+(use-package djvu
+  :after org)
+
 (require 'ox-latex)
 (customize-set-variable
  'org-latex-pdf-process
