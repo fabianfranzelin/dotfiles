@@ -34,7 +34,7 @@
        '(cape-dabbrev
          cape-dict)))
 
-(add-hook 'text-mode #'ff/configure-text-mode)
+(add-hook 'text-mode-hook #'ff/configure-text-mode)
 
 ;; -------------------------------------------------------------------
 ;; RST mode

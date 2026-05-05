@@ -11,10 +11,8 @@
 (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
-;; disable scrollbar
-(scroll-bar-mode -1) ; disbale scrollbar
-(menu-bar-mode -1) ; disable menu bar
-(tool-bar-mode -1) ; disbale tool bar
+;; NOTE: tool-bar, menu-bar, and scroll-bar are already disabled via
+;; default-frame-alist in early-init.el
 
 ;; set cursor style to filled bar
 (customize-set-variable 'cursor-type 'box)
@@ -333,7 +331,7 @@ FUN: function to be called on the entry's path"
 (add-to-list
  'proced-format-alist
  '(custom user pid ppid sess tree pcpu pmem rss start time state (args comm)))
-(customize-set-variable proced-format 'custom)
+(customize-set-variable 'proced-format 'custom)
 
 (customize-set-variable 'proced-goal-attribute nil)
 

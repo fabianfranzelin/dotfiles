@@ -130,7 +130,6 @@ Otherwise, open the repository's main page."
   (add-to-list 'savehist-additional-variables 'consult-gh--known-repos-list)
   ;; Enable default keybindings (e.g. for commenting on issues, prs, ...)
   (consult-gh-enable-default-keybindings)
-  :config
   (require 'consult-gh-transient)
   (customize-set-variable 'consult-gh-default-interactive-command #'consult-gh-transient)
   (require 'ff-consult-gh-pr-inbox)

@@ -55,8 +55,8 @@
 ;; revert buffers when the underlying file has changed
 (global-auto-revert-mode 1)
 
-;; define alias for yes-or-no decision
-(defalias 'yes-or-no-p 'y-or-n-p)
+;; use short answers for yes-or-no prompts
+(setopt use-short-answers t)
 
 ;; ignore bell function
 (customize-set-variable 'ring-bell-function 'ignore)
@@ -504,23 +504,26 @@ Example usage: (message (my/tramp-call-process-direct \"your-remote-host.com\" \
 ;; https://vxlabs.com/2021/03/21/gnupg-pinentry-via-the-emacs-minibuffer/
 (customize-set-variable 'epa-pinentry-mode 'loopback)
 
-(defun ff/unlock-first-gpg-key ()
-  "Identify the first available private GPG key and unlock it by signing a test string."
+(defun ff/unlock-first-gpg-key (&rest _)
+  "Identify the first available private GPG key and unlock it by signing a test string.
+Returns t so it can be used as :before-while advice without blocking the advised function."
   (interactive)
   (let* ((context (epg-make-context 'OpenPGP))
          ;; Filter for secret/private keys only
          (keys (epg-list-keys context nil t)))
     (if (null keys)
-        (message "No private GPG keys found.")
+        (progn (message "No private GPG keys found.") t)
       (let* ((first-key (car keys))
              (key-id (epg-sub-key-id (car (epg-key-sub-key-list first-key)))))
         (condition-case err
             (progn
               ;; Attempt to sign a dummy string to trigger the pinentry/unlock
               (epg-sign-string context "unlock-test" 'detach)
-              (message "Successfully unlocked key: %s" key-id))
+              (message "Successfully unlocked key: %s" key-id)
+              t)
           (error
-           (message "Failed to unlock key %s: %s" key-id (error-message-string err))))))))
+           (message "Failed to unlock key %s: %s" key-id (error-message-string err))
+           t))))))
 
 (keymap-global-set "C-c C-g" 'ff/unlock-first-gpg-key)
 

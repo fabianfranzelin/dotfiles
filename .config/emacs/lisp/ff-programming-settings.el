@@ -312,7 +312,7 @@ FORCE: force update of grammars"
 (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-ts-mode))
 
 (use-package docker
-  :after setup-vterm
+  :after ff-setup-vterm
   :custom
   (docker-container-shell-file-name "/bin/bash")
   (docker-run-default-args '("-i"
