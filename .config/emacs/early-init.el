@@ -39,14 +39,6 @@
 
 ;; -------------------------------------------------------------------
 ;; configure native compilation
-
-;; store the eln-cache into the standard paths of the no-littering
-;; package
-(when (fboundp 'startup-redirect-eln-cache)
-  (startup-redirect-eln-cache
-   (convert-standard-filename
-    (expand-file-name  "var/eln-cache/" user-emacs-directory))))
-
 (when (featurep 'native-compile)
   ;; Set the right directory to store the native compilation cache
   (when (boundp 'native-comp-eln-load-path)
@@ -56,6 +48,13 @@
   (customize-set-variable 'native-comp-async-report-warnings-errors nil)
   ;; Make native compilation happens asynchronously
   (setq native-comp-jit-compilation t))
+
+;; store the eln-cache into the standard paths of the no-littering
+;; package
+(when (fboundp 'startup-redirect-eln-cache)
+  (startup-redirect-eln-cache
+   (convert-standard-filename
+    (expand-file-name  "var/eln-cache/" user-emacs-directory))))
 
 ;; -------------------------------------------------------------------
 ;;; UI configuration
