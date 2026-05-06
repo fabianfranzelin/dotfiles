@@ -210,23 +210,23 @@ for i, group in enumerate(groups):
     )
 # --------------------------------------------------------
 
-# Based on the Emacs Doom vibrant theme
-# https://github.com/doomemacs/themes/blob/master/themes/doom-vibrant-theme.el
+# Based on the Emacs Doom Palenight theme
+# https://github.com/doomemacs/themes/blob/master/themes/doom-palenight-theme.el
 my_colors = {
     "bg": "#282c34",
-    "fg": "#bfbfbf",
-    "dark-grey": "#1c1f24",
-    "grey": "#5e5e5e",
-    "red": "#ff6655",
-    "orange": "#dd8844",
-    "green": "#99bb66",
+    "fg": "#EEFFFF",
+    "dark-grey": "#292D3E",
+    "grey": "#676E95",
+    "red": "#ff5370",
+    "orange": "#f78c6c",
+    "green": "#c3e88d",
     "teal": "#44b9b1",
-    "yellow": "#ECBE7B",
-    "blue": "#51afef",
+    "yellow": "#ffcb6b",
+    "blue": "#82aaff",
     "dark-blue": "#2257A0",
-    "magenta": "#c678dd",
+    "magenta": "#c792ea",
     "violet": "#a9a1e1",
-    "cyan": "#46D9FF",
+    "cyan": "#89DDFF",
     "dark-cyan": "#5699AF",
 }
 

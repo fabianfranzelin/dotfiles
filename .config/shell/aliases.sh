@@ -26,17 +26,6 @@ alias la='ls -1F --color=auto -a'
 alias ll='ls -1F --color=auto -lh'
 alias lla='ls -1F --color=auto -lha'
 
-alias cp='cp -i -P'
-alias mv='mv -i'
-alias grep='grep --color=auto'
-
-alias c='clear'
-# macOS: --color=auto needed for coreutils
-alias l='ls -1F --color=auto'
-alias la='ls -1F --color=auto -a'
-alias ll='ls -1F --color=auto -altrh'
-alias lla='ls -1F --color=auto -lha'
-
 alias dud='du -d 1 -h'
 
 alias .2='cd ../..'
@@ -44,7 +33,7 @@ alias .3='cd ../../..'
 alias .4='cd ../../../..'
 alias .5='cd ../../../../..'
 alias .6='cd ../../../../../..'
-alias .7='cd ../../../../../../,,'
+alias .7='cd ../../../../../../..'
 alias .8='cd ../../../../../../../..'
 alias ..='cd ..'
 alias ...='.2'
@@ -74,7 +63,6 @@ alias doir='docker image rm'
 
 # Emacs #######################################################################
 alias e="emacsclient -c -a emacs"
-alias en="emacsclient -nw"
 alias ek="killall emacs"
 alias ef="emacs --daemon"
 alias em="emacs --init-directory=~/.config/minimal-emacs"
