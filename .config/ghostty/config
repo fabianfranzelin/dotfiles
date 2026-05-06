@@ -56,6 +56,9 @@ command = /bin/zsh
 
 # Use a block instead of a line as cursor
 cursor-style = block
+cursor-style-blink = false
+cursor-color = #c792ea
+shell-integration-features = no-cursor
 
 # No need for confirmation when closing the terminal
 confirm-close-surface = false
@@ -63,3 +66,34 @@ confirm-close-surface = false
 # Set the same font as I use in Emacs
 font-family = JetBrains Mono NL
 font-size = 13
+
+# Window appearance
+window-padding-x = 8
+window-padding-y = 4
+background-opacity = 0.95
+
+# Doom Vibrant color scheme
+background = #282c34
+foreground = #bfbfbf
+selection-background = #2257A0
+selection-foreground = #bfbfbf
+
+# Normal colors
+palette = 0=#1c1f24
+palette = 1=#ff6655
+palette = 2=#99bb66
+palette = 3=#ECBE7B
+palette = 4=#51afef
+palette = 5=#c678dd
+palette = 6=#46D9FF
+palette = 7=#bfbfbf
+
+# Bright colors
+palette = 8=#5e5e5e
+palette = 9=#ff6655
+palette = 10=#99bb66
+palette = 11=#ECBE7B
+palette = 12=#51afef
+palette = 13=#a9a1e1
+palette = 14=#44b9b1
+palette = 15=#ffffff
