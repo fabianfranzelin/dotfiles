@@ -121,7 +121,6 @@ build/
 /.config/znt/
 /.config/configstore/
 /.config/pulse/
-/.config/htop/
 /.config/wslu/
 /.config/QtProject.conf
 /.config/emacs/elpa/
