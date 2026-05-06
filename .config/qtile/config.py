@@ -160,11 +160,11 @@ layout_theme = {
 }
 
 layouts = [
-    layout.MonadTall(**layout_theme),
-    layout.Columns(**layout_theme),
-    layout.Max(**layout_theme),
-    layout.Floating(**layout_theme),
-    layout.Matrix(**layout_theme),
+    layout.MonadTall(name="\uf0db", **layout_theme),
+    layout.Columns(name="\uf009", **layout_theme),
+    layout.Max(name="\uf2d0", **layout_theme),
+    layout.Floating(name="\uf24d", **layout_theme),
+    layout.Matrix(name="\uf00a", **layout_theme),
 ]
 
 # --------------------------------------------------------
@@ -230,9 +230,9 @@ my_colors = {
 }
 
 widget_defaults = {
-    "font": "Ubuntu Mono",
+    "font": "JetBrainsMono Nerd Font",
     "fontsize": 14,
-    "padding": 2,
+    "padding": 4,
     "background": my_colors["bg"],
     "foreground": my_colors["fg"],
 }
@@ -247,7 +247,7 @@ def init_widgets_list(hide_sys_tray: bool = False) -> list[Any]:
     widgets_list = [
         widget.GroupBox(
             margin_y=3,
-            margin_x=0,
+            margin_x=4,
             padding_y=5,
             padding_x=5,
             borderwidth=3,
@@ -255,50 +255,106 @@ def init_widgets_list(hide_sys_tray: bool = False) -> list[Any]:
             inactive=my_colors["grey"],
             highlight_method="block",
             highlight_color=my_colors["dark-grey"],
+            block_highlight_text_color=my_colors["dark-grey"],
+            this_current_screen_border=my_colors["blue"],
+            this_screen_border=my_colors["dark-blue"],
+            other_current_screen_border=my_colors["magenta"],
+            urgent_border=my_colors["red"],
+            rounded=False,
         ),
-        widget.Sep(linewidth=0, padding=6),
+        widget.Sep(linewidth=1, padding=10, foreground=my_colors["grey"]),
         widget.CurrentLayout(
-            padding=0,
+            foreground=my_colors["cyan"],
+            padding=8,
         ),
-        widget.Sep(linewidth=0, padding=6),
-        widget.WindowCount(fmt="#{}", font="Ubuntu Mono", foreground=my_colors["fg"]),
-        widget.Sep(linewidth=0, padding=6),
+        widget.Sep(linewidth=1, padding=10, foreground=my_colors["grey"]),
+        widget.WindowCount(
+            fmt="\uf2d2 {}",
+            foreground=my_colors["violet"],
+        ),
+        widget.Sep(linewidth=1, padding=10, foreground=my_colors["grey"]),
         widget.WindowName(
             foreground=my_colors["fg"],
             padding=10,
+            max_chars=50,
         ),
     ]
     if not hide_sys_tray:
         widgets_list += [
-            widget.Systray(padding=5),
+            widget.Systray(padding=8),
+            widget.Spacer(length=10),
         ]
     widgets_list += [
-        widget.Sep(linewidth=0, padding=6),
-        widget.TextBox("V:", background=my_colors["bg"], foreground=my_colors["fg"]),
-        widget.PulseVolume(),
-        widget.TextBox("B:", background=my_colors["bg"], foreground=my_colors["fg"]),
-        widget.Backlight(backlight_name="intel_backlight"),
-        widget.BatteryIcon(),
-        widget.Battery(),
-        widget.TextBox(text="|", background=my_colors["bg"]),
-        widget.CPU(
-            foreground=my_colors["fg"],
-            background=my_colors["bg"],
-            mouse_callbacks={"Button1": lambda: qtile.spawn(my_term + " -e htop")},
+        widget.Sep(linewidth=1, padding=10, foreground=my_colors["grey"]),
+        widget.TextBox(
+            "\uf028",
+            foreground=my_colors["green"],
+            padding=6,
         ),
-        widget.TextBox("|", background=my_colors["bg"]),
+        widget.PulseVolume(
+            foreground=my_colors["green"],
+            padding=4,
+        ),
+        widget.Sep(linewidth=1, padding=10, foreground=my_colors["grey"]),
+        widget.TextBox(
+            "\uf0eb",
+            foreground=my_colors["yellow"],
+            padding=6,
+        ),
+        widget.Backlight(
+            backlight_name="intel_backlight",
+            foreground=my_colors["yellow"],
+            padding=4,
+        ),
+        widget.Sep(linewidth=1, padding=10, foreground=my_colors["grey"]),
+        widget.TextBox(
+            "\uf244",
+            foreground=my_colors["teal"],
+            padding=6,
+        ),
+        widget.Battery(
+            foreground=my_colors["teal"],
+            format="{percent:2.0%} {hour:d}:{min:02d}",
+            low_foreground=my_colors["red"],
+            low_percentage=0.15,
+            padding=4,
+        ),
+        widget.Sep(linewidth=1, padding=10, foreground=my_colors["grey"]),
+        widget.TextBox(
+            "\uf2db",
+            foreground=my_colors["orange"],
+            padding=6,
+        ),
+        widget.CPU(
+            foreground=my_colors["orange"],
+            format="{load_percent}%",
+            mouse_callbacks={"Button1": lambda: qtile.spawn(my_term + " -e htop")},
+            padding=4,
+        ),
+        widget.Sep(linewidth=1, padding=10, foreground=my_colors["grey"]),
+        widget.TextBox(
+            "\uf085",
+            foreground=my_colors["magenta"],
+            padding=6,
+        ),
         widget.Memory(
-            foreground=my_colors["fg"],
-            background=my_colors["bg"],
+            foreground=my_colors["magenta"],
             format="{MemUsed:.1f}{mm}/{MemTotal:.1f}{mm}",
             measure_mem="G",
+            padding=4,
         ),
-        widget.TextBox("|", background=my_colors["bg"]),
+        widget.Sep(linewidth=1, padding=10, foreground=my_colors["grey"]),
+        widget.TextBox(
+            "\uf073",
+            foreground=my_colors["blue"],
+            padding=6,
+        ),
         widget.Clock(
-            foreground=my_colors["fg"],
-            background=my_colors["bg"],
-            format="%A, %B %d - %H:%M ",
+            foreground=my_colors["blue"],
+            format="%a %b %d  %H:%M",
+            padding=4,
         ),
+        widget.Spacer(length=4),
     ]
     return widgets_list
 
@@ -307,15 +363,17 @@ screens = [
     Screen(
         top=bar.Bar(
             widgets=init_widgets_list(),
-            opacity=1.0,
-            size=20,
+            opacity=0.95,
+            size=24,
+            margin=[4, 8, 0, 8],
         )
     ),
     Screen(
         top=bar.Bar(
             widgets=init_widgets_list(hide_sys_tray=True),
-            opacity=1.0,
-            size=20,
+            opacity=0.95,
+            size=24,
+            margin=[4, 8, 0, 8],
         )
     ),
 ]
