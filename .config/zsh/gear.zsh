@@ -24,7 +24,7 @@ done
 #------------------------------------------------------------------------------#
 # autoloading others
 
-autoload -Uz compinit && compinit
+autoload -Uz compinit && compinit -u
 autoload colors && colors
 
 # bash auto completion
