@@ -3,7 +3,7 @@
 import re
 import subprocess
 from pathlib import Path
-from typing import Any, List
+from typing import Any
 
 from libqtile import bar, hook, layout, qtile, widget  # type: ignore
 from libqtile.config import Click, Drag, Group, Key, Match, Screen  # type: ignore
@@ -45,7 +45,6 @@ keys = [
     ),
     Key([mod, "shift"], "f", lazy.window.toggle_floating(), desc="toggle floating"),
     Key([mod], "f", lazy.window.toggle_fullscreen(), desc="toggle fullscreen"),
-    Key([mod], "space", lazy.layout.next(), desc="Move window focus to other window"),
     Key([mod], "Tab", lazy.group.next_window()),
     Key([mod, "shift"], "Tab", lazy.group.prev_window()),
     # Move windows between left/right columns or move up/down in current stack.
@@ -92,8 +91,6 @@ keys = [
     ),
     # Toggle between different layouts as defined below
     Key([mod, "control"], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
-    Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
-    Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
     # Lock screen
     Key(
@@ -125,23 +122,20 @@ keys = [
     Key([mod, "shift"], "d", lazy.spawn("emacs --daemon"), desc="Launch Emacs server"),
     Key([mod, "shift"], "Return", lazy.spawn(my_term), desc="Launch my terminal"),
     Key([mod, "shift"], "b", lazy.spawn(my_browser), desc="Launch my browser"),
-    Key([mod, "shift"], "r", lazy.restart(), desc="Restart Qtile"),
+    Key([mod, "shift"], "r", lazy.reload_config(), desc="Restart Qtile"),
     Key([mod, "shift"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "r", lazy.spawn("rofi -show run"), desc="Run Rofi"),
     Key([mod], "a", lazy.spawn(str(Path("~/.local/bin/rofi-main").expanduser()))),
     Key(
         [mod],
         "s",
-        lazy.spawn(
-            str(Path("rofi -show p -modi p:~/.local/bin/rofi-power-menu").expanduser())
-        ),
+        lazy.spawn("rofi -show p -modi p:~/.local/bin/rofi-power-menu"),
     ),
-    # Groups
-    Key([mod, "control"], "Left", lazy.screen.prev_group()),
-    Key([mod, "control"], "Right", lazy.screen.next_group()),
     # Brightness
     Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl set 10%-")),
     Key([], "XF86MonBrightnessUp", lazy.spawn("brightnessctl set +10%")),
+    # Screenshot
+    Key([mod], "p", lazy.spawn("flameshot gui"), desc="Screenshot with Flameshot"),
     # Audio
     Key([], "XF86AudioMute", lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle")),
     Key(
@@ -169,8 +163,8 @@ layouts = [
     layout.MonadTall(**layout_theme),
     layout.Columns(**layout_theme),
     layout.Max(**layout_theme),
-    layout.Floating(),
-    layout.Matrix(),
+    layout.Floating(**layout_theme),
+    layout.Matrix(**layout_theme),
 ]
 
 # --------------------------------------------------------
@@ -208,7 +202,7 @@ for i, group in enumerate(groups):
             Key(
                 [mod, "shift"],
                 f"{i}",
-                lazy.window.togroup(group),
+                lazy.window.togroup(group.name),
                 desc=f"Move active window to group {group}",
             ),
         ]
@@ -262,7 +256,7 @@ def lower_left_triangle(bg_color: str, fg_color: str) -> Any:
     )
 
 
-def init_widgets_list(hide_sys_tray: bool = False) -> List[Any]:
+def init_widgets_list(hide_sys_tray: bool = False) -> list[Any]:
     """Create my widgets for the top toolbar.
 
     :returns: List of widgets
@@ -281,9 +275,7 @@ def init_widgets_list(hide_sys_tray: bool = False) -> List[Any]:
         ),
         widget.Sep(linewidth=0, padding=6),
         widget.CurrentLayout(
-            custom_icon_paths=[Path("~/.config/qtile/icons").expanduser()],
             padding=0,
-            scale=0.7,
         ),
         widget.Sep(linewidth=0, padding=6),
         widget.WindowCount(fmt="#{}", font="Ubuntu Mono", foreground=my_colors["fg"]),
@@ -309,7 +301,14 @@ def init_widgets_list(hide_sys_tray: bool = False) -> List[Any]:
         widget.CPU(
             foreground=my_colors["fg"],
             background=my_colors["bg"],
-            mouse_callbacks={"Button1": lambda: qtile.cmd_spawn(my_term + " -e htop")},
+            mouse_callbacks={"Button1": lambda: qtile.spawn(my_term + " -e htop")},
+        ),
+        widget.TextBox("|", background=my_colors["bg"]),
+        widget.Memory(
+            foreground=my_colors["fg"],
+            background=my_colors["bg"],
+            format="{MemUsed:.1f}{mm}/{MemTotal:.1f}{mm}",
+            measure_mem="G",
         ),
         widget.TextBox("|", background=my_colors["bg"]),
         widget.Clock(
@@ -352,7 +351,7 @@ mouse = [
     Click([mod], "Button2", lazy.window.bring_to_front()),
 ]
 
-dgroups_app_rules: List[Any] = []
+dgroups_app_rules: list[Any] = []
 follow_mouse_focus = False
 bring_front_click = False
 cursor_warp = False
@@ -406,13 +405,3 @@ def startup() -> None:
 
 # When using the Wayland backend, this can be used to configure input devices.
 wl_input_rules = None
-
-# Gasp! We're lying here. In fact, nobody really uses or cares about this
-# string besides java UI toolkits; you can see several discussions on the
-# mailing lists, GitHub issues, and other WM documentation that suggest setting
-# this string if your java app doesn't work correctly. We may as well just lie
-# and say that we're a working one by default.
-#
-# We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
-# java that happens to be on java's whitelist.
-wmname = "LG3D"
