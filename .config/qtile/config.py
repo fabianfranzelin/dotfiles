@@ -98,21 +98,22 @@ keys = [
         "x",
         lazy.spawn(
             str(Path("~/.local/bin/betterlockscreen").expanduser())
-            + " -l dimblur --display 1 --span -u "
+            + " -l dimblur -u "
             + str(
                 Path(
                     "~/.local/share/backgrounds/pexels-eberhardgross-12365567.jpg"
                 ).expanduser()
             )
         ),
+        desc="Lock screen and update wallpaper",
     ),
     Key(
         [mod],
         "x",
         lazy.spawn(
-            str(Path("~/.local/bin/betterlockscreen").expanduser())
-            + " -l dimblur --display 1 --span"
+            str(Path("~/.local/bin/betterlockscreen").expanduser()) + " -l dimblur"
         ),
+        desc="Lock screen",
     ),
     # --------------------------------------------------------
     # Personal key bindings

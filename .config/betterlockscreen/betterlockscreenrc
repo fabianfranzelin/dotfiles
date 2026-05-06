@@ -1,6 +1,6 @@
 # default options
-display_on=0
-span_image=false
+display_on=1
+span_image=true
 lock_timeout=300
 fx_list=(dim blur dimblur pixel dimpixel color)
 dim_level=40
@@ -10,39 +10,37 @@ solid_color=333333
 wallpaper_cmd="feh --bg-fill"
 quiet=false
 
-# default theme
-loginbox=00000066
+# theme (Doom Vibrant palette)
+loginbox=282c3466
 loginshadow=00000000
 locktext="Type password to unlock..."
-font="sans-serif"
-ringcolor=ffffffff
-insidecolor=00000000
+font="JetBrains Mono"
+ringcolor=51afefff
+insidecolor=282c34ff
 separatorcolor=00000000
-ringvercolor=ffffffff
-insidevercolor=00000000
-ringwrongcolor=ffffffff
-insidewrongcolor=d23c3dff
-timecolor=ffffffff
+ringvercolor=99bb66ff
+insidevercolor=282c34ff
+ringwrongcolor=ff6655ff
+insidewrongcolor=282c34ff
+timecolor=bfbfbfff
 time_format="%H:%M:%S"
-greetercolor=ffffffff
-layoutcolor=ffffffff
-keyhlcolor=d23c3dff
-bshlcolor=d23c3dff
+greetercolor=bfbfbfff
+layoutcolor=bfbfbfff
+keyhlcolor=c678ddff
+bshlcolor=ff6655ff
 veriftext="Verifying..."
-verifcolor=ffffffff
+verifcolor=99bb66ff
 wrongtext="Failure!"
-wrongcolor=d23c3dff
-modifcolor=d23c3dff
-bgcolor=000000ff
+wrongcolor=ff6655ff
+modifcolor=ECBE7Bff
+bgcolor=282c34ff
 
 
 #
 # expert options (change at own risk!)
 #
 
-# i3lockcolor_bin="i3lock-color"      # Manually set command for i3lock-color
-# suspend_command="systemctl suspend" # Manually change action e.g. hibernate/suspend-command
-
 # i3lock-color - custom arguments
-# lockargs=() 						  # overwriting default "(-n)"
-# lockargs+=(--ignore-empty-password) # appending new argument
+lockargs=(-n)
+lockargs+=(--pass-media-keys)
+lockargs+=(--pass-volume-keys)
