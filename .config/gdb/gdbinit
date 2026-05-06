@@ -1,22 +1,20 @@
-# allow local gdb configurations
-set auto-load safe-path /
+# allow local gdb configurations (restricted to workspace)
+set auto-load safe-path ~/workspace
 
 set confirm off
 set verbose off
-set prompt \033[31mgdb$ \033[0m
+set pagination off
+set prompt \033[35mgdb$ \033[0m
 
 # Display instructions in Intel format
-# set disassembly intel
+set disassembly-flavor intel
 
-# These make gdb never pause in its output
-set height 0
-set width 0
-
-set $SHOW_CONTEXT = 1
-set $SHOW_NEST_INSN = 0
-
-# add glibc source path
-# dir ~/.local/share/glibc-2.40/sysdeps/unix/sysv/linux/
+# Pretty printing
+set print pretty on
+set print array on
+set print object on
+set print static-members off
+set print vtbl on
 
 # for realgud tracking
 set annotate 1
@@ -24,7 +22,19 @@ set annotate 1
 # save history over multiple sessions
 set history filename ~/.cache/gdb_history
 set history save on
-set history size 512
+set history size 10000
+set history remove-duplicates unlimited
 
-# for asynchronuous debugging of multiple processes. It allows you to execute commands as the process runs in the background.
+# for asynchronous debugging of multiple processes
 # set target-async on
+
+# Python pretty-printers for STL containers (if available)
+python
+import sys
+import os
+gcc_printer_path = '/usr/share/gcc/python'
+if os.path.exists(gcc_printer_path):
+    sys.path.insert(0, gcc_printer_path)
+    from libstdcxx.v6.printers import register_libstdcxx_printers
+    register_libstdcxx_printers(None)
+end
