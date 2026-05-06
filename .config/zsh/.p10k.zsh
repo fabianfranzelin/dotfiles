@@ -33,6 +33,7 @@
   typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
     # =========================[ Line #1 ]=========================
     # os_icon               # os identifier
+    container               # container detection
     dir                     # current directory
     vcs                     # git status
     # =========================[ Line #2 ]=========================
@@ -1675,6 +1676,17 @@
   # Type `p10k help segment` for documentation and a more sophisticated example.
   function prompt_example() {
     p10k segment -b 1 -f 3 -i '⭐' -t 'hello, %n'
+  }
+
+  # Detect if running inside a container (Docker, Podman, etc.)
+  function prompt_container() {
+    if [[ -f /.dockerenv ]] || [[ -f /run/.containerenv ]] || grep -q container= /proc/1/environ 2>/dev/null; then
+      p10k segment -f blue -i '⬡' -t 'container'
+    fi
+  }
+
+  function instant_prompt_container() {
+    prompt_container
   }
 
   # User-defined prompt segments may optionally provide an instant_prompt_* function. Its job
