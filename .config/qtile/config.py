@@ -156,8 +156,8 @@ keys = [
 layout_theme = {
     "border_width": 1,
     "margin": 5,
-    "border_focus": "e1acff",
-    "border_normal": "1D2330",
+    "border_focus": "#c792ea",  # doom-palenight magenta
+    "border_normal": "#292D3E",  # doom-palenight dark-grey
 }
 
 layouts = [

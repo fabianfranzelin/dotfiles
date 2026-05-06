@@ -10,29 +10,29 @@ solid_color=333333
 wallpaper_cmd="feh --bg-fill"
 quiet=false
 
-# theme (Doom Vibrant palette)
+# theme (Doom Palenight palette)
 loginbox=282c3466
 loginshadow=00000000
 locktext="Type password to unlock..."
 font="JetBrains Mono"
-ringcolor=51afefff
+ringcolor=82aaffff
 insidecolor=282c34ff
 separatorcolor=00000000
-ringvercolor=99bb66ff
+ringvercolor=c3e88dff
 insidevercolor=282c34ff
-ringwrongcolor=ff6655ff
+ringwrongcolor=ff5370ff
 insidewrongcolor=282c34ff
-timecolor=bfbfbfff
+timecolor=EEFFFFff
 time_format="%H:%M:%S"
-greetercolor=bfbfbfff
-layoutcolor=bfbfbfff
-keyhlcolor=c678ddff
-bshlcolor=ff6655ff
+greetercolor=EEFFFFff
+layoutcolor=EEFFFFff
+keyhlcolor=c792eaff
+bshlcolor=ff5370ff
 veriftext="Verifying..."
-verifcolor=99bb66ff
+verifcolor=c3e88dff
 wrongtext="Failure!"
-wrongcolor=ff6655ff
-modifcolor=ECBE7Bff
+wrongcolor=ff5370ff
+modifcolor=ffcb6bff
 bgcolor=282c34ff
 
 

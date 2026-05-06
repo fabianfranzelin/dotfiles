@@ -6,8 +6,11 @@
   [[default]]
     urgent_bell = True
     icon_bell = False
-    background_color = "#1c1f24"
-    background_darkness = 0.9
+    background_color = "#282c34"
+    foreground_color = "#EEFFFF"
+    cursor_color = "#c792ea"
+    cursor_shape = block
+    background_darkness = 0.95
     background_type = transparent
     font = JetBrains Mono NL 13
     scrollback_infinite = True
@@ -15,7 +18,9 @@
     use_custom_command = True
     custom_command = /bin/zsh
     use_system_font = False
-    title_transmit_bg_color = "#1c1f24"
+    title_transmit_bg_color = "#282c34"
+    # Doom Palenight palette (16 colors)
+    palette = "#292D3E:#ff5370:#c3e88d:#ffcb6b:#82aaff:#c792ea:#89DDFF:#EEFFFF:#676E95:#ff5370:#c3e88d:#ffcb6b:#82aaff:#c792ea:#89DDFF:#EEFFFF"
 [layouts]
   [[default]]
     [[[child1]]]
