@@ -2,7 +2,7 @@
 
 ;; Define buffer search-engines slot to be a list of several
 ;; nx-search-engines-provided ones.
-(define-configuration (buffer web-buffer)
+(define-configuration :web-buffer
   ((search-engines (list (engines:google :shortcut "g"
                                          :safe-search nil)
                          (engines:duckduckgo :shortcut "d"

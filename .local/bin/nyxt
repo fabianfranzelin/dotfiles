@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+export APPDIR="$HOME/.local/lib/nyxt"
+export LD_LIBRARY_PATH="$APPDIR/usr/lib:$LD_LIBRARY_PATH"
+export PATH="$APPDIR/usr/bin:$PATH"
+
+# Disable Chromium SUID sandbox — cl-electron-server (embedded AppImage) can't
+# have root-owned chrome-sandbox in a user directory.
+export ELECTRON_DISABLE_SANDBOX=1
+
+exec "$HOME/.local/lib/nyxt/AppRun" "$@"

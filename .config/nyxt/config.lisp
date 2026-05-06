@@ -1,6 +1,17 @@
 (in-package #:nyxt-user)
 
-(setf (uiop/os:getenv "WEBKIT_DISABLE_COMPOSITING_MODE") "1")
+;;; Workaround for Nyxt 4.0.0 bug: nyxt:new page calls generic functions on
+;;; document-buffer that only have methods for modable-buffer/web-buffer.
+;;; Provide stub methods to prevent fatal crashes on startup.
+(defmethod nyxt::lisp-url-callbacks ((buffer nyxt:document-buffer))
+  (make-hash-table :test 'equal))
+
+(defmethod nyxt:keyscheme ((buffer nyxt:document-buffer))
+  nyxt/keyscheme:emacs)
+
+;;; Workaround: active-buffer is called on nil window during startup race.
+(defmethod nyxt:active-buffer ((window null))
+  nil)
 
 (defvar *web-buffer-modes*
   '(:emacs-mode
@@ -30,34 +41,24 @@ loads."
                                `(:components (,file)))))
 
 (define-configuration :prompt-buffer
-  "Make the attribute widths adjust to the content in them.
-
-It's not exactly necessary on master, because there are more or less
-intuitive default widths, but these are sometimes inefficient (and
-note that I made this feature so I want to have it :P)."
+  "Make the attribute widths adjust to the content in them."
   ((dynamic-attribute-width-p t)))
 
 (define-configuration :web-buffer
   ((download-engine
     :renderer
-    :doc "This overrides download engine to use WebKit instead of Nyxt-native
-Dexador-based download engine. I don't remember why I switched,
-though.")
+    :doc "Use WebKit download engine for better integration.")
    (search-always-auto-complete-p
     nil
-    :doc "I don't like search completion when I don't need it.")
+    :doc "Disable search completion when not needed for snappier input.")
    (global-history-p
     t
-    :doc "It was disabled after 2.2.4, while being a useful feature.
-I'm forcing it here, because I'm getting lost in buffer-local
-histories otherwise...")))
+    :doc "Use global history across all buffers.")))
 
 (define-configuration :prompt-buffer
   ((hide-single-source-header-p
     t
-    :doc "This is to hide the header is there's only one source.
-There also used to be other settings to make prompt-buffer a bit
-more minimalist, but those are internal APIs :(")))
+    :doc "Hide the header when there's only one source.")))
 
 (defmethod files:resolve ((profile nyxt:nyxt-profile) (file nyxt/mode/bookmark:bookmarks-file))
   "Reroute the bookmarks to the config directory."
@@ -73,8 +74,17 @@ more minimalist, but those are internal APIs :(")))
   ((default-modes `(,@*web-buffer-modes* ,@%slot-value%))))
 
 (define-configuration :browser
-  "Set new buffer URL (a.k.a. start page, new tab page)."
-  ((default-new-buffer-url (quri:uri "nyxt:new"))))
+  "Set new buffer URL (a.k.a. start page, new tab page).
+Reduce I/O overhead for better responsiveness."
+  ((default-new-buffer-url (quri:uri "nyxt:new"))
+   (session-restore-prompt :never-restore)))
+
+;;; Disable separate panel/status window (Electron creates a second X window
+;;; that tiling WMs like Qtile tile independently).
+(define-configuration :window
+  ((nyxt:panel-buffers nil)
+   (nyxt:status-buffer-height 0)
+   (nyxt:message-buffer-height 0)))
 
 ;;; custom auto-fills
 (define-configuration :autofill-mode
@@ -85,11 +95,9 @@ more minimalist, but those are internal APIs :(")))
             (nyxt/mode/autofill:make-autofill :name "Current time: "
                                               :fill (lambda () (write-to-string (local-time:now))))))))
 
-;;; Proxy settings
+;;; Proxy settings (only enable manually via M-x proxy-mode when behind corporate proxy)
 (define-configuration nyxt/mode/proxy:proxy-mode
   ((nyxt/mode/proxy:proxy (make-instance 'proxy
                                          :url (quri:uri "http://127.0.0.1:3128")
                                          :allowlist '("localhost" "bosch.com")
                                          :proxied-downloads-p t))))
-(define-configuration web-buffer
-  ((default-modes (append '(proxy-mode) %slot-value%))))

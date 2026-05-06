@@ -13,7 +13,6 @@ docker run --rm \
        -e DISPLAY \
        -e XAUTHORITY="/tmp/.Xauthority" \
        -e DEBIAN_FRONTEND="noninteractive" \
-       -e WEBKIT_DISABLE_COMPOSITING_MODE=1 \
        -e GDK_SYNCHRONIZE=1 \
        -e NO_AT_BRIDGE=1 \
        -v "${HOME}/.Xauthority:/tmp/.Xauthority" \
