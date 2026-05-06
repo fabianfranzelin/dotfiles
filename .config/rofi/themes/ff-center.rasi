@@ -7,22 +7,21 @@
 
 * {
     background-color:            #282c34;
-    border-color:                #a9a1e1;
-    text-color:                  #bbc2cf;
-    prompt-background:           #46D9FF;
+    border-color:                #c792ea;
+    text-color:                  #EEFFFF;
+    prompt-background:           #89DDFF;
     prompt-foreground:           #282c34;
     prompt-padding:              4px;
-    prompt-font:                "JetBrains Mono 13";
     alternate-normal-background: #282c34;
     alternate-normal-foreground: @text-color;
-    selected-normal-background:  #a9a1e1;
-    selected-normal-foreground:  #000000;
+    selected-normal-background:  #c792ea;
+    selected-normal-foreground:  #282c34;
     spacing:                     3;
 }
 #window {
     border:  1;
     padding: 5;
-    width: 30%;      /* percentage of screen width */
+    width: 30%;
 }
 #mainbox {
     border:  0;
@@ -74,17 +73,20 @@
 #entry {
     padding: 4px 4px;
     expand: false;
-    width: 10em;
+    width: 20em;
 }
 #prompt {
     padding:          @prompt-padding;
     background-color: @prompt-background;
     text-color:       @prompt-foreground;
-    font:             @prompt-font;
     border-radius:    2px;
 }
 
 element-text {
     background-color: inherit;
     text-color:       inherit;
+}
+
+element-icon {
+    background-color: inherit;
 }

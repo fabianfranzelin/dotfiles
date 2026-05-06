@@ -1,7 +1,8 @@
 configuration {
-    show-icons:   false;
+    show-icons:   true;
     sidebar-mode: false;
-    modi:         "window,drun,ssh,combi";
-    combi-modi:   "window,drun,ssh";
+    font:         "JetBrains Mono NL 13";
+    modi:         "drun,window,ssh,filebrowser,combi";
+    combi-modi:   "drun,window,ssh";
 }
 @theme "themes/ff-center.rasi"
