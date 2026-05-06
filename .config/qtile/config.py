@@ -239,23 +239,6 @@ widget_defaults = {
 extension_defaults = widget_defaults.copy()
 
 
-def lower_left_triangle(bg_color: str, fg_color: str) -> Any:
-    """Add a left triangle symbol from unicode.
-
-    :param bg_color: background color
-    :param fg_color: foreground color
-
-    :returns: Textbox
-    """
-    return widget.TextBox(
-        text="\u25e2",
-        padding=0,
-        fontsize=35,
-        background=bg_color,
-        foreground=fg_color,
-    )
-
-
 def init_widgets_list(hide_sys_tray: bool = False) -> list[Any]:
     """Create my widgets for the top toolbar.
 
@@ -385,14 +368,6 @@ reconfigure_screens = True
 # If things like steam games want to auto-minimize themselves when losing
 # focus, should we respect this or not?
 auto_minimize = True
-
-
-@hook.subscribe.startup_once  # type: ignore
-def startup_once() -> None:
-    """Execute some applications at startup once when machine is booted."""
-    subprocess.Popen(  # pylint: disable=consider-using-with
-        [Path("~/.config/qtile/autostart.sh").expanduser()]
-    )
 
 
 @hook.subscribe.startup  # type: ignore
