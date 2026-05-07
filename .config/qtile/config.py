@@ -288,6 +288,22 @@ def init_widgets_list(hide_sys_tray: bool = False) -> list[Any]:
     widgets_list += [
         widget.Sep(linewidth=1, padding=10, foreground=my_colors["grey"]),
         widget.TextBox(
+            "\uf023",
+            foreground=my_colors["teal"],
+            padding=6,
+        ),
+        widget.GenPollText(
+            func=lambda: (
+                subprocess.check_output([str(Path.home() / ".local/bin/vpn-status")])
+                .decode()
+                .strip()
+            ),
+            update_interval=5,
+            foreground=my_colors["teal"],
+            padding=4,
+        ),
+        widget.Sep(linewidth=1, padding=10, foreground=my_colors["grey"]),
+        widget.TextBox(
             "\uf028",
             foreground=my_colors["green"],
             padding=6,
@@ -354,6 +370,7 @@ def init_widgets_list(hide_sys_tray: bool = False) -> list[Any]:
             foreground=my_colors["blue"],
             format="%a %b %d  %H:%M",
             padding=4,
+            mouse_callbacks={"Button1": lazy.spawn("gsimplecal")},
         ),
         widget.Spacer(length=4),
     ]
