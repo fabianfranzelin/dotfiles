@@ -82,6 +82,8 @@ DIR: directory path"
   (org-highlight-latex-and-related '(latex))
   ;; do not visualize subscripts in org-mode buffers
   (org-use-sub-superscripts '{})
+  ;; use relative path when attaching files
+  (org-attach-dir-relative t)
   :config
   (require 'org-indent)
   (require 'org-habit)
