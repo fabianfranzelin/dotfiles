@@ -1,13 +1,10 @@
 - id: '1758488499252'
-  alias: Fabis Schreibtisch
-  description: Turns on a power plug at 7:30 AM and off at 12 AM on weekdays.
+  alias: Fabis Schreibtisch - An
+  description: 'Turns on a power plug at 8:00 AM on weekdays. '
   triggers:
-  - at: 07:30:00
+  - at: 08:00:00
     trigger: time
     id: Start working
-  - at: 00:00:00
-    trigger: time
-    id: Stop working
   conditions:
   - condition: time
     weekday:
@@ -24,17 +21,6 @@
         - Start working
       sequence:
       - action: switch.turn_on
-        metadata: {}
-        target:
-          device_id: 2c680c927a635dca2b6704a9d8d15d09
-        data: {}
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - Stop working
-      sequence:
-      - action: switch.turn_off
         metadata: {}
         target:
           device_id: 2c680c927a635dca2b6704a9d8d15d09
@@ -156,3 +142,14 @@
       max_run_time: 10
       grace_period: 60
       watt_threshold: 1
+- id: '1778189930269'
+  alias: Fabis Schreibtisch - Aus
+  description: ''
+  use_blueprint:
+    path: Fredrik81/powerplug-auto-shutdown.yaml
+    input:
+      power_sensor: sensor.shellyplugsg3_28372f2736c0_power
+      plug_switch: switch.fabis_schreibtisch
+      watt_threshold: 10
+      use_time_check: false
+      grace_period: 600
