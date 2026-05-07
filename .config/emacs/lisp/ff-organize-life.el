@@ -77,7 +77,7 @@ DIR: directory path"
   ;; disable isearch when using org-goto
   (org-goto-auto-isearch nil)
   ;; use relative paths for links
-  (org-link-file-path-type 'relative)
+  (org-link-file-path-type 'adaptive)
   ;; highlight latex
   (org-highlight-latex-and-related '(latex))
   ;; do not visualize subscripts in org-mode buffers
