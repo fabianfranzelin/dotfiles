@@ -153,3 +153,29 @@
       watt_threshold: 10
       use_time_check: false
       grace_period: 600
+- id: '1778191572133'
+  alias: Clean House When Everyone Leaves
+  description: Starts Roborock when phones disconnect from home or specific repeater
+  triggers:
+  - entity_id:
+    - device_tracker.pixel_8a
+    to:
+    - not_home
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    trigger: state
+  conditions:
+  - condition: time
+    after: 09:00:00
+    before: '19:00:00'
+  - condition: template
+    value_template: '{{ state_attr(''automation.clean_house_when_everyone_leaves'',
+      ''last_triggered'').date() != now().date() }}'
+  actions:
+  - action: vacuum.start
+    data: {}
+    target:
+      device_id: 8465f32e2059a8f994838f5c49ad6091
+  mode: single
