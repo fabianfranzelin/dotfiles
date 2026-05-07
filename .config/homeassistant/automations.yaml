@@ -143,3 +143,16 @@
           temperature: 18
         action: climate.set_temperature
   mode: single
+- id: '1778187802092'
+  alias: Waschmaschine Automatisch Aus
+  description: ''
+  use_blueprint:
+    path: Fredrik81/powerplug-auto-shutdown.yaml
+    input:
+      power_sensor: sensor.strom_waschmaschine_power
+      plug_switch: switch.strom_waschmaschine
+      use_time_check: true
+      enable_notification: false
+      max_run_time: 10
+      grace_period: 60
+      watt_threshold: 1
