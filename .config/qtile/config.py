@@ -172,17 +172,7 @@ layouts = [
 
 groups = [
     Group("Dev", layout="monadtall"),
-    Group(
-        "Com",
-        layout="monadtall",
-        matches=[
-            Match(
-                title=re.compile(
-                    r"^(Microsoft\ Teams|Outlook\ \(PWA\)|Chat \| Microsoft Teams classic)$"
-                )
-            )
-        ],
-    ),
+    Group("Com", layout="monadtall"),
     Group(
         "Remote",
         layout="monadtall",
