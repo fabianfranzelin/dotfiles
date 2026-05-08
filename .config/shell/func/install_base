@@ -67,7 +67,8 @@ install_apt_packages() {
         pavucontrol \
         caffeine \
         golang \
-        gsimplecal
+        gsimplecal \
+        meld
 
     sudo apt-get install watchdog -y || true
     # This is required by the ssh config to identify whether pauline
