@@ -137,10 +137,10 @@
     input:
       power_sensor: sensor.strom_waschmaschine_power
       plug_switch: switch.strom_waschmaschine
-      use_time_check: true
+      use_time_check: false
       enable_notification: false
       max_run_time: 10
-      grace_period: 60
+      grace_period: 600
       watt_threshold: 1
 - id: '1778189930269'
   alias: Fabis Schreibtisch - Aus
