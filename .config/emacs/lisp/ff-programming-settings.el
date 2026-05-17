@@ -205,7 +205,7 @@ FORCE: force update of grammars"
   :preface
   ;; use background of my current theme
   (defface fancy-compilation-default-face
-    (list (list t :background "282c34" :inherit 'ansi-color-grey))
+    (list (list t :background "#282c34" :inherit 'ansi-color-grey))
     "Face used to render black color.")
   :hook
   (after-init . fancy-compilation-mode))
