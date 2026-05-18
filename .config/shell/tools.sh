@@ -18,17 +18,11 @@ fi
 # load nvm on first use.
 export NVM_DIR="${HOME}/.config/nvm"
 
-if [ -s "$NVM_DIR/nvm.sh" ]; then
-    # Lazy-load nvm: define placeholder functions that load nvm on first call
-    __load_nvm() {
-        unset -f nvm node npm npx 2>/dev/null
-        . "$NVM_DIR/nvm.sh"
-        [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
-    }
-    nvm() { __load_nvm; nvm "$@"; }
-    node() { __load_nvm; node "$@"; }
-    npm() { __load_nvm; npm "$@"; }
-    npx() { __load_nvm; npx "$@"; }
+if [ -s "$NVM_DIR/nvm.sh" ]
+then
+    unset -f nvm node npm npx 2>/dev/null
+    . "$NVM_DIR/nvm.sh"
+    [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
 fi
 
 #------------------------------------------------------------------------------#
