@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 # Install Termux:API from f-droid make sure that the locstion service
 # is enabled for termux:api. Check the Android settings

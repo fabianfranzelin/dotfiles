@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 install_nyxt()
 {
@@ -61,7 +61,7 @@ install_nyxt()
 
         # Create launcher script
         cat > "${HOME}/.local/bin/nyxt" << 'LAUNCHER'
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 export APPDIR="$HOME/.local/lib/nyxt"
 export LD_LIBRARY_PATH="$APPDIR/usr/lib:$LD_LIBRARY_PATH"
 export PATH="$APPDIR/usr/bin:$PATH"

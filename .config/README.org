@@ -1,0 +1,36 @@
+* Shell Function Loading
+
+Function files in =.config/shell/func/= are automatically loaded by both
+bash and zsh. The loading mechanism uses the *shebang line* and an optional
+*metadata comment* on line 2 to determine shell compatibility:
+
+| Shebang             | Loaded in bash | Loaded in zsh |
+|---------------------+----------------+---------------|
+| =#!/usr/bin/env sh=   | yes            | yes           |
+| =#!/usr/bin/env bash= | yes            | no            |
+| =#!/usr/bin/env zsh=  | no             | yes           |
+
+To override the default behavior, add a comment on line 2:
+
+- =# shell: bash= -- load only in bash
+- =# shell: zsh= -- load only in zsh
+- =# shell: all= -- load in both (overrides shebang exclusion)
+
+Example of a zsh-only function:
+#+begin_src shell
+#!/usr/bin/env zsh
+
+my_function() {
+    # uses zsh-specific features
+}
+#+end_src
+
+Example of a bash-shebang function that should still load in zsh:
+#+begin_src shell
+#!/usr/bin/env bash
+# shell: all
+
+my_portable_function() {
+    # compatible with both shells despite the bash shebang
+}
+#+end_src

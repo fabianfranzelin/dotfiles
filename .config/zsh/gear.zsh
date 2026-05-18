@@ -14,6 +14,23 @@ for dir in "${dirs[@]}"; do
         # is folder empty?
         if [ -n "$(ls -A "${dir}/func")" ]; then
             for file in "${dir}/func/"*; do
+                # Read shebang to determine shell compatibility
+                local shebang="$(head -n1 "$file" 2>/dev/null)"
+                local meta="$(sed -n '2p' "$file" 2>/dev/null)"
+                # Skip bash-only files (can't be autoloaded in zsh)
+                case "$shebang" in
+                    *"/bash")
+                        # Unless explicitly marked as compatible with zsh
+                        case "$meta" in
+                            *"# shell: zsh"*|*"# shell: all"*) ;;
+                            *) continue ;;
+                        esac
+                        ;;
+                esac
+                # Skip files explicitly marked for bash only
+                case "$meta" in
+                    *"# shell: bash"*) continue ;;
+                esac
                 autoload -Uz "${file}";
             done
         fi

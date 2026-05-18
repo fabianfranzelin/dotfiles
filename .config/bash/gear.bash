@@ -12,10 +12,17 @@ for __DIR in "${__DIRS[@]}"; do
         # is folder empty?
         if [ -n "$(ls -A "${__DIR}/func")" ]; then
             for __FILE in "${__DIR}/func/"*; do
-                # Skip files marked as zsh-only (first line contains "# zsh-only")
-                if head -n2 "$__FILE" 2>/dev/null | grep -q '# zsh-only'; then
-                    continue
-                fi
+                # Read shebang to determine shell compatibility
+                __SHEBANG="$(head -n1 "$__FILE" 2>/dev/null)"
+                # Skip zsh-only files
+                case "$__SHEBANG" in
+                    *"/zsh") continue ;;
+                esac
+                # Also support explicit "# shell: zsh" override on line 2
+                __META="$(sed -n '2p' "$__FILE" 2>/dev/null)"
+                case "$__META" in
+                    *"# shell: zsh"*) continue ;;
+                esac
                 source "${__FILE}";
             done
         fi
