@@ -268,6 +268,41 @@ DIR: directory path"
                    (82 "As reveal.js and browse" org-reveal-export-to-html-and-browse)
                    (115 "Subtree to reveal.js" org-reveal-export-current-subtree)))))))
 
+(defun ff/org-reveal-slide-index ()
+  "Return (H . V) slide indices for the heading at point.
+Indices are 0-based, matching reveal.js URL fragment format.
+Accounts for the title slide occupying index 0 when present."
+  (save-excursion
+    (org-back-to-heading t)
+    (let* ((has-title-slide (save-excursion
+                              (goto-char (point-min))
+                              (not (re-search-forward
+                                    "^#\\+REVEAL_TITLE_SLIDE:.*\\bnil\\b\\|^#\\+OPTIONS:.*reveal_title_slide:nil"
+                                    nil t))))
+           (h (if has-title-slide 0 -1))
+           (v 0)
+           (target (line-end-position)))
+      (goto-char (point-min))
+      (while (re-search-forward org-heading-regexp target t)
+        (if (= (org-outline-level) 1)
+            (setq h (1+ h) v 0)
+          (setq v (1+ v))))
+      (cons h v))))
+
+(defun ff/org-reveal-goto-slide ()
+  "Open the exported reveal.js HTML in the browser at the current slide."
+  (interactive)
+  (let* ((idx (ff/org-reveal-slide-index))
+         (html-file (concat (file-name-sans-extension (buffer-file-name)) ".html"))
+         (url (format "file://%s#/%d/%d"
+                      (expand-file-name html-file)
+                      (car idx) (cdr idx))))
+    (unless (file-exists-p html-file)
+      (user-error "HTML file not found: %s.  Export first" html-file))
+    (browse-url url)))
+
+(define-key org-mode-map (kbd "C-c C-v") 'ff/org-reveal-goto-slide)
+
 ;; -------------------------------------------------------------------
 ;; Org-roam: Taking notes
 ;; -------------------------------------------------------------------
