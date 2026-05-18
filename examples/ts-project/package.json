@@ -1,0 +1,13 @@
+{
+  "name": "ts-project",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Example TypeScript project for testing Emacs tree-sitter and eglot",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^5.4"
+  }
+}

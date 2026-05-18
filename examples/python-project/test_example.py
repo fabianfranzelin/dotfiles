@@ -1,8 +1,8 @@
 """Some arbitrary test case."""
 
-
 import os
 
+import pytest
 import numpy
 
 
@@ -23,5 +23,6 @@ def test_capital_case() -> None:
     assert capital_case("semaphore") == "Semaphore"
 
 
+@pytest.mark.xfail(reason="Intentional failure for testing Emacs pytest integration")
 def test_failure() -> None:
     assert False

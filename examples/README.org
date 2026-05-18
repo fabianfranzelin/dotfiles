@@ -8,20 +8,21 @@ configuration.
 + [[file:org-project/][Scientific paper with org-mode]]
 + [[file:cc-project/][Simple C++/CMake project]]
 + [[file:python-project/][Simple Python project]]
++ [[file:ts-project/][TypeScript project (tree-sitter + eglot)]]
 
-** Typescript and React
+** External: Typescript and React
 
-There is a minimal example available online to test the setup:
+There is a more complete example available online to test the setup:
 [[https://github.com/cpbotha/typescript-emacs-demo.git][Typescript Emacs project (remote)]]
 
 1. Clone the repository first
-#+begin_src emacs-lisp :tangle yes
+#+begin_src shell
   git clone "https://github.com/cpbotha/typescript-emacs-demo.git" "~/workspace"
   cd "~/workspace/typescript-emacs-demo/"
 #+end_src
 
 Then install all the npm dependencies before you start the development server
-#+begin_src emacs-lisp :tangle yes
+#+begin_src shell
   npm install
   yarn start
 #+end_src

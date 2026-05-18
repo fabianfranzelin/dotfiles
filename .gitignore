@@ -98,6 +98,7 @@ build/
 *.idx
 *.html
 /.fonts/.uuid
+*.synctex.gz
 
 /.local/share/npm/
 /.local/bin/marksman
@@ -139,6 +140,9 @@ build/
 !/docs/content/themes/simple.html
 
 ### Examples ###
+/examples/cc-project/.cache/
+/examples/cc-project/compile_commands.json
+/examples/cc-project/MODULE.bazel.lock
 /examples/org-project/content/index.pdf
 /examples/org-project/content/index.tex
 /examples/org-project/content/*.aux
