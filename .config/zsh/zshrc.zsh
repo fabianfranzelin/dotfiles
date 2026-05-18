@@ -29,6 +29,11 @@ export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
 # place comp dump in the cache
 export ZSH_COMPDUMP="${XDG_CACHE_HOME}/zsh/.zcompdump-$HOST"
 
+#------------------------------------------------------------------------------#
+# Source profile EARLY so PATH and env vars are available for plugins
+. "${HOME}/.profile"
+
+#------------------------------------------------------------------------------#
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -41,7 +46,7 @@ fi
 . "${ZDOTDIR}/oh-my-zsh.sh"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-. "${ZDOTDIR}/.p10k.zsh"
+[[ -f "${ZDOTDIR}/.p10k.zsh" ]] && . "${ZDOTDIR}/.p10k.zsh"
 
 # shellcheck source=gear.zsh
 . "${ZDOTDIR}/gear.zsh"
@@ -49,11 +54,7 @@ fi
 # ----------------------------------------------------
 # vterm setup
 # shellcheck source=vterm.zsh
-. "${ZDOTDIR}/vterm.zsh"
-
-#------------------------------------------------------------------------------#
-# set as a default for configurations
-. "${HOME}/.profile"
+[[ -f "${ZDOTDIR}/vterm.zsh" ]] && . "${ZDOTDIR}/vterm.zsh"
 
 #------------------------------------------------------------------------------#
 # ros setup
@@ -66,15 +67,18 @@ done
 
 #------------------------------------------------------------------------------#
 # Kubernetes setup
-if command -v kubectl > /dev/null
-then
+if command -v kubectl > /dev/null 2>&1; then
     # shellcheck disable=SC2039
     . <(kubectl completion zsh)
 fi
 
 #------------------------------------------------------------------------------#
-# enable direnv for bash or zsh
-eval "$(direnv hook "$(command -v zsh)")" > /dev/null
+# enable direnv for zsh
+if command -v direnv > /dev/null 2>&1; then
+    eval "$(direnv hook zsh)" > /dev/null
+fi
 
 # enable uv autocompletion
-eval "$(uv --generate-shell-completion zsh)"
+if command -v uv > /dev/null 2>&1; then
+    eval "$(uv --generate-shell-completion zsh)"
+fi

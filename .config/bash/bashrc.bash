@@ -22,8 +22,22 @@ export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_STATE_HOME="$HOME/.local/state"
 
 #------------------------------------------------------------------------------#
-# Directory of dotfiles for zsh
+# Directory of dotfiles for bash
 export BASHDOTDIR="${XDG_CONFIG_HOME}/bash"
+
+#------------------------------------------------------------------------------#
+# Source profile EARLY so PATH and env vars are available for completions/plugins
+. "${HOME}/.profile"
+
+#------------------------------------------------------------------------------#
+# Bash history configuration
+shopt -s histappend        # append to history file, don't overwrite
+shopt -s cmdhist           # save multi-line commands as one entry
+HISTCONTROL=ignoreboth:erasedups  # ignore duplicates and lines starting with space
+HISTSIZE=10000
+HISTFILESIZE=20000
+# Write history after each command (not just on shell exit)
+PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a"
 
 # shellcheck source=gear.bash
 . "${BASHDOTDIR}/gear.bash"
@@ -34,12 +48,8 @@ export BASHDOTDIR="${XDG_CONFIG_HOME}/bash"
 . "${BASHDOTDIR}/prompts/left/default.sh"
 
 #------------------------------------------------------------------------------#
-# set as a default for configurations
-. "${HOME}/.profile"
-
-#------------------------------------------------------------------------------#
 # vterm setup
-. "${BASHDOTDIR}/vterm.bash"
+[[ -f "${BASHDOTDIR}/vterm.bash" ]] && . "${BASHDOTDIR}/vterm.bash"
 
 #------------------------------------------------------------------------------#
 # ros setup
@@ -52,17 +62,21 @@ done
 
 #------------------------------------------------------------------------------#
 # Kubernetes setup
-if command -v kubectl > /dev/null
-then
+if command -v kubectl > /dev/null 2>&1; then
     # shellcheck disable=SC2039
     . <(kubectl completion bash)
 fi
 
 #------------------------------------------------------------------------------#
 # enable direnv
-eval "$(direnv hook "$(command -v bash)")" > /dev/null
+if command -v direnv > /dev/null 2>&1; then
+    eval "$(direnv hook bash)" > /dev/null
+fi
 
 # enable autocompletion for uv
-eval "$(uv --generate-shell-completion bash)"
+if command -v uv > /dev/null 2>&1; then
+    eval "$(uv --generate-shell-completion bash)"
+fi
 
-. "$HOME/.local/share/../bin/env"
+# cargo/rust env
+[[ -f "$HOME/.local/share/../bin/env" ]] && . "$HOME/.local/share/../bin/env"

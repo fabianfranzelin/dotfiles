@@ -13,6 +13,10 @@ for __DIR in "${__DIRS[@]}"; do
         # is folder empty?
         if [ -n "$(ls -A "${__DIR}/func")" ]; then
             for __FILE in "${__DIR}/func/"*; do
+                # Skip files marked as zsh-only (first line contains "# zsh-only")
+                if head -n2 "$__FILE" 2>/dev/null | grep -q '# zsh-only'; then
+                    continue
+                fi
                 source "${__FILE}";
             done
         fi
@@ -30,9 +34,6 @@ if ! shopt -oq posix; then
         source '/etc/bash_completion'
     fi
 fi
-
-# append to the history file, don't overwrite it
-shopt -s histappend
 
 #------------------------------------------------------------------------------#
 # keybindings

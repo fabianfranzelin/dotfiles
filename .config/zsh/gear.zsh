@@ -23,11 +23,11 @@ done
 
 #------------------------------------------------------------------------------#
 # autoloading others
+# NOTE: compinit is handled by oh-my-zsh, no need to call it again here.
 
-autoload -Uz compinit && compinit -u
 autoload colors && colors
 
-# bash auto completion
+# bash auto completion compatibility
 autoload -U bashcompinit
 bashcompinit
 
