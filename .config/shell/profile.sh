@@ -10,6 +10,10 @@ case $- in
     *) return ;;
 esac
 
+# Guard against being sourced multiple times
+[ -n "$__PROFILE_LOADED" ] && return
+__PROFILE_LOADED=1
+
 #------------------------------------------------------------------------------#
 # Environment variables, PATH, and basic settings
 . "${HOME}/.config/shell/env.sh"
