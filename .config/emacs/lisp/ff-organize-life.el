@@ -242,6 +242,19 @@ DIR: directory path"
 
 (use-package ox-reveal)
 
+(defun ff/reveal-set-export-filename (orig-fun &rest args)
+  "Automatically set the export filename to the org file's base name with .html extension."
+  (let* ((base (file-name-sans-extension (buffer-file-name)))
+         (export-file (concat base ".html")))
+    (org-with-wide-buffer
+     (goto-char (point-min))
+     (unless (re-search-forward "^#\\+EXPORT_FILE_NAME:" nil t)
+       (let ((org-export-output-file-name-function
+              (lambda (_ext _plist)
+                export-file)))
+         (return (apply orig-fun args)))))
+    (apply orig-fun args)))
+
 (with-eval-after-load 'ox-reveal
   (let ((html-backend (org-export-get-backend 'html)))
     (when html-backend

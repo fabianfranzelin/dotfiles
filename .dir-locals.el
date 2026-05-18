@@ -21,25 +21,26 @@
                    (append
                     (when-let* ((project-dir (locate-dominating-file default-directory ".git"))
                                 (docs-dir (expand-file-name "docs" project-dir))
-                                (build-script (expand-file-name "build.el" docs-dir)))
-                      (list (list :command-name "sh:build"
+                                (build-script (expand-file-name "build.el" project-dir))
+                                (publish-script (expand-file-name "publish.sh" project-dir))
+                                (serve-script (expand-file-name "serve.el" project-dir)))
+                      (list (list :command-name "sh:install npm dependencies"
+                                  :command-line "npm install"
+                                  :working-dir docs-dir)
+                            (list :command-name "sh:build"
                                   :command-line "./build.el"
-                                  :working-dir docs-dir)))
-                    (when-let* ((project-dir (locate-dominating-file default-directory ".git"))
-                                (docs-dir (expand-file-name "docs" project-dir))
-                                (publish-script (expand-file-name "publish.sh" docs-dir)))
-                      (list (list :command-name "sh:publish"
+                                  :working-dir docs-dir)
+                            (list :command-name "sh:publish"
                                   :command-line "./publish.sh"
                                   :working-dir docs-dir)
-                            (list :command-name "sh:publish (dryrun)"
-                                  :command-line "./publish.sh --dryrun"
-                                  :working-dir docs-dir)))
-                    (when-let* ((project-dir (locate-dominating-file default-directory ".git"))
-                                (docs-dir (expand-file-name "docs" project-dir))
-                                (build-script (expand-file-name "build.el" docs-dir))
-                                (publish-script (expand-file-name "publish.sh" docs-dir)))
-                      (list (list :command-name "sh:build_and_publish"
+                            (list :command-name "sh:build and publish"
                                   :command-line "./build.el && ./publish.sh"
+                                  :working-dir docs-dir)
+                            (list :command-name "sh:serve"
+                                  :command-line "./serve.el"
+                                  :working-dir docs-dir)
+                            (list :command-name "sh:build and serve"
+                                  :command-line "./build.el && ./serve.el"
                                   :working-dir docs-dir))))))
          (run-command-recipes . (run-command-recipe-ff/configure
                                  run-command-recipe-ff/docs))))

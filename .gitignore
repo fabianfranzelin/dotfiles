@@ -130,6 +130,8 @@ build/
 ### Docs ###
 /docs/public/
 /docs/.packages/
+/docs/package-lock.json
+/docs/node_modules/
 !/docs/content/themes/simple_menu.html
 !/docs/content/themes/simple_whiteblue.html
 !/docs/content/themes/worg.html
