@@ -78,5 +78,3 @@ if command -v uv > /dev/null 2>&1; then
     eval "$(uv --generate-shell-completion bash)"
 fi
 
-# cargo/rust env
-[[ -f "$HOME/.local/share/../bin/env" ]] && . "$HOME/.local/share/../bin/env"
