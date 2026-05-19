@@ -184,7 +184,7 @@ if __name__ == "__main__":
     args = parse_arguments()
     exit_code: int = run_publish_on_github(
         Path("./public").resolve(),
-        remote="bdc",
+        remote="origin",
         dryrun=args.dryrun,
     )
     sys.exit(exit_code)
