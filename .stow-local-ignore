@@ -29,6 +29,3 @@ pyproject.toml
 
 .zcompdump*
 .zsh_history
-
-gpg.conf.default
-gpg.conf.FEWI-C-0007J

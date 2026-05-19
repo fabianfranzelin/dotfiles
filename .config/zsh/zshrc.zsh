@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 
+
 # shellcheck disable=SC1090,SC1091,SC3001
 
 #------------------------------------------------------------------------------#
@@ -13,7 +14,11 @@ esac
 # When using Emacs TRAMP, we skip all the set up since it messes with
 # the TRAMP protocol.
 # https://blog.karssen.org/2016/03/02/fixing-emacs-tramp-mode-when-using-zsh/
-[[ "$TERM" == "dumb" ]] && unsetopt zle && PS1="$ " && return
+if [[ "$TERM" == "dumb" && "${INSIDE_EMACS}" != "vterm" ]]; then
+  unsetopt zle
+  PS1="$ "
+  return
+fi
 
 #------------------------------------------------------------------------------#
 # set as a default for configurations
