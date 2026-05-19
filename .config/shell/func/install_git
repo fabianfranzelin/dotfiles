@@ -1,10 +1,9 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
+# shell: all
 
 generate_git_credentials()
 {
     local credentials_file
-    local token
-    local username
 
     credentials_file="${DOTFILES}/.config/git/config.credentials"
 
@@ -34,13 +33,46 @@ generate_git_credentials()
         } >> "${credentials_file}"
     }
 
-    # Add personal GitHub credentials
-    username=$(pass usernames/public@github 2>/dev/null)
-    token=$(pass tokens/${username}@github.com 2>/dev/null)
-    if [[ -n "${username}" && -n "${token}" ]]; then
-        add_url_rewrite "GitHub: github.com (personal)" "${username}" "${token}" "github.com" "${username}/"
-    else
-        echo "Warning: Missing credentials for ${username}@github.com" >&2
+    local has_credentials=0
+
+    # Helper: attempt to add credentials from pass store
+    # Args: $1 = label, $2 = pass username path, $3 = pass token path template (use {user} for username), $4 = base_url, $5 = path_prefix template (use {user} for username)
+    try_add_credential() {
+        local label="$1"
+        local user_path="$2"
+        local token_path_tpl="$3"
+        local base_url="$4"
+        local prefix_tpl="${5:-}"
+
+        local user tok token_path prefix
+        user=$(pass "${user_path}" 2>/dev/null)
+        if [[ -z "${user}" ]]; then
+            echo "Warning: No entry in pass store for '${user_path}' - skipping ${label}" >&2
+            return 0
+        fi
+
+        token_path="${token_path_tpl//\{user\}/${user}}"
+        tok=$(pass "${token_path}" 2>/dev/null)
+        if [[ -z "${tok}" ]]; then
+            echo "Warning: No entry in pass store for '${token_path}' - skipping ${label}" >&2
+            return 0
+        fi
+
+        prefix="${prefix_tpl//\{user\}/${user}}"
+        add_url_rewrite "${label}" "${user}" "${tok}" "${base_url}" "${prefix}"
+        has_credentials=1
+    }
+
+    # Add personal GitHub credentials (optional - skipped if not in pass store)
+    try_add_credential \
+        "GitHub: github.com (personal)" \
+        "usernames/public@github" \
+        "tokens/{user}@github.com" \
+        "github.com" \
+        "{user}/"
+
+    if [[ "${has_credentials}" -eq 0 ]]; then
+        echo "Warning: No git credentials were generated (no matching entries in pass store)" >&2
     fi
 
     # Set restrictive permissions (owner read/write only)
