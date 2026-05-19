@@ -32,14 +32,10 @@ aos_create_venv() {
             ipdb \
             ipython \
             ptvsd \
-            black \
-            isort \
+            ruff \
             yamllint \
             mdformat \
             cmake_language_server \
-            "python-lsp-server[all]" \
-            pylsp-mypy \
-            python-lsp-black \
             beautysh
 
         uv pip install \

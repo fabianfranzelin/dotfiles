@@ -11,15 +11,12 @@
 ;; install system dependencies
 (require 'ff-ensure-system-packages)
 
-(ff/ensure-python-package "python-lsp-server[all]" nil "pylsp")
 (ff/ensure-python-package "ipython" nil "ipython")
 (ff/ensure-python-package "pdb")
 (ff/ensure-python-package "ipdb")
-(ff/ensure-python-package "pylint")
+(ff/ensure-python-package "ruff" nil "ruff")
+(ff/ensure-python-package "basedpyright" nil "basedpyright-langserver")
 (ff/ensure-python-package "mypy")
-(ff/ensure-python-package "flake8")
-(ff/ensure-python-package "black" nil "black")
-(ff/ensure-python-package "isort" nil "isort")
 
 ;; use tree-sitter as default and overwrite python-mode
 (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
@@ -35,12 +32,12 @@
 ;; delete output buffer on buffer execution
 (setq py-shell-switch-buffers-on-execute nil)
 
-;; configure a few lsp server alternatives
+;; configure lsp server alternatives
 (with-eval-after-load 'eglot
   (add-to-list 'eglot-server-programs
                `(python-base-mode
-                 . ,(eglot-alternatives '(("pylsp")
-                                          ("basedpyright-langserver" "--stdio")
+                 . ,(eglot-alternatives '(("basedpyright-langserver" "--stdio")
+                                          ("ruff" "server")
                                           ("ty" "server")
                                           ("pyright-langserver" "--stdio"))))))
 
@@ -48,9 +45,9 @@
 ;; configure auto format
 (with-eval-after-load 'apheleia
   (add-hook 'python-base-mode-hook 'apheleia-mode)
-  (setf (alist-get 'black apheleia-formatters) '("black" "-"))
-  (setf (alist-get 'isort apheleia-formatters) '("isort" "--stdout" "-"))
-  (setf (alist-get 'python-base-mode apheleia-mode-alist) '(isort black)))
+  (setf (alist-get 'ruff-format apheleia-formatters) '("ruff" "format" "--stdin-filename" filepath "-"))
+  (setf (alist-get 'ruff-isort apheleia-formatters) '("ruff" "check" "--select" "I" "--fix-only" "--unsafe-fixes" "--stdin-filename" filepath "-"))
+  (setf (alist-get 'python-base-mode apheleia-mode-alist) '(ruff-format ruff-isort)))
 
 ;; supports virtual environments. To be set with pyvenv-workon
 (use-package pyvenv
@@ -82,7 +79,6 @@
         ("C-c t e" . python-pytest-last-failed)))
 
 ;; flycheck
-(flycheck-add-mode 'python-pylint 'python-base-mode)
 (flycheck-add-mode 'python-mypy 'python-base-mode)
 
 (provide 'ff-programming-python)

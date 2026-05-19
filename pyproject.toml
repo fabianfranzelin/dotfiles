@@ -1,5 +1,23 @@
-[tool.isort]
-profile = "black"
+[tool.ruff]
+line-length = 130
+
+[tool.ruff.lint]
+select = [
+  "E",     # pycodestyle errors
+  "W",     # pycodestyle warnings
+  "F",     # pyflakes
+  "I",     # isort
+  "UP",    # pyupgrade
+  "B",     # flake8-bugbear
+  "SIM",   # flake8-simplify
+  "RUF",   # ruff-specific rules
+]
+ignore = [
+  "E741",   # ambiguous variable name
+]
+
+[tool.ruff.format]
+# Defaults match black style
 
 [tool.mypy]
 python_version = "3.10"
@@ -24,13 +42,7 @@ module = [
 ]
 ignore_missing_imports=true
 
-[tool.pylint.messages_control]
+[tool.basedpyright]
+reportAny = false
 
-max-line-length = 130
 
-disable = [
-  "no-member",
-  "invalid-name",
-  "fixme",
-  "too-few-public-methods",
-]

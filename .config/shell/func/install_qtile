@@ -72,7 +72,7 @@ install_qtile()
     # Install dependencies for widgets
     ${QTILE_PYTHON_FILEPATH} -m pip install --upgrade psutil pulsectl-asyncio dbus-next dbus-fast
     # For eglot
-    ${QTILE_PYTHON_FILEPATH} -m pip install "python-lsp-server[all]" ipython ipdb pylint mypy flake8 black isort
+    ${QTILE_PYTHON_FILEPATH} -m pip install ipython ipdb ruff mypy
 
     # setup X and other tools
     if ( __is_linux )
