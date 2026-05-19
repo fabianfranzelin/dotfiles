@@ -15,6 +15,12 @@
                              :runner 'ff/run-command-runner-vterm)
                        (list :command-name "sh:generate git credentials"
                              :command-line "./configure --update-git-credentials"
+                             :working-dir project-dir)))
+                    (when-let* ((project-dir (locate-dominating-file default-directory "configure"))
+                                (work-project-dir (expand-file-name "workspace/dotfiles-work" (getenv "HOME"))))
+                      (list
+                       (list :command-name "sh:configure personal + work"
+                             :command-line (format "./configure --overlay-dir %s" work-project-dir)
                              :working-dir project-dir))))))
          ;; Docs ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
          (eval . (defun run-command-recipe-ff/docs ()

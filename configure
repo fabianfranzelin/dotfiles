@@ -48,10 +48,9 @@ DESCRIPTION
               Install Qtile
        --skip-qtile
               Skip Qtile installation
-       --install-nyxt
-              Install nyxt
-       --skip-nyxt
-              Skip nyxt installation
+       --overlay-dir <path>
+              Additional dotfiles directory to stow and configure
+              (can be specified multiple times)
 "
 # @formatter:on
 
@@ -81,7 +80,6 @@ __SHELL_LIB="${DOTFILES}/.config/shell"
 . "${__SHELL_LIB}/func/install_npm"
 . "${__SHELL_LIB}/func/install_docker"
 . "${__SHELL_LIB}/func/install_emacs"
-. "${__SHELL_LIB}/func/install_nyxt"
 . "${__SHELL_LIB}/func/install_qtile"
 . "${__SHELL_LIB}/func/install_zsh"
 
@@ -92,6 +90,8 @@ export LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH}
 
 #------------------------------------------------------------------------------#
 # cmdline-parser
+
+OVERLAY_DIRS=()
 
 while [ "${#}" -gt 0 ]; do
     case "${1}" in
@@ -159,14 +159,6 @@ while [ "${#}" -gt 0 ]; do
             SKIP_QTILE=1
             shift # past argument
             ;;
-        '--install-nyxt')
-            INSTALL_NYXT=1
-            shift # past argument
-            ;;
-        '--skip-nyxt')
-            SKIP_NYXT=1
-            shift # past argument
-            ;;
         '--install-zsh')
             INSTALL_ZSH=1
             shift # past argument
@@ -174,6 +166,10 @@ while [ "${#}" -gt 0 ]; do
         '--skip-zsh')
             SKIP_ZSH=1
             shift # past argument
+            ;;
+        '--overlay-dir')
+            OVERLAY_DIRS+=("$(realpath "$2")")
+            shift 2
             ;;
         *)
             echo -e "${__COLOR_ERR}Unknown value ${1}${__COLOR_RESET}"
@@ -195,8 +191,49 @@ create_symlinks()
     echo -e "${__COLOR_INFO}INFO: Setup symbolic links with GNU stow.${__COLOR_RESET}"
     (
         cd "${DOTFILES}"
-        stow . -t "${HOME}"
+        if [ ${#OVERLAY_DIRS[@]} -gt 0 ]; then
+            stow -R . -t "${HOME}" --no-folding
+        else
+            stow -R . -t "${HOME}"
+        fi
     )
+
+    # Stow overlay directories
+    # Remove default symlinks that would conflict with overlay stow.
+    # They will be recreated below if no overlay provides them.
+    if [ ${#OVERLAY_DIRS[@]} -gt 0 ]; then
+        for target in "${HOME}/.config/npm/npmrc" "${HOME}/.docker/config.json" "${HOME}/.gnupg/gpg.conf"; do
+            if [ -L "${target}" ]; then
+                rm -f "${target}"
+            fi
+        done
+    fi
+
+    for overlay in "${OVERLAY_DIRS[@]}"; do
+        if [ -d "${overlay}" ]; then
+            echo -e "${__COLOR_INFO}INFO: Stowing overlay: ${overlay}${__COLOR_RESET}"
+            (cd "${overlay}" && stow -R . -t "${HOME}")
+        else
+            echo -e "${__COLOR_ERR}Overlay directory not found: ${overlay}${__COLOR_RESET}"
+        fi
+    done
+
+    # -------------------------------------------------
+    # Create default symlinks for files that overlays may provide.
+    # Only create if the target does not already exist (overlay takes precedence).
+
+    if [ ! -e "${HOME}/.config/npm/npmrc" ]; then
+        ln -sf "npmrc.default" "${HOME}/.config/npm/npmrc"
+    fi
+
+    if [ ! -e "${HOME}/.docker/config.json" ]; then
+        ln -sf "config-default.json" "${HOME}/.docker/config.json"
+    fi
+
+    if [ ! -e "${HOME}/.gnupg/gpg.conf" ]; then
+        ln -sf "gpg.conf.default" "${HOME}/.gnupg/gpg.conf"
+    fi
+
     # -------------------------------------------------
     # GNUPG setup
 
@@ -247,11 +284,6 @@ then
     install_docker
 fi
 
-if { [ -n "${INSTALL_ALL}" ] && [ -z "${SKIP_NYXT}" ]; } || [ -n "${INSTALL_NYXT}" ]
-then
-    install_nyxt
-fi
-
 if { [ -n "${INSTALL_ALL}" ] && [ -z "${SKIP_EMACS}" ]; } || [ -n "${INSTALL_EMACS}" ]
 then
     install_emacs
@@ -261,3 +293,11 @@ if [ -z "${SKIP_STOW}" ]
 then
     create_symlinks
 fi
+
+# Run overlay configure scripts
+for overlay in "${OVERLAY_DIRS[@]}"; do
+    if [ -x "${overlay}/configure" ]; then
+        echo -e "${__COLOR_INFO}INFO: Running overlay configure: ${overlay}/configure${__COLOR_RESET}"
+        "${overlay}/configure"
+    fi
+done

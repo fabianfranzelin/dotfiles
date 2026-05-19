@@ -1,6 +1,0 @@
-email=Fabian.Franzelin@de.bosch.com
-strict-ssl=false
-loglevel=warn
-prefix=${HOME}/.local/share/npm
-cache=${HOME}/.cache/npm
-//rb-artifactory.bosch.com/artifactory/api/npm/npm-repo/:_authToken=${NPM_TOKEN}

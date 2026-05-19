@@ -1,5 +1,13 @@
 [include]
-    path = "~/.config/git/config.workstation"
+    path = "~/.config/git/config.default"
+[include]
+    path = "~/.config/git/config.work.infra"
+[includeIf "hasconfig:remote.*.url:https://*.bosch.com/**"]
+    path = "~/.config/git/config.work"
+[includeIf "hasconfig:remote.*.url:https://*.bosch.com:*/**"]
+    path = "~/.config/git/config.work"
+[includeIf "hasconfig:remote.*.url:https://github.boschdevcloud.com/**"]
+    path = "~/.config/git/config.work"
 [core]
     trustctime = false
     autocrlf = false

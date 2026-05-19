@@ -27,6 +27,28 @@ configure script of the repository
 ./configure -i
 #+end_src
 
+** Overlay Directories
+
+Additional dotfiles repositories (e.g. work-specific configurations) can be
+integrated using the =--overlay-dir= option. An overlay directory is stowed on
+top of the personal dotfiles and its =configure= script is executed
+automatically if present.
+
+#+begin_src shell
+./configure -i --overlay-dir ../dotfiles-work
+#+end_src
+
+Multiple overlays can be specified:
+
+#+begin_src shell
+./configure -i --overlay-dir ../dotfiles-work --overlay-dir ../dotfiles-other
+#+end_src
+
+An overlay repository should follow the same directory structure as this
+repository (stow-compatible, mirroring =$HOME=). Place a =.stow-local-ignore=
+file and an executable =configure= script at its root for any overlay-specific
+setup steps.
+
 * Beyond Configurations
 
 + [[file:examples/README.org][Examples: Python, C++, org, Typescript/React]]

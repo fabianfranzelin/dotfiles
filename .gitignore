@@ -188,7 +188,6 @@ flycheck_*
 /.config/zsh/.zsh_history
 
 ### GIT ###
-/.config/git/config.workstation
 /.config/git/*.credentials
 
 ### NPM ###
@@ -205,23 +204,18 @@ flycheck_*
 ### GNUPG ###
 /.gnupg/*
 !/.gnupg/gpg-agent.conf
-!/.gnupg/gpg.conf.default
-!/.gnupg/gpg.conf.FEWI-C-0007J
 
 ### Docker ###
 /.docker/config.json
 /.docker/.token_seed
 /.docker/buildx/
 /.docker/.token_seed.lock
-
+.docker/config-default.json
 
 ### Elora ###
 /.config/elora/README.pdf
 /.config/elora/README.tex
 /.config/elora/README.synctex.gz
-
-### Nyxt ###
-/.config/nyxt/build.sh
 
 ### Homeassistant ###
 /.config/homeassistant/.HA_VERSION

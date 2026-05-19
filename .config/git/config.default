@@ -4,3 +4,5 @@
 [credential]
     helper = cache --timeout=8000000
     useHttpPath = true
+[include]
+    path = "~/.config/git/config.credentials"
