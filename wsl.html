@@ -3,48 +3,64 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
+<!-- 2026-05-19 Tue 09:42 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
+<meta name="author" content="Fabian Franzelin XC-AS/EAA4" />
 <meta name="generator" content="Org Mode" />
-<!-- Un-Minified version -->
-<link rel="stylesheet" href="https://cdn.simplecss.org/simple.css">
-<link rel="stylesheet" href="/pauline/org/css/custom.css">
-<link rel="stylesheet" href="/pauline/org/css/code.css">
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="stylesheet" href="/css/code.css">
+<!-- Menu -->
+<header>
+<nav>
+    <!-- Always visible items in the nav bar -->
+    <ul>
+        <li>
+            <a href="/index.html">Home</a>
+        </li>
+    </ul>
+    <!-- Search box -->
+    <div class="search-container">
+        <input type="text" id="search-input" placeholder="Search..." autocomplete="off" />
+        <div id="search-results"></div>
+    </div>
+    <!-- The hamburger menu -->
+    <label for='menu' tabindex="0">
+    ☰
+    </label>
+    <input id='menu' type='checkbox' />
+    <!-- The collapsable menu -->
+    <ul>
+      <li class="nav-group">
+      </li>
+    </ul>
+</nav>
+</header>
+<script defer src="https://unpkg.com/lunr/lunr.js"></script>
+<script defer src="/js/search.js"></script>
 </head>
 <body>
 <div id="content" class="content">
-<div id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents" role="doc-toc">
-<ul>
-<li><a href="#orgde50f17">WSL2</a>
-<ul>
-<li><a href="#org7ad2162">Vcxsrv</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orgde50f17" class="outline-2">
-<h2 id="orgde50f17">WSL2</h2>
-<div class="outline-text-2" id="text-orgde50f17">
+<div id="outline-container-org6645f2a" class="outline-2">
+<h2 id="org6645f2a">WSL2</h2>
+<div class="outline-text-2" id="text-org6645f2a">
 <ul class="org-ul">
 <li><a href="https://www.configserverfirewall.com/windows-10/please-enable-the-virtual-machine-platform-windows-feature-and-ensure-virtualization-is-enabled-in-the-bios/">Enable WSL2</a></li>
 <li><a href="https://learn.microsoft.com/en-us/windows/wsl/setup/environment#set-up-your-linux-username-and-password">Setup windows terminal</a></li>
 <li><a href="https://www.configserverfirewall.com/windows-10/please-enable-the-virtual-machine-platform-windows-feature-and-ensure-virtualization-is-enabled-in-the-bios/">Remove WSL completely</a></li>
 </ul>
 </div>
-<div id="outline-container-org7ad2162" class="outline-3">
-<h3 id="org7ad2162">Vcxsrv</h3>
-<div class="outline-text-3" id="text-org7ad2162">
+<div id="outline-container-org93cc600" class="outline-3">
+<h3 id="org93cc600">Vcxsrv</h3>
+<div class="outline-text-3" id="text-org93cc600">
 <ul class="org-ul">
 <li><a href="https://github.com/microsoft/WSL/issues/4793">XLaunch setup for vcxsrv</a></li>
 </ul>
 </div>
 <ul class="org-ul">
-<li><a id="org2701dec"></a>Configure X server<br />
-<div class="outline-text-5" id="text-org2701dec">
+<li><a id="org53345ad"></a>Configure X server<br />
+<div class="outline-text-5" id="text-org53345ad">
 <p>
 I found the best way to use the <code>vcxsrv</code> is to use the multi-window
 mode. Each GUI starts in its own window, it can be resized on-the-fly
@@ -75,7 +91,9 @@ For details, check the <a href="https://gist.github.com/ctaggart/68ead4d0d942b24
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p>
+<p class="author">Author: Fabian Franzelin XC-AS/EAA4</p>
+<p class="email">Email: <a href="mailto:fabian.franzelin@gmail.com">fabian.franzelin@gmail.com</a></p>
+<p class="date">Created: 2026-05-19 Tue 09:42</p>
 </div>
 </body>
 </html>

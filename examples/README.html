@@ -3,46 +3,66 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
+<!-- 2026-05-19 Tue 09:42 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Example Projects to Test Emacs Configuration</title>
+<meta name="author" content="Fabian Franzelin XC-AS/EAA4" />
 <meta name="generator" content="Org Mode" />
-<!-- Un-Minified version -->
-<link rel="stylesheet" href="https://cdn.simplecss.org/simple.css">
-<link rel="stylesheet" href="/pauline/org/css/custom.css">
-<link rel="stylesheet" href="/pauline/org/css/code.css">
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="stylesheet" href="/css/code.css">
+<!-- Menu -->
+<header>
+<nav>
+    <!-- Always visible items in the nav bar -->
+    <ul>
+        <li>
+            <a href="/index.html">Home</a>
+        </li>
+    </ul>
+    <!-- Search box -->
+    <div class="search-container">
+        <input type="text" id="search-input" placeholder="Search..." autocomplete="off" />
+        <div id="search-results"></div>
+    </div>
+    <!-- The hamburger menu -->
+    <label for='menu' tabindex="0">
+    ☰
+    </label>
+    <input id='menu' type='checkbox' />
+    <!-- The collapsable menu -->
+    <ul>
+      <li class="nav-group">
+      </li>
+    </ul>
+</nav>
+</header>
+<script defer src="https://unpkg.com/lunr/lunr.js"></script>
+<script defer src="/js/search.js"></script>
 </head>
 <body>
 <div id="content" class="content">
 <h1 class="title">Example Projects to Test Emacs Configuration</h1>
-<div id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents" role="doc-toc">
-<ul>
-<li><a href="#org5e7e6b7">Internal examples</a></li>
-<li><a href="#org026d92a">Typescript and React</a></li>
-</ul>
-</div>
-</div>
 <p>
 This folder contains some code examples to test my system
 configuration.
 </p>
-<div id="outline-container-org5e7e6b7" class="outline-2">
-<h2 id="org5e7e6b7">Internal examples</h2>
-<div class="outline-text-2" id="text-org5e7e6b7">
+<div id="outline-container-orgf5c84a4" class="outline-2">
+<h2 id="orgf5c84a4">Internal examples</h2>
+<div class="outline-text-2" id="text-orgf5c84a4">
 <ul class="org-ul">
 <li><a href="org-project/">Scientific paper with org-mode</a></li>
 <li><a href="cc-project/">Simple C++/CMake project</a></li>
 <li><a href="python-project/">Simple Python project</a></li>
+<li><a href="ts-project/">TypeScript project (tree-sitter + eglot)</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org026d92a" class="outline-2">
-<h2 id="org026d92a">Typescript and React</h2>
-<div class="outline-text-2" id="text-org026d92a">
+<div id="outline-container-org63b6f2c" class="outline-2">
+<h2 id="org63b6f2c">External: Typescript and React</h2>
+<div class="outline-text-2" id="text-org63b6f2c">
 <p>
-There is a minimal example available online to test the setup:
+There is a more complete example available online to test the setup:
 <a href="https://github.com/cpbotha/typescript-emacs-demo.git">Typescript Emacs project (remote)</a>
 </p>
 
@@ -50,8 +70,8 @@ There is a minimal example available online to test the setup:
 <li>Clone the repository first</li>
 </ol>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">git clone <span class="org-string">"https://github.com/cpbotha/typescript-emacs-demo.git"</span> <span class="org-string">"~/workspace"</span>
-cd <span class="org-string">"~/workspace/typescript-emacs-demo/"</span>
+<pre class="src src-shell">git clone <span class="org-string">"https://github.com/cpbotha/typescript-emacs-demo.git"</span> <span class="org-string">"~/workspace"</span>
+<span class="org-builtin">cd</span> <span class="org-string">"~/workspace/typescript-emacs-demo/"</span>
 </pre>
 </div>
 
@@ -59,7 +79,7 @@ cd <span class="org-string">"~/workspace/typescript-emacs-demo/"</span>
 Then install all the npm dependencies before you start the development server
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">npm install
+<pre class="src src-shell">npm install
 yarn start
 </pre>
 </div>
@@ -67,7 +87,9 @@ yarn start
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p>
+<p class="author">Author: Fabian Franzelin XC-AS/EAA4</p>
+<p class="email">Email: <a href="mailto:fabian.franzelin@gmail.com">fabian.franzelin@gmail.com</a></p>
+<p class="date">Created: 2026-05-19 Tue 09:42</p>
 </div>
 </body>
 </html>

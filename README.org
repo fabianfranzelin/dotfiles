@@ -1,9 +1,0 @@
-
-#+TITLE: dotfiles (docs)
-#+AUTHOR: Fabian Franzelin
-#+EMAIL: fabian.franzelin@gmail.com
-#+CREATOR: Fabian Franzelin
-#+LANGUAGE: en
-
-The documentation is published [[https://fabianfranzelin.github.io/dotfiles][here]].
-        

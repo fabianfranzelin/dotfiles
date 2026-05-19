@@ -1,0 +1,28 @@
+<!-- Menu -->
+<header>
+<nav>
+    <!-- Always visible items in the nav bar -->
+    <ul>
+        <li>
+            <a href="/index.html">Home</a>
+        </li>
+    </ul>
+    <!-- Search box -->
+    <div class="search-container">
+        <input type="text" id="search-input" placeholder="Search..." autocomplete="off" />
+        <div id="search-results"></div>
+    </div>
+    <!-- The hamburger menu -->
+    <label for='menu' tabindex="0">
+    ☰
+    </label>
+    <input id='menu' type='checkbox' />
+    <!-- The collapsable menu -->
+    <ul>
+      <li class="nav-group">
+      </li>
+    </ul>
+</nav>
+</header>
+<script defer src="https://unpkg.com/lunr/lunr.js"></script>
+<script defer src="/js/search.js"></script>

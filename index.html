@@ -3,32 +3,54 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
+<!-- 2026-05-19 Tue 09:42 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>dotfiles</title>
+<meta name="author" content="Fabian Franzelin" />
 <meta name="keywords" content="dotfiles linux emacs configuration" />
 <meta name="generator" content="Org Mode" />
-<!-- Un-Minified version -->
-<link rel="stylesheet" href="https://cdn.simplecss.org/simple.css">
-<link rel="stylesheet" href="/pauline/org/css/custom.css">
-<link rel="stylesheet" href="/pauline/org/css/code.css">
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="stylesheet" href="/css/code.css">
+<!-- Menu -->
+<header>
+<nav>
+    <!-- Always visible items in the nav bar -->
+    <ul>
+        <li>
+            <a href="/index.html">Home</a>
+        </li>
+    </ul>
+    <!-- Search box -->
+    <div class="search-container">
+        <input type="text" id="search-input" placeholder="Search..." autocomplete="off" />
+        <div id="search-results"></div>
+    </div>
+    <!-- The hamburger menu -->
+    <label for='menu' tabindex="0">
+    ☰
+    </label>
+    <input id='menu' type='checkbox' />
+    <!-- The collapsable menu -->
+    <ul>
+      <li class="nav-group">
+      </li>
+    </ul>
+</nav>
+</header>
+<script defer src="https://unpkg.com/lunr/lunr.js"></script>
+<script defer src="/js/search.js"></script>
 </head>
 <body>
 <div id="content" class="content">
 <h1 class="title">dotfiles</h1>
-<div id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents" role="doc-toc">
-<ul>
-<li><a href="#orgc9a771b">System Configuration</a></li>
-<li><a href="#orgdb318f0">Beyond Configurations</a></li>
-</ul>
-</div>
-</div>
-<a href="https://www.gnu.org/software/emacs/"><img src="https://img.shields.io/badge/Emacs-29.4-brightgreen.svg?style=flat&logo=GNU%20Emacs&logoColor=white"/></a>
-<div id="outline-container-orgc9a771b" class="outline-2">
-<h2 id="orgc9a771b">System Configuration</h2>
-<div class="outline-text-2" id="text-orgc9a771b">
+<a href="https://www.gnu.org/software/emacs/"><img src="https://img.shields.io/badge/Emacs-30.2-brightgreen.svg?style=flat&logo=GNU%20Emacs&logoColor=white"/></a>
+<a href="https://github.com/fabianfranzelin/dotfiles/actions?query=workflow"><img src="https://github.com/fabianfranzelin/dotfiles/actions/workflows/ci.yml/badge.svg?branch=nightly"/></a>
+<a href="https://github.com/fabianfranzelin/dotfiles/commits"><img src="https://img.shields.io/github/last-commit/fabianfranzelin/dotfiles"/></a>
+<a href="https://github.com/fabianfranzelin/dotfiles/blob/nightly/LICENSE"><img src="https://img.shields.io/github/license/fabianfranzelin/dotfiles"/></a>
+<div id="outline-container-org49770fb" class="outline-2">
+<h2 id="org49770fb">System Configuration</h2>
+<div class="outline-text-2" id="text-org49770fb">
 <p>
 In this repository, I gather my system configurations that allow me to have
 a consistent computing experience over multiple Linux machines.
@@ -51,9 +73,9 @@ configure script of the repository
 </div>
 </div>
 </div>
-<div id="outline-container-orgdb318f0" class="outline-2">
-<h2 id="orgdb318f0">Beyond Configurations</h2>
-<div class="outline-text-2" id="text-orgdb318f0">
+<div id="outline-container-org639b7f8" class="outline-2">
+<h2 id="org639b7f8">Beyond Configurations</h2>
+<div class="outline-text-2" id="text-org639b7f8">
 <ul class="org-ul">
 <li><a href="examples/README.html">Examples: Python, C++, org, Typescript/React</a></li>
 <li><a href="wsl.html">WSL setup</a></li>
@@ -62,8 +84,9 @@ configure script of the repository
 </div>
 </div>
 <div id="postamble" class="status">
+<p class="author">Author: Fabian Franzelin</p>
 <p class="email">Email: <a href="mailto:fabian.franzelin@gmail.com">fabian.franzelin@gmail.com</a></p>
-<p class="creator">Fabian Franzelin</p>
+<p class="date">Created: 2026-05-19 Tue 09:42</p>
 </div>
 </body>
 </html>
