@@ -304,6 +304,39 @@ Accounts for the title slide occupying index 0 when present."
 (define-key org-mode-map (kbd "C-c C-v") 'ff/org-reveal-goto-slide)
 
 ;; -------------------------------------------------------------------
+;; Serve HTML files locally
+;; -------------------------------------------------------------------
+(use-package simple-httpd
+  :commands httpd-start httpd-stop)
+
+(defvar ff/httpd-serving-file nil
+  "The HTML file currently being served.")
+
+(defun ff/serve-html-file (file)
+  "Serve FILE via a local HTTP server and open it in the browser.
+Stops any previously running instance first."
+  (interactive "fHTML file to serve: ")
+  (require 'simple-httpd)
+  (httpd-stop)
+  (let ((dir (file-name-directory (expand-file-name file)))
+        (filename (file-name-nondirectory file)))
+    (setq httpd-root dir)
+    (setq ff/httpd-serving-file file)
+    (httpd-start)
+    (browse-url (format "http://localhost:%d/%s" httpd-port filename))
+    (message "Serving %s at http://localhost:%d/%s" filename httpd-port filename)))
+
+(defun ff/stop-serving-html ()
+  "Stop the local HTTP server."
+  (interactive)
+  (httpd-stop)
+  (setq ff/httpd-serving-file nil)
+  (message "HTTP server stopped."))
+
+(with-eval-after-load 'embark
+  (define-key embark-file-map (kbd "W") #'ff/serve-html-file))
+
+;; -------------------------------------------------------------------
 ;; Org-roam: Taking notes
 ;; -------------------------------------------------------------------
 (defun ff/configure-org-roam-mode ()
