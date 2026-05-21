@@ -234,6 +234,7 @@ flycheck_*
 /.config/homeassistant/.cache/
 /.config/homeassistant/*.db-shm
 /.config/homeassistant/zigbee.db-wal
+/.config/homeassistant/www/
 
 ### Zigbee2MQTT ###
 /.config/zigbee2mqtt/*.json
