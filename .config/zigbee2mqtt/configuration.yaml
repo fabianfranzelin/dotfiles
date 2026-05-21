@@ -1,0 +1,11 @@
+homeassistant: true
+permit_join: false
+mqtt:
+  base_topic: zigbee2mqtt
+  server: mqtt://localhost:1883
+serial:
+  port: /dev/ttyACM0
+frontend:
+  port: 8099
+advanced:
+  network_key: GENERATE
