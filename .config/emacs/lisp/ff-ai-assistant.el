@@ -73,7 +73,11 @@
   ((opencode . "npm i -g opencode-ai"))
   ((copilot . "npm install -g @github/copilot"))
   :custom
-  (agent-shell-preferred-agent-config 'opencode))
+  (agent-shell-preferred-agent-config 'opencode)
+  (agent-shell-opencode-default-model-id
+   (if (string= (system-name) "FEWI-C-0007J")
+       "github-copilot/claude-opus-4.6"
+     "github-copilot/gpt-5-mini")))
 
 (use-package agent-review
   :straight (agent-review :type git :host github :repo "nineluj/agent-review")
