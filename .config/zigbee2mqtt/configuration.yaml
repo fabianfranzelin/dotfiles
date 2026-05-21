@@ -10,6 +10,7 @@ frontend:
   enabled: true
   port: 8099
 advanced:
+  channel: 25
   network_key:
     - 165
     - 95
