@@ -218,6 +218,7 @@ flycheck_*
 /.config/elora/README.synctex.gz
 
 ### Homeassistant ###
+/.config/homeassistant/secrets.yaml
 /.config/homeassistant/.HA_VERSION
 /.config/homeassistant/.storage/
 /.config/homeassistant/blueprints
