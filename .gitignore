@@ -231,6 +231,14 @@ flycheck_*
 /.config/homeassistant/tts/
 /.config/homeassistant/.ha_run.lock
 /.config/homeassistant/.cache/
+/.config/homeassistant/*.db-shm
+/.config/homeassistant/zigbee.db-wal
+
+### Zigbee2MQTT ###
+/.config/zigbee2mqtt/*.json
+/.config/zigbee2mqtt/*.log
+/.config/zigbee2mqtt/configuration_backup_*.yaml
+/.config/zigbee2mqtt/log/
 
 ### Syncthing ###
 /.config/syncthing/cert.pem

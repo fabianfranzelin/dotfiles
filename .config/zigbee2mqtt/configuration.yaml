@@ -1,5 +1,5 @@
-homeassistant: true
-permit_join: false
+homeassistant:
+  enabled: true
 mqtt:
   base_topic: zigbee2mqtt
   server: mqtt://localhost:1883
@@ -7,6 +7,24 @@ serial:
   port: /dev/ttyACM0
   adapter: ezsp
 frontend:
+  enabled: true
   port: 8099
 advanced:
-  network_key: GENERATE
+  network_key:
+    - 165
+    - 95
+    - 92
+    - 27
+    - 172
+    - 120
+    - 146
+    - 58
+    - 110
+    - 97
+    - 107
+    - 129
+    - 169
+    - 140
+    - 172
+    - 172
+version: 5
