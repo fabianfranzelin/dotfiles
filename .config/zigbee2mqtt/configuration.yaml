@@ -5,6 +5,7 @@ mqtt:
   server: mqtt://localhost:1883
 serial:
   port: /dev/ttyACM0
+  adapter: ezsp
 frontend:
   port: 8099
 advanced:
