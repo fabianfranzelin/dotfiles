@@ -4,7 +4,9 @@
   <property name="last-view" type="string" value="ThunarIconView"/>
   <property name="last-icon-view-zoom-level" type="string" value="THUNAR_ZOOM_LEVEL_150_PERCENT"/>
   <property name="last-window-maximized" type="bool" value="false"/>
-  <property name="last-separator-position" type="int" value="318"/>
+  <property name="last-separator-position" type="int" value="232"/>
   <property name="last-window-width" type="int" value="950"/>
   <property name="last-window-height" type="int" value="1005"/>
+  <property name="last-details-view-zoom-level" type="string" value="THUNAR_ZOOM_LEVEL_38_PERCENT"/>
+  <property name="last-details-view-column-widths" type="string" value="50,50,124,50,50,366,50,50,394,50,50,63,50,73"/>
 </channel>

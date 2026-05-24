@@ -9,5 +9,6 @@
     <property name="battery-button-action" type="uint" value="2"/>
     <property name="lid-action-on-ac" type="uint" value="6"/>
     <property name="lid-action-on-battery" type="uint" value="6"/>
+    <property name="show-tray-icon" type="bool" value="false"/>
   </property>
 </channel>
