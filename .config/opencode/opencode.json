@@ -9,7 +9,7 @@
       "npm": "@ai-sdk/openai-compatible",
       "name": "Ollama Local Workstation",
       "options": {
-        "baseURL": "http://127.0.0",
+        "baseURL": "http://127.0.0.0",
         "apiKey": "ollama"
       },
       "models": {
