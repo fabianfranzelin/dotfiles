@@ -2,5 +2,28 @@
   "$schema": "https://opencode.ai/config.json",
   "plugin": [
     "opencode-power-pack@git+https://github.com/waybarrios/opencode-power-pack.git"
-  ]
+  ],
+  "model": "ollama/qwen3.6:35b",
+  "provider": {
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama Local Workstation",
+      "options": {
+        "baseURL": "http://127.0.0",
+        "apiKey": "ollama"
+      },
+      "models": {
+        "qwen3.6:35b": {
+          "name": "Qwen 3.6 Coder 35B (MoE)",
+          "contextWindow": 32768,
+          "capabilities": {
+            "tools": true,
+            "thinking": true,
+            "agentic_coding": true,
+            "thinking_preservation": true
+          }
+        }
+      }
+    }
+  }
 }

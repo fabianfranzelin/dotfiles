@@ -306,6 +306,10 @@ install_packages_manually() {
         wget -O starpls "${STARPLS_URL}"
         chmod +x starpls
     )
+
+
+    # Install Ollama
+    # curl -fsSL https://ollama.com/install.sh | sh
 }
 
 configure_gnupg() {
