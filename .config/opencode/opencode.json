@@ -6,22 +6,21 @@
   "model": "ollama/qwen3.6:35b",
   "provider": {
     "ollama": {
-      "npm": "@ai-sdk/openai-compatible",
       "name": "Ollama Local Workstation",
+      "npm": "@ai-sdk/openai-compatible",
       "options": {
-        "baseURL": "http://127.0.0.0",
-        "apiKey": "ollama"
+        "baseURL": "http://127.0.0.0:11434/v1"
       },
       "models": {
         "qwen3.6:35b": {
           "name": "Qwen 3.6 Coder 35B (MoE)",
           "contextWindow": 32768,
-          "capabilities": {
-            "tools": true,
-            "thinking": true,
-            "agentic_coding": true,
-            "thinking_preservation": true
-          }
+          "tools": true
+        },
+        "qwen2.5-coder:14b": {
+          "name": "Qwen 2.5 Coder 14B",
+          "contextWindow": 32768,
+          "tools": true
         }
       }
     }
