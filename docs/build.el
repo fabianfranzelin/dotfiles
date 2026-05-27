@@ -6,12 +6,6 @@
 ;;; Code:
 
 ;; Set the package installation directory so that packages aren't stored in the
-
-;; -------------------------------------------------------------------
-(customize-set-variable 'user-full-name "Fabian Franzelin XC-AS/EAA4")
-(customize-set-variable 'user-mail-address "fabian.franzelin@gmail.com")
-(customize-set-variable 'inhibit-startup-echo-area-message (getenv "USER"))
-
 ;; ~/.emacs.d/elpa path.
 (require 'package)
 (setq package-user-dir (expand-file-name ".packages-org-html-export" (temporary-file-directory)))
@@ -37,6 +31,8 @@
 (customize-set-variable 'org-display-custom-times t)
 ;; do not visualize subscripts in org-mode buffers
 (customize-set-variable 'org-use-sub-superscripts '{})
+(customize-set-variable 'org-attach-dir-relative t)
+(customize-set-variable 'org-link-file-path-type 'adaptive)
 
 ;; org-babel
 (org-babel-do-load-languages
@@ -97,7 +93,7 @@ FILE: file to be loaded and converted to string."
          :time-stamp-file t)
         ("org:static"
          :base-directory ,ff/base-dir
-         :base-extension "js\\|json\\|html\\|css\\|txt\\|jpg\\|gif\\|png\\|pdf\\|svg"
+         :base-extension "js\\|json\\|html\\|css\\|txt\\|jpg\\|gif\\|png\\|pdf\\|svg\\|epub"
          :recursive t
          :publishing-directory ,ff/public-dir
          :publishing-function org-publish-attachment)

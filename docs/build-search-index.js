@@ -85,7 +85,8 @@ htmlFiles.forEach(function (filePath) {
   documents[id] = {
     title: title,
     url: url,
-    snippet: snippet
+    snippet: snippet,
+    content: content
   };
 });
 

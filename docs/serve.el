@@ -10,15 +10,19 @@
 (require 'simple-httpd nil t)
 
 ;; Install simple-httpd if not available
+;; TODO: Pinned to pre-compat-31 commit because simple-httpd now requires
+;; compat 31 which needs Emacs 31+. Remove the :rev pin once Emacs is updated.
 (unless (featurep 'simple-httpd)
   (require 'package)
   (setq package-user-dir (expand-file-name ".packages-org-html-export" (temporary-file-directory)))
-  (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                           ("elpa" . "https://elpa.gnu.org/packages/")))
+  (setq package-archives nil)
   (package-initialize)
-  (unless package-archive-contents
-    (package-refresh-contents))
-  (package-install 'simple-httpd)
+  (let ((dir (expand-file-name "simple-httpd" package-user-dir)))
+    (when (file-directory-p dir)
+      (delete-directory dir t)))
+  (package-vc-install
+   '(simple-httpd :url "https://github.com/skeeto/emacs-http-server"
+                  :rev "1d29a7839c66a365dfae26c9f91dc01ced7e860b"))
   (require 'simple-httpd))
 
 (setq httpd-root (expand-file-name "public" default-directory))
