@@ -17,11 +17,6 @@
           "contextWindow": 131072,
           "tools": true
         },
-        "qwen2.5-coder:14b": {
-          "name": "Qwen 2.5 Coder 14B",
-          "contextWindow": 131072,
-          "tools": true
-        },
         "mistral-nemo:12b": {
           "name": "Mistral Nemo 12B",
           "contextWindow": 131072,
