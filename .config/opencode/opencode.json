@@ -3,17 +3,17 @@
   "plugin": [
     "opencode-power-pack@git+https://github.com/waybarrios/opencode-power-pack.git"
   ],
-  "model": "ollama/qwen3-coder:latest",
+  "model": "ollama/codestral:22b",
   "provider": {
     "ollama": {
-      "name": "Ollama Local Workstation",
+      "name": "Ollama Local",
       "npm": "@ai-sdk/openai-compatible",
       "options": {
         "baseURL": "http://127.0.0.1:11434/v1"
       },
       "models": {
-        "qwen3-coder:latest": {
-          "name": "Qwen 3 Coder (MoE a3b)",
+        "codestral:22b": {
+          "name": "Codestral 22B",
           "contextWindow": 32768,
           "tools": true
         }
