@@ -3,7 +3,7 @@
   "plugin": [
     "opencode-power-pack@git+https://github.com/waybarrios/opencode-power-pack.git"
   ],
-  "model": "ollama/qwen2.5-coder:14b",
+  "model": "ollama/qwen2.5:14b",
   "provider": {
     "ollama": {
       "name": "Ollama Local",
@@ -24,6 +24,11 @@
         },
         "mistral-nemo:12b": {
           "name": "Mistral Nemo 12B",
+          "contextWindow": 131072,
+          "tools": true
+        },
+        "qwen2.5:14b": {
+          "name": "Qwen 2.5 14B",
           "contextWindow": 131072,
           "tools": true
         }
