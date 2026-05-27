@@ -47,7 +47,3 @@ if [ -z "$SSH_AUTH_SOCK" ]; then
     fi
     unset __SSH_AGENT_ENV
 fi
-
-#------------------------------------------------------------------------------#
-# Ollama
-export OLLAMA_MODELS=/home/frf2lr/.cache/llms
