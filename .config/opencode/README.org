@@ -1,0 +1,150 @@
+#+TITLE: OpenCode Configuration
+#+AUTHOR: frf2lr
+#+DATE: 2026-05-27
+
+* Overview
+
+This directory contains the OpenCode AI coding assistant configuration.
+
+* Local Ollama Models - Tool Support Status
+
+*IMPORTANT*: As of OpenCode 1.3.3, local Ollama models do NOT work reliably
+with tool calling, even when the model supports tools natively.
+
+** Root Cause
+
+The =@ai-sdk/openai-compatible= provider used by OpenCode does not properly
+pass tools to local Ollama models. Even though:
+
+1. Ollama reports =tools= capability for models like devstral
+2. Direct API calls with tools work correctly (tested with curl)
+3. The model config has =tools: true=
+
+OpenCode still doesn't send tools to the model, so the model cannot perform
+file operations.
+
+** Tested Models (May 2026)
+
+| Model              | Native Tools | OpenCode Status | Notes                                           |
+|--------------------+--------------+-----------------+-------------------------------------------------|
+| devstral:24b       | Yes          | BROKEN          | Tools work via curl, not via OpenCode           |
+| qwen2.5:14b        | Yes          | BROKEN          | Sends undefined params, outputs Thai/Chinese    |
+| qwen2.5-coder:14b  | Yes          | BROKEN          | Outputs raw JSON instead of executing tools     |
+| qwen3-coder:latest | Yes          | BROKEN          | Invalid tool calls, gets confused               |
+| llama3.1:8b        | Yes          | BROKEN          | Describes actions instead of executing them     |
+| mistral-nemo:latest| Yes          | BROKEN          | Fabricates responses or returns empty           |
+| codestral:22b      | No           | NO TOOLS        | Model doesn't support tool calling              |
+| mistral:7b         | Limited      | BROKEN          | Poor tool call formatting                       |
+
+** Proof: Devstral Works Natively
+
+Direct API call with tools works:
+#+begin_src shell
+curl -s http://127.0.0.1:11434/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "devstral:24b",
+    "messages": [{"role": "user", "content": "Read the file /tmp/test.txt"}],
+    "tools": [{
+      "type": "function",
+      "function": {
+        "name": "read_file",
+        "description": "Read a file from the filesystem",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "path": {"type": "string", "description": "The file path to read"}
+          },
+          "required": ["path"]
+        }
+      }
+    }]
+  }'
+#+end_src
+
+Returns proper tool call:
+#+begin_src json
+{
+  "role": "assistant",
+  "content": "",
+  "tool_calls": [{
+    "id": "call_xxx",
+    "type": "function",
+    "function": {
+      "name": "read_file",
+      "arguments": "{\"path\":\"/tmp/test.txt\"}"
+    }
+  }]
+}
+#+end_src
+
+But OpenCode doesn't pass tools to the model.
+
+** Workarounds
+
+1. *Use Goose with Ollama* (recommended for local) - Goose has native Ollama provider with working tool support
+2. *Use GitHub Copilot models* (recommended for cloud) - they work reliably with OpenCode
+3. *Use OpenCode Go/Zen* - paid service with verified working models
+4. *Wait for OpenCode fix* - this may be fixed in future versions
+
+* Goose - Working Local Alternative
+
+[[https://github.com/block/goose][Goose]] is Block's open-source AI agent that has *native Ollama support with working tool calling*.
+
+** Installation
+
+#+begin_src shell
+# Install Goose
+curl -fsSL https://github.com/block/goose/releases/latest/download/download_cli.sh | CONFIGURE=false bash
+#+end_src
+
+** Configuration
+
+Goose config at =~/.config/goose/config.yaml=:
+#+begin_src yaml
+GOOSE_PROVIDER: ollama
+OLLAMA_HOST: http://localhost:11434
+GOOSE_MODEL: devstral:24b
+#+end_src
+
+** Verified Working (May 2026)
+
+| Model        | Tool Support | Status  | Notes                            |
+|--------------+--------------+---------+----------------------------------|
+| devstral:24b | Yes          | WORKING | Full tool calling support        |
+
+** Usage
+
+#+begin_src shell
+# Interactive session
+goose session
+
+# One-shot command
+goose run --text "List files in this directory"
+
+# From Emacs via agent-shell
+M-x agent-shell-goose-start-agent
+# or C-x a g
+#+end_src
+
+** Why Goose Works When OpenCode Doesn't
+
+Goose uses its own =ollama= provider that properly passes tools to local models.
+OpenCode uses =@ai-sdk/openai-compatible= which doesn't handle local model tools correctly.
+
+** Configuration
+
+The =opencode.json= file configures:
+- Default model: =ollama/devstral:24b= (but tools don't work)
+- Provider: Ollama via OpenAI-compatible API at =http://127.0.0.1:11434/v1=
+- Plugin: opencode-power-pack for additional skills
+
+** Working Alternative: Cloud Models
+
+GitHub Copilot models work reliably with full tool support:
+- =github-copilot/claude-sonnet-4=
+- =github-copilot/claude-opus-4=
+- =github-copilot/gpt-4o=
+- =github-copilot/gemini-2.5-pro=
+
+Use =/connect= in OpenCode to authenticate with GitHub Copilot.

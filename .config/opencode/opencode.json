@@ -3,7 +3,7 @@
   "plugin": [
     "opencode-power-pack@git+https://github.com/waybarrios/opencode-power-pack.git"
   ],
-  "model": "ollama/qwen2.5:14b",
+  "model": "ollama/devstral:24b",
   "provider": {
     "ollama": {
       "name": "Ollama Local",
@@ -12,20 +12,13 @@
         "baseURL": "http://127.0.0.1:11434/v1"
       },
       "models": {
-        "llama3.1:8b": {
-          "name": "Llama 3.1 8B",
+        "devstral:24b": {
+          "name": "Devstral 24B (Agentic)",
           "contextWindow": 131072,
-          "tools": true
-        },
-        "mistral-nemo:12b": {
-          "name": "Mistral Nemo 12B",
-          "contextWindow": 131072,
-          "tools": true
-        },
-        "qwen2.5:14b": {
-          "name": "Qwen 2.5 14B",
-          "contextWindow": 131072,
-          "tools": true
+          "tools": false,
+          "options": {
+            "num_ctx": 32768
+          }
         }
       }
     }

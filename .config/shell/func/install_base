@@ -310,6 +310,9 @@ install_packages_manually() {
 
     # Install Ollama
     # curl -fsSL https://ollama.com/install.sh | sh
+
+    # Install Goose
+    # curl -fsSL https://github.com/aaif-goose/goose/releases/download/stable/download_cli.sh | bash
 }
 
 configure_gnupg() {

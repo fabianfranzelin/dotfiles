@@ -77,13 +77,18 @@
   (agent-shell-opencode-default-model-id
    (if (string= (system-name) "FEWI-C-0007J")
        "github-copilot/claude-opus-4.6"
-     "github-copilot/gpt-5-mini")))
+     "github-copilot/gpt-5-mini"))
+  (agent-shell-goose-authentication
+   (agent-shell-make-goose-authentication :none t))
+  :bind (:map global-map
+              ("C-x a a" . agent-shell)
+              ("C-x a g" . agent-shell-goose-start-agent)
+              ("C-x a o" . agent-shell-opencode-start-agent)))
 
 (use-package agent-review
   :straight (agent-review :type git :host github :repo "nineluj/agent-review")
   :bind (:map global-map
-              ("C-c r" . agent-review)
-              ("C-x a s" . agent-shell)))
+              ("C-c r" . agent-review)))
 
 (provide 'ff-ai-assistant)
 
