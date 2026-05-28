@@ -278,7 +278,7 @@ https://github.com/radian-software/straight.el/issues/240"
     (let ((file-name-pdf (buffer-file-name)))
       ;; check whether there is an entry in the bibliography that
       ;; links to this file
-      (if-let ((citekey (ff/find-citekey-for-pdf-file-name file-name-pdf)))
+      (if-let* ((citekey (ff/find-citekey-for-pdf-file-name file-name-pdf)))
           ;; load a note with given citekey
           (progn
             (ff/citar-capture-org-roam-literature-note-for-entry citekey file-name-pdf (pdf-view-current-page)))
