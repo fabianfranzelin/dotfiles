@@ -152,10 +152,9 @@ mark.search-highlight {
 
 table {
     border-collapse: collapse;
-    width: 100%;
+    width: auto;
     margin: 1.5em 0;
     font-size: 0.95em;
-    display: block;
     overflow-x: auto;
 }
 
