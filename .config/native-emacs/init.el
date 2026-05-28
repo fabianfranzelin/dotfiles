@@ -16,6 +16,11 @@
 gmail.com"
       inhibit-startup-echo-area-message (getenv "USER"))
 
+;; suppress warning Missing ‘lexical-binding’ cookie in since it
+;; appears also for external packages
+(with-eval-after-load 'bytecomp
+  (add-to-list 'warning-suppress-types '(files missing-lexbind-cookie)))
+
 ;; enables local variables per default
 (customize-set-variable 'enable-local-variables t)
 

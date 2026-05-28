@@ -19,6 +19,12 @@
 (customize-set-variable 'package-enable-at-startup nil)
 
 ;; -------------------------------------------------------------------
+;; suppress warning Missing ‘lexical-binding’ cookie in since it
+;; appears also for external packages
+(with-eval-after-load 'bytecomp
+  (add-to-list 'warning-suppress-types '(files missing-lexbind-cookie)))
+
+;; -------------------------------------------------------------------
 ;;; Garbage collection
 ;; Increase the GC threshold for faster startup
 ;; The default is 800 kilobytes. Measured in bytes.

@@ -23,6 +23,12 @@
 (setq package-user-dir (expand-file-name "elpa" user-emacs-directory))
 
 ;; -------------------------------------------------------------------
+;; suppress warning Missing ‘lexical-binding’ cookie in since it
+;; appears also for external packages
+(with-eval-after-load 'bytecomp
+  (add-to-list 'warning-suppress-types '(files missing-lexbind-cookie)))
+
+;; -------------------------------------------------------------------
 ;; configure native compilation
 (when (featurep 'native-compile)
   ;; Set the right directory to store the native compilation cache

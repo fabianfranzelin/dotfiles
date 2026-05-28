@@ -90,7 +90,7 @@ INPUT is passed as extra arguments to \"gh search prs\"."
                        ".data.viewer.login as $login"
                        " | .data.search.nodes[]"
                        " | select(.latestReviews.nodes | map(select(.author.login == $login and .state == \"APPROVED\")) | length == 0)"
-                        " | \"true" sep "\" + .repository.nameWithOwner + \"" sep "\" + .title + \"" sep "\" + (.number|tostring)"
+                       " | \"true" sep "\" + .repository.nameWithOwner + \"" sep "\" + .title + \"" sep "\" + (.number|tostring)"
                        " + \"" sep "\" + .state + \"" sep "\" + .updatedAt"
                        " + \"" sep "\" + (if (.labels.nodes | length) > 0 then \"[\" + ([.labels.nodes[] | \"map[name:\" + .name + \"]\"] | join(\" \")) + \"]\" else \"\" end)"
                        " + \"" sep "\" + .url + \"" sep "\" + (.comments.totalCount|tostring)"
@@ -341,11 +341,11 @@ will set the limit for maximum results to 50."
   (let* ((prompt (or prompt "PR Inbox: "))
          (sel (consult-gh--pr-inbox prompt initial)))
     ;; Track repos/orgs in history
-    (when-let ((reponame (and (stringp (car sel))
-                              (get-text-property 0 :repo (car sel)))))
+    (when-let* ((reponame (and (stringp (car sel))
+                               (get-text-property 0 :repo (car sel)))))
       (add-to-history 'consult-gh--known-repos-list reponame))
-    (when-let ((username (and (stringp (car sel))
-                              (get-text-property 0 :user (car sel)))))
+    (when-let* ((username (and (stringp (car sel))
+                               (get-text-property 0 :user (car sel)))))
       (add-to-history 'consult-gh--known-orgs-list username))
     (if noaction
         sel

@@ -55,7 +55,7 @@ OUTPUT-BUFFER: buffer to run the command in"
            :command-line "make"
            :working-dir build-dir))
    ;; cmake from current directory
-   (when-let ((cmake-lists-file (expand-file-name "CMakeLists.txt" default-directory)))
+   (when-let* ((cmake-lists-file (expand-file-name "CMakeLists.txt" default-directory)))
      (list :command-name "build:cmake"
            :command-line "mkdir -p build && cd build && cmake .."
            :working-dir default-directory))))

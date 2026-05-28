@@ -83,8 +83,8 @@ the need to update my project hierarchy."
 
              ;; I always want to start esbonio at the same level
              ;; directory the conf.py file is located.
-             (when-let ((roots (ff/find-all-parent-dirs-with-file (buffer-file-name) "conf.py"))
-                        (root (car roots)))
+             (when-let* ((roots (ff/find-all-parent-dirs-with-file (buffer-file-name) "conf.py"))
+                         (root (car roots)))
                (list 'vc nil root)))
             ;; in all other cases, let the original function handle
             ;; the project folder.
@@ -286,7 +286,7 @@ Uses theme background in GUI, near-black in terminal.")
   (add-hook 'bash-ts-mode-hook 'apheleia-mode)
   (setf (alist-get 'beautysh apheleia-formatters) '("beautysh"
                                                     filepath
-                                                    (when-let ((indent (bound-and-true-p sh-basic-offset)))
+                                                    (when-let* ((indent (bound-and-true-p sh-basic-offset)))
                                                       (list "--indent-size" (number-to-string indent)))
                                                     (when indent-tabs-mode "--tab")))
   (setf (alist-get 'bash-ts-mode apheleia-mode-alist) 'beautysh))

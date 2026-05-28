@@ -15,10 +15,10 @@ DIR: directory path"
 (defun ff/org-switch-directory ()
   "Switch between personal and work org directory."
   (interactive)
-  (when-let ((ff/org-directory
-              (if (string= (f-filename org-directory) "org")
-                  (expand-file-name "~/workspace/org_personal")
-                (expand-file-name "~/workspace/org"))))
+  (when-let* ((ff/org-directory
+               (if (string= (f-filename org-directory) "org")
+                   (expand-file-name "~/workspace/org_personal")
+                 (expand-file-name "~/workspace/org"))))
     (when (file-exists-p ff/org-directory)
       (customize-set-variable 'org-directory ff/org-directory)
       (customize-set-variable 'org-agenda-files `(,(expand-file-name "notes" org-directory)
