@@ -14,11 +14,11 @@
 ** Layers
 
 #+ATTR_LATEX: :width \textwidth
-[[file:elora_layer_0.jpg]]
+[[file:elora_layer_0.png]]
 #+ATTR_LATEX: :width \textwidth
-[[file:elora_layer_2.jpg]]
+[[file:elora_layer_2.png]]
 #+ATTR_LATEX: :width \textwidth
-[[file:elora_layer_5.jpg]]
+[[file:elora_layer_5.png]]
 
 ** Linux installation
 

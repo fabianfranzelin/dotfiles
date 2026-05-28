@@ -71,6 +71,10 @@ install_apt_packages() {
         gsimplecal \
         meld
 
+    # Create save path for flameshot
+    mkdit -p "${HOME}/Pictures/Screenshots"
+
+    # required to restart raspi automatically on very high load
     sudo apt-get install watchdog -y || true
     # This is required by the ssh config to identify whether pauline
     # is reachable or not.
@@ -331,6 +335,7 @@ configure_gnupg() {
 }
 
 configure_elora() {
+    # https://get.vial.today/manual/linux-udev.html
     # shellcheck disable=SC2034
     USER_ID=$(id -g)
     sudo --preserve-env=USER_GID sh -c 'echo "KERNEL==\"hidraw*\", SUBSYSTEM==\"hidraw\", ATTRS{serial}==\"*vial:f64c2b3c*\", MODE=\"0660\", GROUP=\"$USER_GID\", TAG+=\"uaccess\", TAG+=\"udev-acl\"" > /etc/udev/rules.d/59-vial.rules && udevadm control --reload && udevadm trigger'
