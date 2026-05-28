@@ -181,6 +181,8 @@ flycheck_*
 /.config/native-emacs/places
 /.config/native-emacs/eln-cache/
 /.config/native-emacs/projects
+/.config/native-emacs/places.eld
+/.config/native-emacs/tramp
 /.agent-shell/
 
 ### ZSH ###

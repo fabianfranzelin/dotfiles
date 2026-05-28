@@ -1,4 +1,4 @@
-;;; init.el --- this file starts here
+;;; init.el --- this file starts here  -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 ;; inspired by https://github.com/daviwil/dotfiles/blob/master/Emacs.org
