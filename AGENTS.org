@@ -26,7 +26,7 @@ The repository uses a modular approach where individual components can be instal
 
 * Configured Applications
 
-** GNU Emacs 30.2
+** GNU Emacs 31
 
 Custom source build with comprehensive configuration:
 
