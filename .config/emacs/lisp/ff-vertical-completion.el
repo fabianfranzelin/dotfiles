@@ -171,12 +171,6 @@ DIR: directory"
 ;; Use this and enable corfu-separator for fuzzy function finding
 ;; ("SPC" . corfu-insert-separator)))
 
-;; enable corfu in terminal mode
-(use-package corfu-terminal
-  :init
-  (when (not (display-graphic-p))
-    (corfu-terminal-mode t)))
-
 ;; Use Dabbrev with Corfu!
 (use-package dabbrev
   ;; Swap M-/ and C-M-/
