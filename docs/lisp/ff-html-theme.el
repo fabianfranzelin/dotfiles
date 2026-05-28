@@ -38,9 +38,9 @@
 
 (advice-add 'org-html-publish-to-html :around #'ff/set-theme-for-file)
 
-(setq org-html-validation-link nil
-      org-html-head-include-scripts nil
-      org-html-head-include-default-style nil
+(setq org-html-validation-link nil            ;; Don't show validation link
+      org-html-head-include-scripts nil       ;; Use our own scripts
+      org-html-head-include-default-style nil ;; Use our own styles
       org-html-head ff/theme-html-head-template
       org-html-head-extra ff/menu-html-template
       org-html-htmlize-output-type 'css)
