@@ -307,7 +307,6 @@ install_packages_manually() {
         chmod +x starpls
     )
 
-
     # Install Ollama
     # curl -fsSL https://ollama.com/install.sh | sh
 
@@ -331,10 +330,21 @@ configure_gnupg() {
     )
 }
 
+configure_elora() {
+    # shellcheck disable=SC2034
+    USER_ID=$(id -g)
+    sudo --preserve-env=USER_GID sh -c 'echo "KERNEL==\"hidraw*\", SUBSYSTEM==\"hidraw\", ATTRS{serial}==\"*vial:f64c2b3c*\", MODE=\"0660\", GROUP=\"$USER_GID\", TAG+=\"uaccess\", TAG+=\"udev-acl\"" > /etc/udev/rules.d/59-vial.rules && udevadm control --reload && udevadm trigger'
+}
+
 install_base() {
     echo -e "${__COLOR_INFO}INFO: Installing minimal required packages for setup...${__COLOR_RESET}"
     install_apt_packages
     install_python_packages
     install_packages_manually
     configure_gnupg
+
+    if [ "$(hostname)" = "thinkpad" ]
+    then
+        configure_elora
+    fi
 }
