@@ -1,0 +1,17 @@
+#+TITLE: Simple C++/CMake Project
+
+This is a minimal C++ project using CMake and Bazel to test Emacs
+configuration for C++ development (eglot, clangd, compilation).
+
+** Source Code
+
+Browse the full source on GitHub:
+[[https://github.com/fabianfranzelin/dotfiles/tree/main/examples/cc-project][cc-project on GitHub]]
+
+** Files
+
+- =main.cpp= - Entry point
+- =CMakeLists.txt= - CMake build configuration
+- =MODULE.bazel= - Bazel module definition
+- =BUILD= - Bazel build file
+- =compile_commands.json= - Compilation database for clangd

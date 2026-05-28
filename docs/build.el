@@ -79,25 +79,27 @@ FILE: file to be loaded and converted to string."
 (defvar ff/public-dir "./public")
 
 (setq org-publish-project-alist
-      `(("org:main"
-         :recursive t
-         :base-directory ,ff/base-dir
-         :base-extension "org",
-         :publishing-function org-html-publish-to-html
-         :publishing-directory ,ff/public-dir
-         :with-author t
-         :with-email t
-         :with-creator nil
-         :with-toc nil
-         :section-numbers nil
-         :time-stamp-file t)
-        ("org:static"
-         :base-directory ,ff/base-dir
-         :base-extension "js\\|json\\|html\\|css\\|txt\\|jpg\\|gif\\|png\\|pdf\\|svg\\|epub"
-         :recursive t
-         :publishing-directory ,ff/public-dir
-         :publishing-function org-publish-attachment)
-        ("org" :components ("org:main" "org:static"))))
+      `(        ("org:main"
+                 :recursive t
+                 :base-directory ,ff/base-dir
+                 :base-extension "org"
+                 :exclude "examples/org-project/\\(content\\|preamble\\)/"
+                 :publishing-function org-html-publish-to-html
+                 :publishing-directory ,ff/public-dir
+                 :with-author t
+                 :with-email t
+                 :with-creator nil
+                 :with-toc nil
+                 :section-numbers nil
+                 :time-stamp-file t)
+                ("org:static"
+                 :base-directory ,ff/base-dir
+                 :base-extension "js\\|json\\|html\\|css\\|txt\\|jpg\\|gif\\|png\\|pdf\\|svg\\|epub"
+                 :exclude "node_modules/"
+                 :recursive t
+                 :publishing-directory ,ff/public-dir
+                 :publishing-function org-publish-attachment)
+                ("org" :components ("org:main" "org:static"))))
 
 (setq org-export-with-broken-links 'mark)
 

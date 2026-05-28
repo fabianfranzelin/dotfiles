@@ -5,10 +5,10 @@ configuration.
 
 ** Internal examples
 
-+ [[file:org-project/][Scientific paper with org-mode]]
-+ [[file:cc-project/][Simple C++/CMake project]]
-+ [[file:python-project/][Simple Python project]]
-+ [[file:ts-project/][TypeScript project (tree-sitter + eglot)]]
++ [[file:org-project/README.org][Scientific paper with org-mode]]
++ [[file:cc-project/README.org][Simple C++/CMake project]]
++ [[file:python-project/README.org][Simple Python project]]
++ [[file:ts-project/README.org][TypeScript project (tree-sitter + eglot)]]
 
 ** External: Typescript and React
 

@@ -1,0 +1,15 @@
+#+TITLE: TypeScript Project (tree-sitter + eglot)
+
+This is a minimal TypeScript project to test Emacs configuration for
+TypeScript development (tree-sitter, eglot, typescript-language-server).
+
+** Source Code
+
+Browse the full source on GitHub:
+[[https://github.com/fabianfranzelin/dotfiles/tree/main/examples/ts-project][ts-project on GitHub]]
+
+** Files
+
+- =src/main.ts= - Entry point
+- =tsconfig.json= - TypeScript configuration
+- =package.json= - Node.js package configuration

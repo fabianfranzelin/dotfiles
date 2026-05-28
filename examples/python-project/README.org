@@ -1,0 +1,15 @@
+#+TITLE: Simple Python Project
+
+This is a minimal Python project to test Emacs configuration for
+Python development (eglot, pyright, pytest).
+
+** Source Code
+
+Browse the full source on GitHub:
+[[https://github.com/fabianfranzelin/dotfiles/tree/main/examples/python-project][python-project on GitHub]]
+
+** Files
+
+- =__main__.py= - Entry point
+- =pyproject.toml= - Project configuration
+- =test_example.py= - Example test file
