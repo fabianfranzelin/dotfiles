@@ -104,17 +104,12 @@ def run_publish_on_github(
 
     LOGGER.info("Clean up the temporary repository %s", github_pages_branchname)
     git_repo = Repo(tmp_dir).git
-    LOGGER.info("Git reset, checkout and clean")
-    git_repo.reset()
-    LOGGER.info("Git checkout")
-    git_repo.checkout("--", ".")
-    LOGGER.info("Git clean")
+    LOGGER.info("Git reset and clean")
+    git_repo.reset("--hard")
     git_repo.clean("-dfx")
-    LOGGER.info("Git pull")
-    git_repo.pull()
     LOGGER.info("Checkout github pages branch")
-    git_repo.checkout(github_pages_branchname)
-    print("Pull github pages branch")
+    git_repo.checkout("-f", github_pages_branchname)
+    LOGGER.info("Pull github pages branch")
     git_repo.pull(remote, github_pages_branchname)
 
     # Remove everything in the repo
@@ -175,7 +170,7 @@ def parse_arguments() -> Namespace:
     # -----------------------------------------------------------
     # Publisher
     publish_builder = subparser.add_parser("publish")
-    _ = publish_builder.add_argument(
+    publish_builder.add_argument(
         "--dryrun",
         action="store_true",
         help="Do not actually publish anything, just try.",
