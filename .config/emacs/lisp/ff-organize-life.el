@@ -84,6 +84,7 @@ DIR: directory path"
   (org-use-sub-superscripts '{})
   ;; use relative path when attaching files
   (org-attach-dir-relative t)
+  (org-export-allow-bind-keywords t)
   :config
   (require 'org-indent)
   (require 'org-habit)
