@@ -6,7 +6,7 @@ TypeScript development (tree-sitter, eglot, typescript-language-server).
 ** Source Code
 
 Browse the full source on GitHub:
-[[https://github.com/fabianfranzelin/dotfiles/tree/main/examples/ts-project][ts-project on GitHub]]
+[[https://github.com/fabianfranzelin/dotfiles/tree/nightly/examples/ts-project][ts-project on GitHub]]
 
 ** Files
 

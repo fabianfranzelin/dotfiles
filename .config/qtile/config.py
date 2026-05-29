@@ -250,6 +250,7 @@ def init_widgets_list(hide_sys_tray: bool = False) -> list[Any]:
         widget.WindowCount(
             fmt="\uf2d2 {}",
             foreground=my_colors["violet"],
+            show_zero=True,
         ),
         widget.Sep(linewidth=1, padding=10, foreground=my_colors["grey"]),
         widget.WindowName(
