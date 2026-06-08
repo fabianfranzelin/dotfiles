@@ -19,6 +19,30 @@
           "options": {
             "num_ctx": 32768
           }
+        },
+        "gemma4:26b": {
+          "name": "Gemma 4 26B (MoE)",
+          "contextWindow": 262144,
+          "tools": true,
+          "options": {
+            "num_ctx": 32768
+          }
+        },
+        "gemma4:e4b": {
+          "name": "Gemma 4 e4B",
+          "contextWindow": 262144,
+          "tools": true,
+          "options": {
+            "num_ctx": 32768
+          }
+        },
+        "gpt-oss:20b": {
+          "name": "GPT-OSS 20B",
+          "contextWindow": 131072,
+          "tools": true,
+          "options": {
+            "num_ctx": 32768
+          }
         }
       }
     }
