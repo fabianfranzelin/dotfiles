@@ -1,29 +1,33 @@
 <!-- Menu -->
 <header>
 <nav>
-    <!-- Always visible items in the nav bar -->
-    <ul>
+    <!-- Left: Home -->
+    <ul class="nav-left">
         <li>
             <a href="%ROOT_PATH%index.html">Home</a>
         </li>
     </ul>
-    <!-- Search box -->
+    <!-- Center: Search box -->
     <div class="search-container">
         <input type="text" id="search-input" placeholder="Search..." autocomplete="off" />
         <div id="search-results"></div>
     </div>
+    <!-- Right: Section links -->
+    <ul class="nav-right">
+        <li>
+            <a href="%ROOT_PATH%about/index.html">About</a>
+        </li>
+        <li>
+            <a href="%ROOT_PATH%technical/index.html">Technical</a>
+        </li>
+    </ul>
     <!-- The hamburger menu -->
     <label for='menu' tabindex="0">
     ☰
     </label>
     <input id='menu' type='checkbox' />
-    <!-- The collapsable menu -->
-    <ul>
-      <li class="nav-group">
-        <a href="%ROOT_PATH%about/index.html">About</a>
-      <li class="nav-group">
-        <a href="%ROOT_PATH%technical/index.html">Technical</a>
-      </li>
+    <!-- Page sections (populated by JS) -->
+    <ul id="page-sections">
     </ul>
 </nav>
 </header>
@@ -43,6 +47,45 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 })();
+</script>
+<script>
+// Build per-page section navigation from headings
+document.addEventListener('DOMContentLoaded', function() {
+  var container = document.getElementById('page-sections');
+  if (!container) return;
+  var headings = document.querySelectorAll('#content > .outline-2 > h2');
+  if (headings.length < 2) return;
+  headings.forEach(function(h) {
+    var id = h.id || (h.parentElement && h.parentElement.id);
+    if (!id) return;
+    var text = h.textContent.replace(/^[\d.]+\s*/, '').trim();
+    if (!text) return;
+    var li = document.createElement('li');
+    var a = document.createElement('a');
+    a.href = '#' + id;
+    a.textContent = text;
+    li.appendChild(a);
+    container.appendChild(li);
+  });
+  // Highlight active section on scroll
+  var links = container.querySelectorAll('a');
+  if (!links.length) return;
+  var sections = Array.from(links).map(function(a) {
+    return document.getElementById(a.getAttribute('href').slice(1));
+  }).filter(Boolean);
+  function updateActive() {
+    var scrollY = window.scrollY + 100;
+    var active = null;
+    sections.forEach(function(sec, i) {
+      if (sec.offsetTop <= scrollY) active = i;
+    });
+    links.forEach(function(a, i) {
+      a.classList.toggle('active', i === active);
+    });
+  }
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+});
 </script>
 <script defer src="https://unpkg.com/lunr/lunr.js"></script>
 <script defer src="%ROOT_PATH%js/search.js"></script>

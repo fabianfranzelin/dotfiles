@@ -2,7 +2,7 @@
 #+AUTHOR: Fabian Franzelin
 #+EMAIL: fabian.franzelin@gmail.com
 #+LANGUAGE: en
-#+OPTIONS: auto-id:t H:4 broken_links:mark email:t ^:{} toc:t num:nil
+#+OPTIONS: auto-id:t H:4 broken_links:mark email:t ^:{} num:nil
 
 * Open Source
 
