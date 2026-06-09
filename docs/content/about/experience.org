@@ -1,0 +1,44 @@
+#+TITLE: Experience
+#+AUTHOR: Fabian Franzelin
+#+EMAIL: fabian.franzelin@gmail.com
+#+LANGUAGE: en
+#+OPTIONS: auto-id:t H:4 broken_links:mark email:t ^:{} toc:t num:nil
+
+* Professional Experience
+
+#+begin_quote
+/Fill in your work history below. Each role should highlight technologies
+used, team context, and measurable impact where possible./
+#+end_quote
+
+** Current Role
+
+*Job Title* — Company Name
+
+/Location | Start Date – Present/
+
+- Brief description of responsibilities
+- Key technologies: Python, C++, Bazel, ROS, Docker
+- Notable achievements or projects delivered
+
+** Previous Roles
+
+*** Role Title — Company Name
+
+/Location | Start Date – End Date/
+
+- Description of responsibilities
+- Technologies and methodologies used
+- Impact and achievements
+
+* Key Achievements
+
+- /Add quantifiable achievements here (e.g., "Reduced build times by 60% by migrating to Bazel")/
+- /Add team or organizational impact/
+- /Add any patents, publications, or talks/
+
+* Industries
+
+- Engineering / Automotive
+- Robotics & Automation
+- Scientific Computing

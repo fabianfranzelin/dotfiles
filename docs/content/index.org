@@ -1,33 +1,24 @@
-#+TITLE: dotfiles
+#+TITLE: Fabian Franzelin
 #+AUTHOR: Fabian Franzelin
 #+EMAIL: fabian.franzelin@gmail.com
-#+CREATOR: Fabian Franzelin
 #+LANGUAGE: en
-#+OPTIONS: auto-id:t H:4 broken_links:mark email:t ^:{}
-#+KEYWORDS: dotfiles linux emacs configuration
+#+OPTIONS: auto-id:t H:4 broken_links:mark email:t ^:{} toc:nil num:nil
 
-#+html: <a href="https://www.gnu.org/software/emacs/"><img src="https://img.shields.io/badge/Emacs-31.90-brightgreen.svg?style=flat&logo=GNU%20Emacs&logoColor=white"/></a>
-#+html: <a href="https://github.com/fabianfranzelin/dotfiles/actions/workflows/ci.yml"><img src="https://github.com/fabianfranzelin/dotfiles/actions/workflows/ci.yml/badge.svg?branch=nightly"/></a>
-#+html: <a href="https://github.com/fabianfranzelin/dotfiles/commits"><img src="https://img.shields.io/github/last-commit/fabianfranzelin/dotfiles"/></a>
-#+html: <a href="https://github.com/fabianfranzelin/dotfiles/blob/nightly/LICENSE"><img src="https://img.shields.io/github/license/fabianfranzelin/dotfiles"/></a>
+* Fabian Franzelin
 
-* System Configuration
+Software engineer with a focus on building robust systems in Python and C/C++.
+I work at the intersection of software engineering and automation, bringing
+scientific rigor to production code.
 
-In this repository, I gather my system configurations that allow me to have
-a consistent computing experience over multiple Linux machines.
+I build my development environment from the ground up — from window manager to
+editor — because I believe tooling shapes thinking. This site documents both
+who I am as an engineer and the tools I use.
 
-It configures three main tools: [[https://www.gnu.org/software/emacs/][GNU Emacs]], [[https://zsh.sourceforge.io/][ZSH]], and [[http://docs.qtile.org/en/stable/][Qtile]].
+** [[file:about/index.org][About Me]]
 
-I use [[https://www.gnu.org/software/stow/][GNU Stow]] to install my configuration files on my Linux
-distributions. Everything can be rolled out by calling the main
-configure script of the repository
+Professional profile, skills, experience, and how to reach me.
 
+** [[file:technical/index.org][Technical Documentation]]
 
-#+begin_src shell
-./configure -i
-#+end_src
-
-* Beyond Configurations
-
-+ [[file:examples/README.org][Examples: Python, C++, org, Typescript/React]]
-+ [[file:wsl.org][WSL setup]]
+Documentation of my system configurations: GNU Emacs, ZSH, Qtile, and the
+infrastructure that ties them together.

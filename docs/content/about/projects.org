@@ -1,0 +1,51 @@
+#+TITLE: Projects
+#+AUTHOR: Fabian Franzelin
+#+EMAIL: fabian.franzelin@gmail.com
+#+LANGUAGE: en
+#+OPTIONS: auto-id:t H:4 broken_links:mark email:t ^:{} toc:t num:nil
+
+* Open Source
+
+** dotfiles
+
+A comprehensive, CI-tested system configuration repository managing GNU Emacs,
+ZSH, Qtile, and supporting infrastructure via GNU Stow.
+
+- *Technologies:* Emacs Lisp, Shell, Python, GitHub Actions
+- *Highlights:*
+  - Automated deployment across multiple machines
+  - Full documentation site with search (org-publish + Lunr.js)
+  - CI pipeline validating configuration integrity
+- *Link:* [[https://github.com/fabianfranzelin/dotfiles][github.com/fabianfranzelin/dotfiles]]
+
+* Professional Projects
+
+#+begin_quote
+/Add notable professional projects below. Focus on your contribution,
+the technical challenge, and the outcome./
+#+end_quote
+
+** Project Name
+
+- *Context:* Brief description of the problem space
+- *Role:* Your specific contribution
+- *Technologies:* Key tools and languages used
+- *Outcome:* Measurable result or impact
+
+* Side Projects & Experiments
+
+** Home Automation System
+
+Self-hosted home automation platform using Home Assistant with custom
+integrations.
+
+- *Technologies:* Home Assistant, Docker, MQTT, Zigbee2MQTT, NGINX
+- *Highlights:* IoT device management, automated routines, reverse proxy setup
+
+** Ergonomic Keyboard Configuration
+
+Custom firmware and layout design for splitkb Elora split keyboard with
+multiple layers optimized for programming workflows.
+
+- *Technologies:* Vial, QMK firmware
+- *Focus:* Reducing hand strain during extended coding sessions

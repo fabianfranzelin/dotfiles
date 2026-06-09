@@ -1,0 +1,38 @@
+#+TITLE: Education
+#+AUTHOR: Fabian Franzelin
+#+EMAIL: fabian.franzelin@gmail.com
+#+LANGUAGE: en
+#+OPTIONS: auto-id:t H:4 broken_links:mark email:t ^:{} toc:t num:nil
+
+* Education
+
+#+begin_quote
+/Fill in your academic background below./
+#+end_quote
+
+** Degree Title — University Name
+
+/Location | Start Year – End Year/
+
+- Field of study / specialization
+- Thesis topic (if relevant)
+- Notable coursework or achievements
+
+* Certifications & Training
+
+#+begin_quote
+/Add relevant certifications, online courses, or professional training./
+#+end_quote
+
+| Certification | Issuer | Year |
+|---------------+--------+------|
+| /Example/     |        |      |
+
+* Continuous Learning
+
+Areas of ongoing study and professional development:
+
+- Robotics and autonomous systems (ROS2)
+- Build system optimization (Bazel)
+- AI-assisted development workflows
+- Ergonomics and developer productivity
