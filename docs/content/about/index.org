@@ -1,0 +1,34 @@
+#+TITLE: About Me
+#+AUTHOR: Fabian Franzelin
+#+EMAIL: fabian.franzelin@gmail.com
+#+LANGUAGE: en
+#+OPTIONS: auto-id:t H:4 broken_links:mark email:t ^:{} toc:t num:nil
+
+* Professional Summary
+
+I am a software engineer based in Germany, specializing in Python and C/C++
+development within engineering and automation domains. I bring experience in
+robotics (ROS), build systems (Bazel, CMake), and scientific computing to
+teams building complex, safety-critical software.
+
+My approach emphasizes:
+
+- *Reproducibility* — deterministic builds, containerized environments, infrastructure as code
+- *Tooling mastery* — deep customization of development environments for maximum productivity
+- *Continuous integration* — automated testing and deployment pipelines from day one
+- *Documentation* — code that explains itself, supported by generated documentation
+
+* What I Bring to a Team
+
+- Production experience with large-scale C++ and Python codebases
+- Fluency in Linux systems engineering and DevOps practices
+- Ability to bridge the gap between research/prototyping and production deployment
+- Strong emphasis on developer experience and team productivity tooling
+
+* Navigation
+
+- [[file:skills.org][Technical Skills]] — Languages, frameworks, and tools
+- [[file:experience.org][Experience]] — Career history and roles
+- [[file:projects.org][Projects]] — Selected work and open-source contributions
+- [[file:education.org][Education]] — Academic background and certifications
+- [[file:contact.org][Contact]] — How to reach me

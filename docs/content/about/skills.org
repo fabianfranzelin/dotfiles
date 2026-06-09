@@ -1,0 +1,64 @@
+#+TITLE: Technical Skills
+#+AUTHOR: Fabian Franzelin
+#+EMAIL: fabian.franzelin@gmail.com
+#+LANGUAGE: en
+#+OPTIONS: auto-id:t H:4 broken_links:mark email:t ^:{} toc:t num:nil
+
+* Programming Languages
+
+** Primary
+
+| Language    | Experience Level | Context                                      |
+|-------------+------------------+----------------------------------------------|
+| Python      | Expert           | Production systems, scientific computing, CI |
+| C/C++       | Advanced         | Embedded systems, performance-critical code  |
+| Emacs Lisp  | Advanced         | Editor tooling, build automation             |
+| Shell/Bash  | Advanced         | System administration, scripting             |
+| TypeScript  | Intermediate     | Web applications, React                      |
+
+** Secondary
+
+R, Java, Groovy (Jenkins), SQL, LaTeX, Starlark (Bazel), Robot Framework
+
+* Build Systems & CI/CD
+
+| Tool           | Usage                                        |
+|----------------+----------------------------------------------|
+| Bazel          | Hermetic builds for large monorepos          |
+| CMake          | C/C++ project builds                         |
+| GitHub Actions | CI pipelines, automated testing              |
+| Jenkins        | Enterprise CI/CD pipelines (Groovy DSL)      |
+| Docker         | Containerized dev environments & deployments |
+| GNU Stow       | Dotfile management and deployment            |
+
+* Development Environment
+
+| Category        | Tool                                            |
+|-----------------+-------------------------------------------------|
+| Editor          | GNU Emacs 30 (LSP via Eglot, tree-sitter)      |
+| Shell           | ZSH + Oh-My-Zsh + Powerlevel10k                |
+| Window Manager  | Qtile (Python, tiling)                          |
+| Terminal        | Ghostty                                         |
+| Version Control | Git, Magit, GitHub (PRs, Actions)               |
+| Containers      | Docker, Docker Compose                          |
+| Package Mgmt   | UV (Python), Conan (C++), npm (JS)             |
+
+* Infrastructure & Platforms
+
+- Linux system administration (Debian/Ubuntu)
+- Docker containerization and orchestration
+- Home automation (Home Assistant, Zigbee, MQTT)
+- Self-hosted services and networking
+
+* Robotics & Automation
+
+- ROS (Robot Operating System) — Noetic, Humble
+- Sensor integration and data pipelines
+- Real-time systems considerations
+
+* Scientific & Technical Writing
+
+- LaTeX (papers, reports, KOMA-Script)
+- Org-mode (literate programming, reproducible research)
+- Sphinx/RST (API documentation)
+- reveal.js (technical presentations)

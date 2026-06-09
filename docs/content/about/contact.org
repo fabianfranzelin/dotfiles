@@ -1,0 +1,29 @@
+#+TITLE: Contact
+#+AUTHOR: Fabian Franzelin
+#+EMAIL: fabian.franzelin@gmail.com
+#+LANGUAGE: en
+#+OPTIONS: auto-id:t H:4 broken_links:mark email:t ^:{} toc:t num:nil
+
+* Get in Touch
+
+| Channel  | Link                                                              |
+|----------+-------------------------------------------------------------------|
+| Email    | [[mailto:fabian.franzelin@gmail.com][fabian.franzelin@gmail.com]] |
+| GitHub   | [[https://github.com/fabianfranzelin][github.com/fabianfranzelin]] |
+| LinkedIn | /Add your LinkedIn URL/                                           |
+
+* Availability
+
+#+begin_quote
+/Indicate your current availability — e.g., open to opportunities,
+available for freelance, not currently looking, etc./
+#+end_quote
+
+* Preferred Contact
+
+For professional inquiries, please reach out via email or LinkedIn.
+I typically respond within a few business days.
+
+* Location
+
+Based in Germany. Open to remote work and on-site positions in /your region/.
