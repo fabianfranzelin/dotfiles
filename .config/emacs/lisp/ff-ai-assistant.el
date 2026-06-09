@@ -42,7 +42,7 @@
   (c++-ts-mode . copilot-mode)
   (c-ts-mode . copilot-mode)
   (emacs-lisp-mode . copilot-mode)
-  (markdown-mode . copilot-mode)
+  (markdown-ts-mode . copilot-mode)
   (rst-mode . copilot-mode)
   (bazel-mode . copilot-mode)
   :custom
@@ -56,7 +56,7 @@
   (setf (alist-get 'lisp-mode copilot-indentation-alist) '(ff/lisp-indent-offset))
 
   (setq ff/markdown-indent-offset 2)
-  (setf (alist-get 'markdown-mode copilot-indentation-alist) '(ff/markdown-indent-offset))
+  (setf (alist-get 'markdown-ts-mode copilot-indentation-alist) '(ff/markdown-indent-offset))
 
   (setq ff/rst-indent-offset 2)
   (setf (alist-get 'rst-mode copilot-indentation-alist) '(ff/rst-indent-offset))

@@ -703,7 +703,8 @@ TEXT: title"
                   (write-file (expand-file-name ".yas-parents" target-folder))))))
           '(("dockerfile-mode" . "dockerfile-ts-mode")
             ("cmake-mode" . "cmake-ts-mode")
-            ("yaml-mode" . "yaml-ts-mode")))
+            ("yaml-mode" . "yaml-ts-mode")
+            ("markdown-mode" . "markdown-ts-mode")))
 
   ;; update snippet directories
   ;; add pesonal snippets directory

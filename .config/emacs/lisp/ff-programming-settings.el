@@ -11,22 +11,6 @@
 (use-package eglot
   :straight (:type built-in)
   :commands eglot-ensure
-  :hook
-  (c++-ts-mode . eglot-ensure)
-  (c-ts-mode . eglot-ensure)
-  (java-ts-mode . eglot-ensure)
-  (python-ts-mode . eglot-ensure)
-  (typescript-ts-mode . eglot-ensure)
-  (tsx-ts-mode . eglot-ensure)
-  (json-ts-mode . eglot-ensure)
-  (yaml-ts-mode . eglot-ensure)
-  (bash-ts-mode . eglot-ensure)
-  (cmake-mode . eglot-ensure)
-  (dockerfile-ts-mode . eglot-ensure)
-  (rst-mode . eglot-ensure)
-  (markdown-mode . eglot-ensure)
-  (robot-mode . eglot-ensure)
-  (bazel-mode . eglot-ensure)
   :custom
   (eglot-events-buffer-size 10)
   :config
@@ -95,51 +79,20 @@ the need to update my project hierarchy."
               #'ff/eglot-find-local-project))
 
 ;; -------------------------------------------------------------
-;; use built-in tree-sitter
+;; use built-in tree-sitter (Emacs 31+)
 ;; -------------------------------------------------------------
 (use-package treesit
   :straight (:type built-in)
   :preface
-  (defun ff/treesit-install-grammars (&optional force)
-    "Install Tree-sitter grammars if they are absent.
-FORCE: force update of grammars"
-    (interactive)
-    (dolist (grammar
-             '(
-               (bash "https://github.com/tree-sitter/tree-sitter-bash")
-               (cmake "https://github.com/uyha/tree-sitter-cmake")
-               (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
-               (c "https://github.com/tree-sitter/tree-sitter-c")
-               (css "https://github.com/tree-sitter/tree-sitter-css")
-               (elisp "https://github.com/Wilfred/tree-sitter-elisp")
-               (html "https://github.com/tree-sitter/tree-sitter-html")
-               (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
-               (jsdoc "https://github.com/tree-sitter/tree-sitter-jsdoc")
-               (json "https://github.com/tree-sitter/tree-sitter-json")
-               (make "https://github.com/alemuller/tree-sitter-make")
-               (markdown "https://github.com/ikatyang/tree-sitter-markdown")
-               (python "https://github.com/tree-sitter/tree-sitter-python")
-               (toml "https://github.com/tree-sitter/tree-sitter-toml")
-               (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
-               (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
-               (yaml "https://github.com/ikatyang/tree-sitter-yaml")
-               (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")
-               (rst "https://github.com/stsewd/tree-sitter-rst")
-               ))
-
-      (add-to-list 'treesit-language-source-alist grammar)
-      ;; Only install `grammar' if we don't already have it
-      ;; installed. However, if you want to *update* a grammar then
-      ;; this obviously prevents that from happening.
-      (when (or force (not (treesit-language-available-p (car grammar))))
-        (message "Install tree sitter language grammar for %s" (car grammar))
-        (treesit-install-language-grammar (car grammar)))))
-
   (defun ff/treesit-update-grammars ()
+    "Force reinstall all registered grammars."
     (interactive)
-    (ff/treesit-install-grammars t))
+    (dolist (grammar treesit-language-source-alist)
+      (treesit-install-language-grammar (car grammar))))
+  :custom
+  (treesit-enabled-modes t)
+  (treesit-auto-install-grammar 'always)
   :config
-  (ff/treesit-install-grammars)
   (add-to-list 'treesit-extra-load-path
                (expand-file-name ".cache/emacs/tree-sitter" (getenv "HOME"))))
 
@@ -267,10 +220,7 @@ Uses theme background in GUI, near-black in terminal.")
 ;; -------------------------------------------------------------------
 ;; Shell
 ;; -------------------------------------------------------------------
-;; part of the lsp-mode configuration
-
-;; use tree-sitter as default and overwrite sh-mode
-(add-to-list 'major-mode-remap-alist '(sh-mode . bash-ts-mode))
+(add-hook 'bash-ts-mode-hook #'eglot-ensure)
 
 ;; Make sure that my preferred linter is installed
 (ff/ensure-apt-package "shellcheck" "shellcheck")
@@ -296,21 +246,19 @@ Uses theme background in GUI, near-black in terminal.")
 (add-to-list 'auto-mode-alist '("\\.envrc\\.\\'" . envrc-file-mode))
 
 ;; -------------------------------------------------------------------
-;; yaml mode
+;; YAML
 ;; -------------------------------------------------------------------
-(use-package yaml-mode
-  :preface
-  ;; install system dependencies
-  (ff/ensure-python-package "yamllint" nil "yamllint")
-  (ff/ensure-npm-package "yaml-language-server" "yaml-language-server")
-  :mode
-  ("\\.yml$" . yaml-mode)
-  ("\\.yaml$" . yaml-mode))
+(add-hook 'yaml-ts-mode-hook #'eglot-ensure)
+
+(ff/ensure-python-package "yamllint" nil "yamllint")
+(ff/ensure-npm-package "yaml-language-server" "yaml-language-server")
+
 ;; -------------------------------------------------------------------
 ;; Dockerfile
 ;; -------------------------------------------------------------------
+(add-hook 'dockerfile-ts-mode-hook #'eglot-ensure)
+
 (ff/ensure-npm-package "dockerfile-language-server-nodejs" "docker-langserver")
-(add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-ts-mode))
 
 (use-package docker
   :after ff-setup-vterm
@@ -353,12 +301,10 @@ Uses theme background in GUI, near-black in terminal.")
 ;; -------------------------------------------------------------------
 ;; Typescript, TSX and Javascript
 ;; -------------------------------------------------------------------
-(ff/ensure-npm-package "typescript-language-server" "typescript-language-server")
+(add-hook 'typescript-ts-mode-hook #'eglot-ensure)
+(add-hook 'tsx-ts-mode-hook #'eglot-ensure)
 
-(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.ts\\'" . tsx-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.mjs\\'" . js-ts-mode))
+(ff/ensure-npm-package "typescript-language-server" "typescript-language-server")
 
 ;; enable eslint for javascript
 (ff/ensure-npm-package "eslint" "eslint")
@@ -378,16 +324,17 @@ Uses theme background in GUI, near-black in terminal.")
 ;; -------------------------------------------------------------------
 ;; Java mode
 ;; -------------------------------------------------------------------
-;; nothing to be done. Everything is currently handled by Eglot.
+(add-hook 'java-ts-mode-hook #'eglot-ensure)
 
 ;; -------------------------------------------------------------------
 ;; Json
 ;; -------------------------------------------------------------------
+(add-hook 'json-ts-mode-hook #'eglot-ensure)
+
 ;; ensure system packages
 (ff/ensure-npm-package "jsonlint" "jsonlint")
 (ff/ensure-npm-package "prettier-json" "prettier-json")
 
-(add-to-list 'auto-mode-alist '("\\.json$" . json-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.inst$" . json-ts-mode))
 
 ;; configure auto format
@@ -399,6 +346,8 @@ Uses theme background in GUI, near-black in terminal.")
 ;; -------------------------------------------------------------------
 ;; Robot Framework
 ;; -------------------------------------------------------------------
+(add-hook 'robot-mode-hook #'eglot-ensure)
+
 (use-package robot-mode
   :preface
   (ff/ensure-python-package "robotframework-robocop" "6.11.0" "robocop")
@@ -424,10 +373,9 @@ Uses theme background in GUI, near-black in terminal.")
   (add-to-list 'eglot-server-programs `(robot-mode "robotframework_ls")))
 
 ;; -------------------------------------------------------------------
-;; toml
+;; TOML
 ;; -------------------------------------------------------------------
-;; use tree-sitter as default and overwrite conf-toml-mode
-(add-to-list 'major-mode-remap-alist '(conf-toml-mode . toml-ts-mode))
+;; treesit-enabled-modes handles conf-toml-mode -> toml-ts-mode remapping
 
 ;; -------------------------------------------------------------------
 ;; Direnv: I am using the buffer local version and not the direnv
@@ -436,12 +384,9 @@ Uses theme background in GUI, near-black in terminal.")
 (use-package envrc)
 
 ;; -------------------------------------------------------------------
-;; HTML, CSS, etc.
+;; HTML, CSS
 ;; -------------------------------------------------------------------
-;; use tree-sitter as default and overwrite python-mode
-(add-to-list 'major-mode-remap-alist '(css-mode . css-ts-mode))
-(add-to-list 'major-mode-remap-alist '(html-mode . html-ts-mode))
-(add-to-list 'major-mode-remap-alist '(mhtml-mode . html-ts-mode))
+;; treesit-enabled-modes handles css-mode/html-mode/mhtml-mode remapping
 
 (with-eval-after-load 'html-ts-mode
   (define-key html-ts-mode-map (kbd "M-o") nil))
@@ -500,6 +445,8 @@ Uses theme background in GUI, near-black in terminal.")
 ;; -----------------------------------------------------------------------------------
 ;; Bazel
 ;; for getting compile commands code: https://github.com/hedronvision/bazel-compile-commands-extractor
+
+(add-hook 'bazel-mode-hook #'eglot-ensure)
 
 (use-package bazel
   :mode (("\\.bzl\\'" . bazel-mode)

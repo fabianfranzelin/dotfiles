@@ -73,6 +73,10 @@ REPLACE-STR: string that replaces all regex matches"
   ;; make sure that the compile commands are adjusted to the host system
   (define-key project-prefix-map "m" 'ff/container-host-compile-commands-mapping))
 
+;; eglot hooks
+(add-hook 'c++-ts-mode-hook #'eglot-ensure)
+(add-hook 'c-ts-mode-hook #'eglot-ensure)
+
 (with-eval-after-load 'eglot
   ;; make sure that system packages are available
   (ff/ensure-apt-package "clangd" "clangd")
@@ -93,17 +97,8 @@ REPLACE-STR: string that replaces all regex matches"
                                            "--header-insertion-decorators=0"
                                            "--query-driver=**"))))
 
-;; use tree-sitter as default and overwrite all C/C++ modes
-(add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
-(add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
-(add-to-list 'major-mode-remap-alist '(c-or-c++-mode . c-or-c++-ts-mode))
-
-;; set up file bindings
-(add-to-list 'auto-mode-alist '("\\.cpp\\'" . c++-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.hpp\\'" . c++-ts-mode))
+;; non-standard file extension
 (add-to-list 'auto-mode-alist '("\\.inl\\'" . c++-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.c\\'" . c-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.h\\'" . c-ts-mode))
 
 ;; fix indentation style
 (defun ff/indent-style()
@@ -129,7 +124,7 @@ REPLACE-STR: string that replaces all regex matches"
 
 ;; -----------------------------------------------------------------------------------
 ;; CMake
-(ff/ensure-python-package "cmake_language_server" nil "cmake_language_server")
+(add-hook 'cmake-ts-mode-hook #'eglot-ensure)
 
 (use-package cmake-mode
   :preface

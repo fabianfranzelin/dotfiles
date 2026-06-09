@@ -7,22 +7,16 @@
 ;;; Code:
 
 ;; -------------------------------------------------------------------
-;; markdown mode
+;; Markdown
 ;; -------------------------------------------------------------------
-(use-package markdown-mode
-  :custom
-  ;; The default command for markdown (~markdown~), doesn't support tables
-  ;; (e.g. GitHub flavored markdown). Pandoc does, so let's use that.
-  (markdown-command "pandoc --from markdown --to html")
-  (markdown-command-needs-filename t)
-  :hook
-  (markdown-mode . flyspell-mode))
+(add-hook 'markdown-ts-mode-hook #'eglot-ensure)
 
 ;; configure auto format
 (with-eval-after-load 'apheleia
-  (add-hook 'markdown-mode-hook 'apheleia-mode)
+
+  (add-hook 'markdown-ts-mode-hook 'apheleia-mode)
   (setf (alist-get 'mdformat apheleia-formatters) '("mdformat" filepath))
-  (setf (alist-get 'markdown-mode apheleia-mode-alist) 'mdformat))
+  (setf (alist-get 'markdown-ts-mode apheleia-mode-alist) 'mdformat))
 
 ;; -------------------------------------------------------------------
 ;; Simple text
@@ -54,6 +48,8 @@
   :hook
   (rst-mode . pyvenv-mode) ;; enable support of virtual environments
   (rst-mode . ff/configure-rst-mode))
+
+(add-hook 'rst-mode-hook #'eglot-ensure)
 
 ;; Check documentation
 ;; https://docs.esbon.io/en/release/lsp/reference/configuration.html#lsp-configuration
