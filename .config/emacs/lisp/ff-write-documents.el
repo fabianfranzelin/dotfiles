@@ -41,6 +41,7 @@
          cape-dict)))
 
 (use-package rst
+  :straight (:type built-in)
   :mode
   ("\\.rst$" . rst-mode)
   ("\\.rest$" . rst-mode)
@@ -188,6 +189,7 @@ https://github.com/radian-software/straight.el/issues/240"
         TeX-source-correlate-start-server t))
 
 (use-package reftex
+  :straight (:type built-in)
   :config
   (setq reftex-enable-partial-scans t)
   (setq reftex-use-multiple-selection-buffers t)

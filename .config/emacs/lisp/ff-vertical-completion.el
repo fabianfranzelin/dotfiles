@@ -107,6 +107,7 @@ DIR: directory"
 ;; Save history during sessions so that vertico can pick up the latest
 ;; used ones
 (use-package savehist
+  :straight (:type built-in)
   :hook
   (after-init . savehist-mode))
 
@@ -173,6 +174,7 @@ DIR: directory"
 
 ;; Use Dabbrev with Corfu!
 (use-package dabbrev
+  :straight (:type built-in)
   ;; Swap M-/ and C-M-/
   :bind (("M-/" . dabbrev-completion)
          ("C-M-/" . dabbrev-expand))

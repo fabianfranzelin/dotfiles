@@ -690,7 +690,6 @@ TEXT: title"
   :after yasnippet)
 
 (with-eval-after-load 'yasnippet-snippets
-  (require 'yasnippet)
   ;; make snippets available in ts-modes when not already available
   (mapcar (lambda (element)
             (let* ((parent-mode (car element))
@@ -701,7 +700,16 @@ TEXT: title"
                 (with-temp-buffer
                   (insert parent-mode)
                   (write-file (expand-file-name ".yas-parents" target-folder))))))
-          '(("dockerfile-mode" . "dockerfile-ts-mode")
+          '(("sh-mode" . "bash-ts-mode")
+            ("js-mode" . "js-ts-mode")
+            ("typescript-mode" . "typescript-ts-mode")
+            ("json-mode" . "json-ts-mode")
+            ("css-mode" . "css-ts-mode")
+            ("c-mode" . "c-ts-mode")
+            ("c++-mode" . "c++-ts-mode")
+            ("java-mode" . "java-ts-mode")
+            ("python-mode" . "python-ts-mode")
+            ("dockerfile-mode" . "dockerfile-ts-mode")
             ("cmake-mode" . "cmake-ts-mode")
             ("yaml-mode" . "yaml-ts-mode")
             ("markdown-mode" . "markdown-ts-mode")))
