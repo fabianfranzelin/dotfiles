@@ -167,9 +167,6 @@ Uses theme background in GUI, near-black in terminal.")
 ;; -------------------------------------------------------------------
 ;; Emacs lisp and common lisp
 ;; -------------------------------------------------------------------
-(add-to-list 'auto-mode-alist '("\\.el\\'" . emacs-lisp-mode))
-(add-to-list 'auto-mode-alist '("\\.dir-locals\\.el$" . emacs-lisp-mode))
-
 (with-eval-after-load 'apheleia
   (add-hook 'emacs-lisp-mode-hook 'apheleia-mode)
   (setf (alist-get 'emacs-lisp-mode apheleia-mode-alist) 'lisp-indent))
@@ -308,8 +305,9 @@ Uses theme background in GUI, near-black in terminal.")
 
 ;; enable eslint for javascript
 (ff/ensure-npm-package "eslint" "eslint")
-(flycheck-add-mode 'javascript-eslint 'js-ts-mode)
-(flycheck-add-mode 'javascript-eslint 'tsx-ts-mode)
+(with-eval-after-load 'flycheck
+  (flycheck-add-mode 'javascript-eslint 'js-ts-mode)
+  (flycheck-add-mode 'javascript-eslint 'tsx-ts-mode))
 
 (use-package js-comint
   :commands js-comint-repl)

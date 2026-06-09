@@ -79,7 +79,8 @@
         ("C-c t e" . python-pytest-last-failed)))
 
 ;; flycheck
-(flycheck-add-mode 'python-mypy 'python-base-mode)
+(with-eval-after-load 'flycheck
+  (flycheck-add-mode 'python-mypy 'python-base-mode))
 
 (provide 'ff-programming-python)
 

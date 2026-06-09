@@ -130,10 +130,8 @@ REPLACE-STR: string that replaces all regex matches"
   :preface
   ;; install system dependencies
   (ff/ensure-python-package "cmake_language_server" nil "cmake_language_server")
-  :mode (("\\.cmake$" . cmake-mode)))
-
-(add-to-list 'auto-mode-alist '("\\.cmake$" . cmake-mode))
-(add-to-list 'auto-mode-alist '("CMakeLists.txt" . cmake-mode))
+  :mode (("\\.cmake$" . cmake-mode)
+         ("CMakeLists\\.txt" . cmake-mode)))
 
 (provide 'ff-programming-cc)
 
