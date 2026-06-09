@@ -18,12 +18,12 @@
 (ff/ensure-python-package "basedpyright" nil "basedpyright-langserver")
 (ff/ensure-python-package "mypy")
 
-;; use tree-sitter as default and overwrite python-mode
-(add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
+;; eglot hook
+(add-hook 'python-ts-mode-hook #'eglot-ensure)
 
-(add-to-list 'auto-mode-alist '("\\.py\\'" . python-ts-mode))
+;; non-standard file associations
 (add-to-list 'auto-mode-alist '("SConstruct" . python-ts-mode))
-(add-to-list 'auto-mode-alist '("SConstript" . python-ts-mode))
+(add-to-list 'auto-mode-alist '("SConscript" . python-ts-mode))
 
 ;; use ipython as default interpreter
 (setq python-shell-interpreter "ipython3"

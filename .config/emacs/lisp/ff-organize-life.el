@@ -152,10 +152,10 @@ DIR: directory path"
         ("C-c C-x Y" . org-download-yank)))
 
 (use-package toc-org
-  :after org markdown-mode
+  :after org
   :hook
   (org-mode . toc-org-mode)
-  (markdown-mode . toc-org-mode))
+  (markdown-ts-mode . toc-org-mode))
 
 ;; -------------------------------------------------------------------
 ;; Org modern: nice fonts, colors, etc.

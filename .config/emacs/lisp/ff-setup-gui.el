@@ -361,7 +361,7 @@ FUN: function to be called on the entry's path"
   :hook
   (org-mode . olivetti-mode)
   (rst-mode . olivetti-mode)
-  (markdown-mode . olivetti-mode)
+  (markdown-ts-mode . olivetti-mode)
   (LaTeX-mode . olivetti-mode)
   :bind
   (:map olivetti-mode-map
