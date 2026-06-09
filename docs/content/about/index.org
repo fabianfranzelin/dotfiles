@@ -2,7 +2,7 @@
 #+AUTHOR: Fabian Franzelin
 #+EMAIL: fabian.franzelin@gmail.com
 #+LANGUAGE: en
-#+OPTIONS: auto-id:t H:4 broken_links:mark email:t ^:{} toc:t num:nil
+#+OPTIONS: auto-id:t H:4 broken_links:mark email:t ^:{} num:nil
 
 * Professional Summary
 
@@ -25,10 +25,24 @@ My approach emphasizes:
 - Ability to bridge the gap between research/prototyping and production deployment
 - Strong emphasis on developer experience and team productivity tooling
 
-* Navigation
+* Explore
 
-- [[file:skills.org][Technical Skills]] — Languages, frameworks, and tools
-- [[file:experience.org][Experience]] — Career history and roles
-- [[file:projects.org][Projects]] — Selected work and open-source contributions
-- [[file:education.org][Education]] — Academic background and certifications
-- [[file:contact.org][Contact]] — How to reach me
+** [[file:skills.org][Technical Skills]]
+
+Languages, frameworks, build systems, and development tools.
+
+** [[file:experience.org][Experience]]
+
+Career history, roles, and key achievements.
+
+** [[file:projects.org][Projects]]
+
+Selected work and open-source contributions.
+
+** [[file:education.org][Education]]
+
+Academic background and certifications.
+
+** [[file:contact.org][Contact]]
+
+How to reach me for professional inquiries.

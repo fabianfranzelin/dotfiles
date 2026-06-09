@@ -33,7 +33,7 @@
   "Advice around `org-html-publish-to-html' to resolve %ROOT_PATH% per file."
   (let* ((root (ff/root-path filename))
          (org-html-head (string-replace "%ROOT_PATH%" root ff/theme-html-head-template))
-         (org-html-head-extra (string-replace "%ROOT_PATH%" root ff/menu-html-template)))
+         (org-html-preamble (string-replace "%ROOT_PATH%" root ff/menu-html-template)))
     (funcall orig-fun plist filename pub-dir)))
 
 (advice-add 'org-html-publish-to-html :around #'ff/set-theme-for-file)
@@ -42,7 +42,7 @@
       org-html-head-include-scripts nil       ;; Use our own scripts
       org-html-head-include-default-style nil ;; Use our own styles
       org-html-head ff/theme-html-head-template
-      org-html-head-extra ff/menu-html-template
+      org-html-preamble ff/menu-html-template
       org-html-htmlize-output-type 'css)
 
 (provide 'ff-html-theme)

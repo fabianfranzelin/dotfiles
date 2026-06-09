@@ -2,23 +2,20 @@
 #+AUTHOR: Fabian Franzelin
 #+EMAIL: fabian.franzelin@gmail.com
 #+LANGUAGE: en
-#+OPTIONS: auto-id:t H:4 broken_links:mark email:t ^:{} toc:nil num:nil
+#+OPTIONS: auto-id:t H:4 broken_links:mark email:t ^:{} num:nil
 
-* Fabian Franzelin
-
-Software engineer with a focus on building robust systems in Python and C/C++.
+Software engineer building robust systems in Python and C/C++.
 I work at the intersection of software engineering and automation, bringing
 scientific rigor to production code.
 
 I build my development environment from the ground up — from window manager to
-editor — because I believe tooling shapes thinking. This site documents both
-who I am as an engineer and the tools I use.
+editor — because tooling shapes thinking.
 
 ** [[file:about/index.org][About Me]]
 
-Professional profile, skills, experience, and how to reach me.
+Professional profile, technical skills, career experience, and how to reach me.
 
 ** [[file:technical/index.org][Technical Documentation]]
 
-Documentation of my system configurations: GNU Emacs, ZSH, Qtile, and the
-infrastructure that ties them together.
+System configurations for GNU Emacs, ZSH, Qtile, and the infrastructure
+that ties them together. CI-tested and deployed via GNU Stow.
