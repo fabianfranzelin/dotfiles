@@ -205,9 +205,9 @@ FORCE: force update of grammars"
   :preface
   (defface fancy-compilation-default-face
     '((((type graphic)) :background "#282c34" :inherit ansi-color-grey)
-      (t :inherit default))
+      (t :background "color-233" :inherit ansi-color-grey))
     "Face used to render black color in compilation buffers.
-Uses theme background in GUI, inherits default face in terminal.")
+Uses theme background in GUI, near-black in terminal.")
   :hook
   (after-init . fancy-compilation-mode))
 
