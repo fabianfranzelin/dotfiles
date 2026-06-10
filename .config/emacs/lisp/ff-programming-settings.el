@@ -245,10 +245,61 @@ Uses theme background in GUI, near-black in terminal.")
 ;; -------------------------------------------------------------------
 ;; YAML
 ;; -------------------------------------------------------------------
-(add-hook 'yaml-ts-mode-hook #'eglot-ensure)
-
 (ff/ensure-python-package "yamllint" nil "yamllint")
 (ff/ensure-npm-package "yaml-language-server" "yaml-language-server")
+
+(defvar ff/yaml-indent-offset 2
+  "Number of spaces for each YAML indentation level.")
+
+(use-package yaml-ts-mode
+  :straight (:type built-in)
+  :preface
+  (defun ff/yaml-ts-indent-line ()
+    "Cycle through valid YAML indentation levels in multiples of `ff/yaml-indent-offset'."
+    (interactive)
+    (let* ((prev-indent (save-excursion
+                          (forward-line -1)
+                          (while (and (not (bobp)) (looking-at-p "^\\s-*$"))
+                            (forward-line -1))
+                          (current-indentation)))
+           (max-indent (+ prev-indent ff/yaml-indent-offset))
+           (cur-indent (current-indentation))
+           (next-indent (if (>= cur-indent max-indent) 0
+                          (+ cur-indent ff/yaml-indent-offset))))
+      (if (> (current-column) cur-indent)
+          (insert-char ?\s ff/yaml-indent-offset)
+        (indent-line-to next-indent))))
+
+  (defun ff/yaml-ts-newline ()
+    "Newline preserving indentation without continuing list items."
+    (interactive)
+    (newline)
+    (indent-line-to (save-excursion
+                      (forward-line -1)
+                      (current-indentation))))
+
+  (defun ff/yaml-ts-newline-and-continue-list ()
+    "Newline preserving indentation; continues list items with `- '."
+    (interactive)
+    (let ((prev-indent (current-indentation))
+          (is-list-item (save-excursion
+                          (beginning-of-line)
+                          (looking-at-p "^\\s-*- "))))
+      (newline)
+      (indent-line-to prev-indent)
+      (when is-list-item
+        (insert "- "))))
+
+  (defun ff/yaml-ts-mode-setup ()
+    "Configure custom indentation for `yaml-ts-mode'."
+    (setq-local indent-line-function #'ff/yaml-ts-indent-line))
+  :hook
+  (yaml-ts-mode . eglot-ensure)
+  (yaml-ts-mode . ff/yaml-ts-mode-setup)
+  :bind
+  (:map yaml-ts-mode-map
+        ("C-j" . ff/yaml-ts-newline)
+        ("M-RET" . ff/yaml-ts-newline-and-continue-list)))
 
 ;; -------------------------------------------------------------------
 ;; Dockerfile
