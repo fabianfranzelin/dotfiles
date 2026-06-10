@@ -6,39 +6,75 @@
 
 * Professional Experience
 
-#+begin_quote
-/Fill in your work history below. Each role should highlight technologies
-used, team context, and measurable impact where possible./
-#+end_quote
+** Software Architect — ETAS Middleware for Autonomous Driving
 
-** Current Role
+*Robert Bosch GmbH, Gerlingen | June 2022 – Present*
 
-*Job Title* — Company Name
+Technical coordination, portfolio management, and organizational
+development as software architect leading five agile teams. Core
+responsibilities include:
 
-/Location | Start Date – Present/
+- Architecting systems for recording sensor and middleware data
+- Designing resimulation pipelines that replay application software
+  against recorded data
+- Building efficient functional and non-functional statistical
+  analysis tooling for software and data
+- Serving as the central point of contact for requirements engineering
+  and developing software designs and prototypes across multiple
+  customer projects
 
-- Brief description of responsibilities
-- Key technologies: Python, C++, Bazel, ROS, Docker
-- Notable achievements or projects delivered
+Technologies: Python, C++, Docker, Adaptive AUTOSAR
 
-** Previous Roles
+([[https://edms.etas.com/][EDMS Homepage]])
 
-*** Role Title — Company Name
+** Software Architect — Cloud Test Platform
 
-/Location | Start Date – End Date/
+*Robert Bosch GmbH, Gerlingen | January 2020 – December 2021*
 
-- Description of responsibilities
-- Technologies and methodologies used
-- Impact and achievements
+Technical coordination as software architect for four agile teams
+building a scalable digital test platform in the cloud (Data +
+Compute) with heterogeneous execution environments ranging from
+embedded to consumer hardware for autonomous driving functions.
 
-* Key Achievements
+- Managed three customer projects as central technical contact for
+  open-loop test strategies
+- Drove tool development for both customer-facing and
+  platform-internal projects
+- Designed scalable compute and data architectures for test execution
 
-- /Add quantifiable achievements here (e.g., "Reduced build times by 60% by migrating to Bazel")/
-- /Add team or organizational impact/
-- /Add any patents, publications, or talks/
+Technologies: Python, Kubernetes, Docker, Airflow, Spark, Hadoop
+
+** Software Developer — Autonomous Driving Validation
+
+*Robert Bosch GmbH, Gerlingen | April 2018 – December 2019*
+
+Developed cloud-based open-loop test environments for autonomous
+driving functions (SAE Level 3–4) in a joint venture between Daimler
+AG and Robert Bosch GmbH (robotaxi project).
+
+- Built safety-critical test infrastructure compliant with ISO 26262
+  (functional safety)
+- Designed and implemented orchestration pipelines for large-scale
+  test execution
+- Worked with Airflow, Kubernetes, Docker, Spark, and Hadoop
+
+** German Language Instructor
+
+*Academia de Idiomas ZADOR, Vitoria-Gasteiz, Spain | January 2012 – May 2012*
+
+Led a German language course for beginners in the Basque Country.
+
+** Working Student — Medical Software Development
+
+*Sylvia Lawry Centre for Multiple Sclerosis Research, Munich | December 2007 – April 2010*
+
+Developed analysis and visualization software for accelerometer data
+collected from Multiple Sclerosis patients, supporting clinical
+research into motor function assessment.
 
 * Industries
 
-- Engineering / Automotive
-- Robotics & Automation
-- Scientific Computing
+- Automotive / Autonomous Driving
+- Cloud Computing & DevOps
+- Scientific Computing & Research
+- Medical Technology

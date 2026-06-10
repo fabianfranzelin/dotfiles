@@ -6,24 +6,24 @@
 
 * Get in Touch
 
-| Channel  | Link                                                              |
-|----------+-------------------------------------------------------------------|
-| Email    | [[mailto:fabian.franzelin@gmail.com][fabian.franzelin@gmail.com]] |
-| GitHub   | [[https://github.com/fabianfranzelin][github.com/fabianfranzelin]] |
-| LinkedIn | /Add your LinkedIn URL/                                           |
-
-* Availability
-
-#+begin_quote
-/Indicate your current availability — e.g., open to opportunities,
-available for freelance, not currently looking, etc./
-#+end_quote
-
-* Preferred Contact
-
-For professional inquiries, please reach out via email or LinkedIn.
-I typically respond within a few business days.
+| Channel  | Link                                                 |
+|----------+------------------------------------------------------|
+| Email    | [[mailto:fabian.franzelin@gmail.com][fabian.franzelin@gmail.com]]                           |
+| GitHub   | [[https://github.com/fabianfranzelin][github.com/fabianfranzelin]]                           |
+| LinkedIn | [[https://de.linkedin.com/in/fabian-franzelin-19228551]] |
 
 * Location
 
-Based in Germany. Open to remote work and on-site positions in /your region/.
+Based in Tübingen, Germany. Open to remote work and on-site positions in the
+Stuttgart/Tübingen metropolitan area.
+
+* Personal Interests
+
+- *Sports:* Climbing, mountaineering, mountain biking, running, tennis
+- *Other:* Languages, travel
+
+** Athletic Achievements
+
+- 2024: Winner at the Stocherkahnrennen Tübingen (traditional punt boat race)
+- 2008: Italian national champion in road running — 5x1000m relay (Paestum, Campania)
+- 2003: Italian national champion in track and field — 1500m (Catania, Sicily)

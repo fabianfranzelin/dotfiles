@@ -4,34 +4,120 @@
 #+LANGUAGE: en
 #+OPTIONS: auto-id:t H:4 broken_links:mark email:t ^:{} num:nil
 
-* Education
+* Academic Background
 
-#+begin_quote
-/Fill in your academic background below./
-#+end_quote
+** PhD — Cluster of Excellence SimTech
 
-** Degree Title — University Name
+*University of Stuttgart | 2012 – 2018*
 
-/Location | Start Year – End Year/
+- *Field:* Stochastic analysis of error propagation in high-dimensional
+  numerical simulations of subsurface flows in porous media for
+  identifying optimal nuclear waste repository sites
+- *Thesis:* Data-Driven Uncertainty Quantification for Large Scale
+  Systems
+- *Grade:* Summa Cum Laude
 
-- Field of study / specialization
-- Thesis topic (if relevant)
-- Notable coursework or achievements
+** Master of Science in Computer Science
 
-* Certifications & Training
+*Technical University of Munich | 2009 – 2011*
 
-#+begin_quote
-/Add relevant certifications, online courses, or professional training./
-#+end_quote
+- *Grade:* 1.2 (excellent)
+- Focus areas: Data Mining, Databases, and Web Applications
 
-| Certification | Issuer | Year |
-|---------------+--------+------|
-| /Example/     |        |      |
+** Bachelor of Science in Computer Science
+
+*Technical University of Munich | 2006 – 2009*
+
+- *Grade:* 2.2 (good)
+- Focus areas: Foundations of Computer Science, Medicine, and Medical
+  Technology
+
+** Matura (A-Level Equivalent)
+
+*Gewerbeoberschule "Max Valier", Bolzano, Italy | 2001 – 2006*
+
+- *Grade:* 100/100 (equivalent to 1.0)
+
+* Certifications & Professional Training
+
+| Program                                   | Institution       | Period                 |
+|-------------------------------------------+-------------------+------------------------|
+| Software Architect Senior Level           | Robert Bosch GmbH | October 2021 – Present |
+| (comparable to ISAQB Advanced Level)      |                   |                        |
+| Talent Pool — Subject Matter Expert Track | Robert Bosch GmbH | June 2020 – Present    |
+
+* Publications
+
+** Journal Articles
+
+1. Rehme, M., *Franzelin, F.*, & Pflueger, D. (2021). B-splines on sparse grids for surrogates in uncertainty quantification. /Reliability Engineering & System Safety/, 209, 107430. [[https://doi.org/10.1016/j.ress.2021.107430][doi:10.1016/j.ress.2021.107430]]
+
+2. Jakeman, J. D., *Franzelin, F.*, Narayan, A., Eldred, M., & Pflueger, D. (2019). Polynomial chaos expansions for dependent random variables. /Computer Methods in Applied Mechanics and Engineering/, 351, 643–666. [[https://doi.org/10.1016/j.cma.2019.03.049][doi:10.1016/j.cma.2019.03.049]]
+
+3. Koeppel, M., *Franzelin, F.*, Kroeker, I., Oladyshkin, S., Santin, G., Wittwar, D., Barth, A., Haasdonk, B., Nowak, W., Pflueger, D., & Rohde, C. (2018). Comparison of data-driven uncertainty quantification methods for a carbon dioxide storage benchmark scenario. /Computational Geosciences/, 23(2), 339–354. [[https://doi.org/10.1007/s10596-018-9785-x][doi:10.1007/s10596-018-9785-x]]
+
+4. Diehl, P., *Franzelin, F.*, Pflueger, D., & Ganzenmüller, G. C. (2016). Bond-based peridynamics: a quantitative study of Mode I crack opening. /International Journal of Fracture/, 201(2), 157–170. [[https://doi.org/10.1007/s10704-016-0119-5][doi:10.1007/s10704-016-0119-5]]
+
+** Conference Proceedings & Book Chapters
+
+5. *Franzelin, F.* & Pflueger, D. (2018). Limiting Ranges of Function Values of Sparse Grid Surrogates. In /Sparse Grids and Applications - Miami 2016/ (pp. 69–91). Springer. [[https://doi.org/10.1007/978-3-319-75426-0_4][doi:10.1007/978-3-319-75426-0_4]]
+
+6. *Franzelin, F.* & Pflueger, D. (2016). From Data to Uncertainty: An Efficient Integrated Data-Driven Sparse Grid Approach to Propagate Uncertainty. In /Sparse Grids and Applications - Stuttgart 2014/ (pp. 29–49). Springer. [[https://doi.org/10.1007/978-3-319-28262-6_2][doi:10.1007/978-3-319-28262-6_2]]
+
+7. *Franzelin, F.*, Diehl, P., & Pflueger, D. (2015). Non-intrusive Uncertainty Quantification with Sparse Grids for Multivariate Peridynamic Simulations. In /Meshfree Methods for Partial Differential Equations VII/, LNCSE Vol. 100 (pp. 115–143). Springer. [[https://doi.org/10.1007/978-3-319-06898-5_7][doi:10.1007/978-3-319-06898-5_7]]
+
+8. Peherstorfer, B., *Franzelin, F.*, Pflueger, D., & Bungartz, H.-J. (2014). Classification with Probability Density Estimation on Sparse Grids. In /Sparse Grids and Applications - Munich 2012/ (pp. 255–270). Springer. [[https://doi.org/10.1007/978-3-319-04537-5_11][doi:10.1007/978-3-319-04537-5_11]]
+
+** Doctoral & Master's Theses
+
+9. *Franzelin, F.* (2017). /Data-Driven Uncertainty Quantification for Large-Scale Simulations./ PhD thesis, University of Stuttgart. ISBN 978-3-8439-3696-5.
+
+10. *Franzelin, F.* (2011). /Classification with Estimated Densities on Sparse Grids./ Master's thesis, Technical University of Munich.
+
+** Patents
+
+11. *Franzelin, F.* & Kokemueller, J. (2021). Computer-implementierte Testumgebung sowie Verfahren zum Testen von Software-Komponenten. European Patent 10 2021 214 973.1. [[https://register.dpma.de/DPMAregister/pat/register?AKZ=1020212149731&CURSOR=1][DPMA Register]]
+
+12. *Franzelin, F.* & Kokemueller, J. (2022). Verfahren zum Testen einer auf mehrere Programme verteilten Datenverarbeitung. European Patent 10 2022 203 166.0. [[https://register.dpma.de/DPMAregister/pat/register?AKZ=1020222031660&CURSOR=2][DPMA Register]]
+
+* Conference Talks
+
+1. /Preserving Positivity of Sparse Grid Surrogates./ Conference on Sparse Grids and Applications. Miami, October 2016.
+2. /On probabilistic transformations and optimal sampling rules for emulator based inverse uncertainty quantification problems./ SIAM Conference on Uncertainty Quantification. Lausanne, April 2016.
+3. /On probabilistic transformations and optimal sampling rules for emulator based inverse uncertainty quantification problems./ Conference on Data-Driven Model Order Reduction and Machine Learning. April 2016.
+4. /Data-driven Uncertainty Quantification in CO2 storage with adaptive Sparse Grids./ Conference on Computational Methods in Water Resources. Stuttgart, June 2016.
+5. /Data-driven Uncertainty Quantification with Adaptive Sparse Grids in subsurface flow simulations./ SIAM Conference on Computational Science and Engineering. Salt Lake City, March 2015.
+6. /Data-driven Uncertainty Quantification with Adaptive Sparse Grids in subsurface flow simulations./ Conference on Sparse Grids and Applications. Stuttgart, September 2014.
+7. /Uncertainty Quantification in Crack Propagation Simulations./ MascotNum Workshop on Computational Experiments and Meta-models for Uncertainty Quantification. Zurich, April 2014.
+8. /Sensitivity Analysis in Multivariate Peridynamic Simulations with Adaptive Sparse Grid Collocation Method./ SIAM Conference on Uncertainty Quantification. Savannah, April 2014.
+
+** Invited Talks
+
+1. /Spatially Adaptive Sparse Grid Collocation for Multivariate Peridynamic Simulations./ Bonn, January 2014.
+2. /From data to uncertainty: an integrated sparse grid approach./ Bonn, January 2015.
+3. /On probabilistic transformations and optimal sampling rules for emulator based inverse uncertainty quantification problems./ Bonn, January 2016.
+
+* Teaching Experience
+
+** University of Stuttgart (2013–2018)
+
+- *Lecturer:* [[https://campus.uni-stuttgart.de/cusonline/WBMODHB.wbShowMHBReadOnly?pKnotenNr=90362&pOrgNr=986][Modeling and Simulation]] — substitute for Prof. Dirk Pflueger for one semester, fully responsible for lecture organization and exercises
+- *Substitute Lecturer:* [[https://campus.uni-stuttgart.de/cusonline/WBMODHB.wbShowMHBReadOnly?pKnotenNr=90362&pOrgNr=986][Numerical Simulation]] and [[https://campus.uni-stuttgart.de/cusonline/WBMODHB.wbShowMHBReadOnly?pKnotenNr=90320&pOrgNr=986][Foundations of Scientific Computing]] — substitute for Prof. Miriam Schulte and Prof. Dirk Pflueger (2014–2018)
+- *Teaching Assistant:* Exercise sessions for various courses (2013–2018)
+- *Thesis Supervision:* At least one Bachelor's or Master's thesis per semester (2013–2018)
+- *Summer Academy:* Course leader for "Let's play! Simulated Physics for Games" at the [[https://ferienakademie.de/en/home-2/][Ferienakademie]] (joint program of the Universities of Stuttgart, Erlangen, and Munich), 2014 and 2015
+- *Open Day:* Organized the booth for the "Simulation of Large-Scale Systems" group at the University of Stuttgart open day
+
+** Student Projects (Open Source)
+
+- [[https://github.com/SC-SGS/microtrafficsim][Microscopic Traffic Simulation]] — student-developed traffic simulator
+- [[https://github.com/SC-SGS/talfer][Talfer]] — educational game for fluid flow simulation, developed during the Ferienakademie
 
 * Continuous Learning
 
 Areas of ongoing study and professional development:
 
+- Software architecture patterns and quality attributes
 - Robotics and autonomous systems (ROS2)
 - Build system optimization (Bazel)
 - AI-assisted development workflows

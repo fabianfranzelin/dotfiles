@@ -6,24 +6,40 @@
 
 * Professional Summary
 
-I am a software engineer based in Germany, specializing in Python and C/C++
-development within engineering and automation domains. I bring experience in
-robotics (ROS), build systems (Bazel, CMake), and scientific computing to
-teams building complex, safety-critical software.
+I am a software architect based in Tübingen, Germany, with a
+background in computer science (PhD, Summa Cum Laude) and over six
+years of experience building cloud-native test and validation
+platforms for autonomous driving at Robert Bosch GmbH. I lead
+cross-functional agile teams to deliver scalable data pipelines,
+resimulation environments, and statistical analysis tooling for
+safety-critical automotive software.
 
 My approach emphasizes:
 
-- *Reproducibility* — deterministic builds, containerized environments, infrastructure as code
-- *Tooling mastery* — deep customization of development environments for maximum productivity
-- *Continuous integration* — automated testing and deployment pipelines from day one
-- *Documentation* — code that explains itself, supported by generated documentation
+- *Scalable architecture* — designing systems that grow from prototype
+  to production across heterogeneous environments
+- *Reproducibility* — deterministic builds, containerized environments,
+  infrastructure as code
+- *Tooling mastery* — deep customization of development environments for
+  maximum productivity
+- *Continuous integration* — automated testing and deployment pipelines
+  from day one
+- *Cross-domain expertise* — bridging scientific computing, cloud
+  infrastructure, and embedded systems
 
 * What I Bring to a Team
 
-- Production experience with large-scale C++ and Python codebases
+- Production experience architecting large-scale C++ and Python
+  systems in the cloud
+- Proven track record coordinating multiple agile teams as a technical
+  lead
 - Fluency in Linux systems engineering and DevOps practices
-- Ability to bridge the gap between research/prototyping and production deployment
-- Strong emphasis on developer experience and team productivity tooling
+  (Kubernetes, Docker, Airflow)
+- Ability to bridge the gap between research/prototyping and
+  production deployment
+- Strong emphasis on developer experience and team productivity
+  tooling
+- Multilingual communication (German, English, Italian, Spanish)
 
 * Explore
 
@@ -39,9 +55,9 @@ Career history, roles, and key achievements.
 
 Selected work and open-source contributions.
 
-** [[file:education.org][Education]]
+** [[file:education.org][Education & Publications]]
 
-Academic background and certifications.
+Academic background, certifications, publications, patents, and teaching.
 
 ** [[file:contact.org][Contact]]
 
