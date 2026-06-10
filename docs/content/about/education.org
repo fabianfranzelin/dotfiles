@@ -40,11 +40,11 @@
 
 * Certifications & Professional Training
 
-| Program                                   | Institution       | Period                 |
-|-------------------------------------------+-------------------+------------------------|
-| Software Architect Senior Level           | Robert Bosch GmbH | October 2021 – Present |
-| (comparable to ISAQB Advanced Level)      |                   |                        |
-| Talent Pool — Subject Matter Expert Track | Robert Bosch GmbH | June 2020 – Present    |
+| Program                              | Institution       | Period                 |
+|--------------------------------------+-------------------+------------------------|
+| Software Architect Senior Level      | Robert Bosch GmbH | October 2021 – Present |
+| (comparable to ISAQB Advanced Level) |                   |                        |
+| Talent Pool — Techincal Expert Track | Robert Bosch GmbH | June 2020 – Present    |
 
 * Publications
 

@@ -1,7 +1,8 @@
 ;;; Directory Local Variables
 ;;; For more information see (info "(emacs) Directory Variables")
 
-((nil . (;; Configure ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+((nil . ((compile-command . "cd docs && ./build.el")
+         ;; Configure ;;;;;;;;;;;;;;;;;;;;;;;;;;;
          (eval . (defun run-command-recipe-ff/configure ()
                    (append
                     (when-let* ((project-dir (locate-dominating-file default-directory "configure")))
