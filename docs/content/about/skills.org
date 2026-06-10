@@ -11,14 +11,21 @@
 | Language    | Experience Level | Context                                      |
 |-------------+------------------+----------------------------------------------|
 | Python      | Expert           | Production systems, scientific computing, CI |
-| C/C++       | Advanced         | Embedded systems, performance-critical code  |
-| Emacs Lisp  | Advanced         | Editor tooling, build automation             |
-| Shell/Bash  | Advanced         | System administration, scripting             |
-| TypeScript  | Intermediate     | Web applications, React                      |
+| C/C++       | Expert           | Embedded systems, performance-critical code  |
+| CMake       | Expert           | Build system configuration                   |
 
 ** Secondary
 
-R, Java, Groovy (Jenkins), SQL, LaTeX, Starlark (Bazel), Robot Framework
+| Language              | Experience Level | Context                           |
+|-----------------------+------------------+-----------------------------------|
+| TypeScript/JavaScript | Intermediate     | Web applications                  |
+| Bash                  | Advanced         | System administration, scripting  |
+| Java                  | Intermediate     | Enterprise applications           |
+| R                     | Intermediate     | Statistical analysis              |
+| Emacs Lisp            | Advanced         | Editor tooling, build automation  |
+| SQL                   | Intermediate     | Database queries and management   |
+| LaTeX                 | Advanced         | Scientific writing, documentation |
+| Bazel/Starlark        | Basic            | Hermetic build definitions        |
 
 * Build Systems & CI/CD
 
@@ -33,22 +40,44 @@ R, Java, Groovy (Jenkins), SQL, LaTeX, Starlark (Bazel), Robot Framework
 
 * Development Environment
 
-| Category        | Tool                                            |
-|-----------------+-------------------------------------------------|
-| Editor          | GNU Emacs 30 (LSP via Eglot, tree-sitter)      |
-| Shell           | ZSH + Oh-My-Zsh + Powerlevel10k                |
-| Window Manager  | Qtile (Python, tiling)                          |
-| Terminal        | Ghostty                                         |
-| Version Control | Git, Magit, GitHub (PRs, Actions)               |
-| Containers      | Docker, Docker Compose                          |
-| Package Mgmt   | UV (Python), Conan (C++), npm (JS)             |
+| Category        | Tool                                      |
+|-----------------+-------------------------------------------|
+| Editor          | GNU Emacs 30 (LSP via Eglot, tree-sitter) |
+| Shell           | ZSH + Oh-My-Zsh + Powerlevel10k           |
+| Window Manager  | Qtile (Python, tiling)                    |
+| Terminal        | Ghostty                                   |
+| Version Control | Git, Magit, GitHub (PRs, Actions)         |
+| Containers      | Docker, Docker Compose                    |
+| Package Mgmt    | UV (Python), Conan (C++), npm (JS)        |
 
 * Infrastructure & Platforms
 
+- Kubernetes orchestration and cluster management
+- Apache Airflow workflow orchestration
+- Apache Spark and Hadoop (big data processing)
 - Linux system administration (Debian/Ubuntu)
 - Docker containerization and orchestration
 - Home automation (Home Assistant, Zigbee, MQTT)
 - Self-hosted services and networking
+
+* Domain-Specific Tools
+
+| Tool                 | Domain                                  |
+|----------------------+-----------------------------------------|
+| Adaptive AUTOSAR     | Automotive middleware                   |
+| Enterprise Architect | UML modeling and architecture design    |
+| IBM DOORS            | Requirements management                 |
+| Sphinx               | API and project documentation           |
+| Atlassian Suite      | Jira, Bitbucket — project management    |
+
+* Languages
+
+| Language | Reading | Listening | Speaking | Writing | Conversation |
+|----------+---------+-----------+----------+---------+--------------|
+| German   | Native  | Native    | Native   | Native  | Native       |
+| English  | C1      | C1        | C1       | C1      | C1           |
+| Italian  | C1      | C1        | C1       | B2      | B2           |
+| Spanish  | C1      | C1        | C1       | B2      | B2           |
 
 * Robotics & Automation
 

@@ -20,17 +20,50 @@ ZSH, Qtile, and supporting infrastructure via GNU Stow.
 
 * Professional Projects
 
-#+begin_quote
-/Add notable professional projects below. Focus on your contribution,
-the technical challenge, and the outcome./
-#+end_quote
+** EDMS — ETAS Data Management System
 
-** Project Name
+- *Context:* Cloud-native platform for recording, managing, and
+  analyzing sensor and middleware data for autonomous driving
+  validation
+- *Role:* Software architect coordinating five agile teams; central
+  contact for requirements and prototyping across multiple customer
+  projects
+- *Technologies:* Python, C++, Docker, Adaptive AUTOSAR
+- *Outcome:* Unified data pipeline enabling efficient resimulation and
+  statistical analysis of autonomous driving functions
+- *Link:* [[https://edms.etas.com/][edms.etas.com]]
 
-- *Context:* Brief description of the problem space
-- *Role:* Your specific contribution
-- *Technologies:* Key tools and languages used
-- *Outcome:* Measurable result or impact
+** Scalable Cloud Test Platform for Autonomous Driving
+
+- *Context:* Digital test platform requiring elastic compute and storage
+  to validate autonomous driving functions at scale
+- *Role:* Software architect leading four agile teams; designed
+  heterogeneous execution environments from embedded to consumer
+  hardware
+- *Technologies:* Python, Kubernetes, Docker, Airflow, Spark, Hadoop
+- *Outcome:* Scalable open-loop test infrastructure serving three
+  concurrent customer projects
+
+** Robotaxi Validation Infrastructure (Daimler-Bosch Joint Project)
+
+- *Context:* Safety-critical validation environment for SAE Level 3–4
+  autonomous driving functions in a robotaxi program
+- *Role:* Software developer building cloud-based open-loop test
+  pipelines compliant with ISO 26262 functional safety standards
+- *Technologies:* Python, Airflow, Kubernetes, Docker, Spark, Hadoop
+- *Outcome:* Production test infrastructure enabling continuous
+  validation of safety-critical driving functions
+
+** PhD Research — Uncertainty Quantification for Subsurface Flows
+
+- *Context:* Stochastic analysis of error propagation in
+  high-dimensional simulations to identify optimal nuclear waste
+  repository sites
+- *Role:* Researcher developing data-driven methods for uncertainty
+  quantification in large-scale numerical systems
+- *Technologies:* Python, C++, HPC clusters
+- *Outcome:* Novel methodology published as doctoral thesis (Summa Cum
+  Laude), contributing to the SimTech Cluster of Excellence
 
 * Side Projects & Experiments
 
@@ -40,12 +73,13 @@ Self-hosted home automation platform using Home Assistant with custom
 integrations.
 
 - *Technologies:* Home Assistant, Docker, MQTT, Zigbee2MQTT, NGINX
-- *Highlights:* IoT device management, automated routines, reverse proxy setup
+- *Highlights:* IoT device management, automated routines, reverse proxy
+  setup
 
 ** Ergonomic Keyboard Configuration
 
-Custom firmware and layout design for splitkb Elora split keyboard with
-multiple layers optimized for programming workflows.
+Custom firmware and layout design for splitkb Elora split keyboard
+with multiple layers optimized for programming workflows.
 
 - *Technologies:* Vial, QMK firmware
 - *Focus:* Reducing hand strain during extended coding sessions
