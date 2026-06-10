@@ -108,6 +108,7 @@ Then, I install all the required third party dependencies and build Emacs
           "libgccjit-9-dev"
           "libgccjit-10-dev"
           "libgccjit-12-dev"
+          "libgccjit-14-dev"
           "g++-12"
           "gcc-12"
       )
