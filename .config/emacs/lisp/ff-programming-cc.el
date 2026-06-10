@@ -103,22 +103,6 @@ REPLACE-STR: string that replaces all regex matches"
 ;; non-standard file extension
 (add-to-list 'auto-mode-alist '("\\.inl\\'" . c++-ts-mode))
 
-;; ;; fix indentation style
-;; (defun ff/indent-style()
-;;   "Override the built-in BSD indentation style with some additional rules."
-;;   `(;; Here are your custom rules
-;;     ((node-is ")") parent-bol 0)
-;;     ((match nil "argument_list" nil 1 1) parent-bol c-ts-mode-indent-offset)
-;;     ((parent-is "argument_list") prev-sibling 0)
-;;     ((match nil "parameter_list" nil 1 1) parent-bol c-ts-mode-indent-offset)
-;;     ((parent-is "parameter_list") prev-sibling 0)
-
-;;     ;; Append here the indent style you want as base
-;;     ,@(alist-get 'bsd (c-ts-mode--indent-styles 'cpp))))
-
-;; (setq c-ts-mode-indent-offset 4
-;;       c-ts-mode-indent-style #'ff/indent-style)
-
 ;; configure auto format
 (with-eval-after-load 'apheleia
   (ff/ensure-apt-package "clang-format" "clang-format")
