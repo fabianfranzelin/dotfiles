@@ -113,12 +113,13 @@ REPLACE-STR: string that replaces all regex matches"
 ;; CMake
 (add-hook 'cmake-ts-mode-hook #'eglot-ensure)
 
-(use-package cmake-mode
+(use-package cmake-ts-mode
+  :straight (:type built-in)
   :preface
   ;; install system dependencies
   (ff/ensure-python-package "cmake_language_server" nil "cmake_language_server")
-  :mode (("\\.cmake$" . cmake-mode)
-         ("CMakeLists\\.txt" . cmake-mode)))
+  :mode (("\\.cmake$" . cmake-ts-mode)
+         ("CMakeLists\\.txt" . cmake-ts-mode)))
 
 (provide 'ff-programming-cc)
 
