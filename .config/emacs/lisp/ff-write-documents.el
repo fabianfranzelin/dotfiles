@@ -9,11 +9,26 @@
 ;; -------------------------------------------------------------------
 ;; Markdown
 ;; -------------------------------------------------------------------
-(add-hook 'markdown-ts-mode-hook #'eglot-ensure)
+(use-package markdown-ts-mode
+  :straight (:type built-in)
+  :mode
+  ("\\.md$" . markdown-ts-mode)
+  :hook
+  (markdown-ts-mode . eglot-ensure)
+  :init
+  ;; Ensure correct grammar version (v0.4.1) is used; the built-in
+  ;; markdown-ts-mode font-lock rules require nodes (e.g. pipe_table)
+  ;; only available in v0.4.1+.
+  (with-eval-after-load 'treesit
+    (add-to-list 'treesit-language-source-alist
+                 '(markdown "https://github.com/tree-sitter-grammars/tree-sitter-markdown"
+                            "v0.4.1" "tree-sitter-markdown/src"))
+    (add-to-list 'treesit-language-source-alist
+                 '(markdown-inline "https://github.com/tree-sitter-grammars/tree-sitter-markdown"
+                                   "v0.4.1" "tree-sitter-markdown-inline/src"))))
 
 ;; configure auto format
 (with-eval-after-load 'apheleia
-
   (add-hook 'markdown-ts-mode-hook 'apheleia-mode)
   (setf (alist-get 'mdformat apheleia-formatters) '("mdformat" filepath))
   (setf (alist-get 'markdown-ts-mode apheleia-mode-alist) 'mdformat))
@@ -48,9 +63,8 @@
   ("\\.inc$" . rst-mode)
   :hook
   (rst-mode . pyvenv-mode) ;; enable support of virtual environments
-  (rst-mode . ff/configure-rst-mode))
-
-(add-hook 'rst-mode-hook #'eglot-ensure)
+  (rst-mode . ff/configure-rst-mode)
+  (rst-mode . eglot-ensure))
 
 ;; Check documentation
 ;; https://docs.esbon.io/en/release/lsp/reference/configuration.html#lsp-configuration
