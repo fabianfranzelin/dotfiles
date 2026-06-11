@@ -3,7 +3,7 @@
   "plugin": [
     "opencode-power-pack@git+https://github.com/waybarrios/opencode-power-pack.git"
   ],
-  "model": "ollama/devstral:24b",
+  "model": "ollama/gemma4:12b",
   "provider": {
     "ollama": {
       "name": "Ollama Local",
@@ -28,8 +28,8 @@
             "num_ctx": 32768
           }
         },
-        "gemma4:e4b": {
-          "name": "Gemma 4 e4B",
+        "gemma4:12b": {
+          "name": "Gemma 4 12B",
           "contextWindow": 262144,
           "tools": true,
           "options": {
