@@ -85,6 +85,12 @@
               ("C-x a g" . agent-shell-goose-start-agent)
               ("C-x a o" . agent-shell-opencode-start-agent)))
 
+(use-package agent-shell-tramp
+  :straight (:host github :repo "junyi-hou/agent-shell-tramp")
+  :after agent-shell
+  :config
+  (agent-shell-tramp-mode 1))
+
 (use-package agent-review
   :straight (agent-review :type git :host github :repo "nineluj/agent-review")
   :bind (:map global-map
