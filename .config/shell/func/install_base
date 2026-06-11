@@ -311,6 +311,9 @@ install_packages_manually() {
         chmod +x starpls
     )
 
+    # Install Opencode
+    curl -fsSL https://opencode.ai/install | bash
+
     # Install Ollama
     # curl -fsSL https://ollama.com/install.sh | sh
 
