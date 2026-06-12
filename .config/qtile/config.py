@@ -278,12 +278,13 @@ def init_widgets_list(hide_sys_tray: bool = False) -> list[Any]:
             padding=4,
         ),
         widget.Sep(linewidth=1, padding=10, foreground=my_colors["grey"]),
-        widget.TextBox(
-            "\uf293",
-            foreground=my_colors["blue"],
-            padding=6,
-        ),
-        widget.Bluetooth(
+        widget.GenPollText(
+            func=lambda: "\uf293"
+            if subprocess.check_output(
+                ["bluetoothctl", "devices", "Connected"], text=True
+            ).strip()
+            else "",
+            update_interval=5,
             foreground=my_colors["blue"],
             padding=4,
             mouse_callbacks={"Button1": lambda: qtile.spawn("blueman-manager")},
