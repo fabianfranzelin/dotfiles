@@ -46,6 +46,8 @@
     <property name="plugin-6" type="string" value="systray">
       <property name="square-icons" type="bool" value="true"/>
       <property name="known-legacy-items" type="array">
+        <value type="string" value="wi-fi network connection “pauline” active: pauline (67%)"/>
+        <value type="string" value="wi-fi network connection “pauline” active: pauline (89%)"/>
         <value type="string" value="wi-fi network connection “pauline” active: pauline (75%)"/>
         <value type="string" value="wi-fi network connection “pauline” active: pauline (78%)"/>
         <value type="string" value="wi-fi network connection “pauline” active: pauline (73%)"/>
