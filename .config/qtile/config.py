@@ -279,6 +279,17 @@ def init_widgets_list(hide_sys_tray: bool = False) -> list[Any]:
         ),
         widget.Sep(linewidth=1, padding=10, foreground=my_colors["grey"]),
         widget.TextBox(
+            "\uf293",
+            foreground=my_colors["blue"],
+            padding=6,
+        ),
+        widget.Bluetooth(
+            foreground=my_colors["blue"],
+            padding=4,
+            mouse_callbacks={"Button1": lambda: qtile.spawn("blueman-manager")},
+        ),
+        widget.Sep(linewidth=1, padding=10, foreground=my_colors["grey"]),
+        widget.TextBox(
             "\uf028",
             foreground=my_colors["green"],
             padding=6,
