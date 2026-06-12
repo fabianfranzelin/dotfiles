@@ -305,6 +305,7 @@ def init_widgets_list(hide_sys_tray: bool = False) -> list[Any]:
             padding=6,
         ),
         widget.Battery(
+            battery="BAT0",
             foreground=my_colors["teal"],
             format="{percent:2.0%} {hour:d}:{min:02d}",
             low_foreground=my_colors["red"],
