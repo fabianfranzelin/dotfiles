@@ -18,7 +18,9 @@ keys = [
     Key(
         [mod, "control"],
         "i",
-        lazy.spawn(f"{my_term} -e bash -c '{str(Path('~/.local/bin/init').expanduser())} || bash'"),
+        lazy.spawn(
+            f"{my_term} -e bash -c '{str(Path('~/.local/bin/init').expanduser())} || bash'"
+        ),
         desc="Run init script in terminal",
     ),
     # A list of available commands that can be bound to keys can be found
@@ -47,7 +49,9 @@ keys = [
     Key([mod, "shift"], "Tab", lazy.group.prev_window()),
     # Move windows between left/right columns or move up/down in current stack.
     # Moving out of range in Columns layout will create new column.
-    Key([mod, "shift"], "j", lazy.layout.shuffle_left(), desc="Move window to the left"),
+    Key(
+        [mod, "shift"], "j", lazy.layout.shuffle_left(), desc="Move window to the left"
+    ),
     Key(
         [mod, "shift"],
         "l",
@@ -95,19 +99,27 @@ keys = [
         lazy.spawn(
             str(Path("~/.local/bin/betterlockscreen").expanduser())
             + " -l dimblur -u "
-            + str(Path("~/.local/share/backgrounds/pexels-eberhardgross-12365567.jpg").expanduser())
+            + str(
+                Path(
+                    "~/.local/share/backgrounds/pexels-eberhardgross-12365567.jpg"
+                ).expanduser()
+            )
         ),
         desc="Lock screen and update wallpaper",
     ),
     Key(
         [mod],
         "x",
-        lazy.spawn(str(Path("~/.local/bin/betterlockscreen").expanduser()) + " -l dimblur"),
+        lazy.spawn(
+            str(Path("~/.local/bin/betterlockscreen").expanduser()) + " -l dimblur"
+        ),
         desc="Lock screen",
     ),
     # --------------------------------------------------------
     # Personal key bindings
-    Key([mod, "shift"], "e", lazy.spawn("emacsclient -c -a emacs"), desc="Launch Emacs"),
+    Key(
+        [mod, "shift"], "e", lazy.spawn("emacsclient -c -a emacs"), desc="Launch Emacs"
+    ),
     Key([mod, "shift"], "d", lazy.spawn("emacs --daemon"), desc="Launch Emacs server"),
     Key([mod, "shift"], "Return", lazy.spawn(my_term), desc="Launch my terminal"),
     Key([mod, "shift"], "b", lazy.spawn(my_browser), desc="Launch my browser"),
@@ -272,18 +284,24 @@ def init_widgets_list(hide_sys_tray: bool = False) -> list[Any]:
             padding=6,
         ),
         widget.GenPollText(
-            func=lambda: subprocess.check_output([str(Path.home() / ".local/bin/vpn-status")]).decode().strip(),
+            func=lambda: subprocess.check_output(
+                [str(Path.home() / ".local/bin/vpn-status")]
+            )
+            .decode()
+            .strip(),
             update_interval=5,
             foreground=my_colors["teal"],
             padding=4,
         ),
         widget.Sep(linewidth=1, padding=10, foreground=my_colors["grey"]),
         widget.GenPollText(
-            func=lambda: "\uf293"
-            if subprocess.check_output(
-                ["bluetoothctl", "devices", "Connected"], text=True
-            ).strip()
-            else "",
+            func=lambda: (
+                "\uf293"
+                if subprocess.check_output(
+                    ["bluetoothctl", "devices", "Connected"], text=True
+                ).strip()
+                else ""
+            ),
             update_interval=5,
             foreground=my_colors["blue"],
             padding=4,
@@ -392,7 +410,9 @@ mouse = [
         lazy.window.set_position_floating(),
         start=lazy.window.get_position(),
     ),
-    Drag([mod], "Button3", lazy.window.set_size_floating(), start=lazy.window.get_size()),
+    Drag(
+        [mod], "Button3", lazy.window.set_size_floating(), start=lazy.window.get_size()
+    ),
     Click([mod], "Button2", lazy.window.bring_to_front()),
 ]
 
@@ -435,9 +455,7 @@ auto_minimize = True
 @hook.subscribe.startup  # type: ignore
 def startup() -> None:
     """Execute some applications at startup of qtile."""
-    subprocess.Popen(  # noqa: SIM115
-        [Path("~/.config/qtile/startup.sh").expanduser()]
-    )
+    subprocess.Popen([Path("~/.config/qtile/startup.sh").expanduser()])  # noqa: SIM115
 
 
 # When using the Wayland backend, this can be used to configure input devices.
