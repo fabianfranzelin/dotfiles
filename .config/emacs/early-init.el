@@ -6,6 +6,14 @@
 ;;; Code:
 
 ;; -------------------------------------------------------------------
+;; Suppress file-name-handler-alist during init for faster file loading
+(defvar ff/default-file-name-handler-alist file-name-handler-alist)
+(setq file-name-handler-alist nil)
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (setq file-name-handler-alist ff/default-file-name-handler-alist)))
+
+;; -------------------------------------------------------------------
 ;; define path of local lisp packages that are part of the dotfiles
 ;; repo
 (defvar emacs-config-home (expand-file-name ".config/emacs" (getenv "HOME"))

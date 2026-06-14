@@ -4,6 +4,9 @@
 
 ;;; Code:
 
+;; Skip file modification checks for faster startup
+(customize-set-variable 'straight-check-for-modifications nil)
+
 ;; use latest develop for straight itself; check
 ;; https://github.com/radian-software/straight.el/issues/1059
 (customize-set-variable 'straight-repository-branch "develop")
@@ -29,6 +32,10 @@
 
 ;; replace builtin use-package by straights version
 (straight-use-package 'use-package)
+
+;; Enable use-package statistics for profiling startup
+;; Run M-x use-package-report after startup to see results
+(customize-set-variable 'use-package-compute-statistics t)
 
 ;; Install org from straight BEFORE any org feature is loaded,
 ;; to prevent the built-in version from being activated.
