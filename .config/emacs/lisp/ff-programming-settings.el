@@ -14,7 +14,8 @@
   :custom
   (eglot-events-buffer-size 10)
   :config
-  (setq read-process-output-max (* 1024 1024))
+  (setq read-process-output-max (* 1024 1024)
+        eglot-max-file-watches nil)
   :bind
   (:map global-map
         ("C-c l w s" . eglot)
