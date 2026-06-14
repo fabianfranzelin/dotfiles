@@ -46,6 +46,7 @@
     <property name="plugin-6" type="string" value="systray">
       <property name="square-icons" type="bool" value="true"/>
       <property name="known-legacy-items" type="array">
+        <value type="string" value="wi-fi network connection “pauline” active: pauline (79%)"/>
         <value type="string" value="wi-fi network connection “pauline” active: pauline (67%)"/>
         <value type="string" value="wi-fi network connection “pauline” active: pauline (89%)"/>
         <value type="string" value="wi-fi network connection “pauline” active: pauline (75%)"/>
@@ -105,6 +106,7 @@
         <value type="string" value="ibus panel"/>
       </property>
       <property name="known-items" type="array">
+        <value type="string" value="vlc"/>
         <value type="string" value="flameshot"/>
         <value type="string" value="YouTube to MP3"/>
         <value type="string" value="caffeine-cup-empty"/>
@@ -124,6 +126,7 @@
     <property name="plugin-20" type="string" value="showdesktop"/>
     <property name="plugin-21" type="string" value="whiskermenu">
       <property name="recent" type="array">
+        <value type="string" value="org.musicbrainz.Picard.desktop"/>
         <value type="string" value="firefox-esr.desktop"/>
         <value type="string" value="jdownloader2_JDownloader.desktop"/>
         <value type="string" value="winboat.desktop"/>
@@ -133,7 +136,6 @@
         <value type="string" value="xfce-settings-manager.desktop"/>
         <value type="string" value="synaptic.desktop"/>
         <value type="string" value="terminator.desktop"/>
-        <value type="string" value="com.mitchellh.ghostty.desktop"/>
       </property>
     </property>
     <property name="plugin-24" type="string" value="launcher">
@@ -149,7 +151,7 @@
     </property>
     <property name="plugin-1" type="string" value="pulseaudio">
       <property name="enable-keyboard-shortcuts" type="bool" value="true"/>
-      <property name="known-players" type="string" value="firefox-esr"/>
+      <property name="known-players" type="string" value="firefox-esr;vlc"/>
     </property>
     <property name="plugin-10" type="string" value="power-manager-plugin"/>
   </property>
