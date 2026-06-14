@@ -574,6 +574,7 @@ Returns t so it can be used as :before-while advice without blocking the advised
 ;; Ripgrep integration
 ;; -------------------------------------------------------------------
 (use-package rg
+  :straight (rg :type git :host github :repo "fabianfranzelin/rg.el")
   :preface
   (ff/ensure-apt-package "ripgrep" "rg")
   :hook
