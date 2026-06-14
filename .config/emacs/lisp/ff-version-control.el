@@ -86,6 +86,7 @@ Otherwise, open the repository's main page."
               (add-hook 'ediff-suspend-hook restore-window-configuration 'append))))
 
 ;; diff of directories; diff of files via ediff
+;; check dired-compare-directories as alternative
 (use-package ztree
   :straight (ztree :type git :host codeberg :repo "fourier/ztree")
   :demand t
