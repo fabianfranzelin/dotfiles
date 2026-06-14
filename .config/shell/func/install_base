@@ -69,7 +69,8 @@ install_apt_packages() {
         caffeine \
         golang \
         gsimplecal \
-        meld
+        meld \
+        autorandr
 
     # Create save path for flameshot
     mkdit -p "${HOME}/Pictures/Screenshots"
