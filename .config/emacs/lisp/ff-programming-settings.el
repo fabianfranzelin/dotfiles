@@ -561,7 +561,10 @@ Uses theme background in GUI, near-black in terminal.")
          (csv-mode .
                    (lambda ()
                      (visual-line-mode -1)
-                     (toggle-truncate-lines 1)))))
+                     (toggle-truncate-lines 1))))
+  :bind (:map csv-mode-map
+              ("C-c C-f" . csv-align-fields)
+              ("C-c C-u" . csv-unalign-fields)))
 
 (provide 'ff-programming-settings)
 
