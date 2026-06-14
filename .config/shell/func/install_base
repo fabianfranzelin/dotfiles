@@ -320,6 +320,9 @@ install_packages_manually() {
 
     # Install Goose
     # curl -fsSL https://github.com/aaif-goose/goose/releases/download/stable/download_cli.sh | bash
+
+    # Install qodo
+    # npm install -g @qodo/command
 }
 
 configure_gnupg() {
