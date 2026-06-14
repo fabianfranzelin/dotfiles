@@ -28,7 +28,7 @@ AT_GOTTENHEIM=$(echo "${AVAILABLE_WIFIS}" | grep -q "Tomate" && echo "yes" || ec
 if [ "${AT_GOTTENHEIM}" = "yes" ]
 then
     autorandr --load gottenheim
-elif [ "${AT_HOME}" = "yes" ]
+elif [ "${AT_HOME}" = "yes" ] && [ "$(hostname)" = "FEWI-C-0007J" ]
 then
     autorandr --load pauline
 elif [ "${AT_OFFICE}" = "yes" ]
