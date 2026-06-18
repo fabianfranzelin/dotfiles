@@ -6,7 +6,7 @@
 #+OPTIONS: auto-id:t H:4 broken_links:mark email:t ^:{}
 #+KEYWORDS: dotfiles linux emacs configuration
 
-#+html: <a href="https://www.gnu.org/software/emacs/"><img src="https://img.shields.io/badge/Emacs-30.2-brightgreen.svg?style=flat&logo=GNU%20Emacs&logoColor=white"/></a>
+#+html: <a href="https://www.gnu.org/software/emacs/"><img src="https://img.shields.io/badge/Emacs-31.0.90-brightgreen.svg?style=flat&logo=GNU%20Emacs&logoColor=white"/></a>
 #+html: <a href="https://github.com/fabianfranzelin/dotfiles/actions/workflows/ci.yml"><img src="https://github.com/fabianfranzelin/dotfiles/actions/workflows/ci.yml/badge.svg?branch=nightly"/></a>
 #+html: <a href="https://github.com/fabianfranzelin/dotfiles/commits"><img src="https://img.shields.io/github/last-commit/fabianfranzelin/dotfiles"/></a>
 #+html: <a href="https://github.com/fabianfranzelin/dotfiles/blob/nightly/LICENSE"><img src="https://img.shields.io/github/license/fabianfranzelin/dotfiles"/></a>
@@ -28,6 +28,7 @@ configure script of the repository
 #+end_src
 
 * Beyond Configurations
+
 
 + [[file:examples/README.org][Examples: Python, C++, org, Typescript/React]]
 + [[file:wsl.org][WSL setup]]
