@@ -1,6 +1,6 @@
 ;;; ff-messaging.el --- email and news setup -*- lexical-binding: t; -*-
 
-;;; Code:
+;;; Commentary:
 
 ;;;; Add attachments from Dired (`gnus-dired' does not require `gnus')
 

@@ -169,6 +169,14 @@ FUN: function to be called on the entry's path"
   :config
   ;; Global settings (defaults)
   (load-theme 'doom-palenight t)
+  ;; Fix circular face inheritance: Emacs defines gnus-group-news-low as
+  ;; inheriting from gnus-group-news-low-empty, but doom-themes reverses
+  ;; it, causing a cycle that breaks child frames (e.g. Corfu popups).
+  ;; Must run immediately after load-theme, not deferred via eval-after-load,
+  ;; because Corfu child frames trigger face-spec-recalc before gnus loads.
+  (custom-theme-set-faces
+   'doom-palenight
+   '(gnus-group-news-low-empty ((t (:inherit nil)))))
   ;; Add frame borders and window dividers
   (modify-all-frames-parameters
    '((right-divider-width . 0)
