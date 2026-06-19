@@ -254,11 +254,62 @@ COMMAND: command to be executed"
                                     "SSH_AUTH_SOCK"
                                     "HTTP_PROXY"
                                     "HTTPS_PROXY"
+                                    "NO_PROXY"
+                                    "no_proxy"
                                     "BROWSER"
                                     "HISTFILE"
                                     "PASSWORD_STORE_DIR"))
   :config
   (exec-path-from-shell-initialize))
+
+;; -------------------------------------------------------------------
+;; Proxy management
+;; -------------------------------------------------------------------
+(defvar ff/--proxy-env-backup nil
+  "Alist storing the original proxy environment variable values.")
+
+(defun ff/--proxy-save-values ()
+  "Save current proxy environment variables if not already saved."
+  (unless ff/--proxy-env-backup
+    (setq ff/--proxy-env-backup
+          (mapcar (lambda (var) (cons var (getenv var)))
+                  '("HTTP_PROXY" "HTTPS_PROXY" "NO_PROXY" "no_proxy")))))
+
+(defun ff/--proxy-build-url-proxy-services ()
+  "Build `url-proxy-services' from the current HTTP_PROXY and HTTPS_PROXY env vars."
+  (let ((http (getenv "HTTP_PROXY"))
+        (https (getenv "HTTPS_PROXY"))
+        (no-proxy (getenv "NO_PROXY"))
+        result)
+    (when http
+      (let ((host-port (replace-regexp-in-string "^https?://" "" http)))
+        (push (cons "http" host-port) result)))
+    (when https
+      (let ((host-port (replace-regexp-in-string "^https?://" "" https)))
+        (push (cons "https" host-port) result)))
+    (when no-proxy
+      (push (cons "no_proxy" (replace-regexp-in-string "," " " no-proxy)) result))
+    result))
+
+(defun ff/proxy-disable ()
+  "Disable proxy for the running Emacs instance."
+  (interactive)
+  (ff/--proxy-save-values)
+  (dolist (var '("HTTP_PROXY" "HTTPS_PROXY" "NO_PROXY" "no_proxy"))
+    (setenv var nil))
+  (setq url-proxy-services nil)
+  (message "Proxy disabled."))
+
+(defun ff/proxy-enable ()
+  "Re-enable proxy for the running Emacs instance from saved values."
+  (interactive)
+  (unless ff/--proxy-env-backup
+    (user-error "No saved proxy values found; proxy was never disabled"))
+  (dolist (entry ff/--proxy-env-backup)
+    (setenv (car entry) (cdr entry)))
+  (setq url-proxy-services (ff/--proxy-build-url-proxy-services))
+  (setq ff/--proxy-env-backup nil)
+  (message "Proxy enabled: HTTP_PROXY=%s" (getenv "HTTP_PROXY")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Let kill operate on the whole line when no region is selected
@@ -437,7 +488,9 @@ Example usage: (message (my/tramp-call-process-direct \"your-remote-host.com\" \
    ("C-x D p" . dwim-shell-commands-kill-process)
    ("C-x D s" . ff/dwim-shell-commands-add-ssh-keys)
    ("C-x D k" . ff/dwim-shell-commands-set-keyboard-layout)
-   ("C-x D m" . ff/dwim-shell-commands-mount-pauline))
+   ("C-x D m" . ff/dwim-shell-commands-mount-pauline)
+   ("C-x D d" . ff/proxy-disable)
+   ("C-x D e" . ff/proxy-enable))
   :config
   (require 'dwim-shell-commands)
   (defun ff/dwim-shell-commands-add-ssh-keys ()
