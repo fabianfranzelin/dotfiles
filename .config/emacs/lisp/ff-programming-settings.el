@@ -438,8 +438,8 @@ Uses theme background in GUI, near-black in terminal.")
 ;; -------------------------------------------------------------------
 ;; treesit-enabled-modes handles css-mode/html-mode/mhtml-mode remapping
 
-(with-eval-after-load 'html-ts-mode
-  (define-key html-ts-mode-map (kbd "M-o") nil))
+(with-eval-after-load 'mhtml-ts-mode
+  (define-key mhtml-ts-mode-map (kbd "M-o") nil))
 
 ;; -------------------------------------------------------------------
 ;; SQLite
