@@ -273,7 +273,8 @@ COMMAND: command to be executed"
   (unless ff/--proxy-env-backup
     (setq ff/--proxy-env-backup
           (mapcar (lambda (var) (cons var (getenv var)))
-                  '("HTTP_PROXY" "HTTPS_PROXY" "NO_PROXY" "no_proxy")))))
+                  '("HTTP_PROXY" "HTTPS_PROXY" "NO_PROXY" "no_proxy"
+                    "http_proxy" "https_proxy" "ftp_proxy" "FTP_PROXY")))))
 
 (defun ff/--proxy-build-url-proxy-services ()
   "Build `url-proxy-services' from the current HTTP_PROXY and HTTPS_PROXY env vars."
@@ -295,7 +296,8 @@ COMMAND: command to be executed"
   "Disable proxy for the running Emacs instance."
   (interactive)
   (ff/--proxy-save-values)
-  (dolist (var '("HTTP_PROXY" "HTTPS_PROXY" "NO_PROXY" "no_proxy"))
+  (dolist (var '("HTTP_PROXY" "HTTPS_PROXY" "NO_PROXY" "no_proxy"
+                 "http_proxy" "https_proxy" "ftp_proxy" "FTP_PROXY"))
     (setenv var nil))
   (setq url-proxy-services nil)
   (message "Proxy disabled."))
