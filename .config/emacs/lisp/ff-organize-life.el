@@ -91,6 +91,27 @@ DIR: directory path"
   (add-to-list 'org-modules 'org-habit)
   (customize-set-variable 'org-habit-graph-column 60)
 
+  ;; Rewrite org timestamps to human-readable dates during export
+  (defun ff/rewrite-org-dates (_backend)
+    "Replace org date stamps <YYYY-MM-DD Day> with locale-appropriate format.
+German (de): DD.MM.YYYY, English/American (en): MM/DD/YYYY."
+    (let ((lang (or (save-excursion
+                      (goto-char (point-min))
+                      (when (re-search-forward "^#\\+LANGUAGE:[ \t]+\\(\\S-+\\)" nil t)
+                        (match-string 1)))
+                    "en")))
+      (goto-char (point-min))
+      (while (re-search-forward "<\\([0-9]\\{4\\}\\)-\\([0-9]\\{2\\}\\)-\\([0-9]\\{2\\}\\) [A-Za-z]\\{2,3\\}>" nil t)
+        (let ((year (match-string 1))
+              (month (match-string 2))
+              (day (match-string 3)))
+          (replace-match
+           (cond
+            ((string= lang "de") (format "%s.%s.%s" day month year))
+            (t (format "%s/%s/%s" month day year))))))))
+
+  (add-hook 'org-export-before-parsing-functions #'ff/rewrite-org-dates)
+
   ;; org-babel
   (org-babel-do-load-languages
    'org-babel-load-languages
