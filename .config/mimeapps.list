@@ -19,3 +19,5 @@ text/xml=emacsclient.desktop
 application/x-perl=emacsclient.desktop
 application/javascript=emacsclient.desktop
 application/json=emacsclient.desktop
+
+application/pdf=org.gnome.Evince.desktop
