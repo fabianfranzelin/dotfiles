@@ -197,6 +197,7 @@ https://github.com/radian-software/straight.el/issues/240"
   :hook
   (LaTeX-mode . TeX-fold-mode)
   (LaTeX-mode . outline-minor-mode)
+  (LaTeX-mode . TeX-source-correlate-mode)
   :config
   ;; Let auctex open pdf files with pdf-tools
   (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
@@ -267,7 +268,7 @@ https://github.com/radian-software/straight.el/issues/240"
 ;; add make, scons and latexmk commands as tex build commands
 (add-hook 'LaTeX-mode-hook
           (lambda ()
-            ;; define key for foward pdf search
+            ;; define key for forward pdf search
             (define-key LaTeX-mode-map (kbd "C-c C-s") 'pdf-sync-forward-search)
             ;; Run C-Mouse 1 for inverse search in pdf buffer (pdf-view-mode)
 
