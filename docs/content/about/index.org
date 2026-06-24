@@ -7,19 +7,20 @@
 * Professional Summary
 
 I am a software architect based in Tübingen, Germany, with a
-background in computer science (PhD, Summa Cum Laude) and over six
-years of experience building cloud-native test and validation
-platforms for autonomous driving at Robert Bosch GmbH. I lead
-cross-functional agile teams to deliver scalable data pipelines,
-resimulation environments, and statistical analysis tooling for
+background in computer science (PhD, Summa Cum Laude) and over seven
+years of experience building embedded resimulation environments that
+run at scale in cloud-native verification and validation (V&V)
+platforms for automated driving (AD) at Robert Bosch GmbH. I lead
+cross-functional agile teams on an organizational and technical level
+to deliver high quality and AD-certified (ISO-26262) tools for
 safety-critical automotive software.
 
 My approach emphasizes:
 
+- *Reproducibility* — deterministic executions, containerized
+  environments, infrastructure as code
 - *Scalable architecture* — designing systems that grow from prototype
   to production across heterogeneous environments
-- *Reproducibility* — deterministic builds, containerized environments,
-  infrastructure as code
 - *Tooling mastery* — deep customization of development environments for
   maximum productivity
 - *Continuous integration* — automated testing and deployment pipelines
@@ -30,11 +31,11 @@ My approach emphasizes:
 * What I Bring to a Team
 
 - Production experience architecting large-scale C++ and Python
-  systems in the cloud
+  systems
 - Proven track record coordinating multiple agile teams as a technical
   lead
 - Fluency in Linux systems engineering and DevOps practices
-  (Kubernetes, Docker, Airflow)
+  (Github, Kubernetes, Docker, Airflow)
 - Ability to bridge the gap between research/prototyping and
   production deployment
 - Strong emphasis on developer experience and team productivity

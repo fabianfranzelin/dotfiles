@@ -4,20 +4,6 @@
 #+LANGUAGE: en
 #+OPTIONS: auto-id:t H:4 broken_links:mark email:t ^:{} num:nil
 
-* Open Source
-
-** dotfiles
-
-A comprehensive, CI-tested system configuration repository managing GNU Emacs,
-ZSH, Qtile, and supporting infrastructure via GNU Stow.
-
-- *Technologies:* Emacs Lisp, Shell, Python, GitHub Actions
-- *Highlights:*
-  - Automated deployment across multiple machines
-  - Full documentation site with search (org-publish + Lunr.js)
-  - CI pipeline validating configuration integrity
-- *Link:* [[https://github.com/fabianfranzelin/dotfiles][github.com/fabianfranzelin/dotfiles]]
-
 * Professional Projects
 
 ** EDMS — ETAS Data Management System
@@ -25,9 +11,9 @@ ZSH, Qtile, and supporting infrastructure via GNU Stow.
 - *Context:* Cloud-native platform for recording, managing, and
   analyzing sensor and middleware data for autonomous driving
   validation
-- *Role:* Software architect coordinating five agile teams; central
-  contact for requirements and prototyping across multiple customer
-  projects
+- *Role:* Software architect coordinating all tooling development;
+  central contact for requirements and prototyping across multiple
+  customer projects
 - *Technologies:* Python, C++, Docker, Adaptive AUTOSAR
 - *Outcome:* Unified data pipeline enabling efficient resimulation and
   statistical analysis of autonomous driving functions
@@ -37,10 +23,9 @@ ZSH, Qtile, and supporting infrastructure via GNU Stow.
 
 - *Context:* Digital test platform requiring elastic compute and storage
   to validate autonomous driving functions at scale
-- *Role:* Software architect leading four agile teams; designed
-  heterogeneous execution environments from embedded to consumer
-  hardware
-- *Technologies:* Python, Kubernetes, Docker, Airflow, Spark, Hadoop
+- *Role:* Software architect for test automation; designed heterogeneous
+  execution environments from embedded to consumer hardware
+- *Technologies:* Python, Kubernetes, Docker, Airflow
 - *Outcome:* Scalable open-loop test infrastructure serving three
   concurrent customer projects
 
@@ -50,7 +35,7 @@ ZSH, Qtile, and supporting infrastructure via GNU Stow.
   autonomous driving functions in a robotaxi program
 - *Role:* Software developer building cloud-based open-loop test
   pipelines compliant with ISO 26262 functional safety standards
-- *Technologies:* Python, Airflow, Kubernetes, Docker, Spark, Hadoop
+- *Technologies:* Python, Airflow, Kubernetes, Docker
 - *Outcome:* Production test infrastructure enabling continuous
   validation of safety-critical driving functions
 
@@ -64,6 +49,20 @@ ZSH, Qtile, and supporting infrastructure via GNU Stow.
 - *Technologies:* Python, C++, HPC clusters
 - *Outcome:* Novel methodology published as doctoral thesis (Summa Cum
   Laude), contributing to the SimTech Cluster of Excellence
+
+* Open Source
+
+** dotfiles
+
+A comprehensive, CI-tested system configuration repository managing GNU Emacs,
+ZSH, Qtile, and supporting infrastructure via GNU Stow.
+
+- *Technologies:* Emacs Lisp, Shell, Python, GitHub Actions
+- *Highlights:*
+  - Automated deployment across multiple machines
+  - Full documentation site with search (org-publish + Lunr.js)
+  - CI pipeline validating configuration integrity
+- *Link:* [[https://github.com/fabianfranzelin/dotfiles][github.com/fabianfranzelin/dotfiles]]
 
 * Side Projects & Experiments
 

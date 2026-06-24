@@ -8,11 +8,12 @@
 
 ** Primary
 
-| Language    | Experience Level | Context                                      |
-|-------------+------------------+----------------------------------------------|
-| Python      | Expert           | Production systems, scientific computing, CI |
-| C/C++       | Expert           | Embedded systems, performance-critical code  |
-| CMake       | Expert           | Build system configuration                   |
+| Language | Experience Level | Context                                      |
+|----------+------------------+----------------------------------------------|
+| Python   | Expert           | Production systems, scientific computing, CI |
+| C/C++    | Expert           | Embedded systems, performance-critical code  |
+| CMake    | Expert           | Build system configuration                   |
+| RST      | Advanced         | Documenting and note taking                  |
 
 ** Secondary
 
@@ -23,6 +24,7 @@
 | Java                  | Intermediate     | Enterprise applications           |
 | R                     | Intermediate     | Statistical analysis              |
 | Emacs Lisp            | Advanced         | Editor tooling, build automation  |
+| org-mode              | Advanced         | Documenting and note taking       |
 | SQL                   | Intermediate     | Database queries and management   |
 | LaTeX                 | Advanced         | Scientific writing, documentation |
 | Bazel/Starlark        | Basic            | Hermetic build definitions        |
@@ -34,7 +36,6 @@
 | Bazel          | Hermetic builds for large monorepos          |
 | CMake          | C/C++ project builds                         |
 | GitHub Actions | CI pipelines, automated testing              |
-| Jenkins        | Enterprise CI/CD pipelines (Groovy DSL)      |
 | Docker         | Containerized dev environments & deployments |
 | GNU Stow       | Dotfile management and deployment            |
 
@@ -48,13 +49,12 @@
 | Terminal        | Ghostty                                   |
 | Version Control | Git, Magit, GitHub (PRs, Actions)         |
 | Containers      | Docker, Docker Compose                    |
-| Package Mgmt    | UV (Python), Conan (C++), npm (JS)        |
+| Package Mgmt    | UV (Python), Conan, Bazel (C++), npm (JS) |
 
 * Infrastructure & Platforms
 
 - Kubernetes orchestration and cluster management
 - Apache Airflow workflow orchestration
-- Apache Spark and Hadoop (big data processing)
 - Linux system administration (Debian/Ubuntu)
 - Docker containerization and orchestration
 - Home automation (Home Assistant, Zigbee, MQTT)
@@ -66,7 +66,6 @@
 |----------------------+-----------------------------------------|
 | Adaptive AUTOSAR     | Automotive middleware                   |
 | Enterprise Architect | UML modeling and architecture design    |
-| IBM DOORS            | Requirements management                 |
 | Sphinx               | API and project documentation           |
 | Atlassian Suite      | Jira, Bitbucket — project management    |
 
@@ -77,7 +76,7 @@
 | German   | Native  | Native    | Native   | Native  | Native       |
 | English  | C1      | C1        | C1       | C1      | C1           |
 | Italian  | C1      | C1        | C1       | B2      | B2           |
-| Spanish  | C1      | C1        | C1       | B2      | B2           |
+| Spanish  | B2      | B2        | B2       | B2      | B2           |
 
 * Robotics & Automation
 
