@@ -750,6 +750,25 @@ FILE-PAGE: page at which the annotation refers to"
   (:map global-map
         ("C-x n t" . org-timeblock)))
 
+;; -------------------------------------------------------------------
+;; Writing letters
+;; -------------------------------------------------------------------
+
+(require 'ox-koma-letter)
+(add-to-list 'org-latex-classes
+             `("ff-letter"
+               ,(concat
+                 (f-read-text (expand-file-name "data/koma-letters/preambel.tex" emacs-config-home))
+                 "
+\[DEFAULT-PACKAGES]
+\[PACKAGES]
+\[EXTRA]")))
+
+(add-to-list 'org-latex-packages-alist '("ngerman" "babel" t) t)
+
+(setq org-koma-letter-default-class "ff-letter"
+      org-koma-letter-class-option-file "DIN")
+
 (provide 'ff-organize-life)
 
 ;;; ff-organize-life.el ends here

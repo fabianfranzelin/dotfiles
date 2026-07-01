@@ -1,0 +1,64 @@
+\documentclass[
+fontsize=12pt,
+paper=a4,
+DIV=14,
+BCOR=5mm,
+pagenumber=footcenter,
+parskip=half*,
+german
+]{scrlttr2}
+
+\KOMAoptions{
+ fromalign=left,
+ fromrule=afteraddress,
+ fromphone=false,
+ fromemail=true,
+ fromurl=false,
+ foldmarks=true,
+ backaddress=true,
+ addrfield=true,
+ enlargefirstpage=true
+}
+
+%% Schriften ========================================
+%% - Charter, Bera Sans
+\usepackage{charter}\linespread{1.05}
+\renewcommand{\sfdefault}{fvs}
+
+%------------------------------------------
+
+%% Seitenlayout =====================================
+%
+\addtokomafont{fromname}{\sffamily}
+\addtokomafont{fromaddress}{\sffamily}
+
+\newkomavar*[Auftragsnummer]{ordernumber}
+\newkomavar*[Kontonummer]{accountnumber}
+\newkomavar*[Rufnummer]{phonenumber}
+\newkomavar*[Vertragsnummer]{contractnumber}
+\newkomavar*[Mitgliedsnummer]{membernumber}
+
+\usepackage{typearea}
+
+% -- Kopfzeilen ---
+% \usepackage[automark, nouppercase]{scrpage2}
+% \pagestyle{scrplain}
+% \pagestyle{headings}
+% \pagestyle{empty}
+%
+% ----------------------------------------------------
+
+
+%% Seitennummerierung: nur Zahl, kein "page" Präfix
+\AtBeginDocument{\renewcommand*{\pagemark}{\usekomafont{pagenumber}{\thepage}}}
+
+%% sonstige Pakete ===================================
+
+\usepackage{graphicx}
+\usepackage{caption}
+\captionsetup{hypcap=false}
+
+%% Redirect \date to \setkomavar{date} to avoid scrlttr2 warning
+\renewcommand{\date}[1]{\setkomavar{date}{#1}}
+
+% ----------------------------------------------------
