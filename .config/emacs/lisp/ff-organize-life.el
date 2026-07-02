@@ -365,7 +365,6 @@ Stops any previously running instance first."
   "Configure org-roam-mode."
   (set (make-local-variable 'completion-at-point-functions)
        '(citar-capf
-         pcomplete-completions-at-point
          cape-dabbrev
          cape-dict)))
 
