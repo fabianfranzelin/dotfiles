@@ -24,11 +24,17 @@
         ("org:static"
          :base-directory ,ff/base-dir
          :base-extension "js\\|json\\|html\\|css\\|txt\\|jpg\\|gif\\|png\\|pdf\\|svg\\|epub"
-         :exclude "node_modules/"
+         :exclude "node_modules/\\|^data/"
          :recursive t
          :publishing-directory ,ff/public-dir
          :publishing-function org-publish-attachment)
-        ("org" :components ("org:main" "org:static"))))
+        ("org:attachments"
+         :base-directory ,(expand-file-name "data" ff/base-dir)
+         :base-extension "pdf\\|jpg\\|png\\|gif\\|svg\\|epub\\|docx\\|xlsx\\|pptx\\|zip"
+         :recursive t
+         :publishing-directory ,(expand-file-name "data" ff/public-dir)
+         :publishing-function org-publish-attachment)
+        ("org" :components ("org:main" "org:static" "org:attachments"))))
 
 (setq org-export-with-broken-links 'mark)
 
