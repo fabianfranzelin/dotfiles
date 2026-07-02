@@ -280,6 +280,16 @@ https://github.com/radian-software/straight.el/issues/240"
                          '("latexmk" "latexmk -pdf" TeX-run-TeX nil t :help "Runs latexmk") t)))
 
 ;; -------------------------------------------------------------------
+;; Org-ref: Citations, cross-references, glossaries and acronyms
+;; -------------------------------------------------------------------
+(use-package org-ref
+  :after org
+  :config
+  (require 'org-ref-glossary)
+  (add-hook 'org-export-before-parsing-hook 'org-ref-glossary-before-parsing)
+  (add-hook 'org-export-before-parsing-hook 'org-ref-acronyms-before-parsing))
+
+;; -------------------------------------------------------------------
 ;; PDF-tools: Mainly used to display PDFs and to inverse and forward
 ;; jumps for Latex documents
 ;; -------------------------------------------------------------------

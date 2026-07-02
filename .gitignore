@@ -154,6 +154,14 @@ build/
 /examples/org-project/content/*.toc
 /examples/org-project/content/*.synctex.gz
 /examples/org-project/README.tex
+/examples/org-project/README.acn
+/examples/org-project/README.acr
+/examples/org-project/README.alg
+/examples/org-project/README.bbl
+/examples/org-project/README.glg
+/examples/org-project/README.glo
+/examples/org-project/README.gls
+/examples/org-project/README.ist
 
 ### Python ###
 __pycache__

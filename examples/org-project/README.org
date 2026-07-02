@@ -3,10 +3,45 @@
 #+EMAIL: fabian.franzelin@gmail.com
 #+CREATOR: Fabian Franzelin
 #+LANGUAGE: en
-#+OPTIONS: auto-id:t H:4 broken_links:mark email:t ^:{}
+#+OPTIONS: auto-id:t H:4 broken_links:mark email:t ^:{} toc:t ':t prop:nil d:nil
+#+LANGUAGE: en
+#+STARTUP: align fold nodlcheck hidestars oddeven lognotestate
+#+LATEX_CLASS: article
+#+LATEX_CLASS_OPTIONS: [11pt]
+#+LATEX_HEADER: \usepackage[english]{babel}
+#+LATEX_HEADER: \usepackage[acronym]{glossaries}
+#+LATEX_HEADER: \makeglossaries
+#+BIBLIOGRAPHY: ./bib/references.bib
+#+CITE_EXPORT: biblatex numeric/numeric backend=biber,minnames=3,minalphanames=3,backref=true,doi=false,isbn=false,url=false
+
+#+latex: \newpage
+
+* Main
 
 Here comes an example on how to write academic papers with org-mode.
 
 Find the rendered PDF [[file:README.pdf][here]].
 
 This is a helpful guide called [[https://github.com/vikasrawal/orgpaper/blob/master/orgpapers.org][orgpapers]]. And [[https://github.com/fniessen/refcard-org-mode][here]] is another one.
+
+* Appendix
+
+#+name: glossary
+| key       | name      | description                                                                                                                                                                        |
+|-----------+-----------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| recompute | Recompute | A technique that trades computation for memory by recalculating intermediate results on-the-fly instead of storing them, reducing memory footprint at the cost of extra CPU cycles |
+
+#+name: acronyms
+| key  | abbreviation | full form                        |
+|------+--------------+----------------------------------|
+| mc   | MC           | Monte Carlo                      |
+| pdf  | PDF          | Probability Density Function     |
+| cdf  | CDF          | Cumulative Distribution Function |
+| rng  | RNG          | Random Number Generator          |
+| mcmc | MCMC         | Markov Chain Monte Carlo         |
+| ssa  | SSA          | Stochastic Simulation Algorithm  |
+| sde  | SDE          | Stochastic Differential Equation |
+
+#+latex: \glsaddall
+#+latex: \printglossary[type=\acronymtype]
+#+latex: \printglossary
