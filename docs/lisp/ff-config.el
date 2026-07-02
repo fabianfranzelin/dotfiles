@@ -9,7 +9,7 @@
 (defvar ff/user-mail-address "fabian.franzelin@gmail.com"
   "Author email used in exports.")
 
-(defvar ff/base-dir "./content"
+(defvar ff/base-dir (expand-file-name "./content")
   "Source directory for org content.")
 
 (defvar ff/public-dir "./public"
