@@ -384,7 +384,7 @@ Stops any previously running instance first."
            (propertize "${tags:20}" 'face 'org-tag)
            "${category:15}"
            "${backlinkscount:6}"))
-  (org-roam-database-connector 'sqlite-builtin)
+   (org-roam-database-connector 'sqlite-builtin)
   (org-roam-db-gc-threshold most-positive-fixnum)
   (org-roam-capture-templates
    '(("d" "default" plain
@@ -434,6 +434,11 @@ Stops any previously running instance first."
                              ("%(format-time-string \"%B, %Y\")"))
       :unarrowed t)))
   :config
+  ;; Filter out attachment sections (e.g. "Drawings") from org-roam DB
+  (setq org-roam-db-node-include-function
+        (lambda ()
+          (not (member "ATTACH" (org-get-tags)))))
+
   ;; better support for roam files, when using org-export
   (require 'org-roam-export)
   ;; make sure that dailies are available
