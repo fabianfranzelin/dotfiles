@@ -1,7 +1,15 @@
 ;;; Directory Local Variables
 ;;; For more information see (info "(emacs) Directory Variables")
 
-((nil . ((compile-command . "cd ./examples/cc-project && bazel build //:main && bazel run //:refresh_compile_commands")
+((nil . ((eval . (setq-local dape-command
+                              `(gdb command "gdb"
+                                    command-args ("-i" "dap")
+                                    :program ,(expand-file-name "bazel-bin/main"
+                                                (locate-dominating-file default-directory "MODULE.bazel"))
+                                    :cwd ,(locate-dominating-file default-directory "MODULE.bazel")
+                                    compile ,(concat "cd " (locate-dominating-file default-directory "MODULE.bazel")
+                                                     " && bazel build --compilation_mode=dbg //:main"))))
+         (compile-command . "cd ./examples/cc-project && bazel build //:main && bazel run //:refresh_compile_commands")
          (eval . (defun run-command-recipe-ff/c++-example ()
                    (append
                     (when-let* ((project-dir (locate-dominating-file default-directory "MODULE.bazel")))
