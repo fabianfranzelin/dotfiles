@@ -42,7 +42,7 @@
     "Radiole. These links might break now and then. For latest see"
     (interactive)
     (emms-play-streamlist
-     "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIOLE_ASO_OSUNA.mp3"))
+     "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIOLE_ASO_OSUNAAAC.aac"))
 
   (defvar-keymap ff/emms-key-map
     :doc "Bindings for managing emms, configured to be repeatable."
