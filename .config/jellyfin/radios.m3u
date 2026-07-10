@@ -1,4 +1,5 @@
 #EXTM3U
 
 #EXTINF:-1 tvg-id="Radiole" tvg-name="Radiole" tvg-logo="" group-title="Radio" radio="true",Radiole
-https://playerservices.streamtheworld.com/api/livestream-redirect/RADIOLE_ASO_OSUNA.mp3
+#EXTVLCOPT:network-caching=1000
+https://22183.live.streamtheworld.com:443/RADIOLE_ASO_OSUNA.mp3
