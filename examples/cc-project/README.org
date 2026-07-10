@@ -15,3 +15,27 @@ Browse the full source on GitHub:
 - =MODULE.bazel= - Bazel module definition
 - =BUILD= - Bazel build file
 - =compile_commands.json= - Compilation database for clangd
+
+** Debugging
+
+*** Emacs (dape)
+
+A =dape-command= is configured in =.dir-locals.el= using GDB's native
+DAP mode. Run =M-x dape RET RET= to build with debug symbols and
+launch the debugger.
+
+*** VSCode
+
+The =.vscode/launch.json= and =.vscode/tasks.json= dynamically query
+Bazel for all =cc_binary= targets and present them in a picker before
+building and debugging.
+
+*Required extension:*
+[[https://marketplace.visualstudio.com/items?itemName=rioj7.command-variable][Command Variable]] (=rioj7.command-variable=) — provides the
+=shellCommand.execute= input type used to run =bazel query= at
+launch time.
+
+Install it with:
+#+begin_src sh
+code --install-extension rioj7.command-variable
+#+end_src

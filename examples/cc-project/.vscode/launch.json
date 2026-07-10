@@ -2,16 +2,28 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Build & Debug //:main",
+      "name": "Bazel: Build & Debug",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/bazel-bin/main",
+      "program": "${workspaceFolder}/bazel-bin/${input:bazelTarget}",
       "args": [],
       "cwd": "${workspaceFolder}",
       "stopAtEntry": false,
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "preLaunchTask": "bazel:build-dbg"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "bazelTarget",
+      "type": "command",
+      "command": "shellCommand.execute",
+      "args": {
+        "command": "bazel query 'kind(\"cc_binary\", //...)' 2>/dev/null | sed 's|//:\\?||'",
+        "description": "Select a Bazel target to debug",
+        "useFirstResult": false
+      }
     }
   ]
 }

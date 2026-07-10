@@ -4,9 +4,21 @@
     {
       "label": "bazel:build-dbg",
       "type": "shell",
-      "command": "bazel build --compilation_mode=dbg //:main",
+      "command": "bazel build --compilation_mode=dbg //:${input:bazelTarget}",
       "group": "build",
       "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "bazelTarget",
+      "type": "command",
+      "command": "shellCommand.execute",
+      "args": {
+        "command": "bazel query 'kind(\"cc_binary\", //...)' 2>/dev/null | sed 's|//:\\?||'",
+        "description": "Select a Bazel target to build",
+        "useFirstResult": false
+      }
     }
   ]
 }
