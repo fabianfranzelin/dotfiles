@@ -93,7 +93,6 @@ $RECYCLE.BIN/
 # custom
 
 build/
-.vscode/
 *.db
 *.idx
 *.html

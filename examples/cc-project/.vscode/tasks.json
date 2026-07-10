@@ -1,0 +1,12 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "bazel:build-dbg",
+      "type": "shell",
+      "command": "bazel build --compilation_mode=dbg //:main",
+      "group": "build",
+      "problemMatcher": []
+    }
+  ]
+}
