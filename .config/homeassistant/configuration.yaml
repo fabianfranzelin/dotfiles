@@ -24,3 +24,15 @@ http:
     - ::1             # in case the reverse proxy being on the same IPv6 as the HA
     - 172.17.0.4      # nginx ip address
     - 172.0.0.0/8   # in case the reverse proxy being under the same docker environment as the HA, and in case the docker IP would change after reboot/restart
+
+# Manual modbus integration for Trovis 5578
+# Check https://github.com/Tom-Bom-badil/trovis-modbus-hass once it is working
+modbus:
+  - name: Heizung
+    type: tcp
+    host: 192.168.178.126
+    port: 502
+
+    delay: 0
+    message_wait_milliseconds: 30
+    timeout: 5
