@@ -4,7 +4,7 @@
     {
       "label": "bazel:build-dbg",
       "type": "shell",
-      "command": "bazel build --compilation_mode=dbg $(bazel query 'kind(\"cc_binary\", //...)' 2>/dev/null)",
+      "command": "bazel build --compilation_mode=dbg $(bazel query 'kind(\"cc_binary|cc_test\", //...)' 2>/dev/null)",
       "group": "build",
       "problemMatcher": []
     }

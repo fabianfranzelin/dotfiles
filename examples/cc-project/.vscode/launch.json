@@ -20,7 +20,7 @@
       "type": "command",
       "command": "shellCommand.execute",
       "args": {
-        "command": "bazel query 'kind(\"cc_binary\", //...)' 2>/dev/null | sed 's|//:\\?||'",
+        "command": "bazel query 'kind(\"cc_binary|cc_test\", //...)' 2>/dev/null | sed 's|//:\\?||'",
         "description": "Select a Bazel target to debug",
         "useFirstResult": false
       }
