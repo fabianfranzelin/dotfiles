@@ -1,14 +1,28 @@
 ;;; Directory Local Variables
 ;;; For more information see (info "(emacs) Directory Variables")
 
-((nil . ((eval . (setq-local dape-command
-                              `(gdb command "gdb"
-                                    command-args ("-i" "dap")
-                                    :program ,(expand-file-name "bazel-bin/main"
-                                                (locate-dominating-file default-directory "MODULE.bazel"))
-                                    :cwd ,(locate-dominating-file default-directory "MODULE.bazel")
-                                    compile ,(concat "cd " (locate-dominating-file default-directory "MODULE.bazel")
-                                                     " && bazel build --compilation_mode=dbg //:main"))))
+((nil . ((eval . (defun ff/bazel-debug ()
+                   "Select a debuggable Bazel target and debug it with dape."
+                   (interactive)
+                   (let* ((project-dir (expand-file-name (locate-dominating-file default-directory "MODULE.bazel")))
+                          (query "kind('cc_binary|cc_test', //...)")
+                          (output (string-trim
+                                   (shell-command-to-string
+                                    (format "cd %s && bazel query \"%s\" 2>/dev/null"
+                                            (shell-quote-argument project-dir) query))))
+                          (targets (split-string output "\n" t))
+                          (target (if (null targets)
+                                      (error "No debuggable targets found")
+                                    (completing-read "Bazel target: " targets nil t)))
+                          (short-name (replace-regexp-in-string "//:" "" target)))
+                     (setq dape-command
+                           `(gdb command "gdb"
+                                 command-args ("-i" "dap")
+                                 :program ,(expand-file-name (concat "bazel-bin/" short-name) project-dir)
+                                 :cwd ,project-dir
+                                 compile ,(concat "cd " (shell-quote-argument project-dir)
+                                                  " && bazel build --compilation_mode=dbg " target)))
+                     (call-interactively #'dape))))
          (compile-command . "cd ./examples/cc-project && bazel build //:main && bazel run //:refresh_compile_commands")
          (eval . (defun run-command-recipe-ff/c++-example ()
                    (append
@@ -17,9 +31,15 @@
                        (list :command-name "bazel:build //:main"
                              :command-line "bazel build //:main && bazel run //:refresh_compile_commands"
                              :working-dir project-dir)
-                       (list :command-name "bazel:run //:main"
-                             :command-line "bazel run //:main"
-                             :working-dir project-dir)))
+                        (list :command-name "bazel:run //:main"
+                              :command-line "bazel run //:main"
+                              :working-dir project-dir)
+                        (list :command-name "bazel:test //..."
+                              :command-line "bazel test //..."
+                              :working-dir project-dir)
+                        (list :command-name "bazel:test //:network_utils_test"
+                              :command-line "bazel test //:network_utils_test"
+                              :working-dir project-dir)))
                     (when-let* ((project-dir (locate-dominating-file default-directory ".clangd")))
                       (list (list :command-name "cc:cmake main"
                                   :command-line "mkdir -p build && cd build && cmake .."
