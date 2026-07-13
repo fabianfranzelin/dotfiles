@@ -12,6 +12,18 @@
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "preLaunchTask": "bazel:build-dbg"
+    },
+    {
+      "name": "Bazel: Debug Current File",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/bazel-bin/${input:bazelTargetForFile}",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "stopAtEntry": false,
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb",
+      "preLaunchTask": "bazel:build-dbg"
     }
   ],
   "inputs": [
@@ -22,6 +34,16 @@
       "args": {
         "command": "bazel query 'kind(\"cc_binary|cc_test\", //...)' 2>/dev/null | sed 's|//:\\?||'",
         "description": "Select a Bazel target to debug",
+        "useFirstResult": false
+      }
+    },
+    {
+      "id": "bazelTargetForFile",
+      "type": "command",
+      "command": "shellCommand.execute",
+      "args": {
+        "command": "bazel query 'kind(\"cc_binary|cc_test\", rdeps(//..., \"'$(realpath --relative-to=${workspaceFolder} ${file})'\"))' 2>/dev/null | sed 's|//:\\?||'",
+        "description": "Select a Bazel target to debug (depending on current file)",
         "useFirstResult": false
       }
     }
