@@ -468,6 +468,11 @@ Example usage: (message (my/tramp-call-process-direct \"your-remote-host.com\" \
   (:map dired-mode-map
         (")" . dired-git-info-mode)))
 
+(use-package dired-narrow
+  :after dired
+  :bind (:map dired-mode-map
+              ("/" . dired-narrow)))
+
 (use-package trashed
   :commands trashed
   :custom
@@ -475,6 +480,12 @@ Example usage: (message (my/tramp-call-process-direct \"your-remote-host.com\" \
   (trashed-use-header-line t)
   (trashed-sort-key '("Date deleted" . t))
   (trashed-date-format "%Y-%m-%d %H:%M:%S"))
+
+(defun ff/empty-trash ()
+  "Empty the system trash asynchronously."
+  (interactive)
+  (when (yes-or-no-p "Permanently empty trash? ")
+    (async-shell-command "gio trash --empty")))
 
 (use-package dwim-shell-command
   :bind
@@ -487,6 +498,7 @@ Example usage: (message (my/tramp-call-process-direct \"your-remote-host.com\" \
    ("C-d r" . dwim-shell-commands-reorient-image)
    ("C-d v" . dwim-shell-commands-video-to-mp3)
    ("C-d m" . dwim-shell-commands-audio-to-mp3)
+   ("D" . ff/dwim-shell-commands-trash)
    ("C-d z" . dwim-shell-commands-zip)
    ("C-d o" . ff/dwim-shell-commands-rebot)
    :map global-map
@@ -499,6 +511,15 @@ Example usage: (message (my/tramp-call-process-direct \"your-remote-host.com\" \
    ("C-x D e" . ff/proxy-enable))
   :config
   (require 'dwim-shell-commands)
+  (defun ff/dwim-shell-commands-trash ()
+    "Trash marked files asynchronously."
+    (interactive)
+    (let ((files (dired-get-marked-files)))
+      (when (yes-or-no-p (format "Trash %d file(s)? " (length files)))
+        (dwim-shell-command-on-marked-files
+         "Trash" "gio trash '<<f>>'"
+         :utils "gio"
+         :silent-success t))))
   (defun ff/dwim-shell-commands-add-ssh-keys ()
     "Restart ssh agent and add ssh keys from password store."
     (interactive)
