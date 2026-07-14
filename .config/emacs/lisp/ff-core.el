@@ -407,7 +407,11 @@ Example usage: (message (my/tramp-call-process-direct \"your-remote-host.com\" \
 ;; mainly required for dired-async
 (use-package async
   :hook
-  (after-init . dired-async-mode))
+  (after-init . dired-async-mode)
+  :custom
+  ;; Skip spawning a child Emacs for small files and same-device renames;
+  ;; the process startup overhead far exceeds the actual operation time.
+  (dired-async-skip-fast t))
 
 ;; rename buffer content: C-x C-q, (wdired) C-c C-c to apply and C-c
 ;; ESC to cancel copy path of file: 0 w in dired buffer
