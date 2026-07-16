@@ -124,6 +124,20 @@ REPLACE-STR: string that replaces all regex matches"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                    Bazel                                   ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun ff/bazel--runfiles-lib-path (project-dir bin-path)
+  "Compute LD_LIBRARY_PATH from the runfiles tree of a Bazel binary.
+PROJECT-DIR is the workspace root, BIN-PATH is the relative path
+under bazel-bin/ (e.g. \"drain/aosbag/tests/unit_tests_aosbag\").
+Returns a colon-separated string of directories containing .so files."
+  (let* ((runfiles-dir (expand-file-name
+                        (concat "bazel-bin/" bin-path ".runfiles/_main")
+                        project-dir))
+         (output (string-trim
+                  (shell-command-to-string
+                   (format "find %s -name '*.so' -exec dirname {} \\; 2>/dev/null | sort -u | tr '\\n' ':'"
+                           (shell-quote-argument runfiles-dir))))))
+    (string-trim-right output ":")))
+
 (defun ff/bazel-debug ()
   "Select a debuggable Bazel target and debug it with dape."
   (interactive)
@@ -139,25 +153,66 @@ REPLACE-STR: string that replaces all regex matches"
                    (completing-read "Bazel target: " targets nil t)))
          (bin-path (replace-regexp-in-string
                     ":" "/"
-                    (replace-regexp-in-string "^//" "" target))))
+                    (replace-regexp-in-string "^//" "" target)))
+         (lib-path (ff/bazel--runfiles-lib-path project-dir bin-path))
+         (env-args (when (not (string-empty-p lib-path))
+                     (list "-iex" (format "set environment LD_LIBRARY_PATH=%s" lib-path)))))
     (setq dape-command
           `(gdb command "gdb"
-                command-args ("-i" "dap")
+                command-args ("-i" "dap"
+                              "-iex" ,(concat "set substitute-path /proc/self/cwd " project-dir)
+                              ,@env-args)
                 :program ,(expand-file-name (concat "bazel-bin/" bin-path) project-dir)
                 :cwd ,project-dir
                 compile ,(concat "cd " (shell-quote-argument project-dir)
                                  " && bazel build --compilation_mode=dbg " target)))
     (call-interactively #'dape)))
 
+(defun ff/bazel--file-label (project-dir relative-file)
+  "Compute the Bazel label for RELATIVE-FILE within PROJECT-DIR.
+Finds the nearest BUILD/BUILD.bazel to determine the package, then
+returns a label like //pkg:path/to/file."
+  (let* ((abs-file (expand-file-name relative-file project-dir))
+         (file-dir (file-name-directory abs-file))
+         (pkg-dir (or (locate-dominating-file file-dir
+                        (lambda (dir)
+                          (or (file-exists-p (expand-file-name "BUILD" dir))
+                              (file-exists-p (expand-file-name "BUILD.bazel" dir)))))
+                      project-dir))
+         (pkg (file-relative-name pkg-dir project-dir))
+         (pkg-label (if (or (string= pkg "./") (string= pkg "."))
+                        ""
+                      (directory-file-name pkg)))
+         (file-in-pkg (file-relative-name abs-file pkg-dir)))
+    (format "//%s:%s" pkg-label file-in-pkg)))
+
+(defun ff/bazel--rdeps-universe (project-dir relative-file)
+  "Return a scoped universe pattern for rdeps queries.
+Uses the Bazel package containing RELATIVE-FILE to avoid loading
+unrelated broken packages.  Falls back to //... for root packages."
+  (let* ((abs-file (expand-file-name relative-file project-dir))
+         (file-dir (file-name-directory abs-file))
+         (pkg-dir (or (locate-dominating-file file-dir
+                        (lambda (dir)
+                          (or (file-exists-p (expand-file-name "BUILD" dir))
+                              (file-exists-p (expand-file-name "BUILD.bazel" dir)))))
+                      project-dir))
+         (pkg (file-relative-name pkg-dir project-dir))
+         (pkg-label (if (or (string= pkg "./") (string= pkg "."))
+                        ""
+                      (directory-file-name pkg))))
+    (if (string-empty-p pkg-label)
+        "//..."
+      (format "//%s/..." pkg-label))))
+
 (defun ff/bazel-debug-current-file ()
   "Debug a Bazel target that depends on the current file."
   (interactive)
   (let* ((project-dir (expand-file-name (locate-dominating-file default-directory "MODULE.bazel")))
          (relative-file (file-relative-name (buffer-file-name) project-dir))
-         (dir (file-name-directory relative-file))
-         (pkg (if dir (directory-file-name dir) ""))
-         (fname (file-name-nondirectory relative-file))
-         (query (format "kind('cc_binary|cc_test', attr('srcs', '%s', //%s/...))" fname pkg))
+         (label (ff/bazel--file-label project-dir relative-file))
+         (universe (ff/bazel--rdeps-universe project-dir relative-file))
+         (query (format "kind('cc_binary|cc_test', rdeps(%s, '%s'))" universe label))
          (output (string-trim
                   (shell-command-to-string
                    (format "cd %s && bazel query --keep_going \"%s\" 2>/dev/null"
@@ -170,11 +225,15 @@ REPLACE-STR: string that replaces all regex matches"
                      (car targets))))
          (bin-path (replace-regexp-in-string
                     ":" "/"
-                    (replace-regexp-in-string "^//" "" target))))
+                    (replace-regexp-in-string "^//" "" target)))
+         (lib-path (ff/bazel--runfiles-lib-path project-dir bin-path))
+         (env-args (when (not (string-empty-p lib-path))
+                     (list "-iex" (format "set environment LD_LIBRARY_PATH=%s" lib-path)))))
     (setq dape-command
           `(gdb command "gdb"
                 command-args ("-i" "dap"
-                              "-iex" ,(concat "set substitute-path /proc/self/cwd " project-dir))
+                              "-iex" ,(concat "set substitute-path /proc/self/cwd " project-dir)
+                              ,@env-args)
                 :program ,(expand-file-name (concat "bazel-bin/" bin-path) project-dir)
                 :cwd ,project-dir
                 compile ,(concat "cd " (shell-quote-argument project-dir)
