@@ -1,55 +1,7 @@
 ;;; Directory Local Variables
 ;;; For more information see (info "(emacs) Directory Variables")
 
-((nil . ((eval . (defun ff/bazel-debug ()
-                   "Select a debuggable Bazel target and debug it with dape."
-                   (interactive)
-                   (let* ((project-dir (expand-file-name (locate-dominating-file default-directory "MODULE.bazel")))
-                          (query "kind('cc_binary|cc_test', //...)")
-                          (output (string-trim
-                                   (shell-command-to-string
-                                    (format "cd %s && bazel query \"%s\" 2>/dev/null"
-                                            (shell-quote-argument project-dir) query))))
-                          (targets (split-string output "\n" t))
-                          (target (if (null targets)
-                                      (error "No debuggable targets found")
-                                    (completing-read "Bazel target: " targets nil t)))
-                          (short-name (replace-regexp-in-string "//:" "" target)))
-                     (setq dape-command
-                           `(gdb command "gdb"
-                                 command-args ("-i" "dap")
-                                 :program ,(expand-file-name (concat "bazel-bin/" short-name) project-dir)
-                                 :cwd ,project-dir
-                                 compile ,(concat "cd " (shell-quote-argument project-dir)
-                                                  " && bazel build --compilation_mode=dbg " target)))
-                     (call-interactively #'dape))))
-         (eval . (defun ff/bazel-debug-current-file ()
-                   "Debug a Bazel target that depends on the current file."
-                   (interactive)
-                   (let* ((project-dir (expand-file-name (locate-dominating-file default-directory "MODULE.bazel")))
-                          (relative-file (file-relative-name (buffer-file-name) project-dir))
-                          (query (format "kind('cc_binary|cc_test', rdeps(//..., '%s'))" relative-file))
-                          (output (string-trim
-                                   (shell-command-to-string
-                                    (format "cd %s && bazel query \"%s\" 2>/dev/null"
-                                            (shell-quote-argument project-dir) query))))
-                          (targets (split-string output "\n" t))
-                          (target (if (null targets)
-                                      (error "No debuggable targets depend on %s" relative-file)
-                                    (if (cdr targets)
-                                        (completing-read "Bazel target: " targets nil t)
-                                      (car targets))))
-                          (short-name (replace-regexp-in-string "//:" "" target)))
-                     (setq dape-command
-                           `(gdb command "gdb"
-                                 command-args ("-i" "dap"
-                                               "-iex" ,(concat "set substitute-path /proc/self/cwd " project-dir))
-                                 :program ,(expand-file-name (concat "bazel-bin/" short-name) project-dir)
-                                 :cwd ,project-dir
-                                 compile ,(concat "cd " (shell-quote-argument project-dir)
-                                                  " && bazel build --compilation_mode=dbg " target)))
-                     (call-interactively #'dape))))
-         (compile-command . "cd ./examples/cc-project && bazel build //:main && bazel run //:refresh_compile_commands")
+((nil . ((compile-command . "cd ./examples/cc-project && bazel build //:main && bazel run //:refresh_compile_commands")
          (eval . (defun run-command-recipe-ff/c++-example ()
                    (append
                     (when-let* ((project-dir (locate-dominating-file default-directory "MODULE.bazel")))

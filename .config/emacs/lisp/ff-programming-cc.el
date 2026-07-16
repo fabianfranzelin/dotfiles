@@ -154,7 +154,8 @@ REPLACE-STR: string that replaces all regex matches"
   (interactive)
   (let* ((project-dir (expand-file-name (locate-dominating-file default-directory "MODULE.bazel")))
          (relative-file (file-relative-name (buffer-file-name) project-dir))
-         (pkg (directory-file-name (file-name-directory relative-file)))
+         (dir (file-name-directory relative-file))
+         (pkg (if dir (directory-file-name dir) ""))
          (fname (file-name-nondirectory relative-file))
          (query (format "kind('cc_binary|cc_test', attr('srcs', '%s', //%s/...))" fname pkg))
          (output (string-trim
