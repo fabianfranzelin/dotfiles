@@ -14,11 +14,11 @@ output DP-1-1
 off
 output HDMI-1-0
 off
-output DP-1-2
+output DP-1-3
 off
 output eDP-1
 off
-output DP-1-3
+output DP-1-2
 crtc 4
 mode 3440x1440
 pos 0x0

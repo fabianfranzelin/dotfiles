@@ -121,6 +121,65 @@ REPLACE-STR: string that replaces all regex matches"
   :mode (("\\.cmake$" . cmake-ts-mode)
          ("CMakeLists\\.txt" . cmake-ts-mode)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                    Bazel                                   ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun ff/bazel-debug ()
+  "Select a debuggable Bazel target and debug it with dape."
+  (interactive)
+  (let* ((project-dir (expand-file-name (locate-dominating-file default-directory "MODULE.bazel")))
+         (query "kind('cc_binary|cc_test', //...)")
+         (output (string-trim
+                  (shell-command-to-string
+                   (format "cd %s && bazel query --keep_going \"%s\" 2>/dev/null"
+                           (shell-quote-argument project-dir) query))))
+         (targets (split-string output "\n" t))
+         (target (if (null targets)
+                     (error "No debuggable targets found")
+                   (completing-read "Bazel target: " targets nil t)))
+         (bin-path (replace-regexp-in-string
+                    ":" "/"
+                    (replace-regexp-in-string "^//" "" target))))
+    (setq dape-command
+          `(gdb command "gdb"
+                command-args ("-i" "dap")
+                :program ,(expand-file-name (concat "bazel-bin/" bin-path) project-dir)
+                :cwd ,project-dir
+                compile ,(concat "cd " (shell-quote-argument project-dir)
+                                 " && bazel build --compilation_mode=dbg " target)))
+    (call-interactively #'dape)))
+
+(defun ff/bazel-debug-current-file ()
+  "Debug a Bazel target that depends on the current file."
+  (interactive)
+  (let* ((project-dir (expand-file-name (locate-dominating-file default-directory "MODULE.bazel")))
+         (relative-file (file-relative-name (buffer-file-name) project-dir))
+         (pkg (directory-file-name (file-name-directory relative-file)))
+         (fname (file-name-nondirectory relative-file))
+         (query (format "kind('cc_binary|cc_test', attr('srcs', '%s', //%s/...))" fname pkg))
+         (output (string-trim
+                  (shell-command-to-string
+                   (format "cd %s && bazel query --keep_going \"%s\" 2>/dev/null"
+                           (shell-quote-argument project-dir) query))))
+         (targets (split-string output "\n" t))
+         (target (if (null targets)
+                     (error "No debuggable targets depend on %s" relative-file)
+                   (if (cdr targets)
+                       (completing-read "Bazel target: " targets nil t)
+                     (car targets))))
+         (bin-path (replace-regexp-in-string
+                    ":" "/"
+                    (replace-regexp-in-string "^//" "" target))))
+    (setq dape-command
+          `(gdb command "gdb"
+                command-args ("-i" "dap"
+                              "-iex" ,(concat "set substitute-path /proc/self/cwd " project-dir))
+                :program ,(expand-file-name (concat "bazel-bin/" bin-path) project-dir)
+                :cwd ,project-dir
+                compile ,(concat "cd " (shell-quote-argument project-dir)
+                                 " && bazel build --compilation_mode=dbg " target)))
+    (call-interactively #'dape)))
+
 (provide 'ff-programming-cc)
 
 ;;; ff-programming-cc.el ends here
