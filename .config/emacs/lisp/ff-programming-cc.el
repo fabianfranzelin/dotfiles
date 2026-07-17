@@ -147,7 +147,8 @@ Returns a colon-separated string of directories containing .so files."
                   (shell-command-to-string
                    (format "cd %s && bazel query --keep_going \"%s\" 2>/dev/null"
                            (shell-quote-argument project-dir) query))))
-         (targets (split-string output "\n" t))
+         (all-targets (split-string output "\n" t))
+         (targets (seq-remove (lambda (t) (string-suffix-p ".so" t)) all-targets))
          (target (if (null targets)
                      (error "No debuggable targets found")
                    (completing-read "Bazel target: " targets nil t)))
@@ -217,7 +218,8 @@ unrelated broken packages.  Falls back to //... for root packages."
                   (shell-command-to-string
                    (format "cd %s && bazel query --keep_going \"%s\" 2>/dev/null"
                            (shell-quote-argument project-dir) query))))
-         (targets (split-string output "\n" t))
+         (all-targets (split-string output "\n" t))
+         (targets (seq-remove (lambda (t) (string-suffix-p ".so" t)) all-targets))
          (target (if (null targets)
                      (error "No debuggable targets depend on %s" relative-file)
                    (if (cdr targets)
