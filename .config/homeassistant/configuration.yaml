@@ -28,11 +28,18 @@ http:
 # Manual modbus integration for Trovis 5578
 # Check https://github.com/Tom-Bom-badil/trovis-modbus-hass once it is working
 modbus:
-  - name: Heizung
+  - name: "Heizung"
     type: tcp
-    host: 192.168.178.126
-    port: 502
-
-    delay: 0
-    message_wait_milliseconds: 30
-    timeout: 5
+    host: 192.168.178.94
+    port: 502           # Default Modbus TCP port
+    sensors:
+      # True Register 2 (Often Flow Temperature VF1)
+      - name: "Trovis Outdoor Temperature"
+        unique_id: trovis_sensor_r2
+        slave: 1
+        address: 2
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        unit_of_measurement: "°C"
+        device_class: temperature
