@@ -266,3 +266,6 @@ flycheck_*
 
 ### XFCE ###
 /.config/xfce4/desktop/
+/.local/share/applications/mimeinfo.cache
+/.local/share/applications/userapp-Firefox-FKP9Q3.desktop
+/.local/share/applications/userapp-Firefox-UULSR3.desktop

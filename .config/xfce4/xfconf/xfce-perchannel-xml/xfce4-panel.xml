@@ -46,6 +46,14 @@
     <property name="plugin-6" type="string" value="systray">
       <property name="square-icons" type="bool" value="true"/>
       <property name="known-legacy-items" type="array">
+        <value type="string" value="wi-fi network connection “pauline” active: pauline (88%)"/>
+        <value type="string" value="wi-fi network connection “pauline” active: pauline (65%)"/>
+        <value type="string" value="wi-fi network connection “pauline” active: pauline (94%)"/>
+        <value type="string" value="wi-fi network connection “pauline” active: pauline (86%)"/>
+        <value type="string" value="networkmanager applet"/>
+        <value type="string" value="wi-fi network connection “pauline” active: pauline (60%)"/>
+        <value type="string" value="wi-fi network connection “pauline” active: pauline (62%)"/>
+        <value type="string" value="wi-fi network connection “pauline” active: pauline (91%)"/>
         <value type="string" value="wi-fi network connection “pauline” active: pauline (79%)"/>
         <value type="string" value="wi-fi network connection “pauline” active: pauline (67%)"/>
         <value type="string" value="wi-fi network connection “pauline” active: pauline (89%)"/>
@@ -126,8 +134,8 @@
     <property name="plugin-20" type="string" value="showdesktop"/>
     <property name="plugin-21" type="string" value="whiskermenu">
       <property name="recent" type="array">
-        <value type="string" value="org.musicbrainz.Picard.desktop"/>
         <value type="string" value="firefox-esr.desktop"/>
+        <value type="string" value="org.musicbrainz.Picard.desktop"/>
         <value type="string" value="jdownloader2_JDownloader.desktop"/>
         <value type="string" value="winboat.desktop"/>
         <value type="string" value="system-config-printer.desktop"/>
@@ -140,7 +148,7 @@
     </property>
     <property name="plugin-24" type="string" value="launcher">
       <property name="items" type="array">
-        <value type="string" value="17701391696.desktop"/>
+        <value type="string" value="17835231691.desktop"/>
       </property>
     </property>
     <property name="plugin-26" type="string" value="separator"/>
@@ -151,7 +159,7 @@
     </property>
     <property name="plugin-1" type="string" value="pulseaudio">
       <property name="enable-keyboard-shortcuts" type="bool" value="true"/>
-      <property name="known-players" type="string" value="firefox-esr;vlc"/>
+      <property name="known-players" type="string" value="firefox;firefox-esr;vlc"/>
     </property>
     <property name="plugin-10" type="string" value="power-manager-plugin"/>
   </property>
