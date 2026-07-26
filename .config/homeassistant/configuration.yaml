@@ -33,7 +33,7 @@ modbus:
     host: 192.168.178.94
     port: 502           # Default Modbus TCP port
     sensors:
-      # True Register 2 (Often Flow Temperature VF1)
+      # --- SHARED GLOBAL SYSTEM VARIABLES ---
       - name: "Trovis Outdoor Temperature"
         unique_id: trovis_sensor_r2
         slave: 1
@@ -43,3 +43,78 @@ modbus:
         scale: 0.1
         unit_of_measurement: "°C"
         device_class: temperature
+      # --- HK1: UNDERFLOOR HEATING (MIXED CIRCUIT) ---
+      - name: "Trovis HK1 Flow Temp"
+        unique_id: trovis_hk1_flow
+        slave: 1
+        address: 3
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        unit_of_measurement: "°C"
+        device_class: temperature
+      - name: "Trovis HK1 Return Temp"
+        unique_id: trovis_hk1_return
+        slave: 1
+        address: 4
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        unit_of_measurement: "°C"
+        device_class: temperature
+      # --- HK2: RADIATORS ZONE ---
+      - name: "Trovis HK2 Flow Temp"
+        unique_id: trovis_hk2_flow
+        slave: 1
+        address: 5
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        unit_of_measurement: "°C"
+        device_class: temperature
+      - name: "Trovis HK2 Return Temp"
+        unique_id: trovis_hk2_return
+        slave: 1
+        address: 6
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        unit_of_measurement: "°C"
+        device_class: temperature
+      # --- TWW: TRINKWARMWASSER (HOT WATER STORAGE) ---
+      - name: "Trovis TWW Tank Temp"
+        unique_id: trovis_tww_tank
+        slave: 1
+        address: 7
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        unit_of_measurement: "°C"
+        device_class: temperature
+      # Test Option A: Standard shift next block
+      - name: "Trovis TWW Temp Alt 7"
+        unique_id: trovis_tww_a7
+        slave: 1
+        address: 7
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        unit_of_measurement: "°C"
+      # Test Option B: Alternate firmware alignment sequence
+      - name: "Trovis TWW Temp Alt 8"
+        unique_id: trovis_tww_a8
+        slave: 1
+        address: 8
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        unit_of_measurement: "°C"
+      # Test Option C: Extended index block mapping
+      - name: "Trovis TWW Temp Alt 11"
+        unique_id: trovis_tww_a11
+        slave: 1
+        address: 11
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        unit_of_measurement: "°C"
