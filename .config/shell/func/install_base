@@ -71,7 +71,8 @@ install_apt_packages() {
         golang \
         gsimplecal \
         meld \
-        autorandr
+        autorandr \
+        gdbserver
 
     # Create save path for flameshot
     mkdit -p "${HOME}/Pictures/Screenshots"

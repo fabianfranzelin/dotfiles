@@ -4,7 +4,6 @@
   "window.title": "${activeEditorMedium}${separator}${rootName}",
   "window.titleBarStyle": "custom",
   "workbench.editor.showTabs": "multiple",
-  "workbench.sideBar.location": "left",
   "workbench.statusBar.visible": true,
   "window.menuBarVisibility": "compact",
   "breadcrumbs.enabled": true,
@@ -135,7 +134,7 @@
   "[jsonc]": {
     "editor.rulers": [80],
     "editor.tabSize": 2,
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.defaultFormatter": "vscode.json-language-features",
     "editor.formatOnSave": true
   },
   //------------------------------------------------------------------------//
@@ -217,5 +216,6 @@
   "git.openRepositoryInParentFolders": "always",
   "git.autofetch": true,
   "githubPullRequests.pullBranch": "never",
-  "github.copilot.nextEditSuggestions.enabled": true
+  "github.copilot.nextEditSuggestions.enabled": true,
+  "clangd.checkUpdates": false
 }
