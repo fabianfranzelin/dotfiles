@@ -46,5 +46,23 @@
         }
       }
     }
+  },
+  "mcp": {
+    "docupedia-docker-mcp-server": {
+      "type": "local",
+      "command": [
+        "run-docupedia-mcp"
+      ],
+      "enabled": true,
+      "env": {
+        "TRANSPORT": "stdio",
+        "HOST": "localhost",
+        "HOST_PORT": "8000",
+        "HTTP_PROXY": "http://rb-proxy-de.bosch.com:8080",
+        "HTTPS_PROXY": "http://rb-proxy-de.bosch.com:8080",
+        "http_proxy": "http://rb-proxy-de.bosch.com:8080",
+        "https_proxy": "http://rb-proxy-de.bosch.com:8080"
+      }
+    }
   }
 }
