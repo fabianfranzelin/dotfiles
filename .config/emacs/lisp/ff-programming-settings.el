@@ -77,7 +77,19 @@ the need to update my project hierarchy."
              nil))))
 
   (advice-add 'eglot--current-project :before-until
-              #'ff/eglot-find-local-project))
+              #'ff/eglot-find-local-project)
+
+  ;; Workaround for Emacs 31 eglot bug: yaml-language-server sends
+  ;; workspace/configuration requests with scopeUri "null" (string).
+  ;; eglot-uri-to-path returns "null", then (file-name-directory "null")
+  ;; returns nil, crashing eglot--workspace-configuration-plist.
+  ;; This causes the server to discard all schema configuration.
+  (advice-add 'eglot--workspace-configuration-plist :around
+              (lambda (orig-fn server &optional path)
+                (condition-case nil
+                    (funcall orig-fn server path)
+                  (wrong-type-argument
+                   (funcall orig-fn server nil))))))
 
 ;; -------------------------------------------------------------
 ;; use built-in tree-sitter (Emacs 31+)
