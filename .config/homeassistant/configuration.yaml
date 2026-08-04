@@ -34,8 +34,7 @@ modbus:
     port: 502           # Default Modbus TCP port
     sensors:
       # --- SHARED GLOBAL SYSTEM VARIABLES ---
-      - name: "Trovis Outdoor Temperature"
-        unique_id: trovis_sensor_r2
+      - name: "Trovis Outdoor Temperature (2)"
         slave: 1
         address: 2
         input_type: holding
@@ -43,78 +42,166 @@ modbus:
         scale: 0.1
         unit_of_measurement: "°C"
         device_class: temperature
-      # --- HK1: UNDERFLOOR HEATING (MIXED CIRCUIT) ---
-      - name: "Trovis HK1 Flow Temp"
-        unique_id: trovis_hk1_flow
+
+      # =========================================================================
+      # SYSTEM & PHYSICAL SENSORS
+      # =========================================================================
+      - name: "Trovis System Model"
         slave: 1
-        address: 3
+        address: 0          # Reg 1
+        input_type: holding
+        data_type: uint16
+
+      - name: "Trovis Outdoor Temperature (9)"
+        slave: 1
+        address: 9          # Reg 10 (AF1)
         input_type: holding
         data_type: int16
         scale: 0.1
-        unit_of_measurement: "°C"
+        precision: 1
         device_class: temperature
-      - name: "Trovis HK1 Return Temp"
-        unique_id: trovis_hk1_return
+        unit_of_measurement: "°C"
+        state_class: measurement
+
+      # =========================================================================
+      # HEATING CIRCUIT 1 (HK1 / RK1)
+      # =========================================================================
+      - name: "[HK1] HK - Flow Temperature Actual"
         slave: 1
-        address: 4
+        address: 12         # Reg 13 (VF1)
         input_type: holding
         data_type: int16
         scale: 0.1
-        unit_of_measurement: "°C"
+        precision: 1
         device_class: temperature
-      # --- HK2: RADIATORS ZONE ---
-      - name: "Trovis HK2 Flow Temp"
-        unique_id: trovis_hk2_flow
+        unit_of_measurement: "°C"
+        state_class: measurement
+
+      - name: "[HK1] HK - Flow Temperature Setpoint"
         slave: 1
-        address: 5
+        address: 30         # Reg 31
         input_type: holding
         data_type: int16
         scale: 0.1
-        unit_of_measurement: "°C"
+        precision: 1
         device_class: temperature
-      - name: "Trovis HK2 Return Temp"
-        unique_id: trovis_hk2_return
+        unit_of_measurement: "°C"
+
+      - name: "[HK1] HK - Room Temperature Setpoint Day"
         slave: 1
-        address: 6
+        address: 31         # Reg 32
         input_type: holding
         data_type: int16
         scale: 0.1
-        unit_of_measurement: "°C"
+        precision: 1
         device_class: temperature
-      # --- TWW: TRINKWARMWASSER (HOT WATER STORAGE) ---
-      - name: "Trovis TWW Tank Temp"
-        unique_id: trovis_tww_tank
+        unit_of_measurement: "°C"
+
+      - name: "[HK1] HK - Room Temperature Setpoint Night"
         slave: 1
-        address: 7
+        address: 32         # Reg 33
         input_type: holding
         data_type: int16
         scale: 0.1
-        unit_of_measurement: "°C"
+        precision: 1
         device_class: temperature
-      # Test Option A: Standard shift next block
-      - name: "Trovis TWW Temp Alt 7"
-        unique_id: trovis_tww_a7
+        unit_of_measurement: "°C"
+
+      - name: "[HK1] HK - Valve Position"
         slave: 1
-        address: 7
+        address: 39         # Reg 40
+        input_type: holding
+        data_type: int16
+        unit_of_measurement: "%"
+
+      # =========================================================================
+      # HEATING CIRCUIT 2 (HK2 / RK2)
+      # =========================================================================
+      - name: "[HK2] BH - Flow Temperature Actual"
+        slave: 1
+        address: 13         # Reg 14 (VF2)
         input_type: holding
         data_type: int16
         scale: 0.1
+        precision: 1
+        device_class: temperature
         unit_of_measurement: "°C"
-      # Test Option B: Alternate firmware alignment sequence
-      - name: "Trovis TWW Temp Alt 8"
-        unique_id: trovis_tww_a8
+        state_class: measurement
+
+      - name: "[HK2] BH - Flow Temperature Setpoint"
         slave: 1
-        address: 8
+        address: 100        # Reg 101
         input_type: holding
         data_type: int16
         scale: 0.1
+        precision: 1
+        device_class: temperature
         unit_of_measurement: "°C"
-      # Test Option C: Extended index block mapping
-      - name: "Trovis TWW Temp Alt 11"
-        unique_id: trovis_tww_a11
+
+      - name: "[HK2] BH - Room Temperature Setpoint Day"
         slave: 1
-        address: 11
+        address: 101        # Reg 102
         input_type: holding
         data_type: int16
         scale: 0.1
+        precision: 1
+        device_class: temperature
         unit_of_measurement: "°C"
+
+      - name: "[HK2] BH - Room Temperature Setpoint Night"
+        slave: 1
+        address: 102        # Reg 103
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        device_class: temperature
+        unit_of_measurement: "°C"
+
+      - name: "[HK2] BH - Valve Position"
+        slave: 1
+        address: 109        # Reg 110
+        input_type: holding
+        data_type: int16
+        unit_of_measurement: "%"
+
+      # =========================================================================
+      # DOMESTIC HOT WATER (DHW / TWW)
+      # =========================================================================
+      - name: "[TWW] Storage Temperature Actual"
+        slave: 1
+        address: 15         # Reg 16 (SF1)
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        device_class: temperature
+        unit_of_measurement: "°C"
+        state_class: measurement
+
+      - name: "[TWW] Temperature Setpoint"
+        slave: 1
+        address: 240        # Reg 241
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        device_class: temperature
+        unit_of_measurement: "°C"
+
+      - name: "[TWW] Charging Temperature Setpoint"
+        slave: 1
+        address: 241        # Reg 242
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        device_class: temperature
+        unit_of_measurement: "°C"
+
+      - name: "[TWW] Valve Position"
+        slave: 1
+        address: 249        # Reg 250
+        input_type: holding
+        data_type: int16
+        unit_of_measurement: "%"
