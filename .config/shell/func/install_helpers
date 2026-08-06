@@ -1,0 +1,163 @@
+#!/usr/bin/env bash
+# shell: all
+#
+# Reusable helper functions for install_* scripts.
+# Source versions.conf before using these.
+#
+# In bash: this file is sourced by gear.bash, defining all functions below.
+# In zsh:  this file is autoloaded; calling "install_helpers" executes the
+#          file body, which defines the sub-functions.
+# The install_helpers() no-op below ensures "install_helpers" is callable
+# in bash without error (functions are already defined from sourcing).
+
+install_helpers() { :; }
+
+# Resolve architecture string for dpkg-based downloads.
+# Returns: amd64, arm64, etc.
+__install_dpkg_arch() {
+    dpkg --print-architecture
+}
+
+# Resolve architecture string for GitHub binary downloads.
+# Maps uname -m to common Go/Rust naming: amd64, aarch64, arm64, etc.
+__install_uname_arch() {
+    case "$(uname -m)" in
+        x86_64)         echo "amd64" ;;
+        aarch64|arm64)  echo "aarch64" ;;
+        armv7l)         echo "armv7" ;;
+        *)              echo "$(uname -m)" ;;
+    esac
+}
+
+# Source the versions manifest. Call once at the top of each install_* function.
+# Usage: __install_load_versions
+__install_load_versions() {
+    local versions_file
+    # Use __SHELL_LIB (set in env.sh) for portability across bash/zsh.
+    # Fall back to BASH_SOURCE-based resolution for standalone usage.
+    if [ -n "${__SHELL_LIB:-}" ]; then
+        versions_file="${__SHELL_LIB}/versions.conf"
+    else
+        versions_file="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/versions.conf"
+    fi
+    if [ -f "${versions_file}" ]; then
+        # shellcheck source=../versions.conf
+        . "${versions_file}"
+    else
+        echo "ERROR: versions.conf not found at ${versions_file}" >&2
+        return 1
+    fi
+}
+
+# Download and install a .deb from a URL.
+# Idempotent: skips if $check_cmd --version already contains $version.
+#
+# Usage: install_github_deb <url> [check_cmd] [version]
+#   url        - Full download URL for the .deb file
+#   check_cmd  - (optional) Command name to check if already installed
+#   version    - (optional) Version string to grep in check_cmd output
+install_github_deb() {
+    local url="$1"
+    local check_cmd="${2:-}"
+    local version="${3:-}"
+    local filename
+
+    filename="$(basename "${url}")"
+
+    # Idempotency: skip if the right version is already installed
+    if [ -n "${check_cmd}" ] && [ -n "${version}" ]; then
+        if command -v "${check_cmd}" &>/dev/null; then
+            if "${check_cmd}" --version 2>&1 | grep -q "${version}"; then
+                echo -e "${__COLOR_INFO:-}INFO: ${check_cmd} ${version} already installed, skipping.${__COLOR_RESET:-}"
+                return 0
+            fi
+        fi
+    fi
+
+    (
+        TEMP_DIR=$(mktemp -d)
+        cd "${TEMP_DIR}" || exit 1
+        echo -e "${__COLOR_INFO:-}INFO: Downloading ${filename}${__COLOR_RESET:-}"
+        wget -q "${url}" -O "${filename}"
+        sudo dpkg -i "${filename}"
+        rm -rf "${TEMP_DIR}"
+    )
+}
+
+# Download a binary from a URL into ~/.local/bin.
+# Idempotent: skips if the file exists and $target_name --version contains $version.
+#
+# Usage: install_github_binary <url> <target_name> [version]
+#   url          - Full download URL
+#   target_name  - Binary name in ~/.local/bin (e.g. "bazel")
+#   version      - (optional) Version string for idempotency check
+install_github_binary() {
+    local url="$1"
+    local target_name="$2"
+    local version="${3:-}"
+    local bin_dir="${HOME}/.local/bin"
+    local target_path="${bin_dir}/${target_name}"
+
+    # Idempotency check
+    if [ -n "${version}" ] && [ -f "${target_path}" ]; then
+        if "${target_path}" --version 2>&1 | grep -q "${version}"; then
+            echo -e "${__COLOR_INFO:-}INFO: ${target_name} ${version} already installed, skipping.${__COLOR_RESET:-}"
+            return 0
+        fi
+    fi
+
+    mkdir -p "${bin_dir}"
+    echo -e "${__COLOR_INFO:-}INFO: Downloading ${target_name} from ${url}${__COLOR_RESET:-}"
+    wget -q -O "${target_path}" "${url}"
+    chmod +x "${target_path}"
+}
+
+# Clone a git repo if it doesn't exist, or pull updates if it does.
+#
+# Usage: git_clone_or_pull <url> <target_dir> [clone_args...]
+#   url         - Git clone URL
+#   target_dir  - Local directory path
+#   clone_args  - Extra args passed to git clone (e.g. --depth=1)
+git_clone_or_pull() {
+    local url="$1"
+    local target_dir="$2"
+    shift 2
+    local clone_args=("$@")
+    local repo_name
+    repo_name="$(basename "${target_dir}")"
+
+    if [ ! -d "${target_dir}" ]; then
+        echo "Cloning ${repo_name}..."
+        git clone "${clone_args[@]}" "${url}" "${target_dir}"
+    else
+        echo "Pulling updates for ${repo_name}..."
+        (cd "${target_dir}" && git pull)
+    fi
+}
+
+# Link a hostname-specific config file, falling back to a default.
+#
+# Usage: link_host_config <dir> <file_prefix> <target_name> [default_name]
+#   dir          - Directory containing the config variants
+#   file_prefix  - Prefix for hostname variant (e.g. "npmrc")
+#   target_name  - Name of the symlink to create
+#   default_name - (optional) Default file to fall back to
+link_host_config() {
+    local dir="$1"
+    local file_prefix="$2"
+    local target_name="$3"
+    local default_name="${4:-}"
+    local host_file="${file_prefix}.$(hostname)"
+
+    (
+        cd "${dir}" || exit 1
+        if [ -f "${host_file}" ]; then
+            ln -s -f "${host_file}" "${target_name}"
+        elif [ -n "${default_name}" ] && [ -f "${default_name}" ]; then
+            echo -e "${__COLOR_INFO:-}No specific config for $(hostname). Using ${default_name}.${__COLOR_RESET:-}"
+            ln -s -f "${default_name}" "${target_name}"
+        else
+            echo -e "${__COLOR_INFO:-}No specific config for $(hostname) available.${__COLOR_RESET:-}"
+        fi
+    )
+}

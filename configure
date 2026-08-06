@@ -48,6 +48,9 @@ DESCRIPTION
               Install Qtile
        --skip-qtile
               Skip Qtile installation
+       --upgrade-packages
+              Check for newer versions of third-party packages and
+              update versions.conf (does not install anything)
        --overlay-dir <path>
               Additional dotfiles directory to stow and configure
               (can be specified multiple times)
@@ -75,6 +78,7 @@ __SHELL_LIB="${DOTFILES}/.config/shell"
 . "${__SHELL_LIB}/faq.sh"
 
 # load gear
+. "${__SHELL_LIB}/func/install_helpers"
 . "${__SHELL_LIB}/func/install_base"
 . "${__SHELL_LIB}/func/install_git"
 . "${__SHELL_LIB}/func/install_npm"
@@ -82,6 +86,7 @@ __SHELL_LIB="${DOTFILES}/.config/shell"
 . "${__SHELL_LIB}/func/install_emacs"
 . "${__SHELL_LIB}/func/install_qtile"
 . "${__SHELL_LIB}/func/install_zsh"
+. "${__SHELL_LIB}/func/upgrade_packages"
 
 #------------------------------------------------------------------------------#
 # make sure that default environment variables are set correctly
@@ -167,6 +172,10 @@ while [ "${#}" -gt 0 ]; do
             SKIP_ZSH=1
             shift # past argument
             ;;
+        '--upgrade-packages')
+            UPGRADE_PACKAGES=1
+            shift # past argument
+            ;;
         '--overlay-dir')
             OVERLAY_DIRS+=("$(realpath "$2")")
             shift 2
@@ -246,6 +255,12 @@ create_symlinks()
 }
 
 #------------------------------------------------------------------------------#
+
+if [ -n "${UPGRADE_PACKAGES:-}" ]
+then
+    upgrade_packages
+    exit $?
+fi
 
 if { [ -n "${INSTALL_ALL}" ] && [ -z "${SKIP_BASE}" ]; } || [ -n "${INSTALL_BASE}" ]
 then

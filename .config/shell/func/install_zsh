@@ -3,6 +3,7 @@
 
 install_zsh()
 {
+    install_helpers
     sudo apt-get install -y \
         zsh
 
@@ -24,65 +25,21 @@ install_zsh()
         ln -sfn ".local/share/oh-my-zsh" ".oh-my-zsh"
     )
 
-    POWERLEVEL10K_HOME="${ZSH}/custom/themes/powerlevel10k"
-    if [ ! -d "${POWERLEVEL10K_HOME}" ]
-    then
-        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${POWERLEVEL10K_HOME}"
-    else
-        (
-            echo "Pull updates for powerlevel10k"
-            cd "${POWERLEVEL10K_HOME}" || exit 1
-            git pull
-        )
-    fi
+    # zsh plugins and themes
+    git_clone_or_pull "https://github.com/romkatv/powerlevel10k.git" \
+        "${ZSH}/custom/themes/powerlevel10k" --depth=1
 
-    ZSH_AUTOSUGGESTION_HOME="${ZSH}/custom/plugins/zsh-autosuggestions"
-    if [ ! -d "${ZSH_AUTOSUGGESTION_HOME}" ]
-    then
-        git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_AUTOSUGGESTION_HOME}"
-    else
-        (
-            echo "Pull updates for autosuggestions"
-            cd "${ZSH_AUTOSUGGESTION_HOME}" || exit 1
-            git pull
-        )
-    fi
+    git_clone_or_pull "https://github.com/zsh-users/zsh-autosuggestions" \
+        "${ZSH}/custom/plugins/zsh-autosuggestions"
 
-    ZSH_SYNTAX_HIGHLIGHTING="${ZSH}/custom/plugins/zsh-syntax-highlighting"
-    if [ ! -d "${ZSH_SYNTAX_HIGHLIGHTING}" ]
-    then
-        git clone https://github.com/zsh-users/zsh-syntax-highlighting "${ZSH_SYNTAX_HIGHLIGHTING}"
-    else
-        (
-            echo "Pull updates for syntax highlighting"
-            cd "${ZSH_SYNTAX_HIGHLIGHTING}" || exit 1
-            git pull
-        )
-    fi
+    git_clone_or_pull "https://github.com/zsh-users/zsh-syntax-highlighting" \
+        "${ZSH}/custom/plugins/zsh-syntax-highlighting"
 
-    ZSH_YOU_SHOULD_USE="${ZSH}/custom/plugins/you-should-use"
-    if [ ! -d "${ZSH_YOU_SHOULD_USE}" ]
-    then
-        git clone https://github.com/MichaelAquilina/zsh-you-should-use "${ZSH_YOU_SHOULD_USE}"
-    else
-        (
-            echo "Pull updates for you should use"
-            cd "${ZSH_YOU_SHOULD_USE}" || exit 1
-            git pull
-        )
-    fi
+    git_clone_or_pull "https://github.com/MichaelAquilina/zsh-you-should-use" \
+        "${ZSH}/custom/plugins/you-should-use"
 
-    ZSH_AUTOCOMPLETION="${ZSH}/custom/plugins/zsh-autocomplete"
-    if [ ! -d "${ZSH_AUTOCOMPLETION}" ]
-    then
-        git clone https://github.com/marlonrichert/zsh-autocomplete "${ZSH_AUTOCOMPLETION}"
-    else
-        (
-            echo "Pull updates for autocompletion"
-            cd "${ZSH_AUTOCOMPLETION}" || exit 1
-            git pull
-        )
-    fi
+    git_clone_or_pull "https://github.com/marlonrichert/zsh-autocomplete" \
+        "${ZSH}/custom/plugins/zsh-autocomplete"
 
     echo "Make zsh the default shell"
     sudo chsh -s "$(which zsh)" "${USER}"

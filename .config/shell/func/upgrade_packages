@@ -1,0 +1,212 @@
+#!/usr/bin/env bash
+# shell: all
+#
+# Check for available upgrades of all packages in versions.conf and update
+# the file in-place. Does NOT install anything.
+
+upgrade_packages()
+{
+    install_helpers
+    __install_load_versions
+
+    local versions_file="${__SHELL_LIB}/versions.conf"
+    if [ ! -f "${versions_file}" ]; then
+        echo "ERROR: versions.conf not found at ${versions_file}" >&2
+        return 1
+    fi
+
+    # Mapping: VAR_NAME -> github_repo (or special handler)
+    # Format: "VAR_NAME|repo_owner/repo_name|strip_prefix"
+    # strip_prefix: text to strip from the tag (e.g. "v" from "v1.2.3")
+    local packages=(
+        "GHOSTTY_VER|mkasberg/ghostty-ubuntu|"
+        "PANDOC_VER|jgm/pandoc|"
+        "DRAW_IO_VER|jgraph/drawio-desktop|v"
+        "GDB_VER|SOURCEWARE|"
+        "BUILDIFIER_VER|bazelbuild/buildtools|v"
+        "BAZELISK_VER|bazelbuild/bazelisk|v"
+        "STARPLS_VER|withered-magic/starpls|v"
+        "DOCKER_CRED_PASS_VER|docker/docker-credential-helpers|v"
+        "JETBRAINS_MONO_VER|JetBrains/JetBrainsMono|v"
+        "NVM_VERSION|nvm-sh/nvm|v"
+        "NODE_VERSION|NODE_LTS|"
+        "QTILE_PYTHON_VERSION|PYTHON_LATEST|"
+    )
+
+    local updated=0
+    local checked=0
+    local failed=0
+
+    echo "Checking for package upgrades..."
+    echo ""
+    printf "  %-25s %-12s %-12s %s\n" "PACKAGE" "CURRENT" "LATEST" "STATUS"
+    printf "  %-25s %-12s %-12s %s\n" "-------" "-------" "------" "------"
+
+    for entry in "${packages[@]}"; do
+        local var_name repo strip_prefix current_ver latest_ver status
+        IFS='|' read -r var_name repo strip_prefix <<< "${entry}"
+
+        # Get current version from the variable
+        current_ver="${!var_name}"
+
+        # Fetch latest version based on source type
+        latest_ver="$(__upgrade_fetch_latest "${repo}" "${strip_prefix}" "${var_name}")"
+
+        if [ -z "${latest_ver}" ]; then
+            status="FAILED"
+            ((failed++)) || true
+        elif [ "${latest_ver}" = "${current_ver}" ]; then
+            status="up-to-date"
+        else
+            status="UPDATE"
+            ((updated++)) || true
+        fi
+
+        ((checked++)) || true
+
+        # Display result
+        if [ "${status}" = "UPDATE" ]; then
+            printf "  %-25s %-12s %-12s \033[33m%s\033[0m\n" "${var_name}" "${current_ver}" "${latest_ver}" "${status}"
+        elif [ "${status}" = "FAILED" ]; then
+            printf "  %-25s %-12s %-12s \033[31m%s\033[0m\n" "${var_name}" "${current_ver}" "?" "${status}"
+        else
+            printf "  %-25s %-12s %-12s \033[32m%s\033[0m\n" "${var_name}" "${current_ver}" "${latest_ver}" "${status}"
+        fi
+    done
+
+    echo ""
+    echo "Checked ${checked} packages: ${updated} upgrades available, ${failed} failed."
+
+    if [ "${updated}" -eq 0 ]; then
+        echo "Everything is up to date."
+        return 0
+    fi
+
+    # Ask for confirmation before updating
+    echo ""
+    read -rp "Update versions.conf with new versions? [y/N] " confirm
+    if [[ "${confirm}" != [yY] ]]; then
+        echo "No changes made."
+        return 0
+    fi
+
+    # Apply updates to versions.conf
+    for entry in "${packages[@]}"; do
+        local var_name repo strip_prefix current_ver latest_ver
+        IFS='|' read -r var_name repo strip_prefix <<< "${entry}"
+        current_ver="${!var_name}"
+        latest_ver="$(__upgrade_fetch_latest "${repo}" "${strip_prefix}" "${var_name}")"
+
+        if [ -n "${latest_ver}" ] && [ "${latest_ver}" != "${current_ver}" ]; then
+            # Update the line in versions.conf
+            sed -i "s|^${var_name}=\"${current_ver}\"|${var_name}=\"${latest_ver}\"|" "${versions_file}"
+            echo "  Updated ${var_name}: ${current_ver} -> ${latest_ver}"
+        fi
+    done
+
+    echo ""
+    echo "versions.conf updated. Run the appropriate install_* command to apply."
+}
+
+# Fetch the latest version for a given source.
+# Args: $1 = repo identifier, $2 = prefix to strip, $3 = var_name (for special cases)
+__upgrade_fetch_latest() {
+    local repo="$1"
+    local strip_prefix="$2"
+    local var_name="$3"
+
+    case "${repo}" in
+        SOURCEWARE)
+            # GDB: scrape the FTP listing for latest release
+            __upgrade_fetch_sourceware_gdb
+            ;;
+        NODE_LTS)
+            # Node.js: get latest LTS major.minor
+            __upgrade_fetch_node_lts
+            ;;
+        PYTHON_LATEST)
+            # Python: get latest 3.x stable release
+            __upgrade_fetch_python_latest
+            ;;
+        *)
+            # GitHub release
+            __upgrade_fetch_github_latest "${repo}" "${strip_prefix}"
+            ;;
+    esac
+}
+
+# Fetch latest GitHub release tag.
+# Args: $1 = owner/repo, $2 = prefix to strip from tag
+__upgrade_fetch_github_latest() {
+    local repo="$1"
+    local strip_prefix="$2"
+    local tag
+
+    # Prefer gh CLI if available, otherwise curl the API
+    if command -v gh &>/dev/null; then
+        tag=$(gh release view --repo "${repo}" --json tagName -q '.tagName' 2>/dev/null)
+    else
+        tag=$(curl -fsSL "https://api.github.com/repos/${repo}/releases/latest" 2>/dev/null \
+            | grep '"tag_name"' | head -1 | cut -d'"' -f4)
+    fi
+
+    if [ -z "${tag}" ]; then
+        return 1
+    fi
+
+    # Strip prefix (e.g. "v" from "v1.2.3")
+    if [ -n "${strip_prefix}" ]; then
+        tag="${tag#"${strip_prefix}"}"
+    fi
+
+    # For ghostty-ubuntu, tag format is "1.3.1-0-ppa1" -> extract version
+    if [[ "${repo}" == "mkasberg/ghostty-ubuntu" ]]; then
+        tag="${tag%%-*}"
+    fi
+
+    echo "${tag}"
+}
+
+# Fetch latest GDB version from sourceware FTP.
+__upgrade_fetch_sourceware_gdb() {
+    local latest
+    latest=$(curl -fsSL "https://sourceware.org/pub/gdb/releases/" 2>/dev/null \
+            | grep -oP 'gdb-\K[0-9]+\.[0-9]+(?=\.tar)' \
+        | sort -V | tail -1)
+    echo "${latest}"
+}
+
+# Fetch latest Node.js LTS version (major.minor).
+__upgrade_fetch_node_lts() {
+    local ver
+    # Find first entry with a truthy "lts" field (i.e. active LTS)
+    if command -v python3 &>/dev/null; then
+        ver=$(curl -fsSL "https://nodejs.org/dist/index.json" 2>/dev/null \
+            | python3 -c "
+import json, sys
+data = json.load(sys.stdin)
+for entry in data:
+    if entry.get('lts'):
+        print(entry['version'].lstrip('v').rsplit('.', 1)[0])
+        break
+" 2>/dev/null)
+    else
+        # Fallback: grep for lts field near version
+        ver=$(curl -fsSL "https://nodejs.org/dist/index.json" 2>/dev/null \
+            | grep -B2 '"lts":"[A-Z]' | grep -oP '"version":"v\K[0-9]+\.[0-9]+' | head -1)
+    fi
+    echo "${ver}"
+}
+
+# Fetch latest Python 3.x stable release (latest patch of the same minor series).
+__upgrade_fetch_python_latest() {
+    local current_minor ver
+    # Stay on the same minor version (e.g. 3.13.x) for stability
+    current_minor="${QTILE_PYTHON_VERSION%.*}"  # e.g. "3.13"
+    ver=$(curl -fsSL "https://www.python.org/ftp/python/" 2>/dev/null \
+        | grep -oP "href=\"\K${current_minor}\.[0-9]+(?=/\")" \
+        | sort -V | tail -1)
+    if [ -n "${ver}" ]; then
+        echo "${ver}"
+    fi
+}

@@ -3,6 +3,9 @@
 
 install_docker()
 {
+    install_helpers
+    __install_load_versions
+
     if command -v docker > /dev/null
     then
         sudo usermod -a -G docker "${USER}"
@@ -10,25 +13,20 @@ install_docker()
     fi
 
     # Install docker-credential-pass
-    SYSTEM_ARCH=$(dpkg --print-architecture)
-    DOCKER_CRED_PASS_VER="0.9.5"
-    DOCKER_CRED_PASS_BIN="docker-credential-pass-v${DOCKER_CRED_PASS_VER}.linux-${SYSTEM_ARCH}"
-    DOCKER_CRED_PASS_URL="https://github.com/docker/docker-credential-helpers/releases/download/v${DOCKER_CRED_PASS_VER}/${DOCKER_CRED_PASS_BIN}"
-    DOCKER_CRED_PASS_PATH="${HOME}/.local/bin/docker-credential-pass"
-    cd "/tmp" || exit 1
-    wget "${DOCKER_CRED_PASS_URL}"
-    chmod 755 "${DOCKER_CRED_PASS_BIN}"
-    mv -f "${DOCKER_CRED_PASS_BIN}" "${DOCKER_CRED_PASS_PATH}"
+    local SYSTEM_ARCH
+    SYSTEM_ARCH=$(__install_dpkg_arch)
+    install_github_binary \
+        "https://github.com/docker/docker-credential-helpers/releases/download/v${DOCKER_CRED_PASS_VER}/docker-credential-pass-v${DOCKER_CRED_PASS_VER}.linux-${SYSTEM_ARCH}" \
+        "docker-credential-pass" "${DOCKER_CRED_PASS_VER}"
 
-    #------------------------------------------------------------------------------#
-    # Hack: setup workstation specific config for docker using extra symlink
+    # Setup workstation specific docker config
     (
         cd "${DOTFILES}/.docker" || exit 1
-        TARGET_DOCKER_CONFIG="config-$(hostname).json"
-        if [ -f "${TARGET_DOCKER_CONFIG}" ]; then
-            ln -s -f "${TARGET_DOCKER_CONFIG}" "config.json"
+        local target_config="config-$(hostname).json"
+        if [ -f "${target_config}" ]; then
+            ln -s -f "${target_config}" "config.json"
         else
-            echo -e "${__COLOR_INFO}No specific docker configuration for $(hostname) available. I'll leave it empty.${__COLOR_RESET}"
+            echo -e "${__COLOR_INFO:-}No specific docker configuration for $(hostname) available.${__COLOR_RESET:-}"
         fi
     )
 }

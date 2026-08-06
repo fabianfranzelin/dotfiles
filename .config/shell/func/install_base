@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # shell: all
 
+# shellcheck source=install_helpers
+# shellcheck source=../versions.conf
+
 install_apt_packages() {
     sudo apt-get install -y \
         xclip \
@@ -76,7 +79,7 @@ install_apt_packages() {
         patchelf
 
     # Create save path for flameshot
-    mkdit -p "${HOME}/Pictures/Screenshots"
+    mkdir -p "${HOME}/Pictures/Screenshots"
 
     # required to restart raspi automatically on very high load
     sudo apt-get install watchdog -y || true
@@ -173,11 +176,17 @@ install_python_packages() {
 }
 
 install_packages_manually() {
-    # install ghostty
-    # On Ubuntu 24.04 do a manual install (some snaps/apt packages may be broken there).
+    __install_load_versions
+
+    local SYSTEM_ARCH
+    SYSTEM_ARCH=$(__install_dpkg_arch)
+    local UNAME_ARCH
+    UNAME_ARCH=$(__install_uname_arch)
+
+    # --- Ghostty terminal ---
+    # On Ubuntu 24.04 do a manual install (some snaps/apt packages may be broken).
     # For other systems try snap first then apt as fallback.
-    IS_UBUNTU=false
-    UBUNTU_VERSION=""
+    local IS_UBUNTU=false UBUNTU_VERSION=""
     if [ -f /etc/os-release ]; then
         . /etc/os-release
         if [ "${ID}" = "ubuntu" ] || echo "${NAME:-}" | grep -qi ubuntu; then
@@ -186,43 +195,25 @@ install_packages_manually() {
         fi
     fi
 
-    if ${IS_UBUNTU} && [ "${UBUNTU_VERSION}" = "24.04" ]
-    then
-        GHOSTTY_VER="1.3.1"
-        SYSTEM_ARCH=$(dpkg --print-architecture)
-        GHOSTTY_BIN="ghostty_${GHOSTTY_VER}-0.ppa1_${SYSTEM_ARCH}_24.04.deb"
-        GHOSTTY_URL="https://github.com/mkasberg/ghostty-ubuntu/releases/download/${GHOSTTY_VER}-0-ppa1/${GHOSTTY_BIN}"
-        (
-            TEMP_DIR=$(mktemp -d)
-            cd "${TEMP_DIR}" || exit 1
-            wget "${GHOSTTY_URL}"
-            sudo dpkg -i "${GHOSTTY_BIN}"
-        )
+    if ${IS_UBUNTU} && [ "${UBUNTU_VERSION}" = "24.04" ]; then
+        install_github_deb \
+            "https://github.com/mkasberg/ghostty-ubuntu/releases/download/${GHOSTTY_VER}-0-ppa1/ghostty_${GHOSTTY_VER}-0.ppa1_${SYSTEM_ARCH}_24.04.deb" \
+            "ghostty" "${GHOSTTY_VER}"
     else
-        # Non-24.04: prefer snap, then apt
         sudo snap install --classic ghostty || true
         sudo apt-get install ghostty -y || true
     fi
 
-    # install pandoc
-    PANDOC_VER="3.9"
-    SYSTEM_ARCH=$(dpkg --print-architecture)
-    PANDOC_BIN="pandoc-${PANDOC_VER}-1-${SYSTEM_ARCH}.deb"
-    PANDOC_URL="https://github.com/jgm/pandoc/releases/download/${PANDOC_VER}/${PANDOC_BIN}"
-    (
+    # --- Pandoc ---
+    install_github_deb \
+        "https://github.com/jgm/pandoc/releases/download/${PANDOC_VER}/pandoc-${PANDOC_VER}-1-${SYSTEM_ARCH}.deb" \
+        "pandoc" "${PANDOC_VER}"
 
-        TEMP_DIR=$(mktemp -d)
-        cd "${TEMP_DIR}" || exit 1
-        wget "${PANDOC_URL}"
-        sudo dpkg -i "${PANDOC_BIN}"
-    )
-
-    # install gdb
-    GDB_NAME="gdb-16.1"
-    GDB_PATH="${HOME}/.local/share/${GDB_NAME}"
+    # --- GDB (build from source) ---
+    local GDB_NAME="gdb-${GDB_VER}"
+    local GDB_PATH="${HOME}/.local/share/${GDB_NAME}"
     sudo apt-get install libmpc-dev -y
-    if [ ! -d "${GDB_PATH}" ]
-    then
+    if [ ! -d "${GDB_PATH}" ]; then
         (
             TEMP_DIR=$(mktemp -d)
             cd "${TEMP_DIR}" || exit 1
@@ -233,7 +224,6 @@ install_packages_manually() {
             make CXXFLAGS="-static-libstdc++"
             make install
 
-            # use update-alternatives to manage the binaries
             [ -f "/usr/bin/gdb" ] && sudo mv "/usr/bin/gdb" "/usr/bin/gdb.backup"
             sudo update-alternatives --install "/usr/bin/gdb" gdb "${GDB_PATH}/bin/gdb" 100
             sudo update-alternatives --install "/usr/bin/gdb" gdb "/bin/gdb" 50
@@ -241,79 +231,48 @@ install_packages_manually() {
         )
     fi
 
-    # install draw.io
-    SYSTEM_ARCH=$(dpkg --print-architecture)
-    DRAW_IO_VER="29.6.6"
-    DRAW_IO_BIN="drawio-${SYSTEM_ARCH}-${DRAW_IO_VER}.deb"
-    DRAW_IO_URL="https://github.com/jgraph/drawio-desktop/releases/download/v${DRAW_IO_VER}/${DRAW_IO_BIN}"
-    (
-        TEMP_DIR=$(mktemp -d)
-        cd "${TEMP_DIR}" || exit 1
-        wget "${DRAW_IO_URL}"
-        sudo dpkg -i "${DRAW_IO_BIN}"
-    )
+    # --- Draw.io ---
+    install_github_deb \
+        "https://github.com/jgraph/drawio-desktop/releases/download/v${DRAW_IO_VER}/drawio-${SYSTEM_ARCH}-${DRAW_IO_VER}.deb" \
+        "drawio" "${DRAW_IO_VER}"
 
-    # install jetbrains mono nl font
-    JETBRAINS_MONO_VER="2.304"
-    JETBRAINS_MONO_NAME="JetBrainsMono-${JETBRAINS_MONO_VER}.zip"
-    JETBRAINS_MONO_URL="https://download.jetbrains.com/fonts/${JETBRAINS_MONO_NAME}"
-    (
-        # Download the font
-        TEMP_DIR=$(mktemp -d)
-        cd "${TEMP_DIR}" || exit 1
-        wget "${JETBRAINS_MONO_URL}"
-        unzip "${JETBRAINS_MONO_NAME}"
-        cd "fonts/ttf" || exit
+    # --- JetBrains Mono font ---
+    local FONTS_DIR="${HOME}/.local/share/fonts"
+    if [ ! -d "${FONTS_DIR}" ] || ! ls "${FONTS_DIR}"/JetBrainsMono*.ttf &>/dev/null; then
+        local JETBRAINS_MONO_NAME="JetBrainsMono-${JETBRAINS_MONO_VER}.zip"
+        (
+            TEMP_DIR=$(mktemp -d)
+            cd "${TEMP_DIR}" || exit 1
+            wget -q "https://download.jetbrains.com/fonts/${JETBRAINS_MONO_NAME}"
+            unzip -q "${JETBRAINS_MONO_NAME}"
+            mkdir -p "${FONTS_DIR}"
+            cp -f fonts/ttf/*.ttf "${FONTS_DIR}"
+            sudo fc-cache -f -v
+        )
+    else
+        echo -e "${__COLOR_INFO:-}INFO: JetBrains Mono already installed, skipping.${__COLOR_RESET:-}"
+    fi
 
-        # Install it into home director
-        FONTS_DIR="${HOME}/.local/share/fonts"
-        mkdir -p "${FONTS_DIR}"
-        yes | cp -rf *.ttf "${FONTS_DIR}"
+    # --- Buildifier (bazel formatter) ---
+    install_github_binary \
+        "https://github.com/bazelbuild/buildtools/releases/download/v${BUILDIFIER_VER}/buildifier-linux-${UNAME_ARCH}" \
+        "buildifier" "${BUILDIFIER_VER}"
 
-        # Update font cache
-        sudo fc-cache -f -v
-    )
+    # --- Bazelisk (bazel launcher) ---
+    install_github_binary \
+        "https://github.com/bazelbuild/bazelisk/releases/download/v${BAZELISK_VER}/bazelisk-linux-${UNAME_ARCH}" \
+        "bazel" "${BAZELISK_VER}"
 
-    # install buildifier (bazel formatter)
-    BUILDIFIER_VER="8.5.1"
-    BUILDIFIER_BIN="buildifier-linux-amd64"
-    BUILDIFIER_URL="https://github.com/bazelbuild/buildtools/releases/download/v${BUILDIFIER_VER}/${BUILDIFIER_BIN}"
-    (
-        mkdir -p "${HOME}/.local/bin"
-        cd "${HOME}/.local/bin" || exit 1
-        echo -e "${__COLOR_INFO}INFO: Downloading buildifier v${BUILDIFIER_VER}${__COLOR_RESET}"
-        wget -O buildifier "${BUILDIFIER_URL}"
-        chmod +x buildifier
-    )
-
-    # install bazelisk (bazel version manager/launcher)
-    BAZELISK_VER="1.28.1"
-    BAZELISK_BIN="bazelisk-linux-amd64"
-    BAZELISK_URL="https://github.com/bazelbuild/bazelisk/releases/download/v${BAZELISK_VER}/${BAZELISK_BIN}"
-    (
-        mkdir -p "${HOME}/.local/bin"
-        cd "${HOME}/.local/bin" || exit 1
-        echo -e "${__COLOR_INFO}INFO: Downloading bazelisk v${BAZELISK_VER}${__COLOR_RESET}"
-        wget -O bazel "${BAZELISK_URL}"
-        chmod +x bazel
-    )
-
-    # install starpls (starlark language server)
-    STARPLS_VER="0.1.22"
+    # --- Starpls (starlark language server) ---
+    local STARPLS_ARCH
     case "$(uname -m)" in
-        x86_64) STARPLS_ARCH="linux-amd64" ;;
-        aarch64|arm64) STARPLS_ARCH="linux-aarch64" ;;
-        *) echo "Unsupported architecture for starpls"; exit 1 ;;
+        x86_64)         STARPLS_ARCH="linux-amd64" ;;
+        aarch64|arm64)  STARPLS_ARCH="linux-aarch64" ;;
+        *)              echo "Unsupported architecture for starpls"; return 1 ;;
     esac
-    STARPLS_BIN="starpls-${STARPLS_ARCH}"
-    STARPLS_URL="https://github.com/withered-magic/starpls/releases/download/v${STARPLS_VER}/${STARPLS_BIN}"
-    (
-        mkdir -p "${HOME}/.local/bin"
-        cd "${HOME}/.local/bin" || exit 1
-        echo -e "${__COLOR_INFO}INFO: Downloading starpls v${STARPLS_VER}${__COLOR_RESET}"
-        wget -O starpls "${STARPLS_URL}"
-        chmod +x starpls
-    )
+    install_github_binary \
+        "https://github.com/withered-magic/starpls/releases/download/v${STARPLS_VER}/starpls-${STARPLS_ARCH}" \
+        "starpls" "${STARPLS_VER}"
 
     # Install Opencode
     # curl -fsSL https://opencode.ai/install | bash
@@ -329,19 +288,7 @@ install_packages_manually() {
 }
 
 configure_gnupg() {
-    #------------------------------------------------------------------------------#
-    # Hack: setup workstation specific config for git using extra symlink
-    (
-        cd "${DOTFILES}/.gnupg" || exit 1
-        GPG_CONFIG="gpg.conf"
-        TARGET_GPG_CONFIG="gpg.conf.$(hostname)"
-        if [ -f "${TARGET_GPG_CONFIG}" ]; then
-            ln -s -f "${TARGET_GPG_CONFIG}" "${GPG_CONFIG}"
-        else
-            echo -e "${__COLOR_INFO}No specific git configuration for $(hostname) available. Using the default one.${__COLOR_RESET}"
-            ln -s -f "gpg.conf.default" "${GPG_CONFIG}"
-        fi
-    )
+    link_host_config "${DOTFILES}/.gnupg" "gpg.conf" "gpg.conf" "gpg.conf.default"
 }
 
 configure_elora() {
@@ -352,6 +299,7 @@ configure_elora() {
 }
 
 install_base() {
+    install_helpers
     echo -e "${__COLOR_INFO}INFO: Installing minimal required packages for setup...${__COLOR_RESET}"
     install_apt_packages
     install_python_packages
@@ -363,3 +311,8 @@ install_base() {
         configure_elora
     fi
 }
+
+# zsh autoload compatibility: execute on first load
+if [[ -n "${ZSH_VERSION:-}" ]] && [[ "${funcstack[1]:-}" == "install_base" ]]; then
+    install_base "$@"
+fi

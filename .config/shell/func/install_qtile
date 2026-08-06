@@ -41,6 +41,9 @@ install_betterlockscreen()
 
 install_qtile()
 {
+    install_helpers
+    __install_load_versions
+
     echo -e "${__COLOR_INFO}INFO: Install Qtile desktop manager${__COLOR_RESET}"
     QTILE_PYTHON_HOME="${HOME}/.cache/qtile/python"
     QTILE_PYTHON_FILEPATH="${QTILE_PYTHON_HOME}/bin/python3"
@@ -51,7 +54,6 @@ install_qtile()
             # Install Python
             TMP_PYTHON_SRC=$(mktemp -d)
             cd "${TMP_PYTHON_SRC}" || exit 1
-            QTILE_PYTHON_VERSION="3.13.5"
             wget "http://www.python.org/ftp/python/${QTILE_PYTHON_VERSION}/Python-${QTILE_PYTHON_VERSION}.tgz"
             tar -zxvf "Python-${QTILE_PYTHON_VERSION}.tgz"
             cd "Python-${QTILE_PYTHON_VERSION}" || exit 1
@@ -144,12 +146,9 @@ Type=Application
         if [ ! -f "${ROFI_POWER_MENU}" ]
         then
             (
-                # Install Rofi power menu
                 TMP_SRC=$(mktemp -d)
-                cd "${TMP_SRC}" || exit 1
-                git clone https://github.com/jluttine/rofi-power-menu.git
-                cd rofi-power-menu || exit 1
-                cp rofi-power-menu "${ROFI_POWER_MENU}"
+                git_clone_or_pull "https://github.com/jluttine/rofi-power-menu.git" "${TMP_SRC}/rofi-power-menu"
+                cp "${TMP_SRC}/rofi-power-menu/rofi-power-menu" "${ROFI_POWER_MENU}"
             )
         fi
 
@@ -165,3 +164,8 @@ Type=Application
         sudo usermod -a -G video "${USER}"
     fi
 }
+
+# zsh autoload compatibility: execute on first load
+if [[ -n "${ZSH_VERSION:-}" ]] && [[ "${funcstack[1]:-}" == "install_qtile" ]]; then
+    install_qtile "$@"
+fi

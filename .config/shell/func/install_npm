@@ -5,43 +5,41 @@
 
 install_npm()
 {
-    # additional npm dependencies
+    install_helpers
+    __install_load_versions
+
     echo "Install npm dependencies via nvm"
-    NVM_VERSION="0.40.4"
     export NVM_DIR="${HOME}/.config/nvm"
     if [ ! -d "${NVM_DIR}" ]
     then
-        # use nvm to install node, npm, etc. See
-        # https://github.com/nvm-sh/nvm for details.
         echo "Downloading and installing nvm v${NVM_VERSION}"
         mkdir -p "${NVM_DIR}"
-        wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v${NVM_VERSION}/install.sh | bash
+        wget -qO- "https://raw.githubusercontent.com/nvm-sh/nvm/v${NVM_VERSION}/install.sh" | bash
     fi
 
     # load nvm paths
     if [ -s "${NVM_DIR}/nvm.sh" ]
     then
-        # An error might occur here, that we can ignore
         . "${NVM_DIR}/nvm.sh" || true
     fi
 
     if ! command -v nvm &> /dev/null
     then
-        echo "Something went wrong with the installation nvm. Please check 'https://github.com/nvm-sh/nvm' for details.."
+        echo "Something went wrong with the installation of nvm. Please check 'https://github.com/nvm-sh/nvm' for details."
+        return 1
     fi
 
-    # install npm v16 as default
-    NPM_VERSION=22.19
-    echo "Install npm v${NPM_VERSION}"
-    nvm install ${NPM_VERSION}
-    nvm use ${NPM_VERSION}
+    echo "Install Node.js v${NODE_VERSION}"
+    nvm install "${NODE_VERSION}"
+    nvm use "${NODE_VERSION}"
 
-    # install lsp servers, linters, etc.
     if ! command -v npm &> /dev/null
     then
-        echo "Something went wrong with the installation of npm via nvm. Please call 'nvm install 18 && nvm use 18' manually."
+        echo "Something went wrong with the installation of npm via nvm. Please call 'nvm install ${NODE_VERSION} && nvm use ${NODE_VERSION}' manually."
+        return 1
     fi
 
+    # install lsp servers, linters, etc.
     npm install -g \
         yaml-language-server \
         bash-language-server \
@@ -58,16 +56,6 @@ install_npm()
         yarn \
         @github/copilot-language-server
 
-    #------------------------------------------------------------------------------#
-    # Hack: setup workstation specific config for npm using extra symlink
-    (
-        cd "${DOTFILES}/.config/npm" || exit 1
-        TARGET_NPM_CONFIG="npmrc.$(hostname)"
-        if [ -f "${TARGET_NPM_CONFIG}" ]; then
-            ln -s -f "${TARGET_NPM_CONFIG}" "npmrc"
-        else
-            echo -e "${__COLOR_INFO}No specific npm configuration for $(hostname) available. Using the default one.${__COLOR_RESET}"
-            ln -s -f "npmrc.default" "npmrc"
-        fi
-    )
+    # Setup workstation specific npm config
+    link_host_config "${DOTFILES}/.config/npm" "npmrc" "npmrc" "npmrc.default"
 }
