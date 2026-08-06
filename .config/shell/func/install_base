@@ -72,7 +72,8 @@ install_apt_packages() {
         gsimplecal \
         meld \
         autorandr \
-        gdbserver
+        gdbserver \
+        patchelf
 
     # Create save path for flameshot
     mkdit -p "${HOME}/Pictures/Screenshots"
