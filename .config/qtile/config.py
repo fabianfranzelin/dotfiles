@@ -268,7 +268,7 @@ def init_widgets_list(hide_sys_tray: bool = False) -> list[Any]:
         widget.WindowName(
             foreground=my_colors["fg"],
             padding=10,
-            max_chars=50,
+            max_chars=100,
         ),
     ]
     if not hide_sys_tray:
