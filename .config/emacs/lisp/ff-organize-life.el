@@ -57,6 +57,7 @@ DIR: directory path"
       (message "Update main org folder to %s" ff/org-directory))))
 
 (use-package org
+  :straight (:type built-in)
   :demand t
   :preface
   ;; for some reason, this is needed to make org-mode work
@@ -384,7 +385,7 @@ Stops any previously running instance first."
            (propertize "${tags:20}" 'face 'org-tag)
            "${category:15}"
            "${backlinkscount:6}"))
-   (org-roam-database-connector 'sqlite-builtin)
+  (org-roam-database-connector 'sqlite-builtin)
   (org-roam-db-gc-threshold most-positive-fixnum)
   (org-roam-capture-templates
    '(("d" "default" plain

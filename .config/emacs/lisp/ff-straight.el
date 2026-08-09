@@ -37,10 +37,6 @@
 ;; Run M-x use-package-report after startup to see results
 (customize-set-variable 'use-package-compute-statistics t)
 
-;; Install org from straight BEFORE any org feature is loaded,
-;; to prevent the built-in version from being activated.
-(straight-use-package 'org)
-
 ;; ensure all packages to be installed
 (customize-set-variable 'straight-use-package-by-default t)
 
