@@ -110,32 +110,34 @@ Type=Application
                 echo -e "${__COLOR_WARN}The file '${CUSTOM_DESKTOP_FILE_PATH}' already exists. Skip creation. ${__COLOR_RESET}"
             fi
 
-            # Update power management: ignore lid close so external monitors
-            # keep working with the lid closed.
-            # https://askubuntu.com/questions/15520/how-can-i-tell-ubuntu-to-do-nothing-when-i-close-my-laptop-lid
-            echo "Ignore when lid is closed (systemd-logind)"
-            sudo mkdir -p /etc/systemd/logind.conf.d
-            printf '[Login]\nHandleLidSwitch=ignore\nHandleLidSwitchExternalPower=ignore\nHandleLidSwitchDocked=ignore\n' \
-                | sudo tee /etc/systemd/logind.conf.d/lid-ignore.conf > /dev/null
-            sudo systemctl restart systemd-logind
-
-            # GNOME settings daemon can override logind; disable its lid actions too
-            echo "Ignore when lid is closed (gnome-settings-daemon)"
-            gsettings set org.gnome.settings-daemon.plugins.power lid-close-ac-action 'nothing'
-            gsettings set org.gnome.settings-daemon.plugins.power lid-close-battery-action 'nothing'
-
-            UPOWER="/etc/UPower/UPower.conf"
-            if [ -f "${UPOWER}" ]
+            if [ "$(hostname)" = "FEWI-C-0007J" ]
             then
-                echo "Ignore when lid is closed (upower)"
-                sudo sed -i "s/IgnoreLid=false/IgnoreLid=true/g" "${UPOWER}"
-            fi
+                # Update power management: ignore lid close so external monitors
+                # keep working with the lid closed.
+                # https://askubuntu.com/questions/15520/how-can-i-tell-ubuntu-to-do-nothing-when-i-close-my-laptop-lid
+                echo "Ignore when lid is closed (systemd-logind)"
+                sudo mkdir -p /etc/systemd/logind.conf.d
+                printf '[Login]\nHandleLidSwitch=ignore\nHandleLidSwitchExternalPower=ignore\nHandleLidSwitchDocked=ignore\n' \
+                    | sudo tee /etc/systemd/logind.conf.d/lid-ignore.conf > /dev/null
 
-            # Disable autorandr lid listener: it re-matches profiles on lid
-            # close, fails to match (eDP disappears), and falls back to
-            # "default" which turns off external monitors.
-            echo "Disable autorandr lid listener"
-            sudo systemctl disable --now autorandr-lid-listener.service
+                # GNOME settings daemon can override logind; disable its lid actions too
+                echo "Ignore when lid is closed (gnome-settings-daemon)"
+                gsettings set org.gnome.settings-daemon.plugins.power lid-close-ac-action 'nothing'
+                gsettings set org.gnome.settings-daemon.plugins.power lid-close-battery-action 'nothing'
+
+                UPOWER="/etc/UPower/UPower.conf"
+                if [ -f "${UPOWER}" ]
+                then
+                    echo "Ignore when lid is closed (upower)"
+                    sudo sed -i "s/IgnoreLid=false/IgnoreLid=true/g" "${UPOWER}"
+                fi
+
+                # Disable autorandr lid listener: it re-matches profiles on lid
+                # close, fails to match (eDP disappears), and falls back to
+                # "default" which turns off external monitors.
+                echo "Disable autorandr lid listener"
+                sudo systemctl disable --now autorandr-lid-listener.service
+            fi
         fi
 
         # Install rofi
