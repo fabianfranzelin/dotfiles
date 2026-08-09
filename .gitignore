@@ -251,6 +251,7 @@ flycheck_*
 /.config/zigbee2mqtt/*.log
 /.config/zigbee2mqtt/configuration_backup_*.yaml
 /.config/zigbee2mqtt/log/
+/.config/zigbee2mqtt/database.db.tmp
 
 ### Syncthing ###
 /.config/syncthing/cert.pem
