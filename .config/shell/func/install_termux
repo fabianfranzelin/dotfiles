@@ -26,7 +26,6 @@ install_termux()
         termux-api \
         sshpass \
         wget \
-        termux-api \
         jq \
         mosh
 
