@@ -179,4 +179,9 @@ Host pauline
     ###########################################################################
     pkg install root-repo tsu -y
     pkg install docker docker-compose -y
+
+    ###########################################################################
+    #                                  proot                                  #
+    ###########################################################################
+    # https://www.xda-developers.com/old-android-phone-home-server-beat-raspberry-pi/
 }
