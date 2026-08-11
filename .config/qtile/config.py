@@ -318,13 +318,12 @@ def init_widgets_list(hide_sys_tray: bool = False) -> list[Any]:
             padding=4,
         ),
         widget.Sep(linewidth=1, padding=10, foreground=my_colors["grey"]),
-        widget.TextBox(
-            "\uf0eb",
-            foreground=my_colors["yellow"],
-            padding=6,
-        ),
-        widget.Backlight(
-            backlight_name="intel_backlight",
+        widget.GenPollText(
+            func=lambda: subprocess.check_output(
+                ["brightnessctl", "-m"]
+            ).decode().split(",")[3],
+            update_interval=2,
+            fmt="💡 {}",
             foreground=my_colors["yellow"],
             padding=4,
         ),
