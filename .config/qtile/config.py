@@ -296,11 +296,11 @@ def init_widgets_list(hide_sys_tray: bool = False) -> list[Any]:
         widget.Sep(linewidth=1, padding=10, foreground=my_colors["grey"]),
         widget.GenPollText(
             func=lambda: (
-                "\uf293"
-                if subprocess.check_output(
+                lambda out: f"\uf293 {len(out.splitlines()) if out else 0}"
+            )(
+                subprocess.check_output(
                     ["bluetoothctl", "devices", "Connected"], text=True
                 ).strip()
-                else ""
             ),
             update_interval=5,
             foreground=my_colors["blue"],
