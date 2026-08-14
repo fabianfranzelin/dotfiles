@@ -413,6 +413,16 @@ Example usage: (message (my/tramp-call-process-direct \"your-remote-host.com\" \
   ;; the process startup overhead far exceeds the actual operation time.
   (dired-async-skip-fast t))
 
+(defun ff/kill-all-dired-buffers ()
+  "Kill all open Dired buffers."
+  (interactive)
+  (let ((count 0))
+    (dolist (buf (buffer-list))
+      (when (eq (buffer-local-value 'major-mode buf) 'dired-mode)
+        (kill-buffer buf)
+        (cl-incf count)))
+    (message "Killed %d Dired buffer(s)" count)))
+
 ;; rename buffer content: C-x C-q, (wdired) C-c C-c to apply and C-c
 ;; ESC to cancel copy path of file: 0 w in dired buffer
 (use-package dired
