@@ -12,7 +12,10 @@
   :straight (:type built-in)
   :commands eglot-ensure
   :custom
-  (eglot-events-buffer-size 10)
+  (eglot-events-buffer-config '(:size 10 :format short))
+  (eglot-autoshutdown t)
+  (eglot-sync-connect nil)
+  (eglot-max-file-watches 5000)
   :config
   (setq read-process-output-max (* 1024 1024)
         eglot-max-file-watches nil)
