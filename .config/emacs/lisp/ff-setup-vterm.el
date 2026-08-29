@@ -144,8 +144,8 @@ https://github.com/akermu/emacs-libvterm/issues/518"
   (add-to-list 'vterm-keymap-exceptions "M-:")
   ;; this is required for directory tracking in zsh
   (add-to-list 'vterm-eval-cmds '("update-pwd" (lambda (path)
-                                                  (when (file-directory-p path)
-                                                    (setq default-directory path)))))
+                                                 (when (file-directory-p path)
+                                                   (setq default-directory path)))))
   :bind
   (:map global-map
         ("C-x j" . ff/start-vterm)
@@ -163,6 +163,11 @@ https://github.com/akermu/emacs-libvterm/issues/518"
                      (ff/start-vterm)
                      (ff/toggle-shell-vertical-alignment)
                      (ff/start-vterm)))))
+
+(use-package vterm-editor
+  :after vterm
+  :bind (:map vterm-mode-map
+              ("C-c e" . vterm-editor-open)))
 
 (provide 'ff-setup-vterm)
 
