@@ -198,7 +198,7 @@ Here, we combine the little helper functions from the previous section
 to install various versions of Emacs.
 
 First, we use a command line argument parser to get the user defined
-Emacs version. The default one is currently 30.2.
+Emacs version. The default one is currently 31.1.
 
 #+begin_src shell
   usage()
@@ -211,7 +211,7 @@ Emacs version. The default one is currently 30.2.
   }
 
   # Emacs version to be installed
-  __EMACS_VERSION="31"
+  __EMACS_VERSION="31.1"
 
   # Loop through arguments and process them
   while [ $# -gt 0 ]; do
