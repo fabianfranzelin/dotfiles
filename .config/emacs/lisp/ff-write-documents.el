@@ -286,8 +286,16 @@ https://github.com/radian-software/straight.el/issues/240"
   :after org
   :config
   (require 'org-ref-glossary)
-  (add-hook 'org-export-before-parsing-hook 'org-ref-glossary-before-parsing)
-  (add-hook 'org-export-before-parsing-hook 'org-ref-acronyms-before-parsing))
+  (defun ff/org-ref-glossary-dispatch (backend)
+    "Dispatch glossary/acronym processing based on export BACKEND."
+    (if (memq backend '(latex beamer))
+        (progn
+          (org-ref-glossary-before-parsing backend)
+          (org-ref-acronyms-before-parsing backend))
+      (condition-case nil
+          (org-ref-acrossproc backend)
+        (wrong-type-argument nil))))
+  (add-hook 'org-export-before-parsing-hook 'ff/org-ref-glossary-dispatch))
 
 ;; -------------------------------------------------------------------
 ;; PDF-tools: Mainly used to display PDFs and to inverse and forward
