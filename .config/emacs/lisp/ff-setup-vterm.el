@@ -167,7 +167,7 @@ https://github.com/akermu/emacs-libvterm/issues/518"
 (use-package vterm-editor
   :after vterm
   :bind (:map vterm-mode-map
-              ("C-c e" . vterm-editor-open)))
+              ("C-c C-o" . vterm-editor-open)))
 
 (provide 'ff-setup-vterm)
 
