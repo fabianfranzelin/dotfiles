@@ -10,21 +10,6 @@ automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 
-http:
-  # For extra security set this to only accept connections on
-  # localhost if NGINX is on the same machine Uncommenting this will
-  # mean that you can only reach Home Assistant using the proxy, not
-  # directly via IP from other clients.  server_host: 127.0.0.1
-  use_x_forwarded_for: true
-  # You must set the trusted proxy IP address so that Home Assistant
-  # will properly accept connections Set this to your NGINX machine
-  # IP, or localhost if hosted on the same machine.
-  trusted_proxies:
-    - 127.0.0.1       # in case the reverse proxy being on the same IPv4 as the HA    
-    - ::1             # in case the reverse proxy being on the same IPv6 as the HA
-    - 172.17.0.4      # nginx ip address
-    - 172.0.0.0/8   # in case the reverse proxy being under the same docker environment as the HA, and in case the docker IP would change after reboot/restart
-
 # Manual modbus integration for Trovis 5578
 # Check https://github.com/Tom-Bom-badil/trovis-modbus-hass once it is working
 modbus:
