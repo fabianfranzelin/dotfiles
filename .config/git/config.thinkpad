@@ -1,8 +1,7 @@
 [user]
     name = "Fabian Franzelin"
     email = fabian.franzelin@gmail.com
-[credential]
-    helper = cache --timeout=8000000
-    useHttpPath = true
 [credential "https://github.com"]
     helper = !pass keys/fabianfranzelin@github.com
+[include]
+    path = "~/.config/git/config.thinkpad.personal-credentials"

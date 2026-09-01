@@ -17,8 +17,8 @@
                        (list :command-name "sh:generate git credentials"
                              :command-line "./configure --update-git-credentials"
                              :working-dir project-dir)))
-                    (when-let* ((project-dir (locate-dominating-file default-directory "configure"))
-                                (work-project-dir (expand-file-name "workspace/dotfiles-work" (getenv "HOME"))))
+                    (when-let* ((work-project-dir (expand-file-name "workspace/dotfiles-work" (getenv "HOME")))
+                                (project-dir (locate-dominating-file default-directory "configure")))
                       (list
                        (list :command-name "sh:configure personal + work"
                              :command-line (format "./configure --overlay-dir %s" work-project-dir)

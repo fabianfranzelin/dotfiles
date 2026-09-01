@@ -32,3 +32,10 @@ pyproject.toml
 
 .zcompdump*
 .zsh_history
+
+# Auto-generated git config files (not managed by stow)
+\.config/git/config\.host.*
+\.config/git/config\.host$
+\.config/git/.*\.credentials
+\.config/git/.*\.personal-credentials
+\.config/git/.*\.work-credentials

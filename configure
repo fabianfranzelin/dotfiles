@@ -197,6 +197,17 @@ create_symlinks()
         sudo apt-get update && sudo apt-get install -y stow
     fi
 
+    # Remove default symlinks that would conflict with overlay stow.
+    # They will be recreated below if no overlay provides them.
+    # Must happen before the base stow to avoid conflicts.
+    if [ ${#OVERLAY_DIRS[@]} -gt 0 ]; then
+        for target in "${HOME}/.config/npm/npmrc" "${HOME}/.docker/config.json" "${HOME}/.gnupg/gpg.conf"; do
+            if [ -L "${target}" ]; then
+                rm -f "${target}"
+            fi
+        done
+    fi
+
     echo -e "${__COLOR_INFO}INFO: Setup symbolic links with GNU stow.${__COLOR_RESET}"
     (
         cd "${DOTFILES}"
@@ -207,20 +218,15 @@ create_symlinks()
         fi
     )
 
-    # Stow overlay directories
-    # Remove default symlinks that would conflict with overlay stow.
-    # They will be recreated below if no overlay provides them.
-    if [ ${#OVERLAY_DIRS[@]} -gt 0 ]; then
-        for target in "${HOME}/.config/npm/npmrc" "${HOME}/.docker/config.json" "${HOME}/.gnupg/gpg.conf"; do
-            if [ -L "${target}" ]; then
-                rm -f "${target}"
-            fi
-        done
-    fi
-
     for overlay in "${OVERLAY_DIRS[@]}"; do
         if [ -d "${overlay}" ]; then
             echo -e "${__COLOR_INFO}INFO: Stowing overlay: ${overlay}${__COLOR_RESET}"
+            # Remove base-stow symlinks that the overlay will replace
+            for target in "${HOME}/.config/npm/npmrc" "${HOME}/.docker/config.json" "${HOME}/.gnupg/gpg.conf"; do
+                if [ -L "${target}" ]; then
+                    rm -f "${target}"
+                fi
+            done
             (cd "${overlay}" && stow -R . -t "${HOME}")
         else
             echo -e "${__COLOR_ERR}Overlay directory not found: ${overlay}${__COLOR_RESET}"
@@ -309,6 +315,9 @@ then
     create_symlinks
 fi
 
+# Always generate personal git credentials
+generate_git_credentials
+
 # Run overlay configure scripts
 for overlay in "${OVERLAY_DIRS[@]}"; do
     if [ -x "${overlay}/configure" ]; then
@@ -316,3 +325,20 @@ for overlay in "${OVERLAY_DIRS[@]}"; do
         "${overlay}/configure"
     fi
 done
+
+# -------------------------------------------------
+# Hostname-based git config symlinks
+# Runs after overlays so that generated files (e.g. credentials) are available.
+if [ -z "${SKIP_STOW}" ]; then
+    _hostname=$(hostname)
+    git_config_dir="${HOME}/.config/git"
+    for suffix in "" ".infra"; do
+        target="config.${_hostname}${suffix}"
+        link="${git_config_dir}/config.host${suffix}"
+        if [ -e "${git_config_dir}/${target}" ]; then
+            ln -sf "${target}" "${link}"
+        else
+            rm -f "${link}"
+        fi
+    done
+fi
