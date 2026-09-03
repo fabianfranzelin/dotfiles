@@ -197,16 +197,16 @@ create_symlinks()
         sudo apt-get update && sudo apt-get install -y stow
     fi
 
-    # Remove default symlinks that would conflict with overlay stow.
-    # They will be recreated below if no overlay provides them.
-    # Must happen before the base stow to avoid conflicts.
-    if [ ${#OVERLAY_DIRS[@]} -gt 0 ]; then
-        for target in "${HOME}/.config/npm/npmrc" "${HOME}/.docker/config.json" "${HOME}/.gnupg/gpg.conf"; do
-            if [ -L "${target}" ]; then
-                rm -f "${target}"
-            fi
-        done
-    fi
+    # Remove default/overlay-provided symlinks that would conflict with stow.
+    # These targets are not owned by base stow (they are created via ln -sf
+    # after stowing, or provided by an overlay). Remove them unconditionally
+    # so a previous overlay install does not block a subsequent non-overlay
+    # run (and vice versa). They will be recreated below.
+    for target in "${HOME}/.config/npm/npmrc" "${HOME}/.docker/config.json" "${HOME}/.gnupg/gpg.conf"; do
+        if [ -L "${target}" ]; then
+            rm -f "${target}"
+        fi
+    done
 
     echo -e "${__COLOR_INFO}INFO: Setup symbolic links with GNU stow.${__COLOR_RESET}"
     (
