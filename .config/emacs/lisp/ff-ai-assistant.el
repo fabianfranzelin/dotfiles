@@ -76,7 +76,7 @@
   (agent-shell-preferred-agent-config 'opencode)
   (agent-shell-opencode-default-model-id
    (if (string= (system-name) "FEWI-C-0007J")
-       "github-copilot/claude-opus-4.6"
+       "github-copilot/claude-opus-4.7"
      "github-copilot/gpt-5-mini"))
   (agent-shell-goose-authentication
    (agent-shell-make-goose-authentication :none t))
