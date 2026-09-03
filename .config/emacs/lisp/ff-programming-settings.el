@@ -94,6 +94,14 @@ the need to update my project hierarchy."
                   (wrong-type-argument
                    (funcall orig-fn server nil))))))
 
+(use-package dumb-jump
+  :after consult
+  :custom
+  (dumb-jump-prefer-searcher 'rg)
+  (xref-show-definitions-function #'consult-xref)
+  :config
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
+
 ;; -------------------------------------------------------------
 ;; use built-in tree-sitter (Emacs 31+)
 ;; -------------------------------------------------------------
@@ -580,6 +588,11 @@ Uses theme background in GUI, near-black in terminal.")
   :bind (:map csv-mode-map
               ("C-c C-f" . csv-align-fields)
               ("C-c C-u" . csv-unalign-fields)))
+
+;; -----------------------------------------------------------------------------------
+;; Nginx mode
+(use-package nginx-mode
+  :commands nginx-mode)
 
 (provide 'ff-programming-settings)
 

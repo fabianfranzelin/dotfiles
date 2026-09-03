@@ -73,6 +73,9 @@
   :config
   (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 
+(use-package nerd-icons-ibuffer
+  :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
+
 ;; -------------------------------------------------------------
 ;; present a nice dashboard on startup
 (use-package grid

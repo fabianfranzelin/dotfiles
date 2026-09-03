@@ -648,11 +648,41 @@ Returns t so it can be used as :before-while advice without blocking the advised
 ;; -------------------------------------------------------------------
 (customize-set-variable 'auto-save-default nil)
 
-(use-package super-save
+;; (use-package super-save
+;;   :custom
+;;   (super-save-auto-save-when-idle nil)
+;;   :hook
+;;   (after-init . super-save-mode))
+
+(use-package buffer-guardian
   :custom
-  (super-save-auto-save-when-idle nil)
-  :hook
-  (after-init . super-save-mode))
+  ;; When non-nil, include remote files in the auto-save process
+  (buffer-guardian-inhibit-saving-remote-files t)
+
+  ;; When non-nil, buffers visiting nonexistent files are not saved
+  (buffer-guardian-inhibit-saving-nonexistent-files nil)
+
+  ;; Save the buffer even if the window change results in the same buffer
+  (buffer-guardian-save-on-same-buffer-window-change t)
+
+  ;; Non-nil to enable verbose mode to log when a buffer is automatically saved
+  (buffer-guardian-verbose nil)
+
+  ;; Pre-save all package-managed buffers before native save commands run
+  ;; Advise `save-some-buffers' to use `buffer-guardian' logic.
+  ;; When non-nil and `buffer-guardian-mode' is active, this intercepts
+  ;; `save-some-buffers' to silently pre-save package-managed buffers before
+  ;; allowing the native command to run normally.
+  (buffer-guardian-override-save-some-buffers nil)
+
+  ;; Save all buffers after N seconds of user idle time. (Disabled by default)
+  ;; (buffer-guardian-save-all-buffers-idle 30)
+
+  ;; Save all buffers every N seconds. (Disabled by default)
+  ;; (buffer-guardian-save-all-buffers-interval (* 60 30))
+
+  :init
+  (buffer-guardian-mode 1))
 
 ;; -------------------------------------------------------------------
 ;; Popper - handle pop up buffers nicely
