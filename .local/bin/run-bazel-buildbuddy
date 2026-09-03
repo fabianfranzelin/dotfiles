@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+
+cache_root="$(sed -n 's/^[[:space:]]*root_directory:[[:space:]]*//p' "${config_path}" | head -n 1)"
+if [ -z "${cache_root}" ]; then
+    echo "Error: could not read cache.disk.root_directory from ${config_path}" >&2
+    exit 1
+fi
+
+docker run -d \
+    --name buildbuddy \
+    --restart always \
+    -e TZ=Europe/Berlin \
+    -v "${HOME}/.config/bazel_buildbuddy/config.yaml:/config.yaml" \
+    -v "${HOME}/.cache/bazel/buildbuddy-cache:${cache_root}" \
+    -p 8080:8080 \
+    -p 1985:1985 \
+    gcr.io/flame-public/buildbuddy-app-onprem:latest

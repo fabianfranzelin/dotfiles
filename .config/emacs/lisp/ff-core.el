@@ -441,6 +441,29 @@ Example usage: (message (my/tramp-call-process-direct \"your-remote-host.com\" \
   :init
   (require 'dired-x)
   (autoload 'dired-omit-mode "dired-x")
+  :config
+  ;; `dired-vc-rename-file' uses `vc-rename-file' which fails when the
+  ;; source and destination live in different VC roots (e.g. moving a
+  ;; file between two different git repositories). Detect that case and
+  ;; fall back to a plain filesystem rename.
+  (defun ff/dired-rename-file-cross-vc (orig-fun file newname ok-if-already-exists)
+    "Bypass `dired-vc-rename-file' when FILE and NEWNAME are in different VC roots."
+    (let* ((src-root (ignore-errors
+                       (vc-call-backend (vc-responsible-backend file t)
+                                        'root file)))
+           (dst-root (ignore-errors
+                       (vc-call-backend (vc-responsible-backend
+                                         (file-name-directory
+                                          (expand-file-name newname)) t)
+                                        'root (file-name-directory
+                                               (expand-file-name newname))))))
+      (if (and dired-vc-rename-file
+               src-root dst-root
+               (not (file-equal-p src-root dst-root)))
+          (let ((dired-vc-rename-file nil))
+            (funcall orig-fun file newname ok-if-already-exists))
+        (funcall orig-fun file newname ok-if-already-exists))))
+  (advice-add 'dired-rename-file :around #'ff/dired-rename-file-cross-vc)
   :hook
   (dired-mode . auto-revert-mode)
   (dired-mode . dired-hide-details-mode)
