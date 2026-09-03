@@ -5,6 +5,26 @@
   ],
   "model": "ollama/gemma4:12b",
   "provider": {
+    "bosch-model-farm": {
+      "name": "Bosch Model Farm",
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "baseURL": "https://aoai-farm.bosch-temp.com/api/openai/deployments/askbosch-prod-farm-openai-gpt-4o-mini-2024-07-18",
+        "headers": {
+          "api-key": "BMF_KEY_PLACEHOLDER"
+        }
+      },
+      "models": {
+        "askbosch-prod-farm-openai-gpt-4o-mini-2024-07-18": {
+          "name": "GPT-4o Mini (BMF)",
+          "tool_call": true,
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        }
+      }
+    },
     "ollama": {
       "name": "Ollama Local",
       "npm": "@ai-sdk/openai-compatible",

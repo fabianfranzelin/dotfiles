@@ -9,11 +9,11 @@
 ;;
 ;; To filter by specific user/repo:
 ;;   (setq consult-gh-pr-inbox-user "fabian-franzelin_pace")
-;;   (setq consult-gh-pr-inbox-repo "PACE-INT/aos")
+;;   (setq consult-gh-pr-inbox-repo "bosch-rbadas/aos")
 ;;
 ;; Or use let-binding:
 ;;   (let ((consult-gh-pr-inbox-user "fabian-franzelin_pace")
-;;         (consult-gh-pr-inbox-repo "PACE-INT/aos"))
+;;         (consult-gh-pr-inbox-repo "bosch-rbadas/aos"))
 ;;     (consult-gh-pr-inbox))
 
 ;;; Code:

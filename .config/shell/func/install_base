@@ -285,6 +285,9 @@ install_packages_manually() {
 
     # Install qodo
     # npm install -g @qodo/command
+
+    # Install azure sdk for ai
+    # npm install -g @ai-sdk/azure
 }
 
 configure_gnupg() {
