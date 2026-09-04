@@ -61,7 +61,9 @@
   ;; Silence compiler warnings as they can be pretty disruptive
   (customize-set-variable 'native-comp-async-report-warnings-errors nil)
   ;; Make native compilation happens asynchronously
-  (setq native-comp-jit-compilation t))
+  (setq native-comp-jit-compilation t)
+  ;; Disable native compilation when on battery power
+  (customize-set-variable 'native-comp-async-on-battery-power nil))
 
 ;; store the eln-cache into the standard paths of the no-littering
 ;; package

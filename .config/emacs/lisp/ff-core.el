@@ -76,6 +76,7 @@
 
 ;; Support wheel mouse scrolling
 (mouse-wheel-mode t)
+(customize-set-variable 'xterm-mouse-mode nil)  ;; opt-out
 
 ;; enable recentf-mode but ignore files that where opened with docker
 ;; tramp and ssh

@@ -100,7 +100,7 @@ DIR: directory"
 (use-package orderless
   :ensure t
   :custom
-  (completion-styles '(orderless basic))
+  (completion-styles '(orderless basic flex))
   (completion-category-defaults nil)
   (completion-category-overrides '((file (styles basic partial-completion)))))
 

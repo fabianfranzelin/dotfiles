@@ -130,6 +130,7 @@ PROJECT-ROOT: Path to the root directory of the current project."
                              (affe-find "Fuzzy find")))
   (project-vc-extra-root-markers '(".project.el"))
   (project-vc-ignores '("build/" "install/" ".*cache/" "__pycache__"))
+  (project-prune-zombie-projects '((prompt . file-remote-p)))
   :bind
   (:map project-prefix-map
         ("P" . ff/project-switch-project)
