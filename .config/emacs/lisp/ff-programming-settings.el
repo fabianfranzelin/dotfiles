@@ -6,6 +6,19 @@
 ;;; Code:
 
 ;; -------------------------------------------------------------------
+;; Parenthesis highlighting
+;; -------------------------------------------------------------------
+(use-package paren
+  :straight (:type built-in)
+  :hook (prog-mode . show-paren-local-mode)
+  :custom
+  (show-paren-when-point-inside-paren t)
+  (show-paren-when-point-in-periphery t)
+  ;; Emacs 31+: suppress the noisy mismatch flash inside comments/strings
+  ;; while still highlighting balanced pairs there.
+  (show-paren-not-in-comments-or-strings 'on-mismatch))
+
+;; -------------------------------------------------------------------
 ;; LSP Client Eglot
 ;; -------------------------------------------------------------------
 (use-package eglot

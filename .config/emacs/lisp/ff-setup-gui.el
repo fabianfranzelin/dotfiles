@@ -379,6 +379,16 @@ FUN: function to be called on the entry's path"
         ("C-c }" . nil)
         ("C-c {" . nil)))
 
+;; -----------------------------------------------------------------
+;; TTY improvements (Emacs 31+): tooltips via child frames and prettier
+;; special glyphs. Corfu popups automatically use real TTY child frames
+;; when `(featurep 'tty-child-frames)' is non-nil.
+(when (fboundp 'tty-tip-mode)
+  (add-hook 'tty-setup-hook #'tty-tip-mode))
+
+(when (fboundp 'prettify-special-glyphs-mode)
+  (add-hook 'tty-setup-hook #'prettify-special-glyphs-mode))
+
 (provide 'ff-setup-gui)
 
 ;;; ff-setup-gui.el ends here
