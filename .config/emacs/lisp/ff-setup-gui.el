@@ -63,8 +63,14 @@
   :autoload
   (nerd-icons-completion-mode nerd-icons-completion-marginalia-setup)
   :config
-  (nerd-icons-completion-mode t)
-  (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
+  (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup)
+  ;; If marginalia-mode is already active by the time we get here (very likely,
+  ;; since `:after marginalia' can run after marginalia-mode has been toggled
+  ;; on), the hook above won't fire retroactively. Explicitly run the setup so
+  ;; `nerd-icons-completion-mode' is enabled. This is what makes icons show up
+  ;; for `project-find-file' (category `project-file'), `find-file' and every
+  ;; other category dispatched by `nerd-icons-completion-get-icon'.
+  (nerd-icons-completion-marginalia-setup))
 
 (use-package nerd-icons-corfu
   :if (display-graphic-p)
@@ -273,6 +279,9 @@ FUN: function to be called on the entry's path"
 
   (dolist (mode '(proced-mode-hook))
     (add-hook mode (lambda () (visual-line-mode 0)))))
+
+(add-hook 'text-mode-hook #'visual-wrap-prefix-mode)
+(add-hook 'prog-mode-hook #'visual-wrap-prefix-mode)
 
 ;; Icons for corfu completion
 (use-package kind-icon

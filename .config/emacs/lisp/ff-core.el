@@ -10,6 +10,10 @@
 (customize-set-variable 'user-mail-address "fabian.franzelin@gmail.com")
 (customize-set-variable 'inhibit-startup-echo-area-message (getenv "USER"))
 
+(setopt trusted-content
+        (list (expand-file-name "~/workspace/dotfiles/.config/emacs/")
+              (expand-file-name "~/workspace/")))
+
 ;; -------------------------------------------------------------------
 ;; Daemon settings
 ;; -------------------------------------------------------------------
@@ -354,6 +358,15 @@ COMMAND: command to be executed"
   :hook
   (after-init . which-key-mode))
 
+
+;; -------------------------------------------------------------
+;; Make buffer names unique
+(use-package uniquify
+  :straight (:type built-in)
+  :custom
+  (uniquify-buffer-name-style 'forward)
+  (uniquify-dirname-transform 'project-uniquify-dirname-transform))
+
 ;; -------------------------------------------------------------------
 ;; Tramp
 (use-package tramp
@@ -465,6 +478,8 @@ Example usage: (message (my/tramp-call-process-direct \"your-remote-host.com\" \
             (funcall orig-fun file newname ok-if-already-exists))
         (funcall orig-fun file newname ok-if-already-exists))))
   (advice-add 'dired-rename-file :around #'ff/dired-rename-file-cross-vc)
+  (setopt dired-movement-style 'cycle
+          dired-filename-display-length 'window)
   :hook
   (dired-mode . auto-revert-mode)
   (dired-mode . dired-hide-details-mode)
@@ -717,6 +732,8 @@ Returns t so it can be used as :before-while advice without blocking the advised
 ;; -------------------------------------------------------------------
 ;; Ripgrep integration
 ;; -------------------------------------------------------------------
+(setopt grep-use-headings t)
+
 (use-package rg
   :straight (rg :type git :host github :repo "fabianfranzelin/rg.el")
   :preface
