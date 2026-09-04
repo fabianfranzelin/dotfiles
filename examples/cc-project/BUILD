@@ -11,8 +11,7 @@ cc_library(
 # Shared library — should NOT appear as a debuggable target
 cc_binary(
     name = "libnetwork_utils.so",
-    srcs = ["src/network_utils.cpp"],
-    hdrs = ["include/network_utils.h"],
+    srcs = ["src/network_utils.cpp", "include/network_utils.h"],
     includes = ["include"],
     linkshared = True,
 )
