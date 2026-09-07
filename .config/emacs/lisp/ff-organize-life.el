@@ -496,6 +496,9 @@ Stops any previously running instance first."
 
 (use-package consult-org-roam
   :after org-roam
+  :preface
+  ;; Define the list of open org-roam buffers to be empty on startup
+  (setq org-roam-buffer-open-buffer-list nil)
   :custom
   ;; Use `ripgrep' for searching with `consult-org-roam-search'
   (consult-org-roam-grep-func #'consult-ripgrep)
