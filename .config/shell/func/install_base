@@ -292,6 +292,7 @@ install_packages_manually() {
 
     # Install azure sdk for ai
     # npm install -g @ai-sdk/azure
+    # rtk init -g --opencode
 }
 
 configure_gnupg() {
