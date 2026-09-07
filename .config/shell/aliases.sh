@@ -81,3 +81,6 @@ alias kill_gpg_agent="gpgconf --kill gpg-agent"
 
 alias spa='sshpass -p "$(pass passwords/frf2lr@pauline)" ssh frf2lr@pauline'
 alias sp='sshpass -p "$(pass passwords/frf2lr@pauline)" ssh -t frf2lr@pauline "emacsclient -nw -a emacs; exec /usr/bin/zsh"'
+
+# Include rtk in opencode
+alias opencode="rtk run opencode"

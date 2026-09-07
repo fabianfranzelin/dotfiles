@@ -277,6 +277,10 @@ install_packages_manually() {
     # Install Opencode
     # curl -fsSL https://opencode.ai/install | bash
 
+    # Install RTK
+    # curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
+    # rtk init
+
     # Install Ollama
     # curl -fsSL https://ollama.com/install.sh | sh
 

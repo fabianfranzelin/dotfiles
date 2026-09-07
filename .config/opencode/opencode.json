@@ -3,7 +3,7 @@
   "plugin": [
     "opencode-power-pack@git+https://github.com/waybarrios/opencode-power-pack.git"
   ],
-  "model": "ollama/gemma4:12b",
+  "model": "github-copilot/claude-opus-4.7",
   "provider": {
     "bosch-model-farm": {
       "name": "Bosch Model Farm",
