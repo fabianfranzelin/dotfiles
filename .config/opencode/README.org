@@ -148,3 +148,25 @@ GitHub Copilot models work reliably with full tool support:
 - =github-copilot/gemini-2.5-pro=
 
 Use =/connect= in OpenCode to authenticate with GitHub Copilot.
+* Docupedia MCP and opencode
+
+#+BEGIN_SRC json
+  "mcp": {
+    "docupedia-docker-mcp-server": {
+      "type": "local",
+      "command": [
+        "run-docupedia-mcp"
+      ],
+      "enabled": true,
+      "env": {
+        "TRANSPORT": "stdio",
+        "HOST": "localhost",
+        "HOST_PORT": "8000",
+        "HTTP_PROXY": "http://rb-proxy-de.bosch.com:8080",
+        "HTTPS_PROXY": "http://rb-proxy-de.bosch.com:8080",
+        "http_proxy": "http://rb-proxy-de.bosch.com:8080",
+        "https_proxy": "http://rb-proxy-de.bosch.com:8080"
+      }
+    }
+  }
+#+END_SRC
