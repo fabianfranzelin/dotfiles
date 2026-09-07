@@ -4,6 +4,7 @@
     "opencode-power-pack@git+https://github.com/waybarrios/opencode-power-pack.git"
   ],
   "model": "github-copilot/claude-opus-4.7",
+  "lsp": true,
   "provider": {
     "bosch-model-farm": {
       "name": "Bosch Model Farm",
