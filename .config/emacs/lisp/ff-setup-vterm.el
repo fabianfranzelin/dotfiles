@@ -159,8 +159,8 @@ https://github.com/akermu/emacs-libvterm/issues/518"
         ;; LF works both there and in zsh's ZLE.  If a TUI truly needs
         ;; a raw CR, it can still be sent via `C-q C-m'.
         ;; See https://github.com/akermu/emacs-libvterm/issues/518
-        ("<return>" . vterm-send-C-j)
-        ("RET" . vterm-send-C-j)
+        ("<return>" . vterm-send-return)
+        ("RET" . vterm-send-return)
         ("C-q" . vterm-send-next-key)
         ("C-y" . vterm-yank)
         ("C-x 2" . ff/open-vterm-below)
