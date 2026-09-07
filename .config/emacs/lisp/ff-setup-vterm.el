@@ -151,6 +151,16 @@ https://github.com/akermu/emacs-libvterm/issues/518"
         ("C-x j" . ff/start-vterm)
         :map vterm-mode-map
         ;; my own key bindings
+        ;; Send LF (C-j) on RET instead of CR (C-m).
+        ;; Many subprograms (sudo's getpass, apt's Y/n prompt, git's
+        ;; y/N confirmations, ...) reconfigure the pty with -icrnl, so
+        ;; the CR that `vterm-send-return' emits is never translated to
+        ;; a newline and the prompt hangs (visible as a literal ⌃M).
+        ;; LF works both there and in zsh's ZLE.  If a TUI truly needs
+        ;; a raw CR, it can still be sent via `C-q C-m'.
+        ;; See https://github.com/akermu/emacs-libvterm/issues/518
+        ("<return>" . vterm-send-C-j)
+        ("RET" . vterm-send-C-j)
         ("C-q" . vterm-send-next-key)
         ("C-y" . vterm-yank)
         ("C-x 2" . ff/open-vterm-below)
