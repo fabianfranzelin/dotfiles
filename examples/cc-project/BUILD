@@ -8,17 +8,6 @@ cc_library(
     includes = ["include"],
 )
 
-# Shared library — should NOT appear as a debuggable target
-cc_binary(
-    name = "network_utils_shared.so",
-    srcs = [
-        "include/network_utils.h",
-        "src/network_utils.cpp",
-    ],
-    includes = ["include"],
-    linkshared = True,
-)
-
 cc_binary(
     name = "main",
     srcs = ["main.cpp"],
