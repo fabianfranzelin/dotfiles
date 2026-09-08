@@ -225,7 +225,10 @@ FUN: function to be called on the entry's path"
   :config
   ;; only load icons if kind-icon is available
   (with-eval-after-load 'kind-icon
-    (customize-set-variable 'doom-modeline-icon t)))
+    (customize-set-variable 'doom-modeline-icon t))
+  ;; Show tab-bar tab name in magit's modeline (uses the `vcs' layout)
+  ;; without re-listing every segment.
+  (doom-modeline-add-segment 'workspace-name 'bar :after 'vcs))
 
 ;; show current time in mode line
 (customize-set-variable 'display-time-default-load-average nil)
