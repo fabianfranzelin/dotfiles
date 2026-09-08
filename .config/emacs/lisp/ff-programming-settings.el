@@ -231,6 +231,11 @@ Uses theme background in GUI, near-black in terminal.")
 (require 'ff-programming-cc)
 
 ;; -------------------------------------------------------------------
+;; Bazel
+;; -------------------------------------------------------------------
+(require 'ff-programming-bazel)
+
+;; -------------------------------------------------------------------
 ;; CRAN R
 ;; -------------------------------------------------------------------
 (use-package ess
@@ -531,60 +536,6 @@ Uses theme background in GUI, near-black in terminal.")
   (httpd-host 'local))
 
 ;; -----------------------------------------------------------------------------------
-;; Bazel
-;; for getting compile commands code: https://github.com/hedronvision/bazel-compile-commands-extractor
-
-(add-hook 'bazel-mode-hook #'eglot-ensure)
-
-(use-package bazel
-  :mode (("\\.bzl\\'" . bazel-mode)
-         ("BUILD\\'" . bazel-mode)
-         ("BUILD\\.bazel\\'" . bazel-mode)
-         ("WORKSPACE\\'" . bazel-mode)
-         ("WORKSPACE\\.bazel\\'" . bazel-mode))
-  :bind (:map
-         global-map
-         ("C-c b b" . bazel-build)
-         ("C-c b t" . bazel-test)
-         ("C-c b r" . bazel-run)
-         ("C-c b q" . bazel-query)
-         ("C-c b c" . bazel-coverage)
-         ("C-c b m" . ff/bazel-transient)))
-
-;; use apheleia for formatting instead of bazel-buildifier package
-(with-eval-after-load 'apheleia
-  (add-hook 'bazel-mode-hook 'apheleia-mode)
-  (setf (alist-get 'buildifier apheleia-formatters)
-        '("buildifier" filepath))
-  (setf (alist-get 'bazel-mode apheleia-mode-alist) 'buildifier))
-
-(with-eval-after-load 'eglot
-  ;; register starpls as lsp server for bazel-mode (starlark lsp)
-  (add-to-list 'eglot-server-programs
-               '(bazel-mode .
-                            ("starpls" "server"
-                             "--experimental_infer_ctx_attributes"
-                             "--experimental_use_code_flow_analysis"
-                             "--experimental_enable_label_completions"))))
-
-;; Transient menu for Bazel (similar to VSCode command palette)
-(transient-define-prefix ff/bazel-transient ()
-  "Bazel commands."
-  ["Bazel"
-   ["Build/Test/Run"
-    ("b" "Build" bazel-build)
-    ("t" "Test" bazel-test)
-    ("r" "Run" bazel-run)
-    ("c" "Coverage" bazel-coverage)]
-   ["Query"
-    ("q" "Query" bazel-query)]
-   ["Format"
-    ("f" "Format file" (lambda () (interactive) (apheleia-format-buffer)))
-    ("F" "Format all BUILD files" (lambda ()
-                                    (interactive)
-                                    (shell-command "find . -type f \\( -name BUILD -o -name BUILD.bazel \\) -exec buildifier {} +")))]])
-
-;; -----------------------------------------------------------------------------------
 ;; CSV mode
 
 (use-package csv-mode
@@ -609,81 +560,6 @@ Uses theme background in GUI, near-black in terminal.")
 (use-package nginx-mode
   :commands nginx-mode)
 
-;; -----------------------------------------------------------------------------------
-;; Bazel helpers
-;; -----------------------------------------------------------------------------------
-(defun ff/bazel--project-root ()
-  "Return the absolute path of the enclosing Bazel workspace, or nil."
-  (let ((root (locate-dominating-file default-directory "MODULE.bazel")))
-    (and root (expand-file-name root))))
-
-(defvar ff/bazel--output-path-cache (make-hash-table :test 'equal)
-  "Cache mapping Bazel project roots to their `bazel info output_path'.")
-
-(defun ff/bazel--output-path (project-dir)
-  "Return `bazel info output_path' for PROJECT-DIR, cached."
-  (or (gethash project-dir ff/bazel--output-path-cache)
-      (puthash project-dir
-               (string-trim
-                (shell-command-to-string
-                 (format "cd %s && bazel info output_path 2>/dev/null"
-                         (shell-quote-argument project-dir))))
-               ff/bazel--output-path-cache)))
-
-(defun ff/bazel-target-output-files ()
-  "Fuzzy-select a Bazel target and show the paths of its output files.
-Lists all targets under //... via `bazel query', prompts with
-`completing-read' (works with vertico + orderless as a fuzzy find),
-then uses `bazel cquery --output=files' to resolve the target's actual
-output artifacts.  The resulting absolute paths are shown in a
-dedicated buffer and copied to the kill ring."
-  (interactive)
-  (let* ((project-dir (or (ff/bazel--project-root)
-                          (user-error "Not inside a Bazel workspace (no MODULE.bazel)")))
-         (default-directory project-dir)
-         (_ (message "Querying Bazel targets..."))
-         (targets-raw (string-trim
-                       (shell-command-to-string
-                        (format "cd %s && bazel query --keep_going \"//...\" 2>/dev/null"
-                                (shell-quote-argument project-dir)))))
-         (targets (split-string targets-raw "\n" t))
-         (_ (unless targets (user-error "No Bazel targets found")))
-         (target (completing-read "Bazel target: " targets nil t))
-         (_ (message "Resolving output files for %s..." target))
-         (files-raw (string-trim
-                     (shell-command-to-string
-                      (format "cd %s && bazel cquery %s --output=files 2>/dev/null"
-                              (shell-quote-argument project-dir)
-                              (shell-quote-argument target)))))
-         (rel-files (split-string files-raw "\n" t))
-         (output-path (ff/bazel--output-path project-dir))
-         (abs-files
-          (mapcar (lambda (f)
-                    (cond
-                     ((file-name-absolute-p f) f)
-                     ((string-prefix-p "bazel-out/" f)
-                      ;; bazel-out/<cfg>/bin/... -> <output_path>/<cfg>/bin/...
-                      (expand-file-name (substring f (length "bazel-out/"))
-                                        output-path))
-                     (t (expand-file-name f project-dir))))
-                  rel-files)))
-    (if (null abs-files)
-        (message "Target %s has no output files" target)
-      (kill-new (mapconcat #'identity abs-files "\n"))
-      (with-current-buffer (get-buffer-create "*bazel outputs*")
-        (let ((inhibit-read-only t))
-          (erase-buffer)
-          (insert (format "# Output files for %s\n" target))
-          (insert (format "# Project: %s\n\n" project-dir))
-          (dolist (f abs-files) (insert f "\n")))
-        (goto-char (point-min))
-        (special-mode)
-        (display-buffer (current-buffer)))
-      (message "%d output file(s) for %s (copied to kill ring)"
-               (length abs-files) target))
-    abs-files))
-
-(global-set-key (kbd "C-c b o") #'ff/bazel-target-output-files)
 
 (provide 'ff-programming-settings)
 
