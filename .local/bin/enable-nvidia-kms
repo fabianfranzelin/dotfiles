@@ -22,6 +22,15 @@
 
 set -euo pipefail
 
+# This script is tailored to a specific host (NVIDIA proprietary + USB-C dock
+# setup). Refuse to run anywhere else to avoid clobbering unrelated systems.
+EXPECTED_HOST=FEWI-C-0007J
+CURRENT_HOST=$(hostname)
+if [[ "${CURRENT_HOST}" != "${EXPECTED_HOST}" ]]; then
+    echo "Refusing to run: this script is only for host '${EXPECTED_HOST}' (current: '${CURRENT_HOST}')." >&2
+    exit 1
+fi
+
 if [[ $EUID -ne 0 ]]; then
     echo "This script must be run as root (use sudo)." >&2
     exit 1
