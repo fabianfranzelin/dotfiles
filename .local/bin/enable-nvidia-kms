@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+# enable-nvidia-kms - Enable NVIDIA DRM kernel mode-setting.
+#
+# Purpose:
+#   The NVIDIA proprietary driver only emits DRM hotplug uevents (needed for
+#   udev + autorandr + qtile's screen_change hook to react to external monitor
+#   plug/unplug through a USB-C / Thunderbolt dock) when nvidia-drm KMS is on.
+#
+#   Without this, unplugging & replugging an external monitor requires logging
+#   out and back in for it to be re-detected on X11.
+#
+# What it does:
+#   1. Adds "options nvidia-drm modeset=1 fbdev=1" to /etc/modprobe.d/nvidia-kms.conf
+#   2. Adds "nvidia-drm.modeset=1" to GRUB_CMDLINE_LINUX_DEFAULT
+#   3. Rebuilds the initramfs and updates GRUB
+#
+# Requires root. Reboot afterwards.
+#
+# Verify after reboot with:
+#   cat /sys/module/nvidia_drm/parameters/modeset   # -> Y
+#   cat /sys/module/nvidia_drm/parameters/fbdev     # -> Y
+
+set -euo pipefail
+
+if [[ $EUID -ne 0 ]]; then
+    echo "This script must be run as root (use sudo)." >&2
+    exit 1
+fi
+
+MODPROBE_CONF=/etc/modprobe.d/nvidia-kms.conf
+GRUB_CONF=/etc/default/grub
+
+echo "==> Writing ${MODPROBE_CONF}"
+cat >"${MODPROBE_CONF}" <<'EOF'
+# Enable DRM kernel mode-setting for the NVIDIA proprietary driver.
+# Required so external monitors connected via a USB-C/Thunderbolt dock are
+# hot-plug detected on X11 (emits DRM change uevents consumed by udev +
+# autorandr).
+options nvidia-drm modeset=1 fbdev=1
+EOF
+
+echo "==> Ensuring nvidia-drm.modeset=1 is in ${GRUB_CONF}"
+if grep -q 'nvidia-drm.modeset=1' "${GRUB_CONF}"; then
+    echo "    already present, skipping"
+else
+    cp -a "${GRUB_CONF}" "${GRUB_CONF}.bak.$(date +%Y%m%d%H%M%S)"
+    sed -i -E \
+        's/^(GRUB_CMDLINE_LINUX_DEFAULT=")([^"]*)"/\1\2 nvidia-drm.modeset=1"/' \
+        "${GRUB_CONF}"
+    # Collapse double spaces if the original ended with a space.
+    sed -i -E 's/  +nvidia-drm.modeset=1/ nvidia-drm.modeset=1/' "${GRUB_CONF}"
+fi
+
+echo "==> Rebuilding initramfs"
+update-initramfs -u
+
+echo "==> Updating GRUB"
+update-grub
+
+echo
+echo "Done. Reboot to activate NVIDIA DRM KMS."
+echo "After reboot verify with:"
+echo "    cat /sys/module/nvidia_drm/parameters/modeset"

@@ -137,6 +137,13 @@ keys = [
     Key([], "XF86MonBrightnessUp", lazy.spawn("brightnessctl set +10%")),
     # Screenshot
     Key([mod], "p", lazy.spawn("flameshot gui"), desc="Screenshot with Flameshot"),
+    # Monitor hotplug: re-run autorandr to re-detect displays
+    Key(
+        [mod, "shift"],
+        "m",
+        lazy.spawn("autorandr --change --default default"),
+        desc="Re-detect monitors via autorandr",
+    ),
     # Audio
     Key([], "XF86AudioMute", lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle")),
     Key(
@@ -455,6 +462,19 @@ auto_minimize = True
 def startup() -> None:
     """Execute some applications at startup of qtile."""
     subprocess.Popen([Path("~/.config/qtile/startup.sh").expanduser()])  # noqa: SIM115
+
+
+@hook.subscribe.screen_change  # type: ignore
+def screen_change(_event) -> None:
+    """Re-run autorandr and reconfigure qtile screens on monitor hotplug.
+
+    Triggered by RandR ScreenChangeNotify events (monitor plugged/unplugged).
+    autorandr picks the matching profile; qtile then rebuilds its screens.
+    """
+    subprocess.Popen(  # noqa: SIM115
+        ["autorandr", "--change", "--default", "default"],
+    )
+    qtile.reconfigure_screens()
 
 
 # When using the Wayland backend, this can be used to configure input devices.
