@@ -91,6 +91,27 @@ dedicated buffer and copied to the kill ring."
       (message "%d output file(s) for %s" (length abs-files) target)))
     abs-files))
 
+(defun ff/bazel-build-current-package ()
+  "Run `bazel build' on the Bazel package containing the current buffer's file."
+  (interactive)
+  (let* ((file (or buffer-file-name
+                   (user-error "Current buffer is not visiting a file")))
+         (project-dir (or (ff/bazel--project-root)
+                          (user-error "Not inside a Bazel workspace (no MODULE.bazel)")))
+         (pkg-dir (locate-dominating-file
+                   file
+                   (lambda (dir)
+                     (or (file-exists-p (expand-file-name "BUILD" dir))
+                         (file-exists-p (expand-file-name "BUILD.bazel" dir))))))
+         (_ (unless pkg-dir
+              (user-error "No BUILD file found above %s" file)))
+         (rel (file-relative-name (expand-file-name pkg-dir)
+                                  (expand-file-name project-dir)))
+         (pkg (directory-file-name (if (string= rel "./") "" rel)))
+         (target (format "//%s:all" (if (string= pkg ".") "" pkg)))
+         (default-directory project-dir))
+    (compile (format "bazel build %s" (shell-quote-argument target)))))
+
 ;; When completing Bazel targets (e.g. via `bazel-build'), automatically append
 ;; a "/" after completing a package name so the user can immediately keep
 ;; descending into subpackages with TAB (mimicking file-name completion).
@@ -146,7 +167,8 @@ dedicated buffer and copied to the kill ring."
          ("C-c b q" . bazel-query)
          ("C-c b c" . bazel-coverage)
          ("C-c b m" . ff/bazel-transient)
-         ("C-c b o" . ff/bazel-target-output-files)))
+         ("C-c b o" . ff/bazel-target-output-files)
+         ("C-c b f" . ff/bazel-build-current-package)))
 
 ;; use apheleia for formatting instead of bazel-buildifier package
 (with-eval-after-load 'apheleia
