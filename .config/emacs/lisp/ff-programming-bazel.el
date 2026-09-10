@@ -91,6 +91,47 @@ dedicated buffer and copied to the kill ring."
       (message "%d output file(s) for %s" (length abs-files) target)))
     abs-files))
 
+;; When completing Bazel targets (e.g. via `bazel-build'), automatically append
+;; a "/" after completing a package name so the user can immediately keep
+;; descending into subpackages with TAB (mimicking file-name completion).
+;; We wrap the inner package-name completion table so that its candidates
+;; already carry the trailing slash.  This works with all completion styles
+;; (basic, orderless, ...) because the "/" is part of the candidate itself.
+(defun ff/bazel--package-completion-add-slash (orig-fun &rest args)
+  "Wrap ORIG-FUN's package completion table so candidates end with \"/\"."
+  (let ((table (apply orig-fun args)))
+    (lambda (string predicate action)
+      (cond
+       ;; all-completions: append "/" to every returned candidate.
+       ((eq action t)
+        (mapcar (lambda (c) (if (string-suffix-p "/" c) c (concat c "/")))
+                (all-completions string table predicate)))
+       ;; try-completion: if a unique exact package matches, return it with "/".
+       ((null action)
+        (let* ((bare (try-completion string table predicate)))
+          (cond
+           ((eq bare t) (concat string "/"))
+           ((and (stringp bare)
+                 (eq (try-completion bare table predicate) t))
+            (concat bare "/"))
+           ;; If try-completion returned a partial match that itself is also a
+           ;; valid full candidate (bazel's table strips slashes, hiding the
+           ;; exact-match signal), accept it as complete when it appears in
+           ;; all-completions.
+           ((and (stringp bare)
+                 (member bare (all-completions bare table predicate)))
+            (concat bare "/"))
+           (t bare))))
+       ;; test-completion: accept both "foo" and "foo/" forms.
+       ((eq action 'lambda)
+        (or (test-completion string table predicate)
+            (and (string-suffix-p "/" string)
+                 (test-completion (substring string 0 -1) table predicate))))
+       (t (complete-with-action action table string predicate))))))
+
+(advice-add 'bazel--target-package-completion-table-1 :around
+            #'ff/bazel--package-completion-add-slash)
+
 (use-package bazel
   :mode (("\\.bzl\\'" . bazel-mode)
          ("BUILD\\'" . bazel-mode)
