@@ -168,7 +168,7 @@ dedicated buffer and copied to the kill ring."
          ("C-c b c" . bazel-coverage)
          ("C-c b m" . ff/bazel-transient)
          ("C-c b o" . ff/bazel-target-output-files)
-         ("C-c b f" . ff/bazel-build-current-package)))
+         ("C-c b c" . ff/bazel-build-current-package)))
 
 ;; use apheleia for formatting instead of bazel-buildifier package
 (with-eval-after-load 'apheleia
