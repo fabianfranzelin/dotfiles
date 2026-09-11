@@ -4,6 +4,7 @@ import re
 import subprocess
 from pathlib import Path
 from typing import Any
+import socket
 
 from libqtile import bar, hook, layout, qtile, widget  # type: ignore
 from libqtile.config import Click, Drag, Group, Key, Match, Screen  # type: ignore
@@ -11,7 +12,7 @@ from libqtile.dgroups import simple_key_binder  # type: ignore
 from libqtile.lazy import lazy  # type: ignore
 
 mod = "mod4"
-my_term = "ghostty"
+my_term = "terminator" if socket.gethostname() in ["pauline", "thinkpad"] else "ghostty"
 my_browser = "firefox"
 
 keys = [
@@ -302,9 +303,7 @@ def init_widgets_list(hide_sys_tray: bool = False) -> list[Any]:
         ),
         widget.Sep(linewidth=1, padding=10, foreground=my_colors["grey"]),
         widget.GenPollText(
-            func=lambda: (
-                lambda out: f"\uf293 {len(out.splitlines()) if out else 0}"
-            )(
+            func=lambda: (lambda out: f"\uf293 {len(out.splitlines()) if out else 0}")(
                 subprocess.check_output(
                     ["bluetoothctl", "devices", "Connected"], text=True
                 ).strip()
@@ -323,9 +322,9 @@ def init_widgets_list(hide_sys_tray: bool = False) -> list[Any]:
         widget.Volume(foreground=my_colors["green"], padding=4),
         widget.Sep(linewidth=1, padding=10, foreground=my_colors["grey"]),
         widget.GenPollText(
-            func=lambda: subprocess.check_output(
-                ["brightnessctl", "-m"]
-            ).decode().split(",")[3],
+            func=lambda: subprocess.check_output(["brightnessctl", "-m"])
+            .decode()
+            .split(",")[3],
             update_interval=2,
             fmt="💡 {}",
             foreground=my_colors["yellow"],
@@ -459,6 +458,7 @@ auto_minimize = True
 def startup() -> None:
     """Execute some applications at startup of qtile."""
     subprocess.Popen([Path("~/.config/qtile/startup.sh").expanduser()])  # noqa: SIM115
+
 
 # When using the Wayland backend, this can be used to configure input devices.
 wl_input_rules = None
