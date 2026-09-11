@@ -16,6 +16,9 @@
 ;; -----------------------------------------------------------------------------------
 ;; C/C++
 
+;; Common functions
+(require 'ff-common)
+
 ;; install system dependencies
 (require 'ff-ensure-system-packages)
 
@@ -36,18 +39,6 @@
 
 (defvar ff/cc-conan-cache-host nil
   "Location of the conan cache folder on the host.")
-
-(defun ff/search-replace (file-path regex-str replace-str)
-  "Replace content in file.
-FILE-PATH: file to be changed
-REGEX-STR: regular expression to be replaced
-REPLACE-STR: string that replaces all regex matches"
-  (interactive "P")
-  (with-temp-file file-path
-    (insert-file-contents file-path)
-    (goto-char (point-min))
-    (while (re-search-forward regex-str nil t)
-      (replace-match replace-str))))
 
 (defun ff/container-host-compile-commands-mapping ()
   "Adjust the compile commands of CMake to match the host systems paths."

@@ -5,6 +5,9 @@
 
 ;;; Code:
 
+;; Common functions
+(require 'ff-common)
+
 ;; -----------------------------------------------------------------------------------
 ;; Bazel helpers
 ;; -----------------------------------------------------------------------------------
@@ -152,6 +155,68 @@ dedicated buffer and copied to the kill ring."
 
 (advice-add 'bazel--target-package-completion-table-1 :around
             #'ff/bazel--package-completion-add-slash)
+
+;; Bazel container - host mapping of compile commands.
+(defvar ff/bazel-workspace-folder-container nil
+  "Location of the workspace inside the container.")
+
+(defun ff/bazel-container-host-bazel-compile-commands-mapping ()
+  "Adjust the compile commands of CMake to match the host systems paths."
+  (interactive)
+  (let* ((workspace-folder-host (substring (ff/project-root) 0 (1- (length (ff/project-root)))))
+         (compile-commands-file-path (expand-file-name "compile_commands.json" workspace-folder-host)))
+    ;; replace the workspace folder
+    (message "Replacing %s by %s" ff/bazel-workspace-folder-container workspace-folder-host)
+    (ff/search-replace compile-commands-file-path
+                       ff/bazel-workspace-folder-container
+                       workspace-folder-host)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;   auto-refresh compile_commands.json after every successful bazel build    ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defvar ff/bazel-auto-refresh-compile-commands t
+  "When non-nil, run `bazel run //:refresh_compile_commands' after
+every successful bazel build compilation.")
+
+(defun ff/bazel-maybe-refresh-compile-commands (buffer status)
+  "compilation-finish-functions hook: refresh compile_commands.json.
+Triggers only when BUFFER's compilation command looks like a
+`bazel build' and STATUS indicates success.  Skips itself to avoid
+infinite loops.  Emits messages on failure instead of popping up
+windows.  When `ff/bazel-workspace-folder-container' is non-nil, remaps the
+resulting compile_commands.json paths from the container to the host
+via `ff/bazel-container-host-bazel-compile-commands-mapping'."
+  (when (and ff/bazel-auto-refresh-compile-commands
+             (string-match-p "finished" status)
+             (not (string-match-p "compile_commands refresh"
+                                  (buffer-name buffer)))
+             (with-current-buffer buffer
+               (save-excursion
+                 (goto-char (point-min))
+                 (re-search-forward "bazel build" nil t))))
+    (let* ((project-dir (ff/bazel--project-root))
+           (default-directory (or project-dir default-directory))
+           (compilation-buffer-name-function
+            (lambda (_) "*compile_commands refresh*"))
+           (compilation-finish-functions
+            (list (lambda (_buf st)
+                    (cond
+                     ((not (string-match-p "finished" st))
+                      (message "compile_commands refresh failed: %s"
+                               (string-trim st)))
+                     (t
+                      (when ff/bazel-workspace-folder-container
+                        (ff/bazel-container-host-bazel-compile-commands-mapping))
+                      (message "compile_commands.json refreshed.")))))))
+      (compile "bazel run //:refresh_compile_commands"))))
+
+(add-hook 'compilation-finish-functions
+          #'ff/bazel-maybe-refresh-compile-commands)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                Main imports                                ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package bazel
   :mode (("\\.bzl\\'" . bazel-mode)

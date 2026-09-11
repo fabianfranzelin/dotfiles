@@ -7,6 +7,7 @@
 ;;; Code:
 
 ;; -------------------------------------------------------------------
+(require 'ff-common)
 (require 'ff-core)
 (require 'ff-vertical-completion)
 (require 'ff-setup-vterm)

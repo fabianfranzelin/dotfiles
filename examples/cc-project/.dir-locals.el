@@ -9,7 +9,10 @@
                     (when-let* ((project-dir (locate-dominating-file default-directory "MODULE.bazel")))
                       (list
                        (list :command-name "bazel:build //:main"
-                             :command-line "bazel build //:main && bazel run //:refresh_compile_commands"
+                             :command-line "bazel build //:main"
+                             :working-dir project-dir)
+                       (list :command-name "bazel:clean"
+                             :command-line "bazel clean"
                              :working-dir project-dir)
                        (list :command-name "bazel:run //:main"
                              :command-line "bazel run //:main"
