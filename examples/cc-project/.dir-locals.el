@@ -1,7 +1,9 @@
 ;;; Directory Local Variables
 ;;; For more information see (info "(emacs) Directory Variables")
 
-((nil . ((compile-command . "cd ./examples/cc-project && bazel build //:main && bazel run //:refresh_compile_commands")
+((nil . ((eval . (local-set-key [remap compile] #'ff/bazel-build-current-package))
+         (eval . (local-set-key [remap recompile] #'ff/bazel-build-current-package))
+         (eval . (local-set-key [remap project-compile] #'ff/bazel-build-current-package))
          (eval . (defun run-command-recipe-ff/c++-example ()
                    (append
                     (when-let* ((project-dir (locate-dominating-file default-directory "MODULE.bazel")))
@@ -9,15 +11,15 @@
                        (list :command-name "bazel:build //:main"
                              :command-line "bazel build //:main && bazel run //:refresh_compile_commands"
                              :working-dir project-dir)
-                        (list :command-name "bazel:run //:main"
-                              :command-line "bazel run //:main"
-                              :working-dir project-dir)
-                        (list :command-name "bazel:test //..."
-                              :command-line "bazel test //..."
-                              :working-dir project-dir)
-                        (list :command-name "bazel:test //:network_utils_test"
-                              :command-line "bazel test //:network_utils_test"
-                              :working-dir project-dir)))
+                       (list :command-name "bazel:run //:main"
+                             :command-line "bazel run //:main"
+                             :working-dir project-dir)
+                       (list :command-name "bazel:test //..."
+                             :command-line "bazel test //..."
+                             :working-dir project-dir)
+                       (list :command-name "bazel:test //:network_utils_test"
+                             :command-line "bazel test //:network_utils_test"
+                             :working-dir project-dir)))
                     (when-let* ((project-dir (locate-dominating-file default-directory ".clangd")))
                       (list (list :command-name "cc:cmake main"
                                   :command-line "mkdir -p build && cd build && cmake .."

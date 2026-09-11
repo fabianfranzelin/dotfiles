@@ -26,3 +26,5 @@
     process = git-lfs filter-process
 [include]
     path = "~/.config/git/config.alias"
+[init]
+	defaultBranch = master
