@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/frf2lr/workspace/dotfiles/examples/cc-project/build",
+  "command": "/usr/lib/ccache/c++   -g -o CMakeFiles/main.dir/main.cpp.o -c /home/frf2lr/workspace/dotfiles/examples/cc-project/main.cpp",
+  "file": "/home/frf2lr/workspace/dotfiles/examples/cc-project/main.cpp",
+  "output": "CMakeFiles/main.dir/main.cpp.o"
+}
+]

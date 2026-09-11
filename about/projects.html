@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2026-09-11 Fri 23:33 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Projects</title>
+<meta name="author" content="Fabian Franzelin" />
+<meta name="generator" content="Org Mode" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/custom.css">
+<link rel="stylesheet" href="../css/code.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Menu -->
+<header>
+<nav>
+    <!-- Left: Home -->
+    <ul class="nav-left">
+        <li>
+            <a href="../index.html">Home</a>
+        </li>
+    </ul>
+    <!-- Center: Search box -->
+    <div class="search-container">
+        <input type="text" id="search-input" placeholder="Search..." autocomplete="off" />
+        <div id="search-results"></div>
+    </div>
+    <!-- Right: Section links -->
+    <ul class="nav-right">
+        <li>
+            <a href="../about/index.html">About</a>
+        </li>
+        <li>
+            <a href="../technical/index.html">Technical</a>
+        </li>
+    </ul>
+    <!-- The hamburger menu -->
+    <label for='menu' tabindex="0">
+    ☰
+    </label>
+    <input id='menu' type='checkbox' />
+    <!-- Page sections (populated by JS) -->
+    <ul id="page-sections">
+    </ul>
+</nav>
+</header>
+<!-- Go to top button -->
+<a href="#" id="go-to-top" aria-label="Go to top">&uarr;</a>
+<script>
+(function() {
+  var btn = document.getElementById('go-to-top');
+  var header = document.querySelector('header');
+  if (!header || !btn) return;
+  var observer = new IntersectionObserver(function(entries) {
+    btn.classList.toggle('visible', !entries[0].isIntersecting);
+  }, { threshold: 0 });
+  observer.observe(header);
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+</script>
+<script>
+// Build per-page section navigation from headings
+document.addEventListener('DOMContentLoaded', function() {
+  var container = document.getElementById('page-sections');
+  if (!container) return;
+  var headings = document.querySelectorAll('#content > .outline-2 > h2');
+  if (headings.length < 2) return;
+  headings.forEach(function(h) {
+    var id = h.id || (h.parentElement && h.parentElement.id);
+    if (!id) return;
+    var text = h.textContent.replace(/^[\d.]+\s*/, '').trim();
+    if (!text) return;
+    var li = document.createElement('li');
+    var a = document.createElement('a');
+    a.href = '#' + id;
+    a.textContent = text;
+    li.appendChild(a);
+    container.appendChild(li);
+  });
+  // Highlight active section on scroll
+  var links = container.querySelectorAll('a');
+  if (!links.length) return;
+  var sections = Array.from(links).map(function(a) {
+    return document.getElementById(a.getAttribute('href').slice(1));
+  }).filter(Boolean);
+  function updateActive() {
+    var scrollY = window.scrollY + 100;
+    var active = null;
+    sections.forEach(function(sec, i) {
+      if (sec.offsetTop <= scrollY) active = i;
+    });
+    links.forEach(function(a, i) {
+      a.classList.toggle('active', i === active);
+    });
+  }
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+});
+</script>
+<script defer src="https://unpkg.com/lunr/lunr.js"></script>
+<script defer src="../js/search.js"></script>
+<script defer src="../js/highlight.js"></script>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Projects</h1>
+<div id="outline-container-org71a9cce" class="outline-2">
+<h2 id="org71a9cce">Professional Projects</h2>
+<div class="outline-text-2" id="text-org71a9cce">
+</div>
+<div id="outline-container-org2d3462c" class="outline-3">
+<h3 id="org2d3462c">EDMS — ETAS Data Management System</h3>
+<div class="outline-text-3" id="text-org2d3462c">
+<ul class="org-ul">
+<li><b>Context:</b> Cloud-native platform for recording, managing, and
+analyzing sensor and middleware data for autonomous driving
+validation</li>
+<li><b>Role:</b> Software architect coordinating all tooling development;
+central contact for requirements and prototyping across multiple
+customer projects</li>
+<li><b>Technologies:</b> Python, C++, Docker, Adaptive AUTOSAR</li>
+<li><b>Outcome:</b> Unified data pipeline enabling efficient resimulation and
+statistical analysis of autonomous driving functions</li>
+<li><b>Link:</b> <a href="https://edms.etas.com/">edms.etas.com</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org605af13" class="outline-3">
+<h3 id="org605af13">Scalable Cloud Test Platform for Autonomous Driving</h3>
+<div class="outline-text-3" id="text-org605af13">
+<ul class="org-ul">
+<li><b>Context:</b> Digital test platform requiring elastic compute and storage
+to validate autonomous driving functions at scale</li>
+<li><b>Role:</b> Software architect for test automation; designed heterogeneous
+execution environments from embedded to consumer hardware</li>
+<li><b>Technologies:</b> Python, Kubernetes, Docker, Airflow</li>
+<li><b>Outcome:</b> Scalable open-loop test infrastructure serving three
+concurrent customer projects</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org1aa162a" class="outline-3">
+<h3 id="org1aa162a">Robotaxi Validation Infrastructure (Daimler-Bosch Joint Project)</h3>
+<div class="outline-text-3" id="text-org1aa162a">
+<ul class="org-ul">
+<li><b>Context:</b> Safety-critical validation environment for SAE Level 3–4
+autonomous driving functions in a robotaxi program</li>
+<li><b>Role:</b> Software developer building cloud-based open-loop test
+pipelines compliant with ISO 26262 functional safety standards</li>
+<li><b>Technologies:</b> Python, Airflow, Kubernetes, Docker</li>
+<li><b>Outcome:</b> Production test infrastructure enabling continuous
+validation of safety-critical driving functions</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orge04b0f4" class="outline-3">
+<h3 id="orge04b0f4">PhD Research — Uncertainty Quantification for Subsurface Flows</h3>
+<div class="outline-text-3" id="text-orge04b0f4">
+<ul class="org-ul">
+<li><b>Context:</b> Stochastic analysis of error propagation in
+high-dimensional simulations to identify optimal nuclear waste
+repository sites</li>
+<li><b>Role:</b> Researcher developing data-driven methods for uncertainty
+quantification in large-scale numerical systems</li>
+<li><b>Technologies:</b> Python, C++, HPC clusters</li>
+<li><b>Outcome:</b> Novel methodology published as doctoral thesis (Summa Cum
+Laude), contributing to the SimTech Cluster of Excellence</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org4aff640" class="outline-2">
+<h2 id="org4aff640">Open Source</h2>
+<div class="outline-text-2" id="text-org4aff640">
+</div>
+<div id="outline-container-orge590c6f" class="outline-3">
+<h3 id="orge590c6f">dotfiles</h3>
+<div class="outline-text-3" id="text-orge590c6f">
+<p>
+A comprehensive, CI-tested system configuration repository managing GNU Emacs,
+ZSH, Qtile, and supporting infrastructure via GNU Stow.
+</p>
+
+<ul class="org-ul">
+<li><b>Technologies:</b> Emacs Lisp, Shell, Python, GitHub Actions</li>
+<li><b>Highlights:</b>
+<ul class="org-ul">
+<li>Automated deployment across multiple machines</li>
+<li>Full documentation site with search (org-publish + Lunr.js)</li>
+<li>CI pipeline validating configuration integrity</li>
+</ul></li>
+<li><b>Link:</b> <a href="https://github.com/fabianfranzelin/dotfiles">github.com/fabianfranzelin/dotfiles</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org92929f5" class="outline-2">
+<h2 id="org92929f5">Side Projects &amp; Experiments</h2>
+<div class="outline-text-2" id="text-org92929f5">
+</div>
+<div id="outline-container-org310ff18" class="outline-3">
+<h3 id="org310ff18">Home Automation System</h3>
+<div class="outline-text-3" id="text-org310ff18">
+<p>
+Self-hosted home automation platform using Home Assistant with custom
+integrations.
+</p>
+
+<ul class="org-ul">
+<li><b>Technologies:</b> Home Assistant, Docker, MQTT, Zigbee2MQTT, NGINX</li>
+<li><b>Highlights:</b> IoT device management, automated routines, reverse proxy
+setup</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgfc08faf" class="outline-3">
+<h3 id="orgfc08faf">Ergonomic Keyboard Configuration</h3>
+<div class="outline-text-3" id="text-orgfc08faf">
+<p>
+Custom firmware and layout design for splitkb Elora split keyboard
+with multiple layers optimized for programming workflows.
+</p>
+
+<ul class="org-ul">
+<li><b>Technologies:</b> Vial, QMK firmware</li>
+<li><b>Focus:</b> Reducing hand strain during extended coding sessions</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Fabian Franzelin</p>
+<p class="email">Email: <a href="mailto:fabian.franzelin@gmail.com">fabian.franzelin@gmail.com</a></p>
+<p class="date">Created: 2026-09-11 Fri 23:33</p>
+</div>
+</body>
+</html>

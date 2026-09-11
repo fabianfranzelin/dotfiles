@@ -1,0 +1,3 @@
+/home/frf2lr/workspace/dotfiles/examples/cc-project/build/CMakeFiles/main.dir
+/home/frf2lr/workspace/dotfiles/examples/cc-project/build/CMakeFiles/edit_cache.dir
+/home/frf2lr/workspace/dotfiles/examples/cc-project/build/CMakeFiles/rebuild_cache.dir

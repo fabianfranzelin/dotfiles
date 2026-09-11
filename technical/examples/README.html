@@ -6,14 +6,14 @@
 <!-- 2026-09-11 Fri 23:33 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Fabian Franzelin</title>
+<title>Example Projects to Test Emacs Configuration</title>
 <meta name="author" content="Fabian Franzelin" />
 <meta name="generator" content="Org Mode" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/custom.css">
-<link rel="stylesheet" href="css/code.css">
+<link rel="stylesheet" href="../../css/custom.css">
+<link rel="stylesheet" href="../../css/code.css">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Menu -->
 <header>
@@ -21,7 +21,7 @@
     <!-- Left: Home -->
     <ul class="nav-left">
         <li>
-            <a href="index.html">Home</a>
+            <a href="../../index.html">Home</a>
         </li>
     </ul>
     <!-- Center: Search box -->
@@ -32,10 +32,10 @@
     <!-- Right: Section links -->
     <ul class="nav-right">
         <li>
-            <a href="about/index.html">About</a>
+            <a href="../../about/index.html">About</a>
         </li>
         <li>
-            <a href="technical/index.html">Technical</a>
+            <a href="../../technical/index.html">Technical</a>
         </li>
     </ul>
     <!-- The hamburger menu -->
@@ -105,37 +105,52 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 <script defer src="https://unpkg.com/lunr/lunr.js"></script>
-<script defer src="js/search.js"></script>
-<script defer src="js/highlight.js"></script>
+<script defer src="../../js/search.js"></script>
+<script defer src="../../js/highlight.js"></script>
 </head>
 <body>
 <div id="content" class="content">
-<h1 class="title">Fabian Franzelin</h1>
+<h1 class="title">Example Projects to Test Emacs Configuration</h1>
 <p>
-Software engineer building robust systems in Python and C/C++.
-I work at the intersection of software engineering and automation, bringing
-scientific rigor to production code.
+This folder contains some code examples to test my system
+configuration.
+</p>
+<div id="outline-container-org4e5c7d0" class="outline-2">
+<h2 id="org4e5c7d0">Internal examples</h2>
+<div class="outline-text-2" id="text-org4e5c7d0">
+<ul class="org-ul">
+<li><a href="org-project/README.html">Scientific paper with org-mode</a></li>
+<li><a href="cc-project/README.html">Simple C++/CMake project</a></li>
+<li><a href="python-project/README.html">Simple Python project</a></li>
+<li><a href="ts-project/README.html">TypeScript project (tree-sitter + eglot)</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org0927ae8" class="outline-2">
+<h2 id="org0927ae8">External: Typescript and React</h2>
+<div class="outline-text-2" id="text-org0927ae8">
+<p>
+There is a more complete example available online to test the setup:
+<a href="https://github.com/cpbotha/typescript-emacs-demo.git">Typescript Emacs project (remote)</a>
 </p>
 
-<p>
-I build my development environment from the ground up — from window manager to
-editor — because tooling shapes thinking.
-</p>
-<div id="outline-container-org5da3445" class="outline-2">
-<h2 id="org5da3445"><a href="about/index.html">About Me</a></h2>
-<div class="outline-text-2" id="text-org5da3445">
-<p>
-Professional profile, technical skills, career experience, and how to reach me.
-</p>
+<ol class="org-ol">
+<li>Clone the repository first</li>
+</ol>
+<div class="org-src-container">
+<pre class="src src-shell"><code>git clone <span class="org-string">"https://github.com/cpbotha/typescript-emacs-demo.git"</span> <span class="org-string">"~/workspace"</span>
+<span class="org-builtin">cd</span> <span class="org-string">"~/workspace/typescript-emacs-demo/"</span>
+</code></pre>
 </div>
-</div>
-<div id="outline-container-orgc2055bd" class="outline-2">
-<h2 id="orgc2055bd"><a href="technical/index.html">Technical Documentation</a></h2>
-<div class="outline-text-2" id="text-orgc2055bd">
+
 <p>
-System configurations for GNU Emacs, ZSH, Qtile, and the infrastructure
-that ties them together. CI-tested and deployed via GNU Stow.
+Then install all the npm dependencies before you start the development server
 </p>
+<div class="org-src-container">
+<pre class="src src-shell"><code>npm install
+yarn start
+</code></pre>
+</div>
 </div>
 </div>
 </div>

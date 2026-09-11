@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2026-09-11 Fri 23:33 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Technical Skills</title>
+<meta name="author" content="Fabian Franzelin" />
+<meta name="generator" content="Org Mode" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/custom.css">
+<link rel="stylesheet" href="../css/code.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Menu -->
+<header>
+<nav>
+    <!-- Left: Home -->
+    <ul class="nav-left">
+        <li>
+            <a href="../index.html">Home</a>
+        </li>
+    </ul>
+    <!-- Center: Search box -->
+    <div class="search-container">
+        <input type="text" id="search-input" placeholder="Search..." autocomplete="off" />
+        <div id="search-results"></div>
+    </div>
+    <!-- Right: Section links -->
+    <ul class="nav-right">
+        <li>
+            <a href="../about/index.html">About</a>
+        </li>
+        <li>
+            <a href="../technical/index.html">Technical</a>
+        </li>
+    </ul>
+    <!-- The hamburger menu -->
+    <label for='menu' tabindex="0">
+    ☰
+    </label>
+    <input id='menu' type='checkbox' />
+    <!-- Page sections (populated by JS) -->
+    <ul id="page-sections">
+    </ul>
+</nav>
+</header>
+<!-- Go to top button -->
+<a href="#" id="go-to-top" aria-label="Go to top">&uarr;</a>
+<script>
+(function() {
+  var btn = document.getElementById('go-to-top');
+  var header = document.querySelector('header');
+  if (!header || !btn) return;
+  var observer = new IntersectionObserver(function(entries) {
+    btn.classList.toggle('visible', !entries[0].isIntersecting);
+  }, { threshold: 0 });
+  observer.observe(header);
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+</script>
+<script>
+// Build per-page section navigation from headings
+document.addEventListener('DOMContentLoaded', function() {
+  var container = document.getElementById('page-sections');
+  if (!container) return;
+  var headings = document.querySelectorAll('#content > .outline-2 > h2');
+  if (headings.length < 2) return;
+  headings.forEach(function(h) {
+    var id = h.id || (h.parentElement && h.parentElement.id);
+    if (!id) return;
+    var text = h.textContent.replace(/^[\d.]+\s*/, '').trim();
+    if (!text) return;
+    var li = document.createElement('li');
+    var a = document.createElement('a');
+    a.href = '#' + id;
+    a.textContent = text;
+    li.appendChild(a);
+    container.appendChild(li);
+  });
+  // Highlight active section on scroll
+  var links = container.querySelectorAll('a');
+  if (!links.length) return;
+  var sections = Array.from(links).map(function(a) {
+    return document.getElementById(a.getAttribute('href').slice(1));
+  }).filter(Boolean);
+  function updateActive() {
+    var scrollY = window.scrollY + 100;
+    var active = null;
+    sections.forEach(function(sec, i) {
+      if (sec.offsetTop <= scrollY) active = i;
+    });
+    links.forEach(function(a, i) {
+      a.classList.toggle('active', i === active);
+    });
+  }
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+});
+</script>
+<script defer src="https://unpkg.com/lunr/lunr.js"></script>
+<script defer src="../js/search.js"></script>
+<script defer src="../js/highlight.js"></script>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Technical Skills</h1>
+<div id="outline-container-org18864a0" class="outline-2">
+<h2 id="org18864a0">Programming Languages</h2>
+<div class="outline-text-2" id="text-org18864a0">
+</div>
+<div id="outline-container-org197815f" class="outline-3">
+<h3 id="org197815f">Primary</h3>
+<div class="outline-text-3" id="text-org197815f">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Language</th>
+<th scope="col" class="org-left">Experience Level</th>
+<th scope="col" class="org-left">Context</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Python</td>
+<td class="org-left">Expert</td>
+<td class="org-left">Production systems, scientific computing, CI</td>
+</tr>
+
+<tr>
+<td class="org-left">C/C++</td>
+<td class="org-left">Expert</td>
+<td class="org-left">Embedded systems, performance-critical code</td>
+</tr>
+
+<tr>
+<td class="org-left">CMake</td>
+<td class="org-left">Expert</td>
+<td class="org-left">Build system configuration</td>
+</tr>
+
+<tr>
+<td class="org-left">RST</td>
+<td class="org-left">Advanced</td>
+<td class="org-left">Documenting and note taking</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-org1febd8a" class="outline-3">
+<h3 id="org1febd8a">Secondary</h3>
+<div class="outline-text-3" id="text-org1febd8a">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Language</th>
+<th scope="col" class="org-left">Experience Level</th>
+<th scope="col" class="org-left">Context</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">TypeScript/JavaScript</td>
+<td class="org-left">Intermediate</td>
+<td class="org-left">Web applications</td>
+</tr>
+
+<tr>
+<td class="org-left">Bash</td>
+<td class="org-left">Advanced</td>
+<td class="org-left">System administration, scripting</td>
+</tr>
+
+<tr>
+<td class="org-left">Java</td>
+<td class="org-left">Intermediate</td>
+<td class="org-left">Enterprise applications</td>
+</tr>
+
+<tr>
+<td class="org-left">R</td>
+<td class="org-left">Intermediate</td>
+<td class="org-left">Statistical analysis</td>
+</tr>
+
+<tr>
+<td class="org-left">Emacs Lisp</td>
+<td class="org-left">Advanced</td>
+<td class="org-left">Editor tooling, build automation</td>
+</tr>
+
+<tr>
+<td class="org-left">org-mode</td>
+<td class="org-left">Advanced</td>
+<td class="org-left">Documenting and note taking</td>
+</tr>
+
+<tr>
+<td class="org-left">SQL</td>
+<td class="org-left">Intermediate</td>
+<td class="org-left">Database queries and management</td>
+</tr>
+
+<tr>
+<td class="org-left">LaTeX</td>
+<td class="org-left">Advanced</td>
+<td class="org-left">Scientific writing, documentation</td>
+</tr>
+
+<tr>
+<td class="org-left">Bazel/Starlark</td>
+<td class="org-left">Basic</td>
+<td class="org-left">Hermetic build definitions</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="outline-container-orgcf38855" class="outline-2">
+<h2 id="orgcf38855">Build Systems &amp; CI/CD</h2>
+<div class="outline-text-2" id="text-orgcf38855">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Tool</th>
+<th scope="col" class="org-left">Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Bazel</td>
+<td class="org-left">Hermetic builds for large monorepos</td>
+</tr>
+
+<tr>
+<td class="org-left">CMake</td>
+<td class="org-left">C/C++ project builds</td>
+</tr>
+
+<tr>
+<td class="org-left">GitHub Actions</td>
+<td class="org-left">CI pipelines, automated testing</td>
+</tr>
+
+<tr>
+<td class="org-left">Docker</td>
+<td class="org-left">Containerized dev environments &amp; deployments</td>
+</tr>
+
+<tr>
+<td class="org-left">GNU Stow</td>
+<td class="org-left">Dotfile management and deployment</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-org41f4f0c" class="outline-2">
+<h2 id="org41f4f0c">Development Environment</h2>
+<div class="outline-text-2" id="text-org41f4f0c">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Category</th>
+<th scope="col" class="org-left">Tool</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Editor</td>
+<td class="org-left">GNU Emacs 30 (LSP via Eglot, tree-sitter)</td>
+</tr>
+
+<tr>
+<td class="org-left">Shell</td>
+<td class="org-left">ZSH + Oh-My-Zsh + Powerlevel10k</td>
+</tr>
+
+<tr>
+<td class="org-left">Window Manager</td>
+<td class="org-left">Qtile (Python, tiling)</td>
+</tr>
+
+<tr>
+<td class="org-left">Terminal</td>
+<td class="org-left">Ghostty</td>
+</tr>
+
+<tr>
+<td class="org-left">Version Control</td>
+<td class="org-left">Git, Magit, GitHub (PRs, Actions)</td>
+</tr>
+
+<tr>
+<td class="org-left">Containers</td>
+<td class="org-left">Docker, Docker Compose</td>
+</tr>
+
+<tr>
+<td class="org-left">Package Mgmt</td>
+<td class="org-left">UV (Python), Conan, Bazel (C++), npm (JS)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-orgf0897af" class="outline-2">
+<h2 id="orgf0897af">Infrastructure &amp; Platforms</h2>
+<div class="outline-text-2" id="text-orgf0897af">
+<ul class="org-ul">
+<li>Kubernetes orchestration and cluster management</li>
+<li>Apache Airflow workflow orchestration</li>
+<li>Linux system administration (Debian/Ubuntu)</li>
+<li>Docker containerization and orchestration</li>
+<li>Home automation (Home Assistant, Zigbee, MQTT)</li>
+<li>Self-hosted services and networking</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org58120d7" class="outline-2">
+<h2 id="org58120d7">Domain-Specific Tools</h2>
+<div class="outline-text-2" id="text-org58120d7">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Tool</th>
+<th scope="col" class="org-left">Domain</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Adaptive AUTOSAR</td>
+<td class="org-left">Automotive middleware</td>
+</tr>
+
+<tr>
+<td class="org-left">Enterprise Architect</td>
+<td class="org-left">UML modeling and architecture design</td>
+</tr>
+
+<tr>
+<td class="org-left">Sphinx</td>
+<td class="org-left">API and project documentation</td>
+</tr>
+
+<tr>
+<td class="org-left">Atlassian Suite</td>
+<td class="org-left">Jira, Bitbucket — project management</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-org865ee9c" class="outline-2">
+<h2 id="org865ee9c">Languages</h2>
+<div class="outline-text-2" id="text-org865ee9c">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Language</th>
+<th scope="col" class="org-left">Reading</th>
+<th scope="col" class="org-left">Listening</th>
+<th scope="col" class="org-left">Speaking</th>
+<th scope="col" class="org-left">Writing</th>
+<th scope="col" class="org-left">Conversation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">German</td>
+<td class="org-left">Native</td>
+<td class="org-left">Native</td>
+<td class="org-left">Native</td>
+<td class="org-left">Native</td>
+<td class="org-left">Native</td>
+</tr>
+
+<tr>
+<td class="org-left">English</td>
+<td class="org-left">C1</td>
+<td class="org-left">C1</td>
+<td class="org-left">C1</td>
+<td class="org-left">C1</td>
+<td class="org-left">C1</td>
+</tr>
+
+<tr>
+<td class="org-left">Italian</td>
+<td class="org-left">C1</td>
+<td class="org-left">C1</td>
+<td class="org-left">C1</td>
+<td class="org-left">B2</td>
+<td class="org-left">B2</td>
+</tr>
+
+<tr>
+<td class="org-left">Spanish</td>
+<td class="org-left">B2</td>
+<td class="org-left">B2</td>
+<td class="org-left">B2</td>
+<td class="org-left">B2</td>
+<td class="org-left">B2</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-orgeb59885" class="outline-2">
+<h2 id="orgeb59885">Robotics &amp; Automation</h2>
+<div class="outline-text-2" id="text-orgeb59885">
+<ul class="org-ul">
+<li>ROS (Robot Operating System) — Noetic, Humble</li>
+<li>Sensor integration and data pipelines</li>
+<li>Real-time systems considerations</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org02cedff" class="outline-2">
+<h2 id="org02cedff">Scientific &amp; Technical Writing</h2>
+<div class="outline-text-2" id="text-org02cedff">
+<ul class="org-ul">
+<li>LaTeX (papers, reports, KOMA-Script)</li>
+<li>Org-mode (literate programming, reproducible research)</li>
+<li>Sphinx/RST (API documentation)</li>
+<li>reveal.js (technical presentations)</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Fabian Franzelin</p>
+<p class="email">Email: <a href="mailto:fabian.franzelin@gmail.com">fabian.franzelin@gmail.com</a></p>
+<p class="date">Created: 2026-09-11 Fri 23:33</p>
+</div>
+</body>
+</html>

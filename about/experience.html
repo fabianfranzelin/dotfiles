@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2026-09-11 Fri 23:33 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Experience</title>
+<meta name="author" content="Fabian Franzelin" />
+<meta name="generator" content="Org Mode" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/custom.css">
+<link rel="stylesheet" href="../css/code.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Menu -->
+<header>
+<nav>
+    <!-- Left: Home -->
+    <ul class="nav-left">
+        <li>
+            <a href="../index.html">Home</a>
+        </li>
+    </ul>
+    <!-- Center: Search box -->
+    <div class="search-container">
+        <input type="text" id="search-input" placeholder="Search..." autocomplete="off" />
+        <div id="search-results"></div>
+    </div>
+    <!-- Right: Section links -->
+    <ul class="nav-right">
+        <li>
+            <a href="../about/index.html">About</a>
+        </li>
+        <li>
+            <a href="../technical/index.html">Technical</a>
+        </li>
+    </ul>
+    <!-- The hamburger menu -->
+    <label for='menu' tabindex="0">
+    ☰
+    </label>
+    <input id='menu' type='checkbox' />
+    <!-- Page sections (populated by JS) -->
+    <ul id="page-sections">
+    </ul>
+</nav>
+</header>
+<!-- Go to top button -->
+<a href="#" id="go-to-top" aria-label="Go to top">&uarr;</a>
+<script>
+(function() {
+  var btn = document.getElementById('go-to-top');
+  var header = document.querySelector('header');
+  if (!header || !btn) return;
+  var observer = new IntersectionObserver(function(entries) {
+    btn.classList.toggle('visible', !entries[0].isIntersecting);
+  }, { threshold: 0 });
+  observer.observe(header);
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+</script>
+<script>
+// Build per-page section navigation from headings
+document.addEventListener('DOMContentLoaded', function() {
+  var container = document.getElementById('page-sections');
+  if (!container) return;
+  var headings = document.querySelectorAll('#content > .outline-2 > h2');
+  if (headings.length < 2) return;
+  headings.forEach(function(h) {
+    var id = h.id || (h.parentElement && h.parentElement.id);
+    if (!id) return;
+    var text = h.textContent.replace(/^[\d.]+\s*/, '').trim();
+    if (!text) return;
+    var li = document.createElement('li');
+    var a = document.createElement('a');
+    a.href = '#' + id;
+    a.textContent = text;
+    li.appendChild(a);
+    container.appendChild(li);
+  });
+  // Highlight active section on scroll
+  var links = container.querySelectorAll('a');
+  if (!links.length) return;
+  var sections = Array.from(links).map(function(a) {
+    return document.getElementById(a.getAttribute('href').slice(1));
+  }).filter(Boolean);
+  function updateActive() {
+    var scrollY = window.scrollY + 100;
+    var active = null;
+    sections.forEach(function(sec, i) {
+      if (sec.offsetTop <= scrollY) active = i;
+    });
+    links.forEach(function(a, i) {
+      a.classList.toggle('active', i === active);
+    });
+  }
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+});
+</script>
+<script defer src="https://unpkg.com/lunr/lunr.js"></script>
+<script defer src="../js/search.js"></script>
+<script defer src="../js/highlight.js"></script>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Experience</h1>
+<div id="outline-container-orgd975f1e" class="outline-2">
+<h2 id="orgd975f1e">Professional Experience</h2>
+<div class="outline-text-2" id="text-orgd975f1e">
+</div>
+<div id="outline-container-org7594c02" class="outline-3">
+<h3 id="org7594c02">Software Architect — ETAS Middleware for Autonomous Driving</h3>
+<div class="outline-text-3" id="text-org7594c02">
+<p>
+<b>Robert Bosch GmbH, Gerlingen | June 2022 – Present</b>
+</p>
+
+<p>
+Technical coordination, portfolio management, and organizational
+development as software architect leading five agile teams. Core
+responsibilities include:
+</p>
+
+<ul class="org-ul">
+<li>Architecting systems for recording sensor and middleware data</li>
+<li>Designing resimulation pipelines that replay application software
+against recorded data</li>
+<li>Building efficient functional and non-functional statistical
+analysis tooling for software and data</li>
+<li>Serving as the central point of contact for requirements engineering
+and developing software designs and prototypes across multiple
+customer projects</li>
+</ul>
+
+<p>
+Technologies: Python, C++, Docker, Adaptive AUTOSAR
+</p>
+
+<p>
+(<a href="https://edms.etas.com/">EDMS Homepage</a>)
+</p>
+</div>
+</div>
+<div id="outline-container-org8b46d30" class="outline-3">
+<h3 id="org8b46d30">Software Architect — Cloud Test Platform</h3>
+<div class="outline-text-3" id="text-org8b46d30">
+<p>
+<b>Robert Bosch GmbH, Gerlingen | January 2020 – December 2021</b>
+</p>
+
+<p>
+Technical coordination as software architect for four agile teams
+building a scalable digital test platform in the cloud (Data +
+Compute) with heterogeneous execution environments ranging from
+embedded to consumer hardware for autonomous driving functions.
+</p>
+
+<ul class="org-ul">
+<li>Managed three customer projects as central technical contact for
+open-loop test strategies</li>
+<li>Drove tool development for both customer-facing and
+platform-internal projects</li>
+<li>Designed scalable compute and data architectures for test execution</li>
+</ul>
+
+<p>
+Technologies: Python, Kubernetes, Docker, Airflow, Spark, Hadoop
+</p>
+</div>
+</div>
+<div id="outline-container-org91d93c6" class="outline-3">
+<h3 id="org91d93c6">Software Developer — Autonomous Driving Validation</h3>
+<div class="outline-text-3" id="text-org91d93c6">
+<p>
+<b>Robert Bosch GmbH, Gerlingen | April 2018 – December 2019</b>
+</p>
+
+<p>
+Developed cloud-based open-loop test environments for autonomous
+driving functions (SAE Level 3–4) in a joint venture between Daimler
+AG and Robert Bosch GmbH (robotaxi project).
+</p>
+
+<ul class="org-ul">
+<li>Built safety-critical test infrastructure compliant with ISO 26262
+(functional safety)</li>
+<li>Designed and implemented orchestration pipelines for large-scale
+test execution</li>
+<li>Worked with Airflow, Kubernetes, Docker, Spark, and Hadoop</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org7347c56" class="outline-3">
+<h3 id="org7347c56">German Language Instructor</h3>
+<div class="outline-text-3" id="text-org7347c56">
+<p>
+<b>Academia de Idiomas ZADOR, Vitoria-Gasteiz, Spain | January 2012 – May 2012</b>
+</p>
+
+<p>
+Led a German language course for beginners in the Basque Country.
+</p>
+</div>
+</div>
+<div id="outline-container-org28dc01c" class="outline-3">
+<h3 id="org28dc01c">Working Student — Medical Software Development</h3>
+<div class="outline-text-3" id="text-org28dc01c">
+<p>
+<b>Sylvia Lawry Centre for Multiple Sclerosis Research, Munich | December 2007 – April 2010</b>
+</p>
+
+<p>
+Developed analysis and visualization software for accelerometer data
+collected from Multiple Sclerosis patients, supporting clinical
+research into motor function assessment.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgc132936" class="outline-2">
+<h2 id="orgc132936">Industries</h2>
+<div class="outline-text-2" id="text-orgc132936">
+<ul class="org-ul">
+<li>Automotive / Autonomous Driving</li>
+<li>Cloud Computing &amp; DevOps</li>
+<li>Scientific Computing &amp; Research</li>
+<li>Medical Technology</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Fabian Franzelin</p>
+<p class="email">Email: <a href="mailto:fabian.franzelin@gmail.com">fabian.franzelin@gmail.com</a></p>
+<p class="date">Created: 2026-09-11 Fri 23:33</p>
+</div>
+</body>
+</html>

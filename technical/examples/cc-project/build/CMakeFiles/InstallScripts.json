@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/frf2lr/workspace/dotfiles/examples/cc-project/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

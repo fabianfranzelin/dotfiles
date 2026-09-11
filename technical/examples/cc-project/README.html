@@ -6,14 +6,14 @@
 <!-- 2026-09-11 Fri 23:33 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Fabian Franzelin</title>
+<title>Simple C++/CMake Project</title>
 <meta name="author" content="Fabian Franzelin" />
 <meta name="generator" content="Org Mode" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/custom.css">
-<link rel="stylesheet" href="css/code.css">
+<link rel="stylesheet" href="../../../css/custom.css">
+<link rel="stylesheet" href="../../../css/code.css">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Menu -->
 <header>
@@ -21,7 +21,7 @@
     <!-- Left: Home -->
     <ul class="nav-left">
         <li>
-            <a href="index.html">Home</a>
+            <a href="../../../index.html">Home</a>
         </li>
     </ul>
     <!-- Center: Search box -->
@@ -32,10 +32,10 @@
     <!-- Right: Section links -->
     <ul class="nav-right">
         <li>
-            <a href="about/index.html">About</a>
+            <a href="../../../about/index.html">About</a>
         </li>
         <li>
-            <a href="technical/index.html">Technical</a>
+            <a href="../../../technical/index.html">Technical</a>
         </li>
     </ul>
     <!-- The hamburger menu -->
@@ -105,37 +105,60 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 <script defer src="https://unpkg.com/lunr/lunr.js"></script>
-<script defer src="js/search.js"></script>
-<script defer src="js/highlight.js"></script>
+<script defer src="../../../js/search.js"></script>
+<script defer src="../../../js/highlight.js"></script>
 </head>
 <body>
 <div id="content" class="content">
-<h1 class="title">Fabian Franzelin</h1>
+<h1 class="title">Simple C++/CMake Project</h1>
 <p>
-Software engineer building robust systems in Python and C/C++.
-I work at the intersection of software engineering and automation, bringing
-scientific rigor to production code.
+This is a minimal C++ project using CMake and Bazel to test Emacs
+configuration for C++ development (eglot, clangd, compilation).
 </p>
-
+<div id="outline-container-orgd52b20e" class="outline-2">
+<h2 id="orgd52b20e">Source Code</h2>
+<div class="outline-text-2" id="text-orgd52b20e">
 <p>
-I build my development environment from the ground up — from window manager to
-editor — because tooling shapes thinking.
-</p>
-<div id="outline-container-org5da3445" class="outline-2">
-<h2 id="org5da3445"><a href="about/index.html">About Me</a></h2>
-<div class="outline-text-2" id="text-org5da3445">
-<p>
-Professional profile, technical skills, career experience, and how to reach me.
+Browse the full source on GitHub:
+<a href="https://github.com/fabianfranzelin/dotfiles/tree/nightly/examples/cc-project">cc-project on GitHub</a>
 </p>
 </div>
 </div>
-<div id="outline-container-orgc2055bd" class="outline-2">
-<h2 id="orgc2055bd"><a href="technical/index.html">Technical Documentation</a></h2>
-<div class="outline-text-2" id="text-orgc2055bd">
+<div id="outline-container-org8006e56" class="outline-2">
+<h2 id="org8006e56">Files</h2>
+<div class="outline-text-2" id="text-org8006e56">
+<ul class="org-ul">
+<li><code>main.cpp</code> - Entry point</li>
+<li><code>CMakeLists.txt</code> - CMake build configuration</li>
+<li><code>MODULE.bazel</code> - Bazel module definition</li>
+<li><code>BUILD</code> - Bazel build file</li>
+<li><code>compile_commands.json</code> - Compilation database for clangd</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org5f71a27" class="outline-2">
+<h2 id="org5f71a27">Debugging</h2>
+<div class="outline-text-2" id="text-org5f71a27">
+</div>
+<div id="outline-container-orgb33806f" class="outline-3">
+<h3 id="orgb33806f">Emacs (dape)</h3>
+<div class="outline-text-3" id="text-orgb33806f">
 <p>
-System configurations for GNU Emacs, ZSH, Qtile, and the infrastructure
-that ties them together. CI-tested and deployed via GNU Stow.
+A <code>dape-command</code> is configured in <code>.dir-locals.el</code> using GDB's native
+DAP mode. Run <code>M-x dape RET RET</code> to build with debug symbols and
+launch the debugger.
 </p>
+</div>
+</div>
+<div id="outline-container-orgdb78532" class="outline-3">
+<h3 id="orgdb78532">VSCode</h3>
+<div class="outline-text-3" id="text-orgdb78532">
+<p>
+The <code>.vscode/launch.json</code> and <code>.vscode/tasks.json</code> dynamically query
+Bazel for all <code>cc_binary</code> targets and present them in a picker before
+building and debugging.
+</p>
+</div>
 </div>
 </div>
 </div>
