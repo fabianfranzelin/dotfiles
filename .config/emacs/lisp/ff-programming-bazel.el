@@ -192,9 +192,9 @@ via `ff/bazel-container-host-bazel-compile-commands-mapping'."
              (not (string-match-p "compile_commands refresh"
                                   (buffer-name buffer)))
              (with-current-buffer buffer
-               (save-excursion
-                 (goto-char (point-min))
-                 (re-search-forward "bazel build" nil t))))
+               (and (bound-and-true-p compilation-arguments)
+                    (string-match-p "bazel build"
+                                    (or (car compilation-arguments) "")))))
     (let* ((project-dir (ff/bazel--project-root))
            (default-directory (or project-dir default-directory))
            (compilation-buffer-name-function

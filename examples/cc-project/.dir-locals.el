@@ -8,8 +8,8 @@
                    (append
                     (when-let* ((project-dir (locate-dominating-file default-directory "MODULE.bazel")))
                       (list
-                       (list :command-name "bazel:build //:main"
-                             :command-line "bazel build //:main"
+                       (list :command-name "bazel:build //..."
+                             :command-line "bazel build //..."
                              :working-dir project-dir)
                        (list :command-name "bazel:clean"
                              :command-line "bazel clean"
