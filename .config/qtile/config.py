@@ -320,10 +320,7 @@ def init_widgets_list(hide_sys_tray: bool = False) -> list[Any]:
             foreground=my_colors["green"],
             padding=6,
         ),
-        widget.PulseVolume(
-            foreground=my_colors["green"],
-            padding=4,
-        ),
+        widget.Volume(foreground=my_colors["green"], padding=4),
         widget.Sep(linewidth=1, padding=10, foreground=my_colors["grey"]),
         widget.GenPollText(
             func=lambda: subprocess.check_output(
