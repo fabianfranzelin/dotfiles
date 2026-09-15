@@ -207,7 +207,7 @@ Uses theme background in GUI, near-black in terminal.")
 (with-eval-after-load 'apheleia
   (add-hook 'emacs-lisp-mode-hook 'apheleia-mode)
   (setf (alist-get 'emacs-lisp-mode apheleia-mode-alist) 'lisp-indent)
-  (add-hook 'lisp-data-mode 'apheleia-mode)
+  (add-hook 'lisp-data-mode-hook 'apheleia-mode)
   (setf (alist-get 'lisp-data-mode apheleia-mode-alist) 'lisp-indent))
 
 ;; enable rainbow delimiters for emacs lisp
