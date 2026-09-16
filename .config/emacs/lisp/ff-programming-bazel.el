@@ -12,19 +12,9 @@
 ;; Bazel helpers
 ;; -----------------------------------------------------------------------------------
 (defun ff/bazel--project-root ()
-  "Return the absolute path of the outermost enclosing Bazel workspace, or nil.
-Walks up from `default-directory' and returns the highest ancestor that
-contains a MODULE.bazel file.  This ensures nested Bazel workspaces are
-treated as part of the top-level repo, so `bazel query //...' lists every
-target in the repository."
-  (let ((dir (expand-file-name default-directory))
-        (root nil))
-    (while (let ((parent (file-name-directory (directory-file-name dir))))
-             (when (file-exists-p (expand-file-name "MODULE.bazel" dir))
-               (setq root dir))
-             (and parent (not (string= parent dir))
-                  (setq dir parent))))
-    root))
+  "Return the absolute path of the enclosing Bazel workspace, or nil."
+  (let ((root (locate-dominating-file default-directory "MODULE.bazel")))
+    (and root (expand-file-name root))))
 
 (defvar ff/bazel--output-path-cache (make-hash-table :test 'equal)
   "Cache mapping Bazel project roots to their `bazel info output_path'.")
