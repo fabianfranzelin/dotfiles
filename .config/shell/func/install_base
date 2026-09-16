@@ -151,6 +151,9 @@ install_python_packages() {
     # Install uv as default package manager for Python
     curl -LsSf https://astral.sh/uv/install.sh | sh
 
+    # Install nox
+    python3 -m pip install nox
+
     # additional python dependencies
     # python3 -m pip install --upgrade \
         #     virtualenv \
