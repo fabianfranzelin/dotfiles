@@ -1,197 +1,119 @@
-;;; ff-messaging.el --- email and news setup -*- lexical-binding: t; -*-
+;;; ff-messaging.el --- Email and news setup -*- lexical-binding: t; -*-
 
 ;;; Commentary:
+;;
+;; Gnus + SMTP (Gmail) with GPG signing.
+;;
+;; Prerequisites (configured elsewhere):
+;;   - `user-full-name' / `user-mail-address' -> ff-core
+;;   - `auth-sources' via `auth-source-pass'  -> ff-core
+;;     (credentials come from the password-store `authinfo.gpg' entry)
+;;
+;; Layout of this file:
+;;   1. Gmail helpers        - move-to / archive / report-spam
+;;   2. Summary keybindings  - hook installing `y' and `$'
+;;   3. Security (mml-sec)   - PGP signing + encrypt-to-self
+;;   4. Transport (smtpmail) - Gmail SMTP over STARTTLS
+;;   5. Reader (gnus)        - IMAP account + basic behaviour
+;;   6. Dired integration    - attach files from Dired
 
-;;;; Add attachments from Dired (`gnus-dired' does not require `gnus')
+;;; Code:
 
-(setq
- ;; You need to replace this key ID with your own key ID!
- mml-secure-openpgp-signers '("EEC6A7D5C16FDA0479702E3A9A93162835076A72")
- ;; This tells Gnus to get email from Gmail via IMAP.
- gnus-select-method
- '(nnimap "gmail"
-          ;; It could also be imap.googlemail.com if that's your server.
-          (nnimap-address "imap.gmail.com")
-          (nnimap-server-port 993)
-          (nnimap-stream ssl))
- ;; This tells Gnus to use the Gmail SMTP server. This
- ;; automatically leaves a copy in the Gmail Sent folder.
- smtpmail-smtp-server "smtp.gmail.com"
- smtpmail-smtp-service 587
- ;; Tell message mode to use SMTP.
- message-send-mail-function 'smtpmail-send-it
- ;; Gmail system labels have the prefix [Gmail], which matches
- ;; the default value of gnus-ignored-newsgroups. That's why we
- ;; redefine it.
- gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]"
- ;; The agent seems to confuse nnimap, therefore we'll disable it.
- gnus-agent nil
- ;; We don't want local, unencrypted copies of emails we write.
- gnus-message-archive-group nil
- ;; We want to be able to read the emails we wrote.
- mml-secure-openpgp-encrypt-to-self t)
 
-;; Attempt to encrypt all the mails we'll be sending.
-;; (add-hook 'message-setup-hook 'mml-secure-message-encrypt)
+;;;; 1. Gmail helpers ---------------------------------------------------------
 
-;; Add two key bindings for your Gmail experience.
-(add-hook 'gnus-summary-mode-hook 'ff/gnus-summary-keys)
+(defconst ff/gmail-imap-prefix "nnimap+imap.gmail.com:[Gmail]/"
+  "Prefix identifying Gmail system folders in nnimap.")
+
+(defun ff/gmail-move-to (folder)
+  "Move current or marked article(s) to Gmail FOLDER."
+  (gnus-summary-move-article nil (concat ff/gmail-imap-prefix folder)))
+
+;;;###autoload
+(defun ff/gmail-archive ()
+  "Archive current or marked mails into [Gmail]/All Mail."
+  (interactive)
+  (ff/gmail-move-to "All Mail"))
+
+;;;###autoload
+(defun ff/gmail-report-spam ()
+  "Report current or marked mails as spam ([Gmail]/Spam)."
+  (interactive)
+  (ff/gmail-move-to "Spam"))
+
+
+;;;; 2. Summary keybindings ---------------------------------------------------
 
 (defun ff/gnus-summary-keys ()
-  (local-set-key "y" 'gmail-archive)
-  (local-set-key "$" 'gmail-report-spam))
+  "Install Gmail keybindings in `gnus-summary-mode'."
+  (local-set-key (kbd "y") #'ff/gmail-archive)
+  (local-set-key (kbd "$") #'ff/gmail-report-spam))
 
-(defun gmail-archive ()
-  "Archive the current or marked mails.
-This moves them into the All Mail folder."
-  (interactive)
-  (gnus-summary-move-article nil "nnimap+imap.gmail.com:[Gmail]/All Mail"))
 
-(defun gmail-report-spam ()
-  "Report the current or marked mails as spam.
-This moves them into the Spam folder."
-  (interactive)
-  (gnus-summary-move-article nil "nnimap+imap.gmail.com:[Gmail]/Spam"))
+;;;; 3. Security -- PGP signing -----------------------------------------------
+
+(use-package mml-sec
+  :straight (:type built-in)
+  :defer t
+  :custom
+  (mml-secure-openpgp-encrypt-to-self t)
+  (mml-secure-openpgp-signers
+   '("EEC6A7D5C16FDA0479702E3A9A93162835076A72")))
+
+
+;;;; 4. Transport -- Gmail SMTP -----------------------------------------------
+
+(use-package smtpmail
+  :straight (:type built-in)
+  :defer t
+  :custom
+  (smtpmail-smtp-server      "smtp.gmail.com")
+  (smtpmail-smtp-service     587)
+  (smtpmail-stream-type      'starttls)
+  (send-mail-function        'smtpmail-send-it)
+  (message-send-mail-function 'smtpmail-send-it))
+
+
+;;;; 5. Reader -- Gnus over Gmail IMAP ----------------------------------------
+
+(use-package gnus
+  :straight (:type built-in)
+  :defer t
+  :commands (gnus)
+  :hook (gnus-summary-mode . ff/gnus-summary-keys)
+  :custom
+  (gnus-select-method
+   '(nnimap "gmail"
+            (nnimap-address     "imap.gmail.com")
+            (nnimap-server-port 993)
+            (nnimap-stream      ssl)))
+  ;; Gmail system labels are prefixed with "[Gmail]", which the default
+  ;; value of `gnus-ignored-newsgroups' would hide.
+  (gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
+  ;; The agent confuses nnimap; keep it off.
+  (gnus-agent nil)
+  ;; No local, unencrypted copies of outgoing mail.
+  (gnus-message-archive-group nil)
+  ;; Do not prompt "How many articles?" -- just fetch the newest 100.
+  (gnus-large-newsgroup 100)
+  (gnus-newsgroup-maximum-articles 100)
+  ;; Cache read articles locally so re-opening is instant / offline-capable.
+  (gnus-use-cache 'passive)
+  (gnus-cache-enter-articles '(ticked dormant read))
+  (gnus-cache-remove-articles '(read))
+  (gnus-cache-directory (locate-user-emacs-file "gnus/cache/"))
+  (gnus-cacheable-groups "^nnimap")
+  ;; Sort summary buffers newest first: latest article/thread on top.
+  (gnus-article-sort-functions '((not gnus-article-sort-by-date)))
+  (gnus-thread-sort-functions  '((not gnus-thread-sort-by-most-recent-date))))
+
+
+;;;; 6. Dired integration -----------------------------------------------------
 
 (use-package gnus-dired
   :straight (:type built-in)
-  :hook
-  (dired-mode . turn-on-gnus-dired-mode))
+  :hook (dired-mode . turn-on-gnus-dired-mode))
 
-;; (use-package gnus
-;;   :config
-;;   (require 'gnus-sum)
-;;   (require 'gnus-dired)
-;;   (require 'gnus-topic)
-
-;; ;;; accounts
-;;   (setq gnus-select-method '(nnnil ""))
-;;   (setq gnus-search-use-parsed-queries nil) ; Emacs 28
-;;   (setq gnus-gcc-mark-as-read t)
-;;   (setq gnus-agent t)
-;;   (setq gnus-novice-user nil)           ; careful with this
-;;   ;; checking sources
-;;   (setq gnus-check-new-newsgroups 'ask-server)
-;;   (setq gnus-read-active-file 'some)
-;;   ;; dribble
-;;   (setq gnus-use-dribble-file t)
-;;   (setq gnus-always-read-dribble-file t)
-;; ;;; agent
-;;   (setq gnus-agent-article-alist-save-format 1)  ; uncompressed
-;;   (setq gnus-agent-cache t)
-;;   (setq gnus-agent-confirmation-function 'y-or-n-p)
-;;   (setq gnus-agent-consider-all-articles nil)
-;;   (setq gnus-agent-directory "~/News/agent/")
-;;   (setq gnus-agent-enable-expiration 'ENABLE)
-;;   (setq gnus-agent-expire-all nil)
-;;   (setq gnus-agent-expire-days 30)
-;;   (setq gnus-agent-mark-unread-after-downloaded t)
-;;   (setq gnus-agent-queue-mail t)        ; queue if unplugged
-;;   (setq gnus-agent-synchronize-flags nil)
-;; ;;; article
-;;   (setq gnus-article-browse-delete-temp 'ask)
-;;   (setq gnus-article-over-scroll nil)
-;;   (setq gnus-article-show-cursor t)
-;;   (setq gnus-article-sort-functions
-;;         '((not gnus-article-sort-by-number)
-;;           (not gnus-article-sort-by-date)))
-;;   (setq gnus-article-truncate-lines nil)
-;;   (setq gnus-html-frame-width 80)
-;;   (setq gnus-html-image-automatic-caching t)
-;;   (setq gnus-inhibit-images t)
-;;   (setq gnus-max-image-proportion 0.7)
-;;   (setq gnus-treat-display-smileys nil)
-;;   (setq gnus-article-mode-line-format "%G %S %m")
-;;   (setq gnus-visible-headers
-;;         '("^From:" "^To:" "^Cc:" "^Subject:" "^Newsgroups:" "^Date:"
-;;           "Followup-To:" "Reply-To:" "^Organization:" "^X-Newsreader:"
-;;           "^X-Mailer:"))
-;;   (setq gnus-sorted-header-list gnus-visible-headers)
-;;   (setq gnus-article-x-face-too-ugly ".*") ; all images in headers are outright annoying---disabled!
-;; ;;; async
-;;   (setq gnus-asynchronous t)
-;;   (setq gnus-use-article-prefetch 15)
-;; ;;; group
-;;   (setq gnus-level-subscribed 6)
-;;   (setq gnus-level-unsubscribed 7)
-;;   (setq gnus-level-zombie 8)
-;;   (setq gnus-activate-level 1)
-;;   (setq gnus-list-groups-with-ticked-articles nil)
-;;   (setq gnus-group-sort-function
-;;         '((gnus-group-sort-by-unread)
-;;           (gnus-group-sort-by-alphabet)
-;;           (gnus-group-sort-by-rank)))
-;;   (setq gnus-group-line-format "%M%p%P%5y:%B%(%g%)\n")
-;;   (setq gnus-group-mode-line-format "%%b")
-;;   (setq gnus-topic-display-empty-topics nil)
-;; ;;; summary
-;;   (setq gnus-auto-select-first nil)
-;;   (setq gnus-summary-ignore-duplicates t)
-;;   (setq gnus-suppress-duplicates t)
-;;   (setq gnus-save-duplicate-list t)
-;;   (setq gnus-summary-goto-unread nil)
-;;   (setq gnus-summary-make-false-root 'adopt)
-;;   (setq gnus-summary-thread-gathering-function
-;;         'gnus-gather-threads-by-subject)
-;;   (setq gnus-summary-gather-subject-limit 'fuzzy)
-;;   (setq gnus-thread-sort-functions
-;;         '((not gnus-thread-sort-by-date)
-;;           (not gnus-thread-sort-by-number)))
-;;   (setq gnus-subthread-sort-functions
-;;         'gnus-thread-sort-by-date)
-;;   (setq gnus-thread-hide-subtree nil)
-;;   (setq gnus-thread-ignore-subject nil)
-;;   (setq gnus-user-date-format-alist
-;;         '(((gnus-seconds-today) . "Today at %R")
-;;           ((+ (* 60 60 24) (gnus-seconds-today)) . "Yesterday, %R")
-;;           (t . "%Y-%m-%d %R")))
-
-;;   ;; When the %f specifier in `gnus-summary-line-format' matches my
-;;   ;; name, this will use the contents of the "To:" field, prefixed by
-;;   ;; the string I specify.  Useful when checking your "Sent" summary or
-;;   ;; a mailing list you participate in.
-;;   (setq gnus-ignored-from-addresses "Fabian Franzelin")
-;;   (setq gnus-summary-to-prefix "To: ")
-
-;;   (setq gnus-summary-line-format "%U%R %-18,18&user-date; %4L:%-25,25f %B%s\n")
-;;   (setq gnus-summary-mode-line-format "[%U] %p")
-;;   (setq gnus-sum-thread-tree-false-root "")
-;;   (setq gnus-sum-thread-tree-indent " ")
-;;   (setq gnus-sum-thread-tree-single-indent "")
-;;   (setq gnus-sum-thread-tree-leaf-with-other "+-> ")
-;;   (setq gnus-sum-thread-tree-root "")
-;;   (setq gnus-sum-thread-tree-single-leaf "\\-> ")
-;;   (setq gnus-sum-thread-tree-vertical "|")
-
-;;   (add-hook 'dired-mode-hook #'gnus-dired-mode) ; dired integration
-;;   (add-hook 'gnus-group-mode-hook #'gnus-topic-mode)
-;;   (add-hook 'gnus-select-group-hook #'gnus-group-set-timestamp)
-
-;;   (dolist (mode '(gnus-group-mode-hook gnus-summary-mode-hook gnus-browse-mode-hook))
-;;     (add-hook mode #'hl-line-mode))
-
-;;   ;; ;;  NOTE 2021-05-13: Switched to notmuch.
-;;   ;; (define-key global-map (kbd "C-c m") #'gnus)
-;;   (let ((map gnus-article-mode-map))
-;;     (define-key map (kbd "i") #'gnus-article-show-images)
-;;     (define-key map (kbd "s") #'gnus-mime-save-part)
-;;     (define-key map (kbd "o") #'gnus-mime-copy-part))
-;;   (let ((map gnus-group-mode-map))       ; I always use `gnus-topic-mode'
-;;     (define-key map (kbd "n") #'gnus-group-next-group)
-;;     (define-key map (kbd "p") #'gnus-group-prev-group)
-;;     (define-key map (kbd "M-n") #'gnus-topic-goto-next-topic)
-;;     (define-key map (kbd "M-p") #'gnus-topic-goto-previous-topic))
-;;   (let ((map gnus-summary-mode-map))
-;;     (define-key map (kbd "<delete>") #'gnus-summary-delete-article)
-;;     (define-key map (kbd "n") #'gnus-summary-next-article)
-;;     (define-key map (kbd "p") #'gnus-summary-prev-article)
-;;     (define-key map (kbd "N") #'gnus-summary-next-unread-article)
-;;     (define-key map (kbd "P") #'gnus-summary-prev-unread-article)
-;;     (define-key map (kbd "M-n") #'gnus-summary-next-thread)
-;;     (define-key map (kbd "M-p") #'gnus-summary-prev-thread)
-;;     (define-key map (kbd "C-M-n") #'gnus-summary-next-group)
-;;     (define-key map (kbd "C-M-p") #'gnus-summary-prev-group)
-;;     (define-key map (kbd "C-M-^") #'gnus-summary-refer-thread)))
 
 (provide 'ff-messaging)
 

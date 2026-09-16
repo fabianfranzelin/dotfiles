@@ -19,6 +19,7 @@
 (require 'ff-spellcheck)
 (require 'ff-ai-assistant)
 (require 'ff-multimedia)
+(require 'ff-messaging)
 (require 'ff-setup-gui)
 ;; -------------------------------------------------------------------
 
