@@ -93,6 +93,7 @@
 
 ;; non-standard file extension
 (add-to-list 'auto-mode-alist '("\\.inl\\'" . c++-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.fbs\\'" . c++-mode))
 
 ;; configure auto format
 (with-eval-after-load 'apheleia
