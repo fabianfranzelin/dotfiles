@@ -50,6 +50,11 @@ fi
 # shellcheck source=oh-my-zsh.sh
 . "${ZDOTDIR}/oh-my-zsh.sh"
 
+# Neutralise global python-argcomplete completer that hijacks file completion
+# for non-argcomplete commands (e.g. aosrec).
+# compdef -d '*' 2>/dev/null
+# unset '_postpatcomps[\*]'
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ -f "${ZDOTDIR}/.p10k.zsh" ]] && . "${ZDOTDIR}/.p10k.zsh"
 
