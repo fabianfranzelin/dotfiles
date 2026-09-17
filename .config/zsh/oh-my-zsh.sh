@@ -84,7 +84,6 @@ plugins=(cp # rsync with cpv
     zsh-syntax-highlighting
     zsh-navigation-tools
     you-should-use
-    bazel
     command-not-found
     direnv
     extract

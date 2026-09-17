@@ -94,6 +94,14 @@ dedicated buffer and copied to the kill ring."
       (message "%d output file(s) for %s" (length abs-files) target)))
     abs-files))
 
+(defun ff/bazel-clean ()
+  "Run `bazel clean --expunge' from the enclosing Bazel workspace root."
+  (interactive)
+  (let* ((project-dir (or (ff/bazel--project-root)
+                          (user-error "Not inside a Bazel workspace (no MODULE.bazel)")))
+         (default-directory project-dir))
+    (compile "bazel clean --expunge --async")))
+
 (defun ff/bazel-build-current-package ()
   "Run `bazel build' on the Bazel package containing the current buffer's file."
   (interactive)
@@ -214,6 +222,8 @@ via `ff/bazel-container-host-bazel-compile-commands-mapping'."
 (add-hook 'compilation-finish-functions
           #'ff/bazel-maybe-refresh-compile-commands)
 
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                Main imports                                ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -230,7 +240,8 @@ via `ff/bazel-container-host-bazel-compile-commands-mapping'."
          ("C-c b t" . bazel-test)
          ("C-c b r" . bazel-run)
          ("C-c b q" . bazel-query)
-         ("C-c b c" . bazel-coverage)
+         ("C-c b v" . bazel-coverage)
+         ("C-c b l" . ff/bazel-clean)
          ("C-c b m" . ff/bazel-transient)
          ("C-c b o" . ff/bazel-target-output-files)
          ("C-c b c" . ff/bazel-build-current-package)))
