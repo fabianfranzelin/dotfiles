@@ -102,6 +102,15 @@ dedicated buffer and copied to the kill ring."
          (default-directory project-dir))
     (compile "bazel clean --expunge --async")))
 
+(defun ff/bazel-query (query)
+  "Run `bazel query' with QUERY from the enclosing Bazel workspace root."
+  (interactive "sBazel query: ")
+  (let* ((project-dir (or (ff/bazel--project-root)
+                          (user-error "Not inside a Bazel workspace (no MODULE.bazel)")))
+         (default-directory project-dir))
+    (compile (format "bazel query --keep_going --output=label %s"
+                     (shell-quote-argument query)))))
+
 (defun ff/bazel-build-current-package ()
   "Run `bazel build' on the Bazel package containing the current buffer's file."
   (interactive)
@@ -239,7 +248,7 @@ via `ff/bazel-container-host-bazel-compile-commands-mapping'."
          ("C-c b b" . bazel-build)
          ("C-c b t" . bazel-test)
          ("C-c b r" . bazel-run)
-         ("C-c b q" . bazel-query)
+         ("C-c b q" . ff/bazel-query)
          ("C-c b v" . bazel-coverage)
          ("C-c b l" . ff/bazel-clean)
          ("C-c b m" . ff/bazel-transient)
@@ -275,7 +284,7 @@ via `ff/bazel-container-host-bazel-compile-commands-mapping'."
     ("r" "Run" bazel-run)
     ("c" "Coverage" bazel-coverage)]
    ["Query"
-    ("q" "Query" bazel-query)]
+    ("q" "Query" ff/bazel-query)]
    ["Format"
     ("f" "Format file" (lambda () (interactive) (apheleia-format-buffer)))
     ("F" "Format all BUILD files" (lambda ()
