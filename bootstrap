@@ -36,13 +36,23 @@ fi
 # Explicit override via 2nd arg or $REMOTE short-circuits the list.
 EXPLICIT_REMOTE="${2:-${REMOTE:-}}"
 
-resolves() { getent hosts "$1" >/dev/null 2>&1 || getent ahosts "$1" >/dev/null 2>&1; }
+SSH_PORT="${SSH_PORT:-22}"
+PROBE_TIMEOUT="${PROBE_TIMEOUT:-3}"
+
+# A host counts as "reachable" only if we can open a TCP connection to its SSH
+# port within $PROBE_TIMEOUT seconds. This covers both DNS resolution AND
+# network reachability -- avoiding cases where `getent` succeeds (e.g. via a
+# search domain like `pauline.fritz.box`) but ssh then bails out.
+resolves() {
+    local host="$1"
+    timeout "$PROBE_TIMEOUT" bash -c ">/dev/tcp/$host/$SSH_PORT" 2>/dev/null
+}
 
 if [ -n "$EXPLICIT_REMOTE" ]; then
     REMOTE="$EXPLICIT_REMOTE"
     REMOTE_HOST="${REMOTE#*@}"
     if ! resolves "$REMOTE_HOST"; then
-        echo "bootstrap: cannot resolve '$REMOTE_HOST' (from explicit override)." >&2
+        echo "bootstrap: '$REMOTE_HOST' is not reachable on port $SSH_PORT (explicit override)." >&2
         exit 1
     fi
 else
@@ -51,18 +61,19 @@ else
         if resolves "$h"; then
             REMOTE="$REMOTE_USER_DEFAULT@$h"
             REMOTE_HOST="$h"
-            echo "bootstrap: using remote host '$h'."
+            echo "bootstrap: using remote host '$h' (reachable on port $SSH_PORT)."
             break
         else
-            echo "bootstrap: '$h' does not resolve; trying next..." >&2
+            echo "bootstrap: '$h' not reachable on port $SSH_PORT; trying next..." >&2
         fi
     done
     if [ -z "$REMOTE" ]; then
         cat >&2 <<EOF
-bootstrap: none of the candidate hosts resolve: ${CANDIDATES[*]}
+bootstrap: none of the candidate hosts are reachable on port $SSH_PORT:
+  ${CANDIDATES[*]}
 
-You may be off the home LAN and without internet DNS. Retry with an explicit
-address, e.g.:
+You may be off the home LAN and without internet DNS/connectivity. Retry with
+an explicit address, e.g.:
   ./bootstrap $LOCAL_HOST frf2lr@<ip>
   REMOTE=frf2lr@franzelin.dyndns.org ./bootstrap $LOCAL_HOST
 
