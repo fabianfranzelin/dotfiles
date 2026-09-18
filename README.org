@@ -27,6 +27,20 @@ configure script of the repository
 ./configure -i
 #+end_src
 
+** Fresh Device Bootstrap
+
+On a brand-new device, download the =bootstrap= script and run it to pull the
+GnuPG keys, password store, and dotfiles from =pauline=. SSH will prompt for
+=pauline='s password once per rsync.
+
+#+begin_src shell
+curl -O https://raw.githubusercontent.com/fabianfranzelin/dotfiles/nightly/bootstrap
+chmod +x bootstrap
+./bootstrap              # or: ./bootstrap blackview
+#+end_src
+
+Then run =./configure -i= from the freshly synced dotfiles.
+
 ** Overlay Directories
 
 Additional dotfiles repositories (e.g. work-specific configurations) can be

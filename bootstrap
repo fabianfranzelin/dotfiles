@@ -1,55 +1,50 @@
 #!/usr/bin/env bash
+# Fresh-device bootstrap: pull gnupg, password-store, and dotfiles from pauline.
+# Usage:
+#   ./bootstrap                 # auto-detect via `hostname -s`
+#   ./bootstrap <host>          # {pauline|thinkpad|pixel-7|blackview}
+#
+# Download:
+#   curl -O https://raw.githubusercontent.com/fabianfranzelin/dotfiles/nightly/bootstrap
+#   chmod +x bootstrap && ./bootstrap
 
-# shellcheck disable=SC1090,SC1091
+set -euo pipefail
 
-# exit as soon as error occurs
-set -e
+REMOTE="${REMOTE:-frf2lr@pauline}"
+LOCAL_HOST="${1:-$(hostname -s)}"
 
-# install minimal dependencies
-# sudo apt install -y \
-#     git \
-#     gnupg2 \
-#     ssh \
-#     pass \
-#     rsync
+case "$LOCAL_HOST" in
+    pauline|thinkpad|blackview) LOCAL_PASS="$HOME/.local/share/password-store" ;;
+    pixel-7)                    LOCAL_PASS="$HOME/.password-store" ;;
+    *) echo "bootstrap: unknown host '$LOCAL_HOST'" >&2
+       echo "usage: $0 {pauline|thinkpad|pixel-7|blackview}" >&2
+       exit 1 ;;
+esac
 
-# set pauline endpoint
-# PAULINE="frf2lr@franzelin.duckdns.org"
+REMOTE_PASS=".local/share/password-store"
 
-# # copy keys from pauline
-# SOURCE_DIR=".gnupg"
-# TARGET_DIR="${HOME}/${SOURCE_DIR}"
-# mkdir -p "${TARGET_DIR}"
-# rsync -avz "${PAULINE}:${SOURCE_DIR}/" "${TARGET_DIR}/"
+# 1. Install minimal deps
+if command -v apt-get >/dev/null 2>&1; then
+    sudo apt-get update
+    sudo apt-get install -y git gnupg2 openssh-client pass rsync stow
+elif command -v pkg >/dev/null 2>&1; then
+    pkg install -y git gnupg openssh pass rsync stow
+fi
 
-# # copy password store
-# SOURCE_DIR=".local/share/password-store"
-# TARGET_DIR="${HOME}/${SOURCE_DIR}"
-# mkdir -p "${TARGET_DIR}"
-# rsync -avz "${PAULINE}:${SOURCE_DIR}/" "${TARGET_DIR}/"
+# 2. GnuPG keys
+mkdir -p "$HOME/.gnupg"
+rsync -avz "$REMOTE:.gnupg/" "$HOME/.gnupg/"
+chmod 700 "$HOME/.gnupg"
+find "$HOME/.gnupg" -type f -exec chmod 600 {} +
 
-# # copy dotfiles
-# SOURCE_DIR="workspace/dotfiles"
-# TARGET_DIR="${HOME}/${SOURCE_DIR}"
-# mkdir -p "${TARGET_DIR}"
-# rsync -avz "${PAULINE}:${SOURCE_DIR}/" "${TARGET_DIR}/"
+# 3. Password store
+mkdir -p "$LOCAL_PASS"
+rsync -avz "$REMOTE:$REMOTE_PASS/" "$LOCAL_PASS/"
 
-# set pauline endpoint
-PAULINE="frf2lr@pauline"
+# 4. Dotfiles
+mkdir -p "$HOME/workspace/dotfiles"
+rsync -avz "$REMOTE:workspace/dotfiles/" "$HOME/workspace/dotfiles/"
 
-# copy keys from pauline
-TARGET_DIR=".gnupg"
-SOURCE_DIR="${HOME}/${TARGET_DIR}"
-rsync -avz "${SOURCE_DIR}/" "${PAULINE}:${TARGET_DIR}/"
-
-# copy password store
-TARGET_DIR=".local/share/password-store"
-SOURCE_DIR="${HOME}/.password-store"
-rsync -avz "${SOURCE_DIR}/" "${PAULINE}:${TARGET_DIR}/"
-
-# copy dotfiles
-TARGET_DIR="workspace/dotfiles"
-SOURCE_DIR="${HOME}/${TARGET_DIR}"
-rsync -avz "${SOURCE_DIR}/" "${PAULINE}:${TARGET_DIR}/"
-
-
+echo
+echo "Bootstrap complete. Next:"
+echo "  cd ~/workspace/dotfiles && ./configure -i"

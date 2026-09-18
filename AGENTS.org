@@ -71,7 +71,7 @@ Enhanced shell environment:
 Version control with workstation-specific configurations:
 
 - *Configuration Pattern*: Base config includes machine-specific files
-- *Workstation Files*: =config.ThinkPad=, =conf.FEWI-C-0007J=, =config.pauline=, etc.
+- *Workstation Files*: =config.ThinkPad=, =config.pauline=, etc.
 - *Features*: LFS support, rebase-based pulls, auto-prune, submodule handling
 
 ** Additional Tools
@@ -110,7 +110,7 @@ configure                  # Main installation script
 
 * Workstation-Specific Configuration System
 
-- Machine-specific includes via hostname-based files (e.g., =config.ThinkPad=, =config.FEWI-C-0007J=)
+- Machine-specific includes via hostname-based files (e.g., =config.ThinkPad=)
 - Stow ignore patterns prevent sensitive file deployment
 
 The system automatically detects the current machine and includes appropriate configuration files. This allows for personalized settings while maintaining a unified configuration base.
