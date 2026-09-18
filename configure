@@ -54,6 +54,9 @@ DESCRIPTION
        --overlay-dir <path>
               Additional dotfiles directory to stow and configure
               (can be specified multiple times)
+       --device <name>
+              Install a preset bundle of packages for a specific device.
+              Supported values: blackview, pauline, thinkpad, hp
 "
 # @formatter:on
 
@@ -180,6 +183,10 @@ while [ "${#}" -gt 0 ]; do
             OVERLAY_DIRS+=("$(realpath "$2")")
             shift 2
             ;;
+        '--device')
+            DEVICE="${2}"
+            shift 2
+            ;;
         *)
             echo -e "${__COLOR_ERR}Unknown value ${1}${__COLOR_RESET}"
             echo -e "${__COLOR_INFO}${usage}${__COLOR_RESET}"
@@ -187,6 +194,42 @@ while [ "${#}" -gt 0 ]; do
             ;;
     esac
 done
+
+install_device_blackview()
+{
+    install_base
+    install_git
+    install_npm
+    install_zsh
+    install_emacs
+    install_docker
+}
+
+install_device_pauline()
+{
+    install_base
+    install_git
+    install_npm
+    install_zsh
+    install_emacs
+    install_docker
+}
+
+install_device_thinkpad()
+{
+    install_base
+    install_git
+    install_npm
+    install_zsh
+    install_emacs
+    install_docker
+    install_qtile
+}
+
+install_device_hp()
+{
+    install_device_thinkpad
+}
 
 create_symlinks()
 {
@@ -266,6 +309,21 @@ if [ -n "${UPGRADE_PACKAGES:-}" ]
 then
     upgrade_packages
     exit $?
+fi
+
+if [ -n "${DEVICE:-}" ]
+then
+    case "${DEVICE}" in
+        blackview) install_device_blackview ;;
+        pauline)   install_device_pauline ;;
+        thinkpad)  install_device_thinkpad ;;
+        hp)        install_device_hp ;;
+        *)
+            echo -e "${__COLOR_ERR}Unknown device: ${DEVICE}${__COLOR_RESET}"
+            echo -e "${__COLOR_INFO}Supported devices: blackview, pauline, thinkpad, hp${__COLOR_RESET}"
+            exit 1
+            ;;
+    esac
 fi
 
 if { [ -n "${INSTALL_ALL}" ] && [ -z "${SKIP_BASE}" ]; } || [ -n "${INSTALL_BASE}" ]
