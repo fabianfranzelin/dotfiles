@@ -43,7 +43,7 @@
 
 | Category        | Tool                                      |
 |-----------------+-------------------------------------------|
-| Editor          | GNU Emacs 30 (LSP via Eglot, tree-sitter) |
+| Editor          | GNU Emacs 31 (LSP via Eglot, tree-sitter) |
 | Shell           | ZSH + Oh-My-Zsh + Powerlevel10k           |
 | Window Manager  | Qtile (Python, tiling)                    |
 | Terminal        | Ghostty                                   |
