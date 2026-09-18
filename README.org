@@ -30,8 +30,10 @@ configure script of the repository
 ** Fresh Device Bootstrap
 
 On a brand-new device, download the =bootstrap= script and run it to pull the
-GnuPG keys, password store, and dotfiles from =pauline=. SSH will prompt for
-=pauline='s password once per rsync.
+GnuPG keys, password store, and dotfiles from =pauline=. Both SSH key and
+username/password authentication are supported; when no key is installed yet,
+SSH prompts for =pauline='s password exactly once — the connection is reused
+across all three rsync transfers via SSH ControlMaster multiplexing.
 
 #+begin_src shell
 curl -O https://raw.githubusercontent.com/fabianfranzelin/dotfiles/nightly/bootstrap

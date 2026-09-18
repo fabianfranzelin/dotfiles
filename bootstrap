@@ -4,6 +4,10 @@
 #   ./bootstrap                 # auto-detect via `hostname -s`
 #   ./bootstrap <host>          # {pauline|thinkpad|pixel-7|blackview}
 #
+# Auth: works with either SSH key or username/password. You will be prompted
+# at most once for the remote password; the connection is then reused via
+# SSH ControlMaster multiplexing for the three rsync transfers below.
+#
 # Download:
 #   curl -O https://raw.githubusercontent.com/fabianfranzelin/dotfiles/nightly/bootstrap
 #   chmod +x bootstrap && ./bootstrap
@@ -12,6 +16,19 @@ set -euo pipefail
 
 REMOTE="${REMOTE:-frf2lr@pauline}"
 LOCAL_HOST="${1:-$(hostname -s)}"
+
+# SSH connection multiplexing: authenticate once, reuse for all rsyncs.
+SSH_CTRL_DIR="$(mktemp -d -t bootstrap-ssh.XXXXXX)"
+SSH_CTRL="$SSH_CTRL_DIR/ctl-%r@%h:%p"
+SSH_OPTS=(-o "ControlMaster=auto"
+          -o "ControlPath=$SSH_CTRL"
+          -o "ControlPersist=10m"
+          -o "PreferredAuthentications=publickey,password,keyboard-interactive")
+cleanup_ssh() {
+    ssh "${SSH_OPTS[@]}" -O exit "$REMOTE" 2>/dev/null || true
+    rm -rf "$SSH_CTRL_DIR"
+}
+trap cleanup_ssh EXIT
 
 case "$LOCAL_HOST" in
     pauline|thinkpad|blackview) LOCAL_PASS="$HOME/.local/share/password-store" ;;
@@ -31,19 +48,25 @@ elif command -v pkg >/dev/null 2>&1; then
     pkg install -y git gnupg openssh pass rsync stow
 fi
 
-# 2. GnuPG keys
+# 2. Authenticate once (opens shared SSH master connection)
+echo "Authenticating to $REMOTE (you may be prompted for your password)..."
+ssh "${SSH_OPTS[@]}" -Nf "$REMOTE"
+
+RSYNC_RSH="ssh -o ControlPath=$SSH_CTRL"
+
+# 3. GnuPG keys
 mkdir -p "$HOME/.gnupg"
-rsync -avz "$REMOTE:.gnupg/" "$HOME/.gnupg/"
+rsync -avz -e "$RSYNC_RSH" "$REMOTE:.gnupg/" "$HOME/.gnupg/"
 chmod 700 "$HOME/.gnupg"
 find "$HOME/.gnupg" -type f -exec chmod 600 {} +
 
-# 3. Password store
+# 4. Password store
 mkdir -p "$LOCAL_PASS"
-rsync -avz "$REMOTE:$REMOTE_PASS/" "$LOCAL_PASS/"
+rsync -avz -e "$RSYNC_RSH" "$REMOTE:$REMOTE_PASS/" "$LOCAL_PASS/"
 
-# 4. Dotfiles
+# 5. Dotfiles
 mkdir -p "$HOME/workspace/dotfiles"
-rsync -avz "$REMOTE:workspace/dotfiles/" "$HOME/workspace/dotfiles/"
+rsync -avz -e "$RSYNC_RSH" "$REMOTE:workspace/dotfiles/" "$HOME/workspace/dotfiles/"
 
 echo
 echo "Bootstrap complete. Next:"
