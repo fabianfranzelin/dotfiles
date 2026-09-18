@@ -15,12 +15,6 @@ run_once() {
     fi
 }
 
-if [ "$(hostname)" = "FEWI-C-0007J" ]
-then
-    # Use this widget to create vpn session
-    run_once osd-toolkit
-fi
-
 # Network manager applet
 [ -x "$(command -v nm-applet)" ] && run_once nm-applet
 
