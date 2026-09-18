@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-09-18 Fri 22:41 -->
+<!-- 2026-06-09 Tue 20:58 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Simple Python Project</title>
@@ -12,39 +12,35 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../../css/custom.css">
-<link rel="stylesheet" href="../../../css/code.css">
+<link rel="stylesheet" href="../../css/custom.css">
+<link rel="stylesheet" href="../../css/code.css">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Menu -->
 <header>
 <nav>
-    <!-- Left: Home -->
-    <ul class="nav-left">
+    <!-- Always visible items in the nav bar -->
+    <ul>
         <li>
-            <a href="../../../index.html">Home</a>
+            <a href="../../index.html">Home</a>
         </li>
     </ul>
-    <!-- Center: Search box -->
+    <!-- Search box -->
     <div class="search-container">
         <input type="text" id="search-input" placeholder="Search..." autocomplete="off" />
         <div id="search-results"></div>
     </div>
-    <!-- Right: Section links -->
-    <ul class="nav-right">
-        <li>
-            <a href="../../../about/index.html">About</a>
-        </li>
-        <li>
-            <a href="../../../technical/index.html">Technical</a>
-        </li>
-    </ul>
     <!-- The hamburger menu -->
     <label for='menu' tabindex="0">
     ☰
     </label>
     <input id='menu' type='checkbox' />
-    <!-- Page sections (populated by JS) -->
-    <ul id="page-sections">
+    <!-- The collapsable menu -->
+    <ul>
+      <li class="nav-group">
+        <a href="../../about/index.html">About</a>
+      <li class="nav-group">
+        <a href="../../technical/index.html">Technical</a>
+      </li>
     </ul>
 </nav>
 </header>
@@ -65,48 +61,9 @@
   });
 })();
 </script>
-<script>
-// Build per-page section navigation from headings
-document.addEventListener('DOMContentLoaded', function() {
-  var container = document.getElementById('page-sections');
-  if (!container) return;
-  var headings = document.querySelectorAll('#content > .outline-2 > h2');
-  if (headings.length < 2) return;
-  headings.forEach(function(h) {
-    var id = h.id || (h.parentElement && h.parentElement.id);
-    if (!id) return;
-    var text = h.textContent.replace(/^[\d.]+\s*/, '').trim();
-    if (!text) return;
-    var li = document.createElement('li');
-    var a = document.createElement('a');
-    a.href = '#' + id;
-    a.textContent = text;
-    li.appendChild(a);
-    container.appendChild(li);
-  });
-  // Highlight active section on scroll
-  var links = container.querySelectorAll('a');
-  if (!links.length) return;
-  var sections = Array.from(links).map(function(a) {
-    return document.getElementById(a.getAttribute('href').slice(1));
-  }).filter(Boolean);
-  function updateActive() {
-    var scrollY = window.scrollY + 100;
-    var active = null;
-    sections.forEach(function(sec, i) {
-      if (sec.offsetTop <= scrollY) active = i;
-    });
-    links.forEach(function(a, i) {
-      a.classList.toggle('active', i === active);
-    });
-  }
-  window.addEventListener('scroll', updateActive, { passive: true });
-  updateActive();
-});
-</script>
 <script defer src="https://unpkg.com/lunr/lunr.js"></script>
-<script defer src="../../../js/search.js"></script>
-<script defer src="../../../js/highlight.js"></script>
+<script defer src="../../js/search.js"></script>
+<script defer src="../../js/highlight.js"></script>
 </head>
 <body>
 <div id="content" class="content">
@@ -115,18 +72,18 @@ document.addEventListener('DOMContentLoaded', function() {
 This is a minimal Python project to test Emacs configuration for
 Python development (eglot, pyright, pytest).
 </p>
-<div id="outline-container-org3826333" class="outline-2">
-<h2 id="org3826333">Source Code</h2>
-<div class="outline-text-2" id="text-org3826333">
+<div id="outline-container-orgc105dad" class="outline-2">
+<h2 id="orgc105dad">Source Code</h2>
+<div class="outline-text-2" id="text-orgc105dad">
 <p>
 Browse the full source on GitHub:
 <a href="https://github.com/fabianfranzelin/dotfiles/tree/nightly/examples/python-project">python-project on GitHub</a>
 </p>
 </div>
 </div>
-<div id="outline-container-org05b1d69" class="outline-2">
-<h2 id="org05b1d69">Files</h2>
-<div class="outline-text-2" id="text-org05b1d69">
+<div id="outline-container-org7469f57" class="outline-2">
+<h2 id="org7469f57">Files</h2>
+<div class="outline-text-2" id="text-org7469f57">
 <ul class="org-ul">
 <li><code>__main__.py</code> - Entry point</li>
 <li><code>pyproject.toml</code> - Project configuration</li>
@@ -138,7 +95,7 @@ Browse the full source on GitHub:
 <div id="postamble" class="status">
 <p class="author">Author: Fabian Franzelin</p>
 <p class="email">Email: <a href="mailto:fabian.franzelin@gmail.com">fabian.franzelin@gmail.com</a></p>
-<p class="date">Created: 2026-09-18 Fri 22:41</p>
+<p class="date">Created: 2026-06-09 Tue 20:58</p>
 </div>
 </body>
 </html>
