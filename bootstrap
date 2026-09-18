@@ -1,8 +1,14 @@
 #!/usr/bin/env bash
 # Fresh-device bootstrap: pull gnupg, password-store, and dotfiles from pauline.
 # Usage:
-#   ./bootstrap                 # auto-detect via `hostname -s`
-#   ./bootstrap <host>          # {pauline|thinkpad|pixel-7|blackview}
+#   ./bootstrap                             # auto-detect via `hostname -s`
+#   ./bootstrap <host>                      # {pauline|thinkpad|pixel-7|blackview}
+#   ./bootstrap <host> <user@remote|ip>     # override remote (DNS-independent)
+#   REMOTE=frf2lr@192.168.178.20 ./bootstrap
+#
+# If your resolver can't find `pauline` (e.g. you're outside the fritz.box LAN,
+# or a search-domain rewrites it to `pauline.fritz.box`), pass an IP or a fully
+# qualified hostname as the second argument, or set $REMOTE.
 #
 # Auth: works with either SSH key or username/password. You will be prompted
 # at most once for the remote password; the connection is then reused via
@@ -14,8 +20,58 @@
 
 set -euo pipefail
 
-REMOTE="${REMOTE:-frf2lr@pauline}"
 LOCAL_HOST="${1:-$(hostname -s)}"
+REMOTE_USER_DEFAULT="frf2lr"
+
+# Candidate remote hosts, tried in order. Override entirely with $REMOTE
+# (a full user@host) or override the list with $REMOTE_HOSTS (space-separated).
+REMOTE_HOSTS_DEFAULT=(pauline 192.168.178.48 franzelin.dyndns.org)
+if [ -n "${REMOTE_HOSTS:-}" ]; then
+    # shellcheck disable=SC2206
+    CANDIDATES=($REMOTE_HOSTS)
+else
+    CANDIDATES=("${REMOTE_HOSTS_DEFAULT[@]}")
+fi
+
+# Explicit override via 2nd arg or $REMOTE short-circuits the list.
+EXPLICIT_REMOTE="${2:-${REMOTE:-}}"
+
+resolves() { getent hosts "$1" >/dev/null 2>&1 || getent ahosts "$1" >/dev/null 2>&1; }
+
+if [ -n "$EXPLICIT_REMOTE" ]; then
+    REMOTE="$EXPLICIT_REMOTE"
+    REMOTE_HOST="${REMOTE#*@}"
+    if ! resolves "$REMOTE_HOST"; then
+        echo "bootstrap: cannot resolve '$REMOTE_HOST' (from explicit override)." >&2
+        exit 1
+    fi
+else
+    REMOTE=""
+    for h in "${CANDIDATES[@]}"; do
+        if resolves "$h"; then
+            REMOTE="$REMOTE_USER_DEFAULT@$h"
+            REMOTE_HOST="$h"
+            echo "bootstrap: using remote host '$h'."
+            break
+        else
+            echo "bootstrap: '$h' does not resolve; trying next..." >&2
+        fi
+    done
+    if [ -z "$REMOTE" ]; then
+        cat >&2 <<EOF
+bootstrap: none of the candidate hosts resolve: ${CANDIDATES[*]}
+
+You may be off the home LAN and without internet DNS. Retry with an explicit
+address, e.g.:
+  ./bootstrap $LOCAL_HOST frf2lr@<ip>
+  REMOTE=frf2lr@franzelin.dyndns.org ./bootstrap $LOCAL_HOST
+
+Or add a line to /etc/hosts:
+  <ip>  pauline
+EOF
+        exit 1
+    fi
+fi
 
 # SSH connection multiplexing: authenticate once, reuse for all rsyncs.
 SSH_CTRL_DIR="$(mktemp -d -t bootstrap-ssh.XXXXXX)"

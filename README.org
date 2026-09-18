@@ -41,6 +41,17 @@ chmod +x bootstrap
 ./bootstrap              # or: ./bootstrap blackview
 #+end_src
 
+If =pauline= isn't resolvable from your current network, the script tries the
+following hosts in order: =pauline=, =192.168.178.48=, then
+=franzelin.dyndns.org=. You can override this with an explicit remote as the
+second argument, or via the =REMOTE= / =REMOTE_HOSTS= environment variables:
+
+#+begin_src shell
+./bootstrap blackview frf2lr@192.168.178.20
+REMOTE=frf2lr@franzelin.dyndns.org ./bootstrap blackview
+REMOTE_HOSTS="pauline 10.0.0.5 other.example.org" ./bootstrap blackview
+#+end_src
+
 Then run =./configure -i= from the freshly synced dotfiles.
 
 ** Overlay Directories
