@@ -24,7 +24,8 @@ install_betterlockscreen()
         libxkbcommon-dev \
         libxkbcommon-x11-dev \
         libjpeg-dev \
-        libgif-dev
+        libgif-dev \
+        nitrogen
 
     (
         TMP_I3LOCK_SRC=$(mktemp -d)
