@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-06-09 Tue 20:29 -->
+<!-- 2026-06-09 Tue 20:35 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -37,30 +37,48 @@
     </ul>
 </nav>
 </header>
+<!-- Go to top button -->
+<a href="#" id="go-to-top" aria-label="Go to top">&uarr;</a>
+<script>
+(function() {
+  var btn = document.getElementById('go-to-top');
+  var header = document.querySelector('header');
+  if (!header || !btn) return;
+  var observer = new IntersectionObserver(function(entries) {
+    btn.classList.toggle('visible', !entries[0].isIntersecting);
+  }, { threshold: 0 });
+  observer.observe(header);
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+</script>
 <script defer src="https://unpkg.com/lunr/lunr.js"></script>
 <script defer src="js/search.js"></script>
+<script defer src="js/highlight.js"></script>
 </head>
 <body>
 <div id="content" class="content">
-<div id="outline-container-org5b0a2c9" class="outline-2">
-<h2 id="org5b0a2c9">WSL2</h2>
-<div class="outline-text-2" id="text-org5b0a2c9">
+<div id="outline-container-org1f11800" class="outline-2">
+<h2 id="org1f11800">WSL2</h2>
+<div class="outline-text-2" id="text-org1f11800">
 <ul class="org-ul">
 <li><a href="https://www.configserverfirewall.com/windows-10/please-enable-the-virtual-machine-platform-windows-feature-and-ensure-virtualization-is-enabled-in-the-bios/">Enable WSL2</a></li>
 <li><a href="https://learn.microsoft.com/en-us/windows/wsl/setup/environment#set-up-your-linux-username-and-password">Setup windows terminal</a></li>
 <li><a href="https://www.configserverfirewall.com/windows-10/please-enable-the-virtual-machine-platform-windows-feature-and-ensure-virtualization-is-enabled-in-the-bios/">Remove WSL completely</a></li>
 </ul>
 </div>
-<div id="outline-container-org29e9ef5" class="outline-3">
-<h3 id="org29e9ef5">Vcxsrv</h3>
-<div class="outline-text-3" id="text-org29e9ef5">
+<div id="outline-container-orged40d8d" class="outline-3">
+<h3 id="orged40d8d">Vcxsrv</h3>
+<div class="outline-text-3" id="text-orged40d8d">
 <ul class="org-ul">
 <li><a href="https://github.com/microsoft/WSL/issues/4793">XLaunch setup for vcxsrv</a></li>
 </ul>
 </div>
 <ul class="org-ul">
-<li><a id="orgaa0a610"></a>Configure X server<br />
-<div class="outline-text-5" id="text-orgaa0a610">
+<li><a id="org9a553bb"></a>Configure X server<br />
+<div class="outline-text-5" id="text-org9a553bb">
 <p>
 I found the best way to use the <code>vcxsrv</code> is to use the multi-window
 mode. Each GUI starts in its own window, it can be resized on-the-fly
@@ -69,7 +87,7 @@ following command to start <code>vcxsrv</code> in that mode
 </p>
 
 <div class="org-src-container">
-<pre class="src src-shell"><span class="org-string">"C:\Program Files\VcXsrv\vcxsrv.exe"</span> :0 -clipboard -ac -multiwindow -wgl
+<pre class="src src-shell">"C:\Program Files\VcXsrv\vcxsrv.exe" :0 -clipboard -ac -multiwindow -wgl
 </pre>
 </div>
 
@@ -93,7 +111,7 @@ For details, check the <a href="https://gist.github.com/ctaggart/68ead4d0d942b24
 <div id="postamble" class="status">
 <p class="author">Author: Fabian Franzelin</p>
 <p class="email">Email: <a href="mailto:fabian.franzelin@gmail.com">fabian.franzelin@gmail.com</a></p>
-<p class="date">Created: 2026-06-09 Tue 20:29</p>
+<p class="date">Created: 2026-06-09 Tue 20:35</p>
 </div>
 </body>
 </html>
