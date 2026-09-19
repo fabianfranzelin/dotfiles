@@ -182,12 +182,25 @@ Host pauline
      ControlMaster auto
      ControlPath ~/.ssh/socket/%r@%h-%p
      ControlPersist 3600
+
+Match host blackview exec \"ping -c 1 -W 1 192.168.178.85\"
+     Hostname 192.168.178.85
+     Port 2222
+     ForwardAgent yes
+     ForwardX11 yes
+     ForwardX11Trusted yes
+     AddressFamily inet
+     Compression yes
+
+     ControlMaster auto
+     ControlPath ~/.ssh/socket/%r@%h-%p
+     ControlPersist 3600
     " | tee "${SSHCONFIG}"
     ###########################################################################
     #                                   Docker                               #
     ###########################################################################
     pkg install root-repo tsu -y
-    pkg install docker docker-compose -y
+    # pkg install docker docker-compose -y
 
     ###########################################################################
     #                                  proot                                  #
