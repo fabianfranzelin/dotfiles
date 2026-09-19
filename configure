@@ -357,6 +357,7 @@ fi
 if [ -n "${INSTALL_TERMUX}" ]
 then
     install_termux
+    SKIP_STOW=1
 fi
 
 if { [ -n "${INSTALL_ALL}" ] && [ -z "${SKIP_NPM}" ]; } || [ -n "${INSTALL_NPM}" ]
