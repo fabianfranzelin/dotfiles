@@ -36,6 +36,8 @@ DESCRIPTION
               Install ZSH
        --skip-zsh
               Skip ZSH installation
+       --install-termux
+              Install Termux packages
        --install-emacs
               Install Emacs
        --skip-emacs
@@ -89,6 +91,7 @@ __SHELL_LIB="${DOTFILES}/.config/shell"
 . "${__SHELL_LIB}/func/install_emacs"
 . "${__SHELL_LIB}/func/install_qtile"
 . "${__SHELL_LIB}/func/install_zsh"
+. "${__SHELL_LIB}/func/install_termux"
 . "${__SHELL_LIB}/func/upgrade_packages"
 
 #------------------------------------------------------------------------------#
@@ -173,6 +176,10 @@ while [ "${#}" -gt 0 ]; do
             ;;
         '--skip-zsh')
             SKIP_ZSH=1
+            shift # past argument
+            ;;
+        '--install-termux')
+            INSTALL_TERMUX=1
             shift # past argument
             ;;
         '--upgrade-packages')
@@ -345,6 +352,11 @@ fi
 if { [ -n "${INSTALL_ALL}" ] && [ -z "${SKIP_ZSH}" ]; } || [ -n "${INSTALL_ZSH}" ]
 then
     install_zsh
+fi
+
+if [ -n "${INSTALL_TERMUX}" ]
+then
+    install_termux
 fi
 
 if { [ -n "${INSTALL_ALL}" ] && [ -z "${SKIP_NPM}" ]; } || [ -n "${INSTALL_NPM}" ]
