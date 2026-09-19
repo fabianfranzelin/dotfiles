@@ -4,12 +4,15 @@
 
 if ( __is_linux )
 then
-    # these aliases require systemd running, hence it just works on
-    # native Linux
-    alias reboot='systemctl reboot'
-    alias shutdown='systemctl poweroff'
-    MY_LOGIN_SESSION=$(loginctl session-status | head -n 1 | awk '{print $1}')
-    alias logout="loginctl terminate-session ${MY_LOGIN_SESSION}"
+    # these aliases require systemd running, hence they are only
+    # enabled when systemd is actually PID 1 (skips proot-distro,
+    # WSL without systemd, containers, etc.)
+    if [ -d /run/systemd/system ]; then
+        alias reboot='systemctl reboot'
+        alias shutdown='systemctl poweroff'
+        MY_LOGIN_SESSION=$(loginctl session-status 2>/dev/null | head -n 1 | awk '{print $1}')
+        alias logout="loginctl terminate-session ${MY_LOGIN_SESSION}"
+    fi
 
     # Seahorse
     alias restart_gnome_keyring_daemon="gnome-keyring-daemon --replace --components=pkcs11,secrets,ssh && seahorse"
