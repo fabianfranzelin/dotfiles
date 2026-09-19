@@ -1,0 +1,7 @@
+[user]
+    name = "Fabian Franzelin"
+    email = fabian.franzelin@gmail.com
+[credential "https://github.com"]
+    helper = !pass keys/fabianfranzelin@github.com
+[include]
+    path = "~/.config/git/config.localhost.personal-credentials"
