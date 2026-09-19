@@ -20,7 +20,7 @@ keys = [
         [mod, "control"],
         "i",
         lazy.spawn(
-            f"{my_term} -e bash -c '{str(Path('~/.local/bin/init').expanduser())} || bash'"
+            f"terminator -e \"bash -c '{str(Path('~/.local/bin/init').expanduser())} || bash'\""
         ),
         desc="Run init script in terminal",
     ),
