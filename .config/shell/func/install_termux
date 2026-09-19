@@ -133,6 +133,8 @@ alias spa='sshpass -p \"\$(pass passwords/frf2lr@pauline)\" ssh frf2lr@pauline'
 alias sp='sshpass -p \"\$(pass passwords/frf2lr@pauline)\" ssh -t frf2lr@pauline \"emacsclient -nw -a emacs; exec /usr/bin/zsh\"'
 alias pa='sshpass -p \"\$(pass passwords/frf2lr@pauline)\" mosh frf2lr@pauline'
 alias p='sshpass -p \"\$(pass passwords/frf2lr@pauline)\" mosh frf2lr@pauline -- sh -c \"emacsclient -nw -a emacs; exec /usr/bin/zsh\"'
+
+alias start-ubuntu=\"proot_distro login ubuntu -- exec /usr/sbin/sshd; proot_distro login ubuntu\"
     " | tee "${BASHRC}"
     ###########################################################################
     #                                   ssh                                  #
