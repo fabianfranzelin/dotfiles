@@ -129,10 +129,17 @@ alias g='git'
 alias unlock_key='pass usernames/public@github > /dev/null'
 alias u='unlock_key'
 
+# Pauline
 alias spa='sshpass -p \"\$(pass passwords/frf2lr@pauline)\" ssh frf2lr@pauline'
 alias sp='sshpass -p \"\$(pass passwords/frf2lr@pauline)\" ssh -t frf2lr@pauline \"emacsclient -nw -a emacs; exec /usr/bin/zsh\"'
 alias pa='sshpass -p \"\$(pass passwords/frf2lr@pauline)\" mosh frf2lr@pauline'
 alias p='sshpass -p \"\$(pass passwords/frf2lr@pauline)\" mosh frf2lr@pauline -- sh -c \"emacsclient -nw -a emacs; exec /usr/bin/zsh\"'
+
+# Blackview
+alias sba='sshpass -p \"\$(pass passwords/frf2lr@blackview)\" ssh frf2lr@blackview'
+alias sb='sshpass -p \"\$(pass passwords/frf2lr@blackview)\" ssh -t frf2lr@blackview \"emacsclient -nw -a emacs; exec /usr/bin/zsh\"'
+alias ba='sshpass -p \"\$(pass passwords/frf2lr@blackview)\" mosh frf2lr@blackview'
+alias b='sshpass -p \"\$(pass passwords/frf2lr@blackview)\" mosh frf2lr@blackview -- sh -c \"emacsclient -nw -a emacs; exec /usr/bin/zsh\"'
 
 alias ub=\"proot-distro login ubuntu --use frf2lr -- /bin/sh -c 'sudo /usr/sbin/sshd && exec zsh -l'\"
     " | tee "${BASHRC}"
