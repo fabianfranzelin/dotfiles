@@ -2,6 +2,7 @@
 ;;; For more information see (info "(emacs) Directory Variables")
 
 ((nil . ((compile-command . "cd docs && ./build.el")
+         (eval . (pyvenv-deactivate))
          ;; Configure ;;;;;;;;;;;;;;;;;;;;;;;;;;;
          (eval . (defun run-command-recipe-ff/configure ()
                    (append
