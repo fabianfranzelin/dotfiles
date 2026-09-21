@@ -556,8 +556,8 @@ Example usage: (message (my/tramp-call-process-direct \"your-remote-host.com\" \
    ("C-x D s" . ff/dwim-shell-commands-add-ssh-keys)
    ("C-x D k" . ff/dwim-shell-commands-set-keyboard-layout)
    ("C-x D m" . ff/dwim-shell-commands-mount-pauline)
-   ("C-x D d" . ff/proxy-disable)
-   ("C-x D e" . ff/proxy-enable))
+   ("C-x D c" . ff/dwim-shell-commands-osd-vpn-connect)
+   ("C-x D d" . ff/dwim-shell-commands-osd-vpn-disconnect))
   :config
   (require 'dwim-shell-commands)
   (defun ff/dwim-shell-commands-trash ()
@@ -600,6 +600,30 @@ Example usage: (message (my/tramp-call-process-direct \"your-remote-host.com\" \
      "Mount Pauline's hard drives via sshfs."
      "sshfs-pauline"
      :utils "sshfs-pauline"
+     :silent-success t))
+  (defun ff/dwim-shell-commands-osd-vpn-connect ()
+    "Connect to VPN from OSD, then enable proxy on success."
+    (interactive)
+    (dwim-shell-command-on-marked-files
+     "Connects to VPN from OSD."
+     "osd-vpn-connect -k"
+     :utils "osd-vpn-connect"
+     :silent-success t
+     :on-completion
+     (lambda (buffer process)
+       (if (= (process-exit-status process) 0)
+           (progn
+             (when ff/--proxy-env-backup (ff/proxy-enable))
+             (kill-buffer buffer))
+         (message "osd-vpn-connect failed; proxy left unchanged")))))
+  (defun ff/dwim-shell-commands-osd-vpn-disconnect ()
+    "Disable proxy, then disconnect VPN from OSD."
+    (interactive)
+    (ff/proxy-disable)
+    (dwim-shell-command-on-marked-files
+     "Disconnects to VPN from OSD."
+     "osd-vpn-disconnect"
+     :utils "osd-vpn-disconnect"
      :silent-success t)))
 
 ;; -------------------------------------------------------------------
