@@ -183,6 +183,7 @@ flycheck_*
 /.config/emacs/straight/
 /.config/emacs/var/
 /.config/emacs/projects
+/.config/emacs/tree-sitter/
 /.config/emacs/.org-id-locations
 /.config/minimal-emacs/elpa/
 /.config/native-emacs/places
