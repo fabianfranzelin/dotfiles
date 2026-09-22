@@ -54,6 +54,7 @@ Otherwise, open the repository's main page."
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
   ;; Show word based diff
   (magit-diff-refine-hunk 'all)
+  (magit-diff-visit-prefer-worktree t)
   :bind
   (:map magit-mode-map
         ("C-c C-a" . ff/stage-commit-push-all)
