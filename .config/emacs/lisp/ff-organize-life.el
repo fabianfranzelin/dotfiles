@@ -359,6 +359,26 @@ Stops any previously running instance first."
 (with-eval-after-load 'embark
   (define-key embark-file-map (kbd "W") #'ff/serve-html-file))
 
+(defun ff/org-roam-node-visit-other-window (node-cand)
+  "Visit the org-roam node behind NODE-CAND in another window.
+Intended as an `embark' action for the `org-roam-node' category."
+  (interactive "sNode: ")
+  (let ((node (or (get-text-property 0 'node node-cand)
+                  (org-roam-node-from-title-or-alias
+                   (string-trim
+                    (substring-no-properties
+                     node-cand 0 (min 80 (length node-cand))))))))
+    (unless node (user-error "No org-roam node for: %s" node-cand))
+    (org-roam-node-visit node t)))
+
+(with-eval-after-load 'embark
+  (with-eval-after-load 'org-roam
+    (defvar-keymap embark-org-roam-node-map
+      :doc "Embark actions for `org-roam-node' candidates."
+      :parent embark-general-map
+      "o" #'ff/org-roam-node-visit-other-window)
+    (add-to-list 'embark-keymap-alist '(org-roam-node . embark-org-roam-node-map))))
+
 ;; -------------------------------------------------------------------
 ;; Org-roam: Taking notes
 ;; -------------------------------------------------------------------
