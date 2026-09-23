@@ -56,6 +56,24 @@ DIR: directory path"
       (org-roam-db-sync)
       (message "Update main org folder to %s" ff/org-directory))))
 
+(defun ff/org-set-roam-directory (dir)
+  "Switch the active `org-roam-directory' to DIR.
+Like `ff/org-switch-directory', but retargets only the org-roam
+side (directory, dailies, db location) so that only DIR is visible
+to `org-roam-node-find' / `org-roam-db-sync'. Intended to be called
+from a project's `.dir-locals.el' so that opening a project scopes
+org-roam to that project's notes."
+  (interactive "DOrg-roam directory: ")
+  (when (and dir (file-directory-p dir))
+    (customize-set-variable 'org-roam-directory (expand-file-name dir))
+    (customize-set-variable 'org-roam-dailies-directory
+                            (expand-file-name "journal" org-roam-directory))
+    (customize-set-variable 'org-roam-db-location
+                            (expand-file-name "org-roam.db" org-roam-directory))
+    (when (fboundp 'org-roam-db-sync)
+      (org-roam-db-sync))
+    (message "org-roam directory -> %s" org-roam-directory)))
+
 (use-package org
   :straight (:type built-in)
   :demand t
