@@ -5,34 +5,6 @@
 
 ;;; Code:
 
-(defun ff/get-openai-token ()
-  "Load and return the OpenAI token."
-  (password-store-get "tokens/fabian.franzelin@openAI.com"))
-(defun ff/get-gemini-token ()
-  "Load and return the Gemini token."
-  (password-store-get "tokens/fabian.franzelin@gemini"))
-
-;; ChaGPT
-(use-package gptel
-  :straight (:host github :repo "karthink/gptel")
-  :custom
-  (gptel-default-mode 'org-mode)
-  (gptel-model 'gemini-2.0-flash)
-  :config
-  ;; auto scroll as ChatGPT provides new responses
-  (add-hook 'gptel-post-stream 'gptel-auto-scroll)
-  ;; move cursor to next heading when response is posted
-  (add-hook 'gptel-post-response-functions 'gptel-end-of-response)
-  ;; make copilot the default backend for gptel
-  (setq gptel-model 'gpt-5-mini
-        gptel-backend (gptel-make-gh-copilot "Copilot"))
-  ;; disable Gemini for now
-  (when nil
-    (setq gptel-backend (gptel-make-gemini "Gemini"
-                          :key #'ff/get-gemini-token
-                          :stream t)))
-  :bind (("C-c g" . gptel)))
-
 (use-package copilot
   :if (or (string= (system-name) "FEWI-C-0007J")
           (string= (system-name) "pauline"))
