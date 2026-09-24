@@ -56,6 +56,9 @@ install_npm()
         yarn \
         @github/copilot-language-server
 
+    # Install decktape for exporting reveal.js presentations
+    npm install -g decktape
+
     # Setup workstation specific npm config
     link_host_config "${DOTFILES}/.config/npm" "npmrc" "npmrc" "npmrc.default"
 }
