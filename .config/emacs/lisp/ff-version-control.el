@@ -29,8 +29,16 @@
 If CURRENT-LINE is non-nil, point to the current branch, file, and line.
 Otherwise, open the repository's main page."
   (interactive "P")
-  (let* ((remote-url (string-trim (vc-git--run-command-string nil "config" "--get" "remote.origin.url")))
-	 (branch (string-trim (vc-git--run-command-string nil "rev-parse" "--abbrev-ref" "HEAD")))
+  (let* ((branch (string-trim (vc-git--run-command-string nil "rev-parse" "--abbrev-ref" "HEAD")))
+	 (remote (or (ignore-errors
+		       (string-trim
+			(vc-git--run-command-string
+			 nil "config" "--get" (format "branch.%s.remote" branch))))
+		     (car (split-string
+			   (or (vc-git--run-command-string nil "remote") "")
+			   "\n" t))
+		     "origin"))
+	 (remote-url (string-trim (vc-git--run-command-string nil "config" "--get" (format "remote.%s.url" remote))))
 	 (file (string-trim (file-relative-name (buffer-file-name) (vc-root-dir))))
 	 (line (line-number-at-pos)))
     (message "Opening remote on browser: %s" remote-url)
