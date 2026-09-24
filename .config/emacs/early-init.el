@@ -87,5 +87,11 @@
 ;; Fix flycheck integration with straight
 (customize-set-variable 'straight-fix-flycheck nil)
 
+;; disable dbus warnings
+;; (setq warning-minimum-level :error)
+(add-to-list 'warning-suppress-types '(emacs system-sleep))
+(add-to-list 'warning-suppress-types '(emacs))
+(add-to-list 'warning-suppress-types '(straight))
+
 (provide 'early-init)
 ;;; early-init.el ends here
