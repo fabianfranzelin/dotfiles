@@ -139,6 +139,33 @@ PROJECT-ROOT: Path to the root directory of the current project."
         ("t" . ff/project-project-tab)
         ("C" . run-command)))
 
+;; Ignore certain folders for project.el ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;,
+(defun ff/project--ignored-roots ()
+  "Return directory prefixes whose projects should not be remembered."
+  (list
+   (file-name-as-directory
+    (expand-file-name (or (getenv "XDG_CACHE_HOME") "~/.cache")))
+   (file-name-as-directory
+    (expand-file-name "straight/repos" user-emacs-directory))))
+
+(defun ff/project--ignored-p (dir)
+  "Return non-nil when DIR is below an ignored project root."
+  (let ((root (expand-file-name dir)))
+    (seq-some (lambda (prefix) (string-prefix-p prefix root))
+              (ff/project--ignored-roots))))
+
+;; Do not persist transient projects, such as package source checkouts.
+(define-advice project-remember-project
+    (:before-while (pr &optional _no-write) ff/skip-ignored-projects)
+  (not (ff/project--ignored-p (project-root pr))))
+
+;; Pruned entries are persisted the next time project.el writes its list.
+(with-eval-after-load 'project
+  (when (and (boundp 'project--list) (listp project--list))
+    (setq project--list
+          (seq-remove (lambda (entry) (ff/project--ignored-p (car entry)))
+                      project--list))))
+
 (use-package time-zones
   :straight (:host github :repo "xenodium/time-zones" :branch "main")
   :config
