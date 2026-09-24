@@ -21,3 +21,4 @@ application/javascript=emacsclient.desktop
 application/json=emacsclient.desktop
 
 application/pdf=org.gnome.Evince.desktop
+image/svg+xml=drawio.desktop
