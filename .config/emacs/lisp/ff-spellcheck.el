@@ -25,6 +25,69 @@
         ("M-$" . jinx-correct)
         ("C-M-$" . jinx-languages)))
 
+(defvar ff/language-switched-hook nil
+  "Hook run after `jinx-languages' changes and downstream dictionaries sync.")
+
+(with-eval-after-load 'jinx
+  (defun ff/switch-dictionary (&optional _langs _global)
+    "Sync ispell and languagetool with the current `jinx-languages'."
+    (require 'languagetool nil t)
+    (let ((dic jinx-languages))
+      (when (and dic (stringp dic))
+        (ispell-change-dictionary dic)
+        (when (fboundp 'languagetool-set-language)
+          (languagetool-set-language (replace-regexp-in-string "_" "-" dic)))
+        (run-hooks 'ff/language-switched-hook))))
+
+  (advice-add 'jinx-languages :after #'ff/switch-dictionary))
+
+;; ----------------------------------------------------
+;; Auto-detect buffer language and configure jinx
+;; ----------------------------------------------------
+(use-package guess-language
+  :after jinx
+  :custom
+  (guess-language-languages '(en de es))
+  (guess-language-min-paragraph-length 20)
+  (guess-language-langcodes
+   '((en . ("en_US" "English"))
+     (de . ("de_DE" "German"))
+     (es . ("es" "Spanish"))))
+  :config
+  (defun ff/guess-language-of-body ()
+    "Detect language of the current buffer's prose content.
+In `message-mode', narrow to the body so headers do not skew detection."
+    (save-restriction
+      (when (and (derived-mode-p 'message-mode)
+                 (save-excursion
+                   (goto-char (point-min))
+                   (search-forward mail-header-separator nil t)))
+        (narrow-to-region (line-beginning-position 2) (point-max)))
+      (ignore-errors (guess-language-buffer))))
+
+  (defun ff/jinx-guess-buffer-language ()
+    "Detect buffer language and set `jinx-languages' accordingly."
+    (when (and (bound-and-true-p jinx-mode)
+               (> (buffer-size) 200)
+               (not (bound-and-true-p ff/jinx-language-guessed)))
+      (condition-case err
+          (let* ((lang (ff/guess-language-of-body))
+                 (code (car (alist-get lang guess-language-langcodes))))
+            (when code
+              (setq-local jinx-languages code)
+              (setq-local ff/jinx-language-guessed t)
+              (jinx--load-dicts)
+              (jinx--cleanup)
+              (ff/switch-dictionary)))
+        (error (message "[jinx-guess] %s" (error-message-string err))))))
+
+  (dolist (hook '(text-mode-hook
+                  org-mode-hook
+                  markdown-mode-hook
+                  latex-mode-hook
+                  message-setup-hook))
+    (add-hook hook #'ff/jinx-guess-buffer-language)))
+
 ;; --------------------------------------------------------
 ;; Static spell check with languagetool
 ;; --------------------------------------------------------
@@ -77,17 +140,6 @@ PACKAGE-NAME: log message context"
         ("C-x 4 k" . languagetool-clear-suggestions)
         ("C-x 4 p" . languagetool-correct-at-point)
         ("C-x 4 b" . languagetool-correct-buffer)))
-
-
-(with-eval-after-load 'jinx
-  (defun ff/switch-dictionary(LANGS &optional GLOBAL)
-    "Switch dictionary for non-jinx packages to currently selected by jinx.
-This includes ispell and languagetool."
-    (let* ((dic jinx-languages))
-      (ispell-change-dictionary dic)
-      (languagetool-set-language (replace-regexp-in-string "_" "-" dic))))
-
-  (advice-add 'jinx-languages :after #'ff/switch-dictionary))
 
 (provide 'ff-spellcheck)
 
