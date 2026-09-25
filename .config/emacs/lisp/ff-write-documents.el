@@ -378,6 +378,14 @@ https://github.com/radian-software/straight.el/issues/240"
   :config
   (add-hook 'pdf-view-mode-hook 'pdf-view-restore-mode))
 
+;; plantuml alternative
+(use-package d2-mode
+  :mode
+  ("\\.d2$" . d2-mode)
+  :config
+  (setq d2-flags (list "--layout" "elk" "--theme" "200")))
+
+
 (provide 'ff-write-documents)
 
 ;;; ff-write-documents.el ends here
