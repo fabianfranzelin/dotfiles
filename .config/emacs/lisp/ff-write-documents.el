@@ -383,8 +383,9 @@ https://github.com/radian-software/straight.el/issues/240"
   :mode
   ("\\.d2$" . d2-mode)
   :config
-  (setq d2-flags (list "--layout" "elk" "--theme" "200")))
-
+  (setq d2-flags (list "--layout" "elk" "--theme" "200"))
+  (define-advice d2-compile
+      (:before (&rest _) setup) (save-buffer)))
 
 (provide 'ff-write-documents)
 

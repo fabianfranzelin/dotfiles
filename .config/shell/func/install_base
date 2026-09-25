@@ -248,6 +248,9 @@ install_packages_manually() {
         "https://github.com/withered-magic/starpls/releases/download/v${STARPLS_VER}/starpls-${STARPLS_ARCH}" \
         "starpls" "${STARPLS_VER}"
 
+    # --- D2lang ---
+    curl -fsSL https://d2lang.com/install.sh | sh -s --
+
     # Install Opencode
     # curl -fsSL https://opencode.ai/install | bash
 
