@@ -56,30 +56,43 @@
   :config
   (defun ff/guess-language-of-body ()
     "Detect language of the current buffer's prose content.
-In `message-mode', narrow to the body so headers do not skew detection."
+In `message-mode', narrow to the body so headers do not skew detection,
+and exclude the signature block so a foreign-language signature does not
+mislead detection."
     (save-restriction
-      (when (and (derived-mode-p 'message-mode)
-                 (save-excursion
-                   (goto-char (point-min))
-                   (search-forward mail-header-separator nil t)))
-        (narrow-to-region (line-beginning-position 2) (point-max)))
+      (let ((beg (point-min))
+            (end (point-max)))
+        (when (derived-mode-p 'message-mode)
+          (save-excursion
+            (goto-char (point-min))
+            (when (search-forward mail-header-separator nil t)
+              (setq beg (line-beginning-position 2))))
+          (save-excursion
+            (goto-char (point-max))
+            (when (re-search-backward "^-- $" beg t)
+              (setq end (point)))))
+        (narrow-to-region beg end))
       (ignore-errors (guess-language-buffer))))
 
   (defun ff/jinx-guess-buffer-language ()
     "Detect buffer language and set `jinx-languages' accordingly."
+    (interactive)
     (when (and (bound-and-true-p jinx-mode)
-               (> (buffer-size) 200)
                (not (bound-and-true-p ff/jinx-language-guessed)))
-      (condition-case err
-          (let* ((lang (ff/guess-language-of-body))
-                 (code (car (alist-get lang guess-language-langcodes))))
-            (when code
-              (setq-local jinx-languages code)
-              (setq-local ff/jinx-language-guessed t)
-              (jinx--load-dicts)
-              (jinx--cleanup)
-              (ff/switch-dictionary)))
-        (error (message "[jinx-guess] %s" (error-message-string err))))))
+      (if (<= (buffer-size) 200)
+          (when (called-interactively-p 'interactive)
+            (message "[jinx-guess] Buffer too small (%d chars, need > 200) to detect language"
+                     (buffer-size)))
+        (condition-case err
+            (let* ((lang (ff/guess-language-of-body))
+                   (code (car (alist-get lang guess-language-langcodes))))
+              (when code
+                (setq-local jinx-languages code)
+                (setq-local ff/jinx-language-guessed t)
+                (jinx--load-dicts)
+                (jinx--cleanup)
+                (ff/switch-dictionary)))
+          (error (message "[jinx-guess] %s" (error-message-string err)))))))
 
   (dolist (hook '(text-mode-hook
                   org-mode-hook

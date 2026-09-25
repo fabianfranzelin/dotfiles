@@ -94,25 +94,51 @@ to the first available secret key.  Returning nil lets gpg pick its own
 
 (defcustom ff/message-signatures
   '(("en_US" . "Best regards,\nFabian")
-    ("de_DE" . "Viele Grüße,\nFabian")
+    ("de_DE" . "Mit besten Grüßen,\nFabian")
     ("es"    . "Saludos,\nFabian"))
   "Mail signatures keyed by jinx/aspell locale code."
   :type '(alist :key-type string :value-type string)
   :group 'ff-messaging)
 
+(defun ff/message-body-size ()
+  "Return the size in characters of the current message body."
+  (save-restriction
+    (widen)
+    (save-excursion
+      (goto-char (point-min))
+      (if (and (derived-mode-p 'message-mode)
+               (search-forward mail-header-separator nil t))
+          (- (point-max) (line-beginning-position 2))
+        (buffer-size)))))
+
+(defun ff/message-prompt-signature ()
+  "Prompt the user to pick a signature from `ff/message-signatures'."
+  (let* ((codes (mapcar #'car ff/message-signatures))
+         (choice (completing-read
+                  "Signature language (body too small to auto-detect): "
+                  codes nil t nil nil (car codes))))
+    (cdr (assoc choice ff/message-signatures))))
+
 (defun ff/message-signature-by-language ()
-  "Return a signature string based on the message body language."
-  (let* ((lang (when (fboundp 'ff/guess-language-of-body)
-                 (ff/guess-language-of-body)))
-         (code (and lang
-                    (boundp 'guess-language-langcodes)
-                    (car (alist-get lang guess-language-langcodes))))
-         (sig (or (cdr (assoc code ff/message-signatures))
-                  (cdr (assoc "en_US" ff/message-signatures)))))
-    sig))
+  "Return a signature string based on the message body language.
+When the body is too small to detect the language reliably, prompt
+the user to pick one of the available signatures."
+  (if (<= (ff/message-body-size) 200)
+      (ff/message-prompt-signature)
+    (let* ((lang (when (fboundp 'ff/guess-language-of-body)
+                   (ff/guess-language-of-body)))
+           (code (and lang
+                      (boundp 'guess-language-langcodes)
+                      (car (alist-get lang guess-language-langcodes))))
+           (sig (or (cdr (assoc code ff/message-signatures))
+                    (cdr (assoc "en_US" ff/message-signatures)))))
+      sig)))
 
 (defun ff/message-refresh-signature ()
-  "Replace the signature in the current message buffer."
+  "Replace the signature in the current message buffer.
+Uses `ff/message-signature-by-language' regardless of the value of
+`message-signature', so the language-based signature is inserted even
+when auto-insertion at message setup is disabled."
   (interactive)
   (when (derived-mode-p 'message-mode)
     (save-excursion
@@ -120,7 +146,10 @@ to the first available secret key.  Returning nil lets gpg pick its own
         (forward-line -1)
         (delete-region (point) (point-max)))
       (goto-char (point-max))
-      (message-insert-signature))))
+      (skip-chars-backward " \t\n")
+      (delete-region (point) (point-max))
+      (let ((message-signature #'ff/message-signature-by-language))
+        (message-insert-signature)))))
 
 (add-hook 'ff/language-switched-hook #'ff/message-refresh-signature)
 
@@ -278,12 +307,12 @@ handled by Corfu, so this command never triggers header completion."
   (message-auto-save-directory (locate-user-emacs-file "gnus/drafts/"))
   (message-directory (locate-user-emacs-file "gnus/"))
   (message-default-charset 'utf-8)
-  (message-signature #'ff/message-signature-by-language)
+  (message-signature nil)
   (message-citation-line-format "On %Y-%m-%d %H:%M, %N wrote:\n")
   (message-citation-line-function 'message-insert-formatted-citation-line)
   :bind
   (:map message-mode-map
-        ("C-c C-s" . ff/message-refresh-signature)
+        ("C-c C-w" . ff/message-refresh-signature)
         ("TAB"     . ff/message-tab-next-field)
         ("<backtab>" . ff/message-tab-previous-field)
         :map global-map
