@@ -229,6 +229,20 @@ completion hooks directly.  This mirrors the `capf' branch of
   (gnus-article-sort-functions '((not gnus-article-sort-by-date)))
   (gnus-thread-sort-functions  '((not gnus-thread-sort-by-most-recent-date))))
 
+(defun ff/message-mail-other-window (&optional to subject)
+  "Compose a message in another window; delete that window on exit or kill.
+The compose buffer is closed by `message-kill-buffer-on-exit'; this
+wrapper also deletes the window that was opened to display it, so the
+previous layout is not left with a stale empty window."
+  (interactive)
+  (message-mail-other-window to subject)
+  (let ((compose-window (selected-window)))
+    (add-hook 'kill-buffer-hook
+              (lambda ()
+                (when (window-live-p compose-window)
+                  (ignore-errors (delete-window compose-window))))
+              nil t)))
+
 (defun ff/message-tab-next-field ()
   "Cycle forward through To -> Subject -> body in a compose buffer.
 In the body, fall through to `indent-for-tab-command'. Completion is
@@ -273,7 +287,7 @@ handled by Corfu, so this command never triggers header completion."
         ("TAB"     . ff/message-tab-next-field)
         ("<backtab>" . ff/message-tab-previous-field)
         :map global-map
-        ("C-c M" . message-mail-other-window)))
+        ("C-c M" . ff/message-mail-other-window)))
 
 ;;;; 8. Dired integration -----------------------------------------------------
 
