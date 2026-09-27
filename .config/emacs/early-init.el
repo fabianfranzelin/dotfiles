@@ -18,7 +18,7 @@
 ;; repo
 (defvar emacs-config-home (expand-file-name ".config/emacs" (getenv "HOME"))
   "Location of the Emacs configuration.")
-(defvar local-lisp-path (expand-file-name "lisp" emacs-config-home)
+(defvar local-lisp-path (expand-file-name "user-lisp" emacs-config-home)
   "Load path for local Emacs configurations.")
 (add-to-list 'load-path local-lisp-path)
 
