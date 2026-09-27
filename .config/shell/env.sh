@@ -26,7 +26,7 @@ export LC_COLLATE="C"
 
 #------------------------------------------------------------------------------#
 # PATH
-export PATH="${HOME}/.local/bin:${HOME}/.local/share/npm/bin:/usr/lib/ccache:/usr/sbin:${PATH}"
+export PATH="${HOME}/.local/bin:${HOME}/.local/share/npm/bin:${HOME}/.opencode/bin:/usr/lib/ccache:/usr/sbin:${PATH}"
 
 # Add some default directories to LD_LIBRARY_PATH
 export LD_LIBRARY_PATH="/usr/local/lib:${LD_LIBRARY_PATH}"
