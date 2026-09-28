@@ -60,23 +60,12 @@
 (use-package nerd-icons-completion
   :if (display-graphic-p)
   :after marginalia
-  :autoload
-  (nerd-icons-completion-mode nerd-icons-completion-marginalia-setup)
-  :config
-  (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup)
-  ;; If marginalia-mode is already active by the time we get here (very likely,
-  ;; since `:after marginalia' can run after marginalia-mode has been toggled
-  ;; on), the hook above won't fire retroactively. Explicitly run the setup so
-  ;; `nerd-icons-completion-mode' is enabled. This is what makes icons show up
-  ;; for `project-find-file' (category `project-file'), `find-file' and every
-  ;; other category dispatched by `nerd-icons-completion-get-icon'.
-  (nerd-icons-completion-marginalia-setup))
+  :hook (marginalia-mode . nerd-icons-completion-marginalia-setup))
 
 (use-package nerd-icons-corfu
   :if (display-graphic-p)
   :after corfu
-  :autoload nerd-icons-corfu-formatter
-  :config
+  :init
   (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 
 (use-package nerd-icons-ibuffer
@@ -223,9 +212,8 @@ FUN: function to be called on the entry's path"
   (doom-modeline-enable-word-count nil)
   (doom-modeline-time-icon nil)
   :config
-  ;; only load icons if kind-icon is available
-  (with-eval-after-load 'kind-icon
-    (customize-set-variable 'doom-modeline-icon t))
+  ;; Enable icons in the modeline (provided by nerd-icons).
+  (customize-set-variable 'doom-modeline-icon t)
   ;; Show tab-bar tab name in magit's modeline (uses the `vcs' layout)
   ;; without re-listing every segment.
   (doom-modeline-add-segment 'workspace-name 'bar :after 'vcs))
@@ -285,55 +273,6 @@ FUN: function to be called on the entry's path"
 
 (add-hook 'text-mode-hook #'visual-wrap-prefix-mode)
 (add-hook 'prog-mode-hook #'visual-wrap-prefix-mode)
-
-;; Icons for corfu completion
-(use-package kind-icon
-  :if (display-graphic-p)
-  :after corfu
-  :autoload kind-icon-margin-formatter
-  :custom
-  (kind-icon-default-face 'corfu-default) ; to compute blended backgrounds correctly
-  ;; use nerd-icons
-  (kind-icon-use-icons nil)
-  (kind-icon-mapping
-   `((array ,(nerd-icons-codicon "nf-cod-symbol_array") :face font-lock-type-face)
-     (boolean ,(nerd-icons-codicon "nf-cod-symbol_boolean") :face font-lock-builtin-face)
-     (class ,(nerd-icons-codicon "nf-cod-symbol_class") :face font-lock-type-face)
-     (color ,(nerd-icons-codicon "nf-cod-symbol_color") :face success)
-     (command ,(nerd-icons-codicon "nf-cod-terminal") :face default)
-     (constant ,(nerd-icons-codicon "nf-cod-symbol_constant") :face font-lock-constant-face)
-     (constructor ,(nerd-icons-codicon "nf-cod-triangle_right") :face font-lock-function-name-face)
-     (enummember ,(nerd-icons-codicon "nf-cod-symbol_enum_member") :face font-lock-builtin-face)
-     (enum-member ,(nerd-icons-codicon "nf-cod-symbol_enum_member") :face font-lock-builtin-face)
-     (enum ,(nerd-icons-codicon "nf-cod-symbol_enum") :face font-lock-builtin-face)
-     (event ,(nerd-icons-codicon "nf-cod-symbol_event") :face font-lock-warning-face)
-     (field ,(nerd-icons-codicon "nf-cod-symbol_field") :face font-lock-variable-name-face)
-     (file ,(nerd-icons-codicon "nf-cod-symbol_file") :face font-lock-string-face)
-     (folder ,(nerd-icons-codicon "nf-cod-folder") :face font-lock-doc-face)
-     (interface ,(nerd-icons-codicon "nf-cod-symbol_interface") :face font-lock-type-face)
-     (keyword ,(nerd-icons-codicon "nf-cod-symbol_keyword") :face font-lock-keyword-face)
-     (macro ,(nerd-icons-codicon "nf-cod-symbol_misc") :face font-lock-keyword-face)
-     (magic ,(nerd-icons-codicon "nf-cod-wand") :face font-lock-builtin-face)
-     (method ,(nerd-icons-codicon "nf-cod-symbol_method") :face font-lock-function-name-face)
-     (function ,(nerd-icons-codicon "nf-cod-symbol_method") :face font-lock-function-name-face)
-     (module ,(nerd-icons-codicon "nf-cod-file_submodule") :face font-lock-preprocessor-face)
-     (numeric ,(nerd-icons-codicon "nf-cod-symbol_numeric") :face font-lock-builtin-face)
-     (operator ,(nerd-icons-codicon "nf-cod-symbol_operator") :face font-lock-comment-delimiter-face)
-     (param ,(nerd-icons-codicon "nf-cod-symbol_parameter") :face default)
-     (property ,(nerd-icons-codicon "nf-cod-symbol_property") :face font-lock-variable-name-face)
-     (reference ,(nerd-icons-codicon "nf-cod-references") :face font-lock-variable-name-face)
-     (snippet ,(nerd-icons-codicon "nf-cod-symbol_snippet") :face font-lock-string-face)
-     (string ,(nerd-icons-codicon "nf-cod-symbol_string") :face font-lock-string-face)
-     (struct ,(nerd-icons-codicon "nf-cod-symbol_structure") :face font-lock-variable-name-face)
-     (text ,(nerd-icons-codicon "nf-cod-text_size") :face font-lock-doc-face)
-     (typeparameter ,(nerd-icons-codicon "nf-cod-list_unordered") :face font-lock-type-face)
-     (type-parameter ,(nerd-icons-codicon "nf-cod-list_unordered") :face font-lock-type-face)
-     (unit ,(nerd-icons-codicon "nf-cod-symbol_ruler") :face font-lock-constant-face)
-     (value ,(nerd-icons-codicon "nf-cod-symbol_field") :face font-lock-builtin-face)
-     (variable ,(nerd-icons-codicon "nf-cod-symbol_variable") :face font-lock-variable-name-face)
-     (t ,(nerd-icons-codicon "nf-cod-code") :face font-lock-warning-face)))
-  :config
-  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
 ;; Proced
 ;; https://laurencewarne.github.io/emacs/programming/2022/12/26/exploring-proced.html
