@@ -289,6 +289,9 @@ DIR: directory"
   ;; disable it there
   :if (not (ff/is-mobile))
   :after vertico
+  :custom
+  (marginalia-field-width 150)       ;; up from default 80
+  (marginalia-align-offset 10)       ;; small gap before annotations
   :hook
   (vertico-mode . marginalia-mode))
 

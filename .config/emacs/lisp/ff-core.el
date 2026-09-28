@@ -513,6 +513,15 @@ Example usage: (message (my/tramp-call-process-direct \"your-remote-host.com\" \
         ("<backtab>" . dired-subtree-toggle)))
 
 (use-package dired-git-info
+  :init
+  (with-eval-after-load 'dired-git-info
+    ;; Disable `dired-hide-details-mode' when `dired-git-info-mode' is
+    ;; activated, so that the git info is always visible.
+    (advice-add 'dired-git-info-mode :around
+                (lambda (orig-fn &rest args)
+                  (cl-letf (((symbol-function 'dired-hide-details-mode)
+                             (lambda (&rest _) nil)))
+                    (apply orig-fn args)))))
   :bind
   (:map dired-mode-map
         (")" . dired-git-info-mode)))
