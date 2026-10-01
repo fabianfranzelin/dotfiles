@@ -546,28 +546,7 @@ Example usage: (message (my/tramp-call-process-direct \"your-remote-host.com\" \
     (async-shell-command "gio trash --empty")))
 
 (use-package dwim-shell-command
-  :bind
-  (:map
-   dired-mode-map
-   ([remap dired-do-async-shell-command] . dwim-shell-command)
-   ([remap dired-do-shell-command] . dwim-shell-command)
-   ([remap dired-smart-shell-command] . dwim-shell-command)
-   ("C-d j" . dwim-shell-commands-join-as-pdf)
-   ("C-d r" . dwim-shell-commands-reorient-image)
-   ("C-d v" . dwim-shell-commands-video-to-mp3)
-   ("C-d m" . dwim-shell-commands-audio-to-mp3)
-   ("D" . ff/dwim-shell-commands-trash)
-   ("C-d z" . dwim-shell-commands-zip)
-   ("C-d o" . ff/dwim-shell-commands-rebot)
-   :map global-map
-   ("C-x D g" . dwim-shell-commands-kill-gpg-agent)
-   ("C-x D p" . dwim-shell-commands-kill-process)
-   ("C-x D s" . ff/dwim-shell-commands-add-ssh-keys)
-   ("C-x D k" . ff/dwim-shell-commands-set-keyboard-layout)
-   ("C-x D m" . ff/dwim-shell-commands-mount-pauline)
-   ("C-x D c" . ff/dwim-shell-commands-osd-vpn-connect)
-   ("C-x D d" . ff/dwim-shell-commands-osd-vpn-disconnect))
-  :config
+  :init
   (require 'dwim-shell-commands)
   (defun ff/dwim-shell-commands-trash ()
     "Trash marked files asynchronously."
@@ -633,7 +612,52 @@ Example usage: (message (my/tramp-call-process-direct \"your-remote-host.com\" \
      "Disconnects to VPN from OSD."
      "osd-vpn-disconnect"
      :utils "osd-vpn-disconnect"
-     :silent-success t)))
+     :silent-success t))
+  (defun ff/dwim-shell-commands-wireguard-connect ()
+    "Connect to Pauline."
+    (interactive)
+    (dwim-shell-command-on-marked-files
+     "Connects to Pauline."
+     "nmcli connection up pauline-vpn"
+     :utils "nmcli"
+     :silent-success t))
+  (defun ff/dwim-shell-commands-wireguard-disconnect ()
+    "Disconnects from Pauline."
+    (interactive)
+    (dwim-shell-command-on-marked-files
+     "Disconnects from Pauline."
+     "nmcli connection down pauline-vpn"
+     :utils "nmcli"
+     :silent-success t))
+  :bind
+  (:map
+   dired-mode-map
+   ([remap dired-do-async-shell-command] . dwim-shell-command)
+   ([remap dired-do-shell-command] . dwim-shell-command)
+   ([remap dired-smart-shell-command] . dwim-shell-command)
+   ("C-d j" . dwim-shell-commands-join-as-pdf)
+   ("C-d r" . dwim-shell-commands-reorient-image)
+   ("C-d v" . dwim-shell-commands-video-to-mp3)
+   ("C-d m" . dwim-shell-commands-audio-to-mp3)
+   ("D" . ff/dwim-shell-commands-trash)
+   ("C-d z" . dwim-shell-commands-zip)
+   ("C-d o" . ff/dwim-shell-commands-rebot)
+   :map global-map
+   ("C-x D g" . dwim-shell-commands-kill-gpg-agent)
+   ("C-x D p" . dwim-shell-commands-kill-process)
+   ("C-x D s" . ff/dwim-shell-commands-add-ssh-keys)
+   ("C-x D k" . ff/dwim-shell-commands-set-keyboard-layout)
+   ("C-x D m" . ff/dwim-shell-commands-mount-pauline)
+   ("C-x D c" . (lambda ()
+                  (interactive)
+                  (if (string= (system-name) "FEWI-C-0007J")
+                      (ff/dwim-shell-commands-osd-vpn-connect)
+                    (ff/dwim-shell-commands-wireguard-connect))))
+   ("C-x D d" . (lambda ()
+                  (interactive)
+                  (if (string= (system-name) "FEWI-C-0007J")
+                      (ff/dwim-shell-commands-osd-vpn-disconnect)
+                    (ff/dwim-shell-commands-wireguard-disconnect))))))
 
 ;; -------------------------------------------------------------------
 ;; Undo tree - make undos more powerful

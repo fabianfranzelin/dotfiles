@@ -1,8 +1,15 @@
 #!/bin/bash
-# Check VPN connection status.
-# Adjust the interface name or detection logic to match your setup.
+# Check VPN connection status for OpenVPN tunnel
+ans="off"
+
 if ip link show tun0 &>/dev/null; then
-    echo "on"
+    ans="on"
 else
-    echo "off"
+    # Check VPN connection status for Wireguard tunnel
+    if nmcli connection show --active | grep -q wireguard; then
+        ans="on"
+    fi
 fi
+
+
+echo "${ans}"
