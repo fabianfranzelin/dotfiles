@@ -52,11 +52,10 @@
   (setopt agent-shell-show-cost-indicator t)
   (setopt agent-shell-opencode-default-config-options
           `(("model" . ,(if (string= (system-name) "FEWI-C-0007J")
-                            "github-copilot/claude-opus-4.7"
+                            "github-copilot/claude-opus-4.8"
                           "github-copilot/gpt-5-mini"))
             ("effort" . "high")
             ("mode" . "plan")))
-
   :bind (:map global-map
               ("C-x a a" . agent-shell)
               ("C-x a g" . agent-shell-goose-start-agent)
