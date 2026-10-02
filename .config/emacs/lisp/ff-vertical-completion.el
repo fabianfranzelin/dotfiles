@@ -167,7 +167,6 @@ DIR: directory"
   :bind(:map corfu-map
              ("C-j" . corfu-next)
              ("C-p" . corfu-previous)
-             ("TAB" . corfu-insert)
              ("C-f" . corfu-insert)))
 ;; Use this and enable corfu-separator for fuzzy function finding
 ;; ("SPC" . corfu-insert-separator)))

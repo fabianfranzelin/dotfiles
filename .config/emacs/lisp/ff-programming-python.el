@@ -36,9 +36,9 @@
 (with-eval-after-load 'eglot
   (add-to-list 'eglot-server-programs
                `(python-base-mode
-                 . ,(eglot-alternatives '(("basedpyright-langserver" "--stdio")
-                                          ("ruff" "server")
+                 . ,(eglot-alternatives '(("ruff" "server")
                                           ("ty" "server")
+                                          ("basedpyright-langserver" "--stdio")
                                           ("pyright-langserver" "--stdio"))))))
 
 

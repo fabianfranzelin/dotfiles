@@ -47,6 +47,16 @@
 ;; under version control
 (setq user-emacs-directory (expand-file-name "~/.cache/emacs"))
 
+;; -------------------------------------------------------------------
+;; Opt into the Emacs 31.1 "User Lisp Directory" feature.
+;; Files under ~/.config/emacs/user-lisp/ (symlinked from
+;; dotfiles / dotfiles-work) are recursively added to `load-path',
+;; byte-compiled and scraped for `;;;###autoload' cookies by Emacs
+;; itself.  Must be set *after* `user-emacs-directory' is redirected
+;; above, since the stock default of `user-lisp-directory' derives
+;; from it.  See (info "(emacs) User Lisp Directory").
+(setopt user-lisp-directory (expand-file-name "user-lisp" emacs-config-home))
+
 ;; put the package downloads into the user emacs directory
 (customize-set-variable 'package-user-dir
                         (expand-file-name "elpa" user-emacs-directory))
