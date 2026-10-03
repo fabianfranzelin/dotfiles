@@ -190,23 +190,23 @@ for entry in data:
         print(entry['version'].lstrip('v').rsplit('.', 1)[0])
         break
 " 2>/dev/null)
-    else
-        # Fallback: grep for lts field near version
-        ver=$(curl -fsSL "https://nodejs.org/dist/index.json" 2>/dev/null \
-            | grep -B2 '"lts":"[A-Z]' | grep -oP '"version":"v\K[0-9]+\.[0-9]+' | head -1)
-    fi
-    echo "${ver}"
-}
-
-# Fetch latest Python 3.x stable release (latest patch of the same minor series).
-__upgrade_fetch_python_latest() {
-    local current_minor ver
-    # Stay on the same minor version (e.g. 3.13.x) for stability
-    current_minor="${QTILE_PYTHON_VERSION%.*}"  # e.g. "3.13"
-    ver=$(curl -fsSL "https://www.python.org/ftp/python/" 2>/dev/null \
-        | grep -oP "href=\"\K${current_minor}\.[0-9]+(?=/\")" \
-        | sort -V | tail -1)
-    if [ -n "${ver}" ]; then
+        else
+            # Fallback: grep for lts field near version
+            ver=$(curl -fsSL "https://nodejs.org/dist/index.json" 2>/dev/null \
+                | grep -B2 '"lts":"[A-Z]' | grep -oP '"version":"v\K[0-9]+\.[0-9]+' | head -1)
+        fi
         echo "${ver}"
-    fi
-}
+    }
+
+    # Fetch latest Python 3.x stable release (latest patch of the same minor series).
+    __upgrade_fetch_python_latest() {
+        local current_minor ver
+        # Stay on the same minor version (e.g. 3.13.x) for stability
+        current_minor="${QTILE_PYTHON_VERSION%.*}"  # e.g. "3.13"
+        ver=$(curl -fsSL "https://www.python.org/ftp/python/" 2>/dev/null \
+                | grep -oP "href=\"\K${current_minor}\.[0-9]+(?=/\")" \
+            | sort -V | tail -1)
+        if [ -n "${ver}" ]; then
+            echo "${ver}"
+        fi
+    }
