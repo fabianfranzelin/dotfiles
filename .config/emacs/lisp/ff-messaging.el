@@ -222,9 +222,7 @@ completion hooks directly.  This mirrors the `capf' branch of
   (make-directory (file-name-directory ff/ebdb-file) t)
   :custom
   (ebdb-sources (list ff/ebdb-file))
-  (ebdb-default-window-size 0.25)
-  (ebdb-mua-pop-up nil)
-  (ebdb-mua-auto-update-p 'query))
+  (ebdb-default-window-size 0.25))
 
 ;;;; 7. Reader -- Gnus over Gmail IMAP ----------------------------------------
 
@@ -246,7 +244,7 @@ completion hooks directly.  This mirrors the `capf' branch of
   ;; No local, unencrypted copies of outgoing mail.
   (gnus-message-archive-group nil)
   ;; Do not prompt "How many articles?" -- just fetch the newest 100.
-  (gnus-large-newsgroup 100)
+  (gnus-large-newsgroup nil)
   (gnus-newsgroup-maximum-articles 100)
   ;; Cache read articles locally so re-opening is instant / offline-capable.
   (gnus-use-cache 'passive)
@@ -254,6 +252,10 @@ completion hooks directly.  This mirrors the `capf' branch of
   (gnus-cache-remove-articles '(read))
   (gnus-cache-directory (locate-user-emacs-file "gnus/cache/"))
   (gnus-cacheable-groups "^nnimap")
+  ;; Stop the cursor from jumping to the bottom when all emails are read
+  (gnus-auto-select-first nil)
+  ;; Disable threading so newest replies aren't visually buried under older parents
+  (gnus-show-threads nil)
   ;; Sort summary buffers newest first: latest article/thread on top.
   (gnus-article-sort-functions '((not gnus-article-sort-by-date)))
   (gnus-thread-sort-functions  '((not gnus-thread-sort-by-most-recent-date))))
