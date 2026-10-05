@@ -211,6 +211,7 @@ FUN: function to be called on the entry's path"
   (doom-modeline-time-analogue-clock t)
   (doom-modeline-enable-word-count nil)
   (doom-modeline-time-icon nil)
+  (doom-modeline-workspace-name t)
   :config
   ;; Enable icons in the modeline (provided by nerd-icons).
   (customize-set-variable 'doom-modeline-icon t)
