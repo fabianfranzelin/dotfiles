@@ -114,22 +114,25 @@ dedicated buffer and copied to the kill ring."
 (defun ff/bazel-build-current-package ()
   "Run `bazel build' on the Bazel package containing the current buffer's file."
   (interactive)
-  (let* ((start (or buffer-file-name
-                    (and (derived-mode-p 'dired-mode) default-directory)
-                    (user-error "Current buffer is not visiting a file")))
-         (project-dir (or (ff/bazel--project-root)
+  (let* ((project-dir (or (ff/bazel--project-root)
                           (user-error "Not inside a Bazel workspace (no MODULE.bazel)")))
-         (pkg-dir (locate-dominating-file
-                   start
-                   (lambda (dir)
-                     (or (file-exists-p (expand-file-name "BUILD" dir))
-                         (file-exists-p (expand-file-name "BUILD.bazel" dir))))))
-         (_ (unless pkg-dir
-              (user-error "No BUILD file found above %s" start)))
-         (rel (file-relative-name (expand-file-name pkg-dir)
-                                  (expand-file-name project-dir)))
-         (pkg (directory-file-name (if (string= rel "./") "" rel)))
-         (target (format "//%s:all" (if (string= pkg ".") "" pkg)))
+         (start (or buffer-file-name
+                    (and (derived-mode-p 'dired-mode) default-directory)))
+         (target
+          (if (not start)
+              ;; Not visiting a file (e.g. a Magit buffer): build the whole repo.
+              "//..."
+            (let* ((pkg-dir (locate-dominating-file
+                             start
+                             (lambda (dir)
+                               (or (file-exists-p (expand-file-name "BUILD" dir))
+                                   (file-exists-p (expand-file-name "BUILD.bazel" dir))))))
+                   (_ (unless pkg-dir
+                        (user-error "No BUILD file found above %s" start)))
+                   (rel (file-relative-name (expand-file-name pkg-dir)
+                                            (expand-file-name project-dir)))
+                   (pkg (directory-file-name (if (string= rel "./") "" rel))))
+              (format "//%s:all" (if (string= pkg ".") "" pkg)))))
          (default-directory project-dir))
     (compile (format "bazel build %s" (shell-quote-argument target)))))
 
