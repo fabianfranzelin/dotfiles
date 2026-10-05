@@ -20,7 +20,7 @@ function greetUser(user: User): string {
 // Demonstrate generics and type narrowing
 function findById<T extends { id: number }>(
   items: T[],
-  id: number
+  id: number,
 ): T | undefined {
   return items.find((item) => item.id === id);
 }

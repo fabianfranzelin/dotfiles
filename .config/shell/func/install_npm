@@ -49,6 +49,7 @@ install_npm()
         jsonlint \
         vscode-langservers-extracted \
         prettier-json \
+        prettier \
         eslint
 
     # install other npm packages

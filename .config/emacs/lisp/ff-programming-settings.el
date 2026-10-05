@@ -397,12 +397,22 @@ Uses theme background in GUI, near-black in terminal.")
 (add-hook 'tsx-ts-mode-hook #'eglot-ensure)
 
 (ff/ensure-npm-package "typescript-language-server" "typescript-language-server")
+(ff/ensure-npm-package "prettier" "prettier")
 
 ;; enable eslint for javascript
 (ff/ensure-npm-package "eslint" "eslint")
 (with-eval-after-load 'flycheck
   (flycheck-add-mode 'javascript-eslint 'js-ts-mode)
   (flycheck-add-mode 'javascript-eslint 'tsx-ts-mode))
+
+(with-eval-after-load 'project
+  (add-to-list 'project-vc-extra-root-markers "package.json"))
+
+;; configure auto format for TypeScript
+(with-eval-after-load 'apheleia
+  (add-hook 'typescript-ts-mode-hook 'apheleia-mode)
+  (add-hook 'tsx-ts-mode-hook 'apheleia-mode)
+  (add-hook 'typescript-mode-hook 'apheleia-mode))
 
 (use-package js-comint
   :commands js-comint-repl)

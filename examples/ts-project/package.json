@@ -1,6 +1,7 @@
 {
   "name": "ts-project",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "description": "Example TypeScript project for testing Emacs tree-sitter and eglot",
   "scripts": {
@@ -8,6 +9,8 @@
     "build": "tsc"
   },
   "devDependencies": {
-    "typescript": "^5.4"
+    "eslint": "^10.12.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.71.1"
   }
 }
