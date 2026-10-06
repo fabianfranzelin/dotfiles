@@ -727,8 +727,26 @@ Returns t so it can be used as :before-while advice without blocking the advised
 ;;   :hook
 ;;   (after-init . super-save-mode))
 
+(defun ff/buffer-guardian-not-focused ()
+  "Return nil when the current buffer is the focused (actively edited) one.
+Buffer-guardian skips a buffer when any predicate returns nil, so this
+prevents auto-saving the buffer in the selected window.  Formatters like
+apheleia therefore never reformat the buffer under point on an automatic
+save; it is only formatted on an explicit manual save.
+
+`minibuffer-selected-window' is preferred over `selected-window' so the
+editing buffer is still recognized as focused while a minibuffer (e.g. a
+completion or `M-x' prompt) is active."
+  (not (eq (current-buffer)
+           (window-buffer (or (minibuffer-selected-window)
+                              (selected-window))))))
+
 (use-package buffer-guardian
   :custom
+  ;; Only auto-save buffers that are not currently focused, so the buffer
+  ;; being actively edited is never reformatted under point on auto-save.
+  (buffer-guardian-predicate-functions '(ff/buffer-guardian-not-focused))
+
   ;; When non-nil, include remote files in the auto-save process
   (buffer-guardian-inhibit-saving-remote-files t)
 
