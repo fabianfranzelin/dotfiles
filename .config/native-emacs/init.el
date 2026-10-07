@@ -100,6 +100,10 @@ gmail.com"
 
 (keymap-global-set "C-c v" 'view-mode)
 
+(when (eq system-type 'windows-nt)
+  (setq w32-get-true-file-attributes nil      ; Decrease file IO workload
+        w32-pipe-buffer-size (* 128 1024)))   ; Read more at a time
+
 ;; -------------------------------------------------------------
 ;; Show available keybindings
 (use-package which-key
