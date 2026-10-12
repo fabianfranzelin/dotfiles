@@ -484,7 +484,9 @@ Uses theme background in GUI, near-black in terminal.")
 ;; Direnv: I am using the buffer local version and not the direnv
 ;; package
 ;; -------------------------------------------------------------------
-(use-package envrc)
+(use-package envrc
+  :init
+  (envrc-global-mode))
 
 ;; -------------------------------------------------------------------
 ;; HTML, CSS
