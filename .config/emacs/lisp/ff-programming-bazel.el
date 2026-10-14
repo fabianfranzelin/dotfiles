@@ -177,6 +177,15 @@ dedicated buffer and copied to the kill ring."
 (advice-add 'bazel--target-package-completion-table-1 :around
             #'ff/bazel--package-completion-add-slash)
 
+;; Never use cached test results: always re-run `bazel-test'.
+(defun ff/bazel--test-no-cache (orig-fun &rest args)
+  "Run ORIG-FUN (`bazel-test') with test result caching disabled."
+  (let ((bazel-command-options
+         (append bazel-command-options '("--cache_test_results=no"))))
+    (apply orig-fun args)))
+
+(advice-add 'bazel-test :around #'ff/bazel--test-no-cache)
+
 ;; Bazel container - host mapping of compile commands.
 (defvar ff/bazel-workspace-folder-container nil
   "Location of the workspace inside the container.")
