@@ -113,7 +113,7 @@
          ("CMakeLists\\.txt" . cmake-ts-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;                                    Bazel                                   ;
+;;                              Debug with Bazel                              ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun ff/bazel--runfiles-lib-path (project-dir bin-path)
   "Compute LD_LIBRARY_PATH from the runfiles tree of a Bazel binary.
