@@ -75,7 +75,8 @@ install_apt_packages() {
         meld \
         autorandr \
         gdbserver \
-        patchelf
+        patchelf \
+        psmisc
 
     # Create save path for flameshot
     mkdir -p "${HOME}/Pictures/Screenshots"
