@@ -191,7 +191,7 @@ Host pauline
 
 Match host blackview exec \"ping -c 1 -W 1 192.168.178.85\"
      Hostname 192.168.178.85
-     Port 2222
+     Port 8022
      ForwardAgent yes
      ForwardX11 yes
      ForwardX11Trusted yes
