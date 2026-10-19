@@ -85,6 +85,12 @@ allow-emacs-pinentry
 
     BASHRC="${HOME}/.bashrc"
     echo "
+
+if [ -n \"${SSH_CONNECTION}\" ]
+then
+   proot-distro login ubuntu --use frf2lr
+fi
+
 export PASSWORD_STORE='\${HOME}/.password-store'
 
 alias e='emacs -nw --init-directory=\"\${HOME}/workspace/dotfiles/.config/minimal-emacs\"'
@@ -141,7 +147,7 @@ alias sb='sshpass -p \"\$(pass passwords/frf2lr@blackview)\" ssh -t frf2lr@black
 alias ba='sshpass -p \"\$(pass passwords/frf2lr@blackview)\" mosh frf2lr@blackview'
 alias b='sshpass -p \"\$(pass passwords/frf2lr@blackview)\" mosh frf2lr@blackview -- sh -c \"emacsclient -nw -a emacs; exec /usr/bin/zsh\"'
 
-alias ub=\"proot-distro login ubuntu --use frf2lr -- /bin/sh -c 'sudo /usr/sbin/sshd && exec zsh -l'\"
+alias ub=\"proot-distro login ubuntu --use frf2lr -- /bin/sh -c 'exec zsh -l'\"
     " | tee "${BASHRC}"
     ###########################################################################
     #                                   ssh                                  #
