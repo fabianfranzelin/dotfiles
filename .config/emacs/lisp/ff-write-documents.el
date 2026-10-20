@@ -51,6 +51,12 @@
 (defun ff/configure-rst-mode ()
   "Configure rst mode."
   (interactive)
+  ;; reStructuredText's syntax table makes '_' punctuation (it is used
+  ;; for hyperlink targets).  That truncates identifiers like
+  ;; A_B_C to "A" for `thing-at-point', which
+  ;; breaks xref/dumb-jump on sphinx-needs requirement IDs.  Treat '_'
+  ;; as a symbol constituent so the whole ID is captured.
+  (modify-syntax-entry ?_ "_")
   (set (make-local-variable 'completion-at-point-functions)
        '(cape-dabbrev
          cape-dict)))
@@ -171,9 +177,13 @@ JAR-PATH: expected binary file in the extracted folder."
         ("C-M-i" . plantuml-complete-symbol)
         ("C-c C-e" . (lambda() (interactive) (ff/plantuml-create-svg (buffer-file-name))))))
 
+;; plantuml has no flymake backend, so this is the one place flycheck
+;; is still used. Enable flycheck-mode locally for plantuml buffers.
 (use-package flycheck-plantuml
   :after
-  (plantuml-mode flycheck))
+  (plantuml-mode flycheck)
+  :hook
+  (plantuml-mode . flycheck-mode))
 
 ;; -------------------------------------------------------------------
 ;; Latex

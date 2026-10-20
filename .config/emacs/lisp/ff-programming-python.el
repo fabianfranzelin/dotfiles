@@ -16,7 +16,13 @@
 (ff/ensure-python-package "ipdb")
 (ff/ensure-python-package "ruff" nil "ruff")
 (ff/ensure-python-package "basedpyright" nil "basedpyright-langserver")
-(ff/ensure-python-package "mypy")
+(ff/ensure-python-package "mypy" nil "mypy")
+(ff/ensure-python-package "pylint" nil "pylint")
+;; python-lsp-server (pylsp) is the primary LSP server. It aggregates
+;; mypy, pylint and ruff diagnostics behind a single eglot connection.
+(ff/ensure-python-package "python-lsp-server" nil "pylsp")
+(ff/ensure-python-package "pylsp-mypy")
+(ff/ensure-python-package "python-lsp-ruff")
 
 ;; eglot hook
 (add-hook 'python-ts-mode-hook #'eglot-ensure)
@@ -32,17 +38,41 @@
 ;; delete output buffer on buffer execution
 (setq py-shell-switch-buffers-on-execute nil)
 
-;; configure lsp server alternatives
+;; configure lsp server alternatives.
+;; pylsp is the primary server so that eglot surfaces mypy, pylint and
+;; ruff-check diagnostics through flymake. basedpyright (and the other
+;; servers) remain available as fallbacks via `M-x eglot' selection.
 (with-eval-after-load 'eglot
   (add-to-list 'eglot-server-programs
                `(python-base-mode
-                 . ,(eglot-alternatives '(("basedpyright-langserver" "--stdio")
+                 . ,(eglot-alternatives '(("pylsp")
+                                          ("basedpyright-langserver" "--stdio")
                                           ("ruff" "server")
                                           ("ty" "server")
                                           ("pyright-langserver" "--stdio"))))))
 
+;; configure pylsp plugins: enable exactly mypy + pylint + ruff(check),
+;; and disable every overlapping default linter/formatter so the stack
+;; stays limited to the requested tools.
+(setq-default eglot-workspace-configuration
+              '(:pylsp
+                (:plugins
+                 (;; type checking via mypy (pylsp-mypy plugin)
+                  :pylsp_mypy (:enabled t :live_mode t)
+                  ;; linting via pylint
+                  :pylint (:enabled t)
+                  ;; linting via ruff check (python-lsp-ruff plugin).
+                  ;; formatting is handled by apheleia, so keep it off here.
+                  :ruff (:enabled t :formatEnabled :json-false)
+                  ;; disable the default overlapping plugins
+                  :pycodestyle (:enabled :json-false)
+                  :pyflakes (:enabled :json-false)
+                  :mccabe (:enabled :json-false)
+                  :flake8 (:enabled :json-false)
+                  :autopep8 (:enabled :json-false)
+                  :yapf (:enabled :json-false)))))
 
-;; configure auto format
+;; configure auto format (ruff format + ruff import sorting)
 (with-eval-after-load 'apheleia
   (add-hook 'python-base-mode-hook 'apheleia-mode)
   (setf (alist-get 'ruff-format apheleia-formatters) '("ruff" "format" "--stdin-filename" filepath "-"))
@@ -77,10 +107,6 @@
         ("C-c t l" . python-pytest-function)
         ("C-c t f" . python-pytest-file-dwim)
         ("C-c t e" . python-pytest-last-failed)))
-
-;; flycheck
-(with-eval-after-load 'flycheck
-  (flycheck-add-mode 'python-mypy 'python-base-mode))
 
 (provide 'ff-programming-python)
 

@@ -254,10 +254,14 @@ install_packages_manually() {
 
     # Install Opencode
     # curl -fsSL https://opencode.ai/install | bash
+    # Tokenscope
+    # npm install -g @ramtinj95/opencode-tokenscope
+
 
     # Install RTK
     # curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
     # rtk init
+    # rtk init -g --opencode
 
     # Install Ollama
     # curl -fsSL https://ollama.com/install.sh | sh
@@ -270,7 +274,6 @@ install_packages_manually() {
 
     # Install azure sdk for ai
     # npm install -g @ai-sdk/azure
-    # rtk init -g --opencode
 }
 
 configure_gnupg() {

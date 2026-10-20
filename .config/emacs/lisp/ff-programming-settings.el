@@ -108,12 +108,19 @@ the need to update my project hierarchy."
                    (funcall orig-fn server nil))))))
 
 (use-package dumb-jump
-  :after consult
   :custom
   (dumb-jump-prefer-searcher 'rg)
-  (xref-show-definitions-function #'consult-xref)
-  :config
-  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
+  :init
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
+  ;; In rst-mode the esbonio LSP claims the xref backend but cannot
+  ;; resolve sphinx-needs requirement IDs (REQ_*).  Drop eglot's xref
+  ;; backend there so dumb-jump grep-searches the IDs instead.  Other
+  ;; eglot features (diagnostics, live preview) are unaffected.
+  (add-hook 'eglot-managed-mode-hook
+            (lambda ()
+              (when (derived-mode-p 'rst-mode)
+                (remove-hook 'xref-backend-functions
+                             #'eglot-xref-backend t)))))
 
 ;; -------------------------------------------------------------
 ;; use built-in tree-sitter (Emacs 31+)
@@ -134,26 +141,41 @@ the need to update my project hierarchy."
                (expand-file-name ".cache/emacs/tree-sitter" (getenv "HOME"))))
 
 ;; -------------------------------------------------------------------
-;; Additionally to flymake, use flycheck as well for certain modes
+;; Diagnostics: flymake is the primary provider everywhere.
+;;
+;; Eglot is flymake-native (no flycheck bridge), and most prog modes
+;; here are eglot-managed, so flymake is made the baseline for every
+;; `prog-mode' buffer. Native backends (e.g. emacs-lisp byte-compile and
+;; checkdoc) and eglot register themselves automatically. flycheck is
+;; kept around only for the few modes that lack a flymake backend (see
+;; `plantuml-mode' in ff-write-documents.el).
+;; -------------------------------------------------------------------
+(use-package flymake
+  :straight (:type built-in)
+  :hook
+  (prog-mode . flymake-mode)
+  :custom
+  ;; re-check shortly after the buffer stops changing (matches the old
+  ;; flycheck idle-change-delay of 0.8s)
+  (flymake-no-changes-timeout 0.8)
+  ;; only indicate real problems in the fringe
+  (flymake-fringe-indicator-position 'right-fringe)
+  :bind
+  (:map flymake-mode-map
+        ("M-n" . flymake-goto-next-error)
+        ("M-p" . flymake-goto-prev-error)))
+
+;; Flycheck is enabled per-mode only where a flymake backend does not
+;; exist.
 (use-package flycheck
+  :commands (flycheck-mode global-flycheck-mode)
   :custom
   ;; bazel-buildifier in flycheck no longer working. Disable.
   ;; org-lint is also not working and I don't need it, so disable as well.
   (flycheck-disabled-checkers '(bazel-buildifier org-lint))
   ;; Override default flycheck triggers
   (flycheck-check-syntax-automatically '(save idle-change mode-enabled))
-  (flycheck-idle-change-delay 0.8)
-  :init
-  (global-flycheck-mode))
-
-(use-package flycheck-status-emoji
-  :after flycheck
-  :custom
-  (flycheck-status-emoji-indicator-finished-error ?💀)
-  (flycheck-status-emoji-indicator-finished-ok ?👍)
-  (flycheck-status-emoji-indicator-finished-warning ?👎)
-  :config
-  (flycheck-status-emoji-mode t))
+  (flycheck-idle-change-delay 0.8))
 
 ;; -------------------------------------------------------------------
 ;; Debugger
@@ -399,11 +421,20 @@ Uses theme background in GUI, near-black in terminal.")
 (ff/ensure-npm-package "typescript-language-server" "typescript-language-server")
 (ff/ensure-npm-package "prettier" "prettier")
 
-;; enable eslint for javascript
+;; enable eslint for javascript/typescript as a flymake backend so it
+;; runs alongside the tsserver diagnostics eglot already provides.
 (ff/ensure-npm-package "eslint" "eslint")
-(with-eval-after-load 'flycheck
-  (flycheck-add-mode 'javascript-eslint 'js-ts-mode)
-  (flycheck-add-mode 'javascript-eslint 'tsx-ts-mode))
+(use-package flymake-eslint
+  :hook
+  ((js-ts-mode typescript-ts-mode tsx-ts-mode) . flymake-eslint-enable)
+  :custom
+  ;; eslint resolves its config/plugins relative to the project root
+  (flymake-eslint-project-root nil)
+  (flymake-eslint-defer-binary-check t))
+
+;; plain javascript has no eglot hook, so make sure flymake is on there
+;; too (prog-mode-hook already covers it, but js-ts derives from it).
+(add-hook 'js-ts-mode-hook #'flymake-mode)
 
 (with-eval-after-load 'project
   (add-to-list 'project-vc-extra-root-markers "package.json"))
