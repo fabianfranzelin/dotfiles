@@ -7,7 +7,7 @@
 
 case $- in
     *i*) ;;
-      *) return ;;
+    *) return ;;
 esac
 
 # When using Emacs TRAMP, we skip all the set up since it messes with
@@ -77,4 +77,3 @@ fi
 if command -v uv > /dev/null 2>&1; then
     eval "$(uv --generate-shell-completion bash)"
 fi
-

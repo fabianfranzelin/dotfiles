@@ -7,6 +7,20 @@ generate_git_credentials()
 
     credentials_file="${HOME}/.config/git/config.$(hostname).personal-credentials"
 
+    # Only generate credentials when the password store is available. Bail out
+    # before touching any file so that an unavailable store leaves existing
+    # credentials untouched (and CI doesn't produce empty credential files).
+    if ! command -v pass >/dev/null 2>&1; then
+        echo "Warning: 'pass' command not found - skipping git credential generation" >&2
+        return 0
+    fi
+    local password_store_dir
+    password_store_dir="${PASSWORD_STORE_DIR:-${HOME}/.password-store}"
+    if [[ ! -d "${password_store_dir}" ]]; then
+        echo "Warning: Password store directory '${password_store_dir}' not found - skipping git credential generation" >&2
+        return 0
+    fi
+
     echo "Generating git credentials..."
 
     # Start with header
@@ -34,22 +48,6 @@ generate_git_credentials()
     }
 
     local has_credentials=0
-
-    # Check if `pass` and the password store directory are available. If not,
-    # only emit warnings and skip any password-store lookups so CI doesn't fail
-    # when the pass tool or store is not present.
-    local pass_available=0
-    if command -v pass >/dev/null 2>&1; then
-        local password_store_dir
-        password_store_dir="${PASSWORD_STORE_DIR:-${HOME}/.password-store}"
-        if [[ -d "${password_store_dir}" ]]; then
-            pass_available=1
-        else
-            echo "Warning: Password store directory '${password_store_dir}' not found - skipping password-store lookups" >&2
-        fi
-    else
-        echo "Warning: 'pass' command not found - skipping password-store lookups" >&2
-    fi
 
     # Helper: attempt to add credentials from pass store
     # Args: $1 = label, $2 = pass username path, $3 = pass token path template (use {user} for username), $4 = base_url, $5 = path_prefix template (use {user} for username)
@@ -80,16 +78,12 @@ generate_git_credentials()
     }
 
     # Add personal GitHub credentials (optional - skipped if not in pass store).
-    # Only attempt to read from the pass store if it is available; otherwise
-    # we've already warned and will skip silently.
-    if [[ "${pass_available}" -eq 1 ]]; then
-        try_add_credential \
-            "GitHub: github.com (personal)" \
-            "usernames/public@github" \
-            "tokens/{user}@github.com" \
-            "github.com" \
-            "{user}/"
-    fi
+    try_add_credential \
+        "GitHub: github.com (personal)" \
+        "usernames/public@github" \
+        "tokens/{user}@github.com" \
+        "github.com" \
+        "{user}/"
 
     if [[ "${has_credentials}" -eq 0 ]]; then
         echo "Warning: No git credentials were generated (no matching entries in pass store)" >&2
@@ -106,10 +100,6 @@ install_git()
     sudo apt-get install -y \
         git \
         git-lfs
-
-    #------------------------------------------------------------------------------#
-    # Generate credentials file from pass
-    generate_git_credentials
 
     # Install github command line tool
     (
