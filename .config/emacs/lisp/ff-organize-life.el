@@ -407,6 +407,9 @@ Intended as an `embark' action for the `org-roam-node' category."
          cape-dabbrev
          cape-dict)))
 
+(use-package nov)
+(use-package djvu)
+
 (use-package org-roam
   :after org
   :demand t
@@ -557,12 +560,6 @@ Intended as an `embark' action for the `org-roam-node' category."
 ;; Citations for org-files
 ;; -------------------------------------------------------------------
 (use-package citeproc
-  :after org)
-
-;; required as a dependency to org-noter
-(use-package djvu
-  :after org)
-(use-package nov
   :after org)
 
 (require 'ox-latex)
