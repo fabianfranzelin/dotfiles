@@ -36,6 +36,9 @@
 ;; -------------------------------------------------------------------
 ;; Simple text
 ;; -------------------------------------------------------------------
+(ff/ensure-npm-package "textlint")
+(ff/ensure-npm-package "textlint-rule-no-todo")
+
 (defun ff/configure-text-mode ()
   "Configure text mode."
   (interactive)

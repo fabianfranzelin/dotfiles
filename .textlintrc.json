@@ -1,0 +1,14 @@
+{
+  "plugins": [
+    "org",
+    "rst"
+  ],
+  "filters": {},
+  "rules": {
+    "no-todo": true,
+    "very-nice-rule": true,
+    "common-misspellings": {
+      "ignore": []
+    }
+  }
+}
