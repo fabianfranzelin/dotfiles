@@ -5,6 +5,60 @@
 
 ;;; Code:
 
+;; --------------------------------------------
+;; Linting prose with proselint and codespell
+;; --------------------------------------------
+;; Prose linting is provided by native flymake backends (proselint and
+;; codespell via flymake-collection)
+(ff/ensure-python-package "proselint" nil "proselint")
+(ff/ensure-python-package "codespell" nil "codespell")
+
+(use-package flymake-collection
+  :commands (flymake-collection-proselint flymake-collection-codespell))
+
+(defun ff/prose-flymake-english-p ()
+  "Return non-nil when the current buffer's spell language is English.
+
+`proselint' and `codespell' are English-only tools that ignore the
+ispell/jinx/languagetool language entirely, so they must not run on
+buffers detected as another language."
+  (let ((lang (or (and (bound-and-true-p jinx-languages)
+                       (stringp jinx-languages)
+                       jinx-languages)
+                  (bound-and-true-p ispell-local-dictionary)
+                  (bound-and-true-p ispell-dictionary))))
+    ;; When no language is known yet, default to enabling (English docs
+    ;; are the common case and detection may not have run yet).
+    (or (null lang)
+        (and (stringp lang) (string-prefix-p "en" lang)))))
+
+(defun ff/sync-prose-flymake (&rest _)
+  "Enable English-only prose checkers only for English buffers.
+
+Added to `ff/language-switched-hook' so the backends toggle whenever the
+detected language changes."
+  (when (derived-mode-p 'text-mode 'org-mode 'markdown-ts-mode 'rst-mode)
+    (if (ff/prose-flymake-english-p)
+        (progn
+          (add-hook 'flymake-diagnostic-functions #'flymake-collection-proselint nil t)
+          (add-hook 'flymake-diagnostic-functions #'flymake-collection-codespell nil t))
+      (remove-hook 'flymake-diagnostic-functions #'flymake-collection-proselint t)
+      (remove-hook 'flymake-diagnostic-functions #'flymake-collection-codespell t))
+    (when (bound-and-true-p flymake-mode)
+      (flymake-start))))
+
+(defun ff/configure-prose-flymake ()
+  "Enable native flymake prose checkers (proselint and codespell).
+
+Only registers the English-only checkers when the buffer language is
+English; see `ff/prose-flymake-english-p'."
+  (ff/sync-prose-flymake)
+  (flymake-mode 1))
+
+;; Re-evaluate the English-only checkers whenever language detection
+;; changes the active dictionary.
+(add-hook 'ff/language-switched-hook #'ff/sync-prose-flymake)
+
 ;; ----------------------
 ;; On the fly spell check
 ;; ----------------------
@@ -30,13 +84,14 @@
 
 (with-eval-after-load 'jinx
   (defun ff/switch-dictionary (&optional _langs _global)
-    "Sync ispell and languagetool with the current `jinx-languages'."
-    (require 'languagetool nil t)
+    "Sync ispell and flymake-languagetool with the current `jinx-languages'."
     (let ((dic jinx-languages))
       (when (and dic (stringp dic))
         (ispell-change-dictionary dic)
-        (when (fboundp 'languagetool-set-language)
-          (languagetool-set-language (replace-regexp-in-string "_" "-" dic)))
+        (setq-local flymake-languagetool-language
+                    (replace-regexp-in-string "_" "-" dic))
+        (when (bound-and-true-p flymake-mode)
+          (flymake-start))
         (run-hooks 'ff/language-switched-hook))))
 
   (advice-add 'jinx-languages :after #'ff/switch-dictionary))
@@ -50,9 +105,9 @@
   (guess-language-languages '(en de es))
   (guess-language-min-paragraph-length 20)
   (guess-language-langcodes
-   '((en . ("en_US" "English"))
-     (de . ("de_DE" "German"))
-     (es . ("es" "Spanish"))))
+   '((en . ("en_US" nil "🇬🇧" "English"))
+     (de . ("de_DE" nil "🇩🇪" "German"))
+     (es . ("es"    nil "🇪🇸" "Spanish"))))
   :config
   (defun ff/guess-language-of-body ()
     "Detect language of the current buffer's prose content.
@@ -99,7 +154,10 @@ mislead detection."
                   markdown-mode-hook
                   latex-mode-hook
                   message-setup-hook))
-    (add-hook hook #'ff/jinx-guess-buffer-language)))
+    (add-hook hook #'ff/jinx-guess-buffer-language))
+  :bind
+  (:map global-map
+        ("C-x 4 l" . ff/jinx-guess-buffer-language)))
 
 ;; --------------------------------------------------------
 ;; Static spell check with languagetool
@@ -124,7 +182,7 @@ PACKAGE-NAME: log message context"
       (message (concat "[" package-name "] Decompress " name " to " extract-to))
       (call-process-shell-command (concat "unzip " temporary-file " -d " extract-to) nil 0))))
 
-(use-package languagetool
+(use-package flymake-languagetool
   :preface
   ;; ensure system packages
   (ff/ensure-apt-package "unzip" "unzip")
@@ -135,24 +193,30 @@ PACKAGE-NAME: log message context"
   (defvar langtool-extract-to (expand-file-name "language-tool" no-littering-var-directory))
   (defvar langtool-path (expand-file-name langtool-name langtool-extract-to))
   (defvar langtool-server (expand-file-name "languagetool-server.jar" langtool-path))
-  (defvar langtool-commandline (expand-file-name "languagetool-commandline.jar" langtool-path))
   (ff/download-and-extract-zip-archive langtool-url
                                        langtool-name
                                        langtool-extract-to
-                                       langtool-commandline
+                                       langtool-server
                                        "langtool")
-  :config
-  (customize-set-variable 'languagetool-java-arguments '("-Dfile.encoding=UTF-8"))
-  (customize-set-variable 'languagetool-default-language "en-US")
-  (customize-set-variable 'languagetool-console-command langtool-commandline)
-  (customize-set-variable 'languagetool-server-command langtool-server)
-
+  :init
+  ;; Local server started automatically from the downloaded jar.
+  (setq flymake-languagetool-server-jar langtool-server)
+  ;; Spelling is handled by jinx; keep LanguageTool to grammar/style only.
+  (setq flymake-languagetool-check-spelling nil)
+  (setq flymake-languagetool-language "en-US")
+  ;; Keep grammar checks out of the hot typing path: only check when idle.
+  (setq flymake-no-changes-timeout 3)
+  :hook
+  (text-mode . flymake-languagetool-load)
+  (org-mode . flymake-languagetool-load)
+  (markdown-mode . flymake-languagetool-load)
+  (latex-mode . flymake-languagetool-load)
+  (message-mode . flymake-languagetool-load)
   :bind
   (:map global-map
-        ("C-x 4 c" . languagetool-check)
-        ("C-x 4 k" . languagetool-clear-suggestions)
-        ("C-x 4 p" . languagetool-correct-at-point)
-        ("C-x 4 b" . languagetool-correct-buffer)))
+        ("C-x 4 c" . flymake-languagetool-correct)
+        ("C-x 4 p" . flymake-languagetool-correct-at-point)
+        ("C-x 4 b" . flymake-show-buffer-diagnostics)))
 
 (provide 'ff-spellcheck)
 

@@ -302,7 +302,9 @@ handled by Corfu, so this command never triggers header completion."
 
 (use-package message
   :straight (:type built-in)
-  :hook (message-send . ff/ebdb-update-message-recipients)
+  :hook
+  (message-send . ff/ebdb-update-message-recipients)
+  (message-mode . flymake-mode)
   :custom
   (message-send-mail-function 'smtpmail-send-it)
   (message-kill-buffer-on-exit t)

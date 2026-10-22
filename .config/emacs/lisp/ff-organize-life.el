@@ -86,6 +86,8 @@ org-roam to that project's notes."
   (org-babel-after-execute . org-display-inline-images)
   ;; auto align tags
   (org-mode . (lambda () (add-hook 'before-save-hook 'org-align-tags nil 'local)))
+  (org-mode . ff/configure-prose-flymake)
+  (org-mode . flymake-mode)
   :custom
   (org-directory (ff/create-folder-and-return "~/workspace/org"))
   (org-agenda-files `(,(ff/create-folder-and-return (expand-file-name "notes" org-directory))

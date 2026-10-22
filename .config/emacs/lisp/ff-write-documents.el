@@ -7,6 +7,20 @@
 ;;; Code:
 
 ;; -------------------------------------------------------------------
+;; Simple text
+;; -------------------------------------------------------------------
+(defun ff/configure-text-mode ()
+  "Configure text mode."
+  (interactive)
+  (set (make-local-variable 'completion-at-point-functions)
+       '(cape-dabbrev
+         cape-dict))
+  (ff/configure-prose-flymake))
+
+(add-hook 'text-mode-hook #'flymake-mode)
+(add-hook 'text-mode-hook #'ff/configure-text-mode)
+
+;; -------------------------------------------------------------------
 ;; Markdown
 ;; -------------------------------------------------------------------
 (use-package markdown-ts-mode
@@ -15,6 +29,7 @@
   ("\\.md$" . markdown-ts-mode)
   :hook
   (markdown-ts-mode . eglot-ensure)
+  (markdown-ts-mode . ff/configure-prose-flymake)
   :init
   ;; Ensure correct grammar version (v0.4.1) is used; the built-in
   ;; markdown-ts-mode font-lock rules require nodes (e.g. pipe_table)
@@ -34,21 +49,6 @@
   (setf (alist-get 'markdown-ts-mode apheleia-mode-alist) 'mdformat))
 
 ;; -------------------------------------------------------------------
-;; Simple text
-;; -------------------------------------------------------------------
-(ff/ensure-npm-package "textlint")
-(ff/ensure-npm-package "textlint-rule-no-todo")
-
-(defun ff/configure-text-mode ()
-  "Configure text mode."
-  (interactive)
-  (set (make-local-variable 'completion-at-point-functions)
-       '(cape-dabbrev
-         cape-dict)))
-
-(add-hook 'text-mode-hook #'ff/configure-text-mode)
-
-;; -------------------------------------------------------------------
 ;; RST mode
 ;; -------------------------------------------------------------------
 (defun ff/configure-rst-mode ()
@@ -62,7 +62,8 @@
   (modify-syntax-entry ?_ "_")
   (set (make-local-variable 'completion-at-point-functions)
        '(cape-dabbrev
-         cape-dict)))
+         cape-dict))
+  (ff/configure-prose-flymake))
 
 (use-package rst
   :straight (:type built-in)
@@ -211,6 +212,7 @@ https://github.com/radian-software/straight.el/issues/240"
   (LaTeX-mode . TeX-fold-mode)
   (LaTeX-mode . outline-minor-mode)
   (LaTeX-mode . TeX-source-correlate-mode)
+  (latex-mode . flymake-mode)
   :config
   ;; Let auctex open pdf files with pdf-tools
   (setq TeX-view-program-selection '((output-pdf "PDF Tools"))

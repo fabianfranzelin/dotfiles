@@ -50,11 +50,7 @@ install_npm()
         vscode-langservers-extracted \
         prettier-json \
         prettier \
-        eslint \
-        textlint \
-        textlint-plugin-rst \
-        textlint-plugin-org \
-        textlint-rule-common-misspellings
+        eslint
 
     # install other npm packages
     npm install -g \
