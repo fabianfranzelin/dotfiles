@@ -206,14 +206,10 @@ PACKAGE-NAME: log message context"
   (setq flymake-languagetool-language "en-US")
   ;; Keep grammar checks out of the hot typing path: only check when idle.
   (setq flymake-no-changes-timeout 3)
-  :hook
-  (text-mode . flymake-languagetool-load)
-  (org-mode . flymake-languagetool-load)
-  (markdown-mode . flymake-languagetool-load)
-  (latex-mode . flymake-languagetool-load)
-  (message-mode . flymake-languagetool-load)
   :bind
   (:map global-map
+        ("C-x 4 l" . flymake-languagetool-maybe-load)
+        ("C-x 4 k" . (lambda() (interactive) (remove-hook 'flymake-diagnostic-functions #'flymake-languagetool--checker)))
         ("C-x 4 c" . flymake-languagetool-correct)
         ("C-x 4 p" . flymake-languagetool-correct-at-point)
         ("C-x 4 b" . flymake-show-buffer-diagnostics)))
