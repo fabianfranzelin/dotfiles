@@ -308,6 +308,10 @@ create_symlinks()
 
     # Also correct the permissions and access rights on the directory
     chmod 700 "${HOME}/.gnupg"
+
+    # Correct ssh permissions and create socket folder, if necessary
+    chmod 600 "${HOME}/.ssh/config"
+    mkdir -p "${HOME}/.ssh/socket"
 }
 
 #------------------------------------------------------------------------------#
