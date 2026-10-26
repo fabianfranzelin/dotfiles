@@ -978,40 +978,38 @@ TEXT: title"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Rotate and save images
 
-(defun ff/image-get-current-rotation ()
-  "Extract the real visual rotation angle from the image property list at point."
-  (let ((img (get-text-property (point-min) 'display)))
-    (if (eq (car-safe img) 'image)
-        ;; Look for the explicit :rotation keyword property inside the spec plist
-        (or (plist-get (cdr img) :rotation) 0)
-      0)))
-
-(defun ff/image-save-rotated-file ()
-  "Read the current visual rotation from the buffer and save it permanently using ImageMagick."
+(defun ff/image-save-all-modifications ()
+  "Save the cropped image buffer data and bake in any active visual rotation using mogrify."
   (interactive)
   (let ((file (buffer-file-name))
-        ;; Emacs tracks visual rotation degrees in image-transform-rotation (defaults to 0.0)
-        (rotation (ff/image-get-current-rotation)))
+        ;; Extract the visual rotation angle from the active display properties
+        (img (get-text-property (point-min) 'display)))
     (if (and file (derived-mode-p 'image-mode))
-        (if (= rotation 0.0)
-            (message "Image is not visually rotated. Nothing to save.")
-          (let ((degrees (round rotation)))
-            ;; Destructively modify the actual file on disk via ImageMagick's mogrify
-            (shell-command (format "mogrify -rotate %d %s" degrees (shell-quote-argument file)))
-            ;; Reset the internal visual rotation variable since the file itself is now rotated
-            (setq image-transform-rotation 0.0)
-            ;; Flush the Emacs image cache and reload the modified file from disk
-            (clear-image-cache)
-            (revert-buffer t t t)
-            (message "Successfully saved image with a permanent %d-degree rotation." degrees)))
+        (let ((rotation (if (eq (car-safe img) 'image) (or (plist-get (cdr img) :rotation) 0) 0))
+              (quoted-file (shell-quote-argument file)))
+
+          ;; Step 1: Save native buffer data if it was modified (e.g., via 'i c' crop)
+          (when (buffer-modified-p)
+            (let ((inhibit-read-only t))
+              ;; Write the raw cropped bytes from the buffer directly over the file
+              (write-region (point-min) (point-max) file nil 'quiet)))
+
+          ;; Step 2: If a visual rotation is active, bake it in using mogrify
+          (if (= rotation 0)
+              (message "Image saved successfully (cropped).")
+            ;; Execute mogrify to perform an in-place rotation on the disk file
+            (shell-command (format "mogrify -rotate %d %s" rotation quoted-file))
+            (message "Image saved successfully (cropped and rotated %d degrees)." rotation))
+
+          ;; Step 3: Flush Emacs render cache, reload the clean file, and unmark modified flag
+          (clear-image-cache)
+          (revert-buffer t t t)
+          (set-buffer-modified-p nil))
       (message "No valid image file found in the current buffer."))))
 
-;; Bind the custom save function into image-mode
+;; Bind the comprehensive save function to C-x C-s inside image-mode
 (with-eval-after-load 'image-mode
-  ;; Step 1: Use 'r' natively to rotate step-by-step in the buffer (90, 180, 270 degrees)
-  ;; Step 2: Use 'C-x C-s' to intercept the save command and bake the rotation into the file data
-  (keymap-set image-mode-map "C-x C-s" #'ff/image-save-rotated-file))
-
+  (keymap-set image-mode-map "C-x C-s" #'ff/image-save-all-modifications))
 
 (provide 'ff-core)
 
