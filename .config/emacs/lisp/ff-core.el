@@ -974,6 +974,45 @@ TEXT: title"
         ("C-c +" . (lambda () (interactive) (ff/repeat-command 'zoom-frm-in)))
         ("C-c -" . (lambda () (interactive) (ff/repeat-command 'zoom-frm-out)))))
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Rotate and save images
+
+(defun ff/image-get-current-rotation ()
+  "Extract the real visual rotation angle from the image property list at point."
+  (let ((img (get-text-property (point-min) 'display)))
+    (if (eq (car-safe img) 'image)
+        ;; Look for the explicit :rotation keyword property inside the spec plist
+        (or (plist-get (cdr img) :rotation) 0)
+      0)))
+
+(defun ff/image-save-rotated-file ()
+  "Read the current visual rotation from the buffer and save it permanently using ImageMagick."
+  (interactive)
+  (let ((file (buffer-file-name))
+        ;; Emacs tracks visual rotation degrees in image-transform-rotation (defaults to 0.0)
+        (rotation (ff/image-get-current-rotation)))
+    (if (and file (derived-mode-p 'image-mode))
+        (if (= rotation 0.0)
+            (message "Image is not visually rotated. Nothing to save.")
+          (let ((degrees (round rotation)))
+            ;; Destructively modify the actual file on disk via ImageMagick's mogrify
+            (shell-command (format "mogrify -rotate %d %s" degrees (shell-quote-argument file)))
+            ;; Reset the internal visual rotation variable since the file itself is now rotated
+            (setq image-transform-rotation 0.0)
+            ;; Flush the Emacs image cache and reload the modified file from disk
+            (clear-image-cache)
+            (revert-buffer t t t)
+            (message "Successfully saved image with a permanent %d-degree rotation." degrees)))
+      (message "No valid image file found in the current buffer."))))
+
+;; Bind the custom save function into image-mode
+(with-eval-after-load 'image-mode
+  ;; Step 1: Use 'r' natively to rotate step-by-step in the buffer (90, 180, 270 degrees)
+  ;; Step 2: Use 'C-x C-s' to intercept the save command and bake the rotation into the file data
+  (keymap-set image-mode-map "C-x C-s" #'ff/image-save-rotated-file))
+
+
 (provide 'ff-core)
 
 ;;; ff-core.el ends here
