@@ -209,6 +209,9 @@ COMMAND: command to be executed"
         (last-repeatable-command 'repeat))
     (repeat nil)))
 
+;; Close windows repeatedly with C-x 0 0 0
+(keymap-global-set "C-x 0" #'(lambda () (interactive) (ff/repeat-command 'delete-window)))
+
 ;; make the undo/redo functions repeatable
 (tab-bar-history-mode 1)
 (setq tab-bar-history-limit 100)

@@ -159,7 +159,7 @@ the need to update my project hierarchy."
   ;; flycheck idle-change-delay of 0.8s)
   (flymake-no-changes-timeout 0.8)
   ;; only indicate real problems in the fringe
-  (flymake-fringe-indicator-position 'right-fringe))
+  (flymake-fringe-indicator-position 'left-fringe))
 
 ;; Flycheck is enabled per-mode only where a flymake backend does not
 ;; exist.
