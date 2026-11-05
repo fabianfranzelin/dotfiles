@@ -695,6 +695,7 @@ Example usage: (message (my/tramp-call-process-direct \"your-remote-host.com\" \
 
 (defun ff/unlock-first-gpg-key (&rest _)
   "Identify the first available private GPG key and unlock it by signing a test string.
+Allow up to three passphrase attempts.
 Returns t so it can be used as :before-while advice without blocking the advised function."
   (interactive)
   (let* ((context (epg-make-context 'OpenPGP))
@@ -703,16 +704,28 @@ Returns t so it can be used as :before-while advice without blocking the advised
     (if (null keys)
         (progn (message "No private GPG keys found.") t)
       (let* ((first-key (car keys))
-             (key-id (epg-sub-key-id (car (epg-key-sub-key-list first-key)))))
-        (condition-case err
-            (progn
-              ;; Attempt to sign a dummy string to trigger the pinentry/unlock
-              (epg-sign-string context "unlock-test" 'detach)
-              (message "Successfully unlocked key: %s" key-id)
-              t)
-          (error
-           (message "Failed to unlock key %s: %s" key-id (error-message-string err))
-           t))))))
+             (key-id (epg-sub-key-id (car (epg-key-sub-key-list first-key))))
+             (attempts 0)
+             prompted done)
+        (epg-context-set-passphrase-callback
+         context (lambda (ctx id data)
+                   (prog1 (epa-passphrase-callback-function ctx id data)
+                     (setq prompted t))))
+        (while (not done)
+          (setq attempts (1+ attempts)
+                prompted nil)
+          (condition-case err
+              (progn
+                ;; Attempt to sign a dummy string to trigger the pinentry/unlock
+                (epg-sign-string context "unlock-test" 'detach)
+                (message "Successfully unlocked key: %s" key-id)
+                (setq done t))
+            (error
+             (if (and (eq (car err) 'epg-error) prompted (< attempts 3))
+                 (message "Failed to unlock key %s; try again." key-id)
+               (message "Failed to unlock key %s: %s" key-id (error-message-string err))
+               (setq done t)))))
+        t))))
 
 (keymap-global-set "C-c C-g" 'ff/unlock-first-gpg-key)
 
