@@ -224,6 +224,12 @@ FUN: function to be called on the entry's path"
 (customize-set-variable 'display-time-24hr-format t)
 (display-time)
 
+(use-package meeting-mode
+  :straight (:host github :repo "estebanjtrabajos/meeting-mode")
+  :custom
+  (meeting-blink-count 1)
+  (meeting-blink-interval nil))
+
 ;; -------------------------------------------------------------------
 ;; Define font size and methods to adjust it on the fly
 (defun ff/font-available-p (font-name)
