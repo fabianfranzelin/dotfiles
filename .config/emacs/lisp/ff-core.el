@@ -171,33 +171,45 @@ COMMAND: command to be executed"
 (keymap-global-set "<Scroll_Lock>" 'do-nothing)
 (defvar scroll-lock-mode nil)
 
+;; Window splitting
 (defun ff/split-window-right ()
   "Split window right and move to the new window."
   (interactive)
   (split-window-right)
   (other-window 1))
 
-(keymap-global-set "C-x 3" 'ff/split-window-right)
-
 (defun ff/split-window-below ()
-  "Split window right and move to the new window."
+  "Split window below and move to the new window."
   (interactive)
   (split-window-below)
   (other-window 1))
 
-(keymap-global-set "C-x 2" 'ff/split-window-below)
+(defun ff/delete-window ()
+  "Delete the selected window."
+  (interactive)
+  (delete-window))
+
+(defvar-keymap ff/split-window-repeat-map
+  :doc "Repeat map for splitting/deleting windows: C-x 2 3 0 ..."
+  :repeat t
+  "0" #'ff/delete-window
+  "2" #'ff/split-window-below
+  "3" #'ff/split-window-right)
+
+(keymap-global-set "C-x 3" #'ff/split-window-right)
+(keymap-global-set "C-x 2" #'ff/split-window-below)
+(keymap-global-set "C-x 0" #'ff/delete-window)
 
 ;; window movement
 (defvar-keymap ff/window-key-map
   :doc "Bindings for managing windows, configured to be repeatable."
   :repeat t
-  "c" 'delete-window
-  "h" 'split-window-horizontally
-  "v" 'split-window-vertically
-  "b" 'windmove-swap-states-left
-  "f" 'windmove-swap-states-right
-  "n" 'windmove-swap-states-down
-  "p" 'windmove-swap-states-up)
+  "h" #'split-window-horizontally
+  "v" #'split-window-vertically
+  "b" #'windmove-swap-states-left
+  "f" #'windmove-swap-states-right
+  "n" #'windmove-swap-states-down
+  "p" #'windmove-swap-states-up)
 
 (keymap-global-set "C-q" ff/window-key-map)
 
@@ -208,9 +220,6 @@ COMMAND: command to be executed"
         (repeat-message-function #'ignore)
         (last-repeatable-command 'repeat))
     (repeat nil)))
-
-;; Close windows repeatedly with C-x 0 0 0
-(keymap-global-set "C-x 0" #'(lambda () (interactive) (ff/repeat-command 'delete-window)))
 
 ;; make the undo/redo functions repeatable
 (tab-bar-history-mode 1)
