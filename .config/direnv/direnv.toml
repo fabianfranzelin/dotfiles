@@ -1,0 +1,5 @@
+[global]
+# do not print the long list of changed variables
+hide_env_diff = true
+# first evaluation of a Nix flake can take a while
+warn_timeout = "5m"

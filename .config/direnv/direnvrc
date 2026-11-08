@@ -1,0 +1,14 @@
+# direnv stdlib extensions (deployed via stow to ~/.config/direnv/direnvrc)
+
+# nix-direnv: cached, GC-rooted `use flake` / `use nix`.
+# Installed with: nix profile add nixpkgs#nix-direnv
+for nix_direnv in \
+    "$HOME/.nix-profile/share/nix-direnv/direnvrc" \
+        "/nix/var/nix/profiles/default/share/nix-direnv/direnvrc"; do
+    if [ -f "$nix_direnv" ]; then
+        # shellcheck source=/dev/null
+        source "$nix_direnv"
+        break
+    fi
+done
+unset nix_direnv

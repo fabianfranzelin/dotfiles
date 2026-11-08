@@ -508,14 +508,6 @@ Uses theme background in GUI, near-black in terminal.")
 ;; treesit-enabled-modes handles conf-toml-mode -> toml-ts-mode remapping
 
 ;; -------------------------------------------------------------------
-;; Direnv: I am using the buffer local version and not the direnv
-;; package
-;; -------------------------------------------------------------------
-(use-package envrc
-  :init
-  (envrc-global-mode))
-
-;; -------------------------------------------------------------------
 ;; HTML, CSS
 ;; -------------------------------------------------------------------
 ;; treesit-enabled-modes handles css-mode/html-mode/mhtml-mode remapping
@@ -598,6 +590,11 @@ Uses theme background in GUI, near-black in terminal.")
 ;; Nginx mode
 (use-package nginx-mode
   :commands nginx-mode)
+
+;; -----------------------------------------------------------------------------------
+;; Nix mode
+(use-package nix-mode
+  :mode "\\.nix\\'")
 
 
 (provide 'ff-programming-settings)

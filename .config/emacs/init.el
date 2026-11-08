@@ -21,6 +21,7 @@
 (require 'ff-multimedia)
 (require 'ff-messaging)
 (require 'ff-setup-gui)
+(require 'ff-direnv) ; keep last: enables envrc-global-mode
 ;; -------------------------------------------------------------------
 
 (provide 'init)

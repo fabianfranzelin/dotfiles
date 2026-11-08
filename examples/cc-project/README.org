@@ -30,3 +30,129 @@ The =.vscode/launch.json= and =.vscode/tasks.json= dynamically query
 Bazel for all =cc_binary= targets and present them in a picker before
 building and debugging.
 
+
+** Nix dev shell (pure, via direnv)
+
+The project ships a Nix flake (=flake.nix=) with a *pure* development
+shell: inside it, =PATH= only contains =/nix/store= entries (gcc,
+Bazel 9 from nixpkgs, CMake, gdb, clangd, git, pass, ...). The shell is
+loaded by [[https://github.com/nix-community/nix-direnv][nix-direnv]] through =.envrc=, and Emacs picks it up per
+buffer via =envrc.el= (=lisp/ff-direnv.el=). No containers, no TRAMP.
+
+*** One-time system setup (run manually, requires sudo)
+
+These steps change the system outside of the dotfiles and are therefore
+not automated.
+
+1. Back up the shell startup files that the installer modifies:
+   #+begin_src sh
+   sudo cp -a /etc/bash.bashrc /etc/bash.bashrc.pre-nix
+   sudo cp -a /etc/zsh/zshrc /etc/zsh/zshrc.pre-nix
+   #+end_src
+
+2. Install Nix with the Determinate installer (interactive: review the
+   plan before confirming). Proxy and corporate CA bundle are passed
+   explicitly, telemetry is disabled:
+   #+begin_src sh
+   curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix -o /tmp/nix-installer.sh
+   NIX_INSTALLER_DIAGNOSTIC_ENDPOINT="" sh /tmp/nix-installer.sh install \
+       --proxy http://127.0.0.1:3128 \
+       --ssl-cert-file /etc/ssl/certs/ca-certificates.crt
+   #+end_src
+
+3. Additional Nix settings (=nix.conf= is managed by Determinate):
+   #+begin_src sh
+   sudo tee -a /etc/nix/nix.custom.conf <<'CONF'
+   ssl-cert-file = /etc/ssl/certs/ca-certificates.crt
+   lazy-trees = true
+   CONF
+   sudo systemctl restart nix-daemon
+   #+end_src
+
+4. Make sure the daemon uses the proxy. Check with
+   =systemctl show nix-daemon -p Environment=. If no proxy is listed:
+   #+begin_src sh
+   sudo mkdir -p /etc/systemd/system/nix-daemon.service.d
+   sudo tee /etc/systemd/system/nix-daemon.service.d/proxy.conf <<'CONF'
+   [Service]
+   Environment="http_proxy=http://127.0.0.1:3128" "https_proxy=http://127.0.0.1:3128"
+   Environment="HTTP_PROXY=http://127.0.0.1:3128" "HTTPS_PROXY=http://127.0.0.1:3128"
+   CONF
+   sudo systemctl daemon-reload && sudo systemctl restart nix-daemon
+   #+end_src
+
+5. Open a new terminal and install nix-direnv:
+   #+begin_src sh
+   nix run nixpkgs#hello            # smoke test through the proxy
+   nix profile add nixpkgs#nix-direnv
+   #+end_src
+   =~/.config/direnv/direnvrc= (stowed from this repository) sources it.
+
+6. Allow Bazel's =linux-sandbox= to use user namespaces. Ubuntu 24.04
+   sets =kernel.apparmor_restrict_unprivileged_userns=1=, so without
+   this profile Bazel silently falls back to =processwrapper-sandbox=
+   (host bazelisk) or fails (Nix Bazel, which enforces
+   =--spawn_strategy=linux-sandbox=). The profile covers both:
+   #+begin_src sh
+   sudo tee /etc/apparmor.d/bazel-linux-sandbox <<'PROFILE'
+   abi <abi/4.0>,
+   include <tunables/global>
+
+   profile bazel-linux-sandbox @{HOME}/.cache/bazel{/_bazel_*,-nix}/install/*/linux-sandbox flags=(unconfined) {
+     userns,
+
+     include if exists <local/bazel-linux-sandbox>
+   }
+   PROFILE
+   sudo apparmor_parser -r /etc/apparmor.d/bazel-linux-sandbox
+   #+end_src
+   Check (should exit with 0 instead of =mount: Permission denied=):
+   #+begin_src sh
+   for s in ~/.cache/bazel/_bazel_*/install/*/linux-sandbox; do "$s" -- /bin/true && echo "ok: $s"; done
+   #+end_src
+   Security note: the profile path is user-writable, so any process
+   running as you can obtain unrestricted user namespaces (no root).
+
+7. Deploy the dotfiles (=./configure= or =stow=) so that
+   =~/.config/direnv/= and the Emacs module are linked.
+
+Uninstall: =/nix/nix-installer uninstall=, then
+=sudo apparmor_parser -R /etc/apparmor.d/bazel-linux-sandbox= and
+=sudo rm /etc/apparmor.d/bazel-linux-sandbox=.
+
+*** Project setup
+
+Flakes only see files tracked by git, and =flake.lock= has to be
+generated once (from a host shell, =nix= is not on the pure =PATH=):
+#+begin_src sh
+cd examples/cc-project
+git add flake.nix packages.nix bazel.nix nix.bazelrc .envrc
+nix flake lock && git add flake.lock
+direnv allow
+bazel clean --expunge   # only needed once, drops host toolchain config
+bazel run //:refresh_compile_commands
+#+end_src
+
+Updating the toolchain: =nix flake update= (host shell), then
+=M-x envrc-reload=.
+
+*** Usage in Emacs
+
+- Opening any file below =cc-project/= enables the environment; the
+  mode line shows =envrc[on]=.
+- =C-c E r= reload, =C-c E a= allow, =C-c E l= show direnv log.
+- =compile=, run-command, eglot (clangd), apheleia (clang-format,
+  buildifier), dape (gdb) and git all use the Nix tools.
+- vterm starts the regular zsh; its direnv hook switches to the pure
+  environment. agent-shell and copilot keep the host environment.
+
+*** Notes
+
+- The Nix Bazel uses its own output root =~/.cache/bazel-nix= and an
+  additional bazelrc (=nix.bazelrc=); =.bazelrc= is unchanged and the
+  host bazelisk keeps working.
+- =.envrc= builds =.direnv/cacerts.p12= from the host CA bundle so that
+  Bazel's embedded JDK accepts the corporate TLS proxy.
+- A work build that fails under the real sandbox (undeclared
+  dependencies) can temporarily use
+  =--spawn_strategy=processwrapper-sandbox=.

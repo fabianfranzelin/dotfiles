@@ -7,11 +7,23 @@
 ;; run async command without displaying the output
 (setq async-shell-command-buffer 'new-buffer)
 
+(defmacro ff/with-global-env (&rest body)
+  "Run BODY with the global (host) environment.
+Buffers managed by `envrc-mode' have a buffer-local, possibly pure
+environment (e.g. a Nix dev shell).  System package checks must always
+look at the host, otherwise opening a project would trigger installs."
+  (declare (indent 0))
+  `(let ((process-environment (default-value 'process-environment))
+         (exec-path (default-value 'exec-path)))
+     (with-temp-buffer
+       ,@body)))
+
 (defun ff/python-interpreter-version ()
   "Provide version of python interpreter."
   (let* ((python-interpreter-versions
           (split-string (car (cdr (split-string
-                                   (shell-command-to-string "python3 --version")
+                                   (ff/with-global-env
+                                     (shell-command-to-string "python3 --version"))
                                    " "))) "\\.")))
     (concat (elt python-interpreter-versions 0) "." (elt python-interpreter-versions 1))))
 
@@ -30,11 +42,11 @@ INSTALL-CMD: command to be executed
 PACKAGE-NAME: name of the package to be installed.
 EXECUTABLE: just install if the executable does not exist.
 REQUIRE-SUDO: launch it as sudo"
-  (when (or (null executable)
-            (and
-             (null (executable-find executable))
-             (not (file-exists-p executable))))
-    (with-temp-buffer
+  (ff/with-global-env
+    (when (or (null executable)
+              (and
+               (null (executable-find executable))
+               (not (file-exists-p executable))))
       (when require-sudo
         (cd "/sudo::/"))
       (async-shell-command (format "%s %s" install-cmd package-name)))))
@@ -71,12 +83,13 @@ EXECUTABLE: just install if the executable does not exist."
          (package-path (ff/python-local-site-packages-path package-folder-name))
          (package-path-with-version (concat package-path "-" version ".dist-info")))
     ;; just install the package when the provided executable does not exist
-    (unless (or (null executable) (not (null (executable-find executable))))
+    (ff/with-global-env
+     (unless (or (null executable) (not (null (executable-find executable))))
       (if version
           (unless (file-directory-p package-path-with-version)
             (async-shell-command (concat python-pip-install-cmd " '" package-name "==" version "'")))
         (unless (file-directory-p package-path)
-          (async-shell-command (concat python-pip-install-cmd " '" package-name "'")))))))
+          (async-shell-command (concat python-pip-install-cmd " '" package-name "'"))))))))
 
 (provide 'ff-ensure-system-packages)
 

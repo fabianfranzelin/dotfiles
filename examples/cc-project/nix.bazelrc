@@ -1,0 +1,5 @@
+# Make cc_configure and actions use the pure Nix toolchain.
+common --repo_env=CC --repo_env=CXX
+common --action_env=PATH --host_action_env=PATH
+# Fail instead of silently falling back to processwrapper-sandbox.
+build --spawn_strategy=linux-sandbox

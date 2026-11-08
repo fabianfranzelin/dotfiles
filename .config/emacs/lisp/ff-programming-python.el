@@ -73,11 +73,12 @@
                   :yapf (:enabled :json-false)))))
 
 ;; configure auto format (ruff format + ruff import sorting)
+(add-hook 'python-base-mode-hook #'apheleia-mode)
 (with-eval-after-load 'apheleia
-  (add-hook 'python-base-mode-hook 'apheleia-mode)
   (setf (alist-get 'ruff-format apheleia-formatters) '("ruff" "format" "--stdin-filename" filepath "-"))
   (setf (alist-get 'ruff-isort apheleia-formatters) '("ruff" "check" "--select" "I" "--fix-only" "--unsafe-fixes" "--stdin-filename" filepath "-"))
-  (setf (alist-get 'python-base-mode apheleia-mode-alist) '(ruff-format ruff-isort)))
+  (dolist (mode '(python-base-mode python-mode python-ts-mode))
+    (setf (alist-get mode apheleia-mode-alist) '(ruff-format ruff-isort))))
 
 ;; supports virtual environments. To be set with pyvenv-workon
 (use-package pyvenv

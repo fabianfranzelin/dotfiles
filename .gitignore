@@ -144,6 +144,7 @@ build/
 /examples/cc-project/.cache/
 /examples/cc-project/compile_commands.json
 /examples/cc-project/MODULE.bazel.lock
+/examples/cc-project/.direnv/
 /examples/org-project/content/index.pdf
 /examples/org-project/content/index.tex
 /examples/org-project/content/*.aux
