@@ -375,6 +375,30 @@ targets."
   ;; auto-updating embark collect buffer
   :hook
   (embark-collect-mode . consult-preview-at-point-mode)
+  :config
+  ;; consult-ripgrep/consult-grep candidates have the `consult-grep'
+  ;; category, which has no action keymap by default. Add one with
+  ;; "o" to jump to the exact match in another window.
+  (defun ff/embark-consult-goto-grep-other-window (location)
+    "Jump to the grep match LOCATION (file, line, column) in another window."
+    (defvar consult--buffer-display)
+    (let ((consult--buffer-display #'switch-to-buffer-other-window))
+      (embark-consult-goto-grep location))
+    ;; Embark runs non-interactive actions inside `with-selected-window',
+    ;; which restores the original window afterwards. Select the target
+    ;; window once Embark is done.
+    (let ((win (selected-window)))
+      (run-at-time 0 nil (lambda ()
+                           (when (window-live-p win)
+                             (select-window win))))))
+
+  (defvar-keymap ff/embark-consult-grep-map
+    :doc "Embark actions for `consult-grep' candidates (e.g. consult-ripgrep)."
+    :parent embark-general-map
+    "o" #'ff/embark-consult-goto-grep-other-window)
+
+  (add-to-list 'embark-keymap-alist
+               '(consult-grep ff/embark-consult-grep-map))
   :bind
   (:map embark-file-map
         ("g" . consult-grep)))
