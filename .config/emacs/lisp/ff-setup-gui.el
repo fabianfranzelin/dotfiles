@@ -337,6 +337,25 @@ FUN: function to be called on the entry's path"
         ("C-c }" . nil)
         ("C-c {" . nil)))
 
+;; -------------------------------------------------------------------
+;; Render SVGs in image-mode on a light background that matches the
+;; theme (transparent SVGs are hard to read on dark themes).
+(defun ff/image-mode-svg-background ()
+  "Background color for SVGs in `image-mode'."
+  (or (and (fboundp 'doom-color) (doom-color 'fg))
+      "white"))
+
+(defun ff/image-mode-svg-add-background (orig-fn spec)
+  "Add a theme-matching :background to SVG SPEC in `image-mode'."
+  (let ((props (funcall orig-fn spec)))
+    (if (eq (image-property spec :type) 'svg)
+        (append props (list :background (ff/image-mode-svg-background)))
+      props)))
+
+(with-eval-after-load 'image-mode
+  (advice-add 'image-transform-properties :around
+              #'ff/image-mode-svg-add-background))
+
 ;; -----------------------------------------------------------------
 ;; TTY improvements (Emacs 31+): tooltips via child frames and prettier
 ;; special glyphs. Corfu popups automatically use real TTY child frames
