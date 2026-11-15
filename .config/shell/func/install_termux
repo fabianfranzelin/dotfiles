@@ -142,10 +142,10 @@ alias pa='sshpass -p \"\$(pass passwords/frf2lr@pauline)\" mosh frf2lr@pauline'
 alias p='sshpass -p \"\$(pass passwords/frf2lr@pauline)\" mosh frf2lr@pauline -- sh -c \"emacsclient -nw -a emacs; exec /usr/bin/zsh\"'
 
 # Blackview
-alias sba='sshpass -p \"\$(pass passwords/frf2lr@blackview)\" ssh frf2lr@blackview'
-alias sb='sshpass -p \"\$(pass passwords/frf2lr@blackview)\" ssh -t frf2lr@blackview \"emacsclient -nw -a emacs; exec /usr/bin/zsh\"'
-alias ba='sshpass -p \"\$(pass passwords/frf2lr@blackview)\" mosh frf2lr@blackview'
-alias b='sshpass -p \"\$(pass passwords/frf2lr@blackview)\" mosh frf2lr@blackview -- sh -c \"emacsclient -nw -a emacs; exec /usr/bin/zsh\"'
+alias sba='sshpass -p \"\$(pass passwords/u0_a190@blackview)\" ssh u0_a190@blackview'
+alias sb='sshpass -p \"\$(pass passwords/u0_a190@blackview)\" ssh -t u0_a190@blackview \"emacsclient -nw -a emacs; exec /usr/bin/zsh\"'
+alias ba='sshpass -p \"\$(pass passwords/u0_a190@blackview)\" mosh u0_a190@blackview'
+alias b='sshpass -p \"\$(pass passwords/u0_a190@blackview)\" mosh u0_a190@blackview -- sh -c \"emacsclient -nw -a emacs; exec /usr/bin/zsh\"'
 
 alias ub=\"proot-distro login ubuntu --use frf2lr -- /bin/sh -c 'exec zsh -l'\"
     " | tee "${BASHRC}"
@@ -189,8 +189,8 @@ Host pauline
      ControlPath ~/.ssh/socket/%r@%h-%p
      ControlPersist 3600
 
-Match host blackview exec \"ping -c 1 -W 1 192.168.178.85\"
-     Hostname 192.168.178.85
+Match host blackview exec \"ping -c 1 -W 1 192.168.178.99\"
+     Hostname 192.168.178.99
      Port 8022
      ForwardAgent yes
      ForwardX11 yes

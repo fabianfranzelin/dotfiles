@@ -82,5 +82,10 @@ alias unlock_key="TERM=xterm-256color pass usernames/public@github > /dev/null"
 alias u="unlock_key"
 alias kill_gpg_agent="gpgconf --kill gpg-agent"
 
+# Pauline
 alias spa='sshpass -p "$(pass passwords/frf2lr@pauline)" ssh frf2lr@pauline'
 alias sp='sshpass -p "$(pass passwords/frf2lr@pauline)" ssh -t frf2lr@pauline "emacsclient -nw -a emacs; exec /usr/bin/zsh"'
+
+# Blackview
+alias sba='sshpass -p "$(pass passwords/u0_a190@blackview)" ssh u0_a190@blackview'
+alias sb='sshpass -p "$(pass passwords/u0_a190@blackview)" ssh -t u0_a190@blackview "emacsclient -nw -a emacs; exec /usr/bin/zsh"'
