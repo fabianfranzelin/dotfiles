@@ -130,13 +130,11 @@
 (customize-set-variable 'version-control t)
 
 (defun ff/sudo-shell-command (command)
-  "Launch sudo command asynchronously with tramp.
+  "Run COMMAND asynchronously as root via sudo.
 
 COMMAND: command to be executed"
   (interactive "MShell command (sudo): ")
-  (with-temp-buffer
-    (cd "/sudo::/")
-    (async-shell-command command)))
+  (ff/--async-sudo-shell-command command "/"))
 
 ;; add newline with C-n when at end of buffer.
 (customize-set-variable 'next-line-add-newlines nil)

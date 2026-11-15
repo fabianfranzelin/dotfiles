@@ -4,7 +4,9 @@
 
 ;;; Code:
 
-;; run async command without displaying the output
+(require 'compile)
+
+;; always use a new buffer for `async-shell-command' (M-&) when one is busy
 (setq async-shell-command-buffer 'new-buffer)
 
 (defmacro ff/with-global-env (&rest body)
@@ -17,6 +19,69 @@ look at the host, otherwise opening a project would trigger installs."
          (exec-path (default-value 'exec-path)))
      (with-temp-buffer
        ,@body)))
+
+(defvar auth-source-pass-filename)
+
+(defun ff/--sudo-password ()
+  "Return the sudo password from the password store, or prompt for it.
+The entry is looked up under passwords/sudo@`system-name'."
+  (require 'auth-source-pass)
+  (let* ((entry (format "passwords/sudo@%s" (system-name)))
+         (file (expand-file-name (concat entry ".gpg") auth-source-pass-filename))
+         (pwd (when (file-exists-p file)
+                (ignore-errors (auth-source-pass-get 'secret entry)))))
+    (if (and (stringp pwd) (not (string-empty-p pwd)))
+        pwd
+      (read-passwd (format "[sudo] password for %s: " user-login-name)))))
+
+(defun ff/--compile-command (command &optional prefix stdin)
+  "Run shell COMMAND asynchronously in a fresh, non-interactive compilation buffer.
+
+PREFIX: buffer name prefix, defaults to \"install\"; the buffer is
+named *PREFIX: COMMAND* (uniquified, one buffer per run).
+STDIN: optional string sent to the process before closing its stdin.
+
+The process uses a pipe (no pty), so STDIN is never echoed into the
+buffer.  Stdin is always closed afterwards, so commands that prompt
+get EOF instead of hanging.  Returns the compilation buffer."
+  (let* ((name (generate-new-buffer-name
+                (format "*%s: %s*" (or prefix "install") command)))
+         (process-connection-type nil)
+         (compilation-disable-input nil)
+         (buf (compilation-start command 'compilation-mode
+                                 (lambda (_mode) name)))
+         (proc (get-buffer-process buf)))
+    (when (process-live-p proc)
+      (when stdin
+        (process-send-string proc stdin))
+      (ignore-errors (process-send-eof proc)))
+    buf))
+
+(defun ff/--async-sudo-shell-command (command &optional directory)
+  "Run COMMAND asynchronously as root via sudo, without TRAMP.
+
+The output is shown in a dedicated compilation buffer.  When Emacs
+already runs as root, COMMAND is executed directly.  When sudo does
+not need a password (cached credentials or NOPASSWD), no password is
+sent.  Otherwise the password is taken from the password store or
+prompted for, and fed to sudo via stdin.
+
+DIRECTORY: working directory, defaults to `default-directory'."
+  (let ((default-directory (or directory default-directory)))
+    (cond
+     ((zerop (user-uid))
+      (ff/--compile-command command "sudo"))
+     ((not (executable-find "sudo"))
+      (user-error "Command `sudo' not found; cannot run: %s" command))
+     ((zerop (call-process "sudo" nil nil nil "-n" "true"))
+      (ff/--compile-command
+       (format "sudo -n sh -c %s" (shell-quote-argument command))
+       "sudo"))
+     (t
+      (ff/--compile-command
+       (format "sudo -S -p '' sh -c %s" (shell-quote-argument command))
+       "sudo"
+       (concat (ff/--sudo-password) "\n"))))))
 
 (defun ff/python-interpreter-version ()
   "Provide version of python interpreter."
@@ -47,9 +112,10 @@ REQUIRE-SUDO: launch it as sudo"
               (and
                (null (executable-find executable))
                (not (file-exists-p executable))))
-      (when require-sudo
-        (cd "/sudo::/"))
-      (async-shell-command (format "%s %s" install-cmd package-name)))))
+      (let ((cmd (format "%s %s" install-cmd package-name)))
+        (if require-sudo
+            (ff/--async-sudo-shell-command cmd)
+          (ff/--compile-command cmd))))))
 
 (defun ff/ensure-apt-package (package-name &optional executable)
   "Ensure that the provided apt package is installed.
@@ -87,9 +153,9 @@ EXECUTABLE: just install if the executable does not exist."
      (unless (or (null executable) (not (null (executable-find executable))))
       (if version
           (unless (file-directory-p package-path-with-version)
-            (async-shell-command (concat python-pip-install-cmd " '" package-name "==" version "'")))
+            (ff/--compile-command (concat python-pip-install-cmd " '" package-name "==" version "'")))
         (unless (file-directory-p package-path)
-          (async-shell-command (concat python-pip-install-cmd " '" package-name "'"))))))))
+          (ff/--compile-command (concat python-pip-install-cmd " '" package-name "'"))))))))
 
 (provide 'ff-ensure-system-packages)
 
