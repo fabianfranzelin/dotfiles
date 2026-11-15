@@ -57,12 +57,6 @@
                                                 :line-length nil)
                                  :schemas (:https://json.schemastore.org/github-action.json
                                            "/.github/workflows/.*"))))))
- (python-ts-mode . ((eval . (add-to-list 'flycheck-disabled-checkers 'python-flake8))
-                    (eval . (add-to-list 'flycheck-disabled-checkers 'python-pylint))))
- ((bash-ts-mode sh-mode) . ((flycheck-add-next-checker . '(sh-shellcheck sh-zsh))
-                            (eval . (add-to-list 'flycheck-disabled-checkers 'sh-posix-dash))
-                            (eval . (add-to-list 'flycheck-disabled-checkers 'sh-posix-bash))
-                            (eval . (add-to-list 'flycheck-disabled-checkers 'sh-bash))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
  ;;                 Docs                ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
