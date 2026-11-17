@@ -87,5 +87,5 @@ alias spa='sshpass -p "$(pass passwords/frf2lr@pauline)" ssh frf2lr@pauline'
 alias sp='sshpass -p "$(pass passwords/frf2lr@pauline)" ssh -t frf2lr@pauline "emacsclient -nw -a emacs; exec /usr/bin/zsh"'
 
 # Blackview
-alias sba='sshpass -p "$(pass passwords/u0_a190@blackview)" ssh u0_a190@blackview'
-alias sb='sshpass -p "$(pass passwords/u0_a190@blackview)" ssh -t u0_a190@blackview "emacsclient -nw -a emacs; exec /usr/bin/zsh"'
+alias sba='sshpass -p "$(pass passwords/u0_a190@blackview)" ssh blackview'
+alias sb='sshpass -p "$(pass passwords/u0_a190@blackview)" ssh -t blackview "emacsclient -nw -a emacs; exec /usr/bin/zsh"'
